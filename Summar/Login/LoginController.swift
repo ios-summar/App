@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class ViewController: UIViewController {
     
@@ -17,11 +18,12 @@ class ViewController: UIViewController {
         self.view.addSubview(loginView)
         
         // layout
-        loginView.translatesAutoresizingMaskIntoConstraints = false
-        loginView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
-        loginView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
-        loginView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-        loginView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        loginView.snp.makeConstraints{(make) in
+            make.top.equalTo(0)
+            make.left.equalTo(0)
+            make.right.equalTo(0)
+            make.bottom.equalTo(0)
+        }
     }
 
 }

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		043C536A28D2AF4E0078831C /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043C536928D2AF4E0078831C /* DeviceManager.swift */; };
 		84C8616DF3C895D0EA068632 /* Pods_Summar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBDF694537A9BAF925E0CCEC /* Pods_Summar.framework */; };
 		A28EC0DA28CA1BC000F5BF98 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28EC0D928CA1BC000F5BF98 /* AppDelegate.swift */; };
 		A28EC0DC28CA1BC000F5BF98 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28EC0DB28CA1BC000F5BF98 /* SceneDelegate.swift */; };
@@ -20,7 +19,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		043C536928D2AF4E0078831C /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		2BFFCD830500E41BC1E3C903 /* Pods-Summar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Summar.release.xcconfig"; path = "Target Support Files/Pods-Summar/Pods-Summar.release.xcconfig"; sourceTree = "<group>"; };
 		7D22FA4395C1E3F75DC05CF5 /* Pods-Summar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Summar.debug.xcconfig"; path = "Target Support Files/Pods-Summar/Pods-Summar.debug.xcconfig"; sourceTree = "<group>"; };
 		A28EC0D628CA1BC000F5BF98 /* Summar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Summar.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,7 +109,6 @@
 			isa = PBXGroup;
 			children = (
 				A2ADEBA628D081050018A358 /* Helper.swift */,
-				043C536928D2AF4E0078831C /* DeviceManager.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -232,7 +229,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A28EC0DE28CA1BC000F5BF98 /* LoginController.swift in Sources */,
-				043C536A28D2AF4E0078831C /* DeviceManager.swift in Sources */,
 				A28EC0DA28CA1BC000F5BF98 /* AppDelegate.swift in Sources */,
 				A2ADEBA728D081050018A358 /* Helper.swift in Sources */,
 				A2D9706028CF7B6300CE4620 /* LoginView.swift in Sources */,
