@@ -87,6 +87,12 @@ class LoginView : UIView{
         return socialLoginBtn3
     }()
     
+    let socialLoginBtn4 : UIButton = {
+        let socialLoginBtn4 = UIButton()
+        socialLoginBtn4.translatesAutoresizingMaskIntoConstraints = false
+        return socialLoginBtn4
+    }()
+    
     
     
     override init(frame: CGRect) {
@@ -109,6 +115,7 @@ class LoginView : UIView{
         addSubview(socialLoginBtn1)
         addSubview(socialLoginBtn2)
         addSubview(socialLoginBtn3)
+        addSubview(socialLoginBtn4)
         
         imageView.backgroundColor = UIColor.blue
         imageView.snp.makeConstraints {(make) in
@@ -217,36 +224,50 @@ class LoginView : UIView{
         }
         
         
-        socialLoginBtn2.backgroundColor = UIColor.black
-        socialLoginBtn2.layer.cornerRadius = 25
-        socialLoginBtn2.tag = 4
-        socialLoginBtn2.addTarget(self, action: #selector(self.btnAction(_:)), for: .touchUpInside)
-        socialLoginBtn2.snp.makeConstraints{(make) in
-            make.height.width.equalTo(50)
-            make.topMargin.equalTo(loginLabel.snp.bottom).offset(30)
-            make.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
-        }
-        
-        
-        socialLoginBtn1.backgroundColor = UIColor(red: 218/255, green: 69/255, blue: 72/255, alpha: 1)
+        socialLoginBtn1.backgroundColor = UIColor.yellow
         socialLoginBtn1.layer.cornerRadius = 25
         socialLoginBtn1.tag = 3
         socialLoginBtn1.addTarget(self, action: #selector(self.btnAction(_:)), for: .touchUpInside)
         socialLoginBtn1.snp.makeConstraints{(make) in
             make.height.width.equalTo(50)
             make.topMargin.equalTo(loginLabel.snp.bottom).offset(30)
-            make.rightMargin.equalTo(self.socialLoginBtn2.snp.left).offset(-20)
+            make.rightMargin.equalTo(self.socialLoginBtn2.snp.left).offset(-30)
+        }
+        
+        
+        socialLoginBtn2.backgroundColor = UIColor.green
+        socialLoginBtn2.layer.cornerRadius = 25
+        socialLoginBtn2.tag = 4
+        socialLoginBtn2.addTarget(self, action: #selector(self.btnAction(_:)), for: .touchUpInside)
+        socialLoginBtn2.snp.makeConstraints{(make) in
+            make.height.width.equalTo(50)
+            make.topMargin.equalTo(loginLabel.snp.bottom).offset(30)
+//            make.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
+            make.rightMargin.equalTo(self.safeAreaLayoutGuide.snp.centerX).offset(-20)
         }
 
         
-        socialLoginBtn3.backgroundColor = UIColor.systemBlue
+        socialLoginBtn3.backgroundColor = UIColor(red: 218/255, green: 69/255, blue: 72/255, alpha: 1)
         socialLoginBtn3.layer.cornerRadius = 25
         socialLoginBtn3.tag = 5
         socialLoginBtn3.addTarget(self, action: #selector(self.btnAction(_:)), for: .touchUpInside)
         socialLoginBtn3.snp.makeConstraints{(make) in
             make.height.width.equalTo(50)
             make.topMargin.equalTo(loginLabel.snp.bottom).offset(30)
-            make.leftMargin.equalTo(self.socialLoginBtn2.snp.right ).offset(20)
+//            make.leftMargin.equalTo(self.socialLoginBtn2.snp.right).offset(20)
+            make.leftMargin.equalTo(self.safeAreaLayoutGuide.snp.centerX).offset(20)
+        }
+        
+        
+        socialLoginBtn4.backgroundColor = UIColor.black
+        socialLoginBtn4.layer.cornerRadius = 25
+        socialLoginBtn4.tag = 6
+        socialLoginBtn4.addTarget(self, action: #selector(self.btnAction(_:)), for: .touchUpInside)
+        socialLoginBtn4.snp.makeConstraints{(make) in
+            make.height.width.equalTo(50)
+            make.topMargin.equalTo(loginLabel.snp.bottom).offset(30)
+//            make.leftMargin.equalTo(self.socialLoginBtn2.snp.right).offset(20)
+            make.leftMargin.equalTo(self.socialLoginBtn3.snp.right).offset(30)
         }
         
     }
