@@ -8,10 +8,12 @@
 import Foundation
 import UIKit
 import SnapKit
-
+import Alamofire
 
 /// 로그인 화면
 class LoginView : UIView{
+    
+    let helper : Helper = Helper()
     
     let imageView : UIImageView = {
         let imageView = UIImageView()
@@ -129,6 +131,7 @@ class LoginView : UIView{
         emailTextField.placeholder = "이메일 주소" // placeholder
         emailTextField.layer.borderWidth = 1
         emailTextField.layer.cornerRadius = 10
+        emailTextField.autocapitalizationType = .none
         emailTextField.layer.borderColor = CGColor(red: 204/255, green: 205/255, blue: 210/255, alpha: 1)
         emailTextField.addLeftPadding() // leftPadding 추가
         emailTextField.snp.makeConstraints{(make) in
@@ -255,6 +258,7 @@ class LoginView : UIView{
                 print("비밀번호찾기")
             case 1:
                 print("로그인")
+                loginAction()
             case 3:
                 print("소셜로그인 구글")
             case 4:
@@ -266,6 +270,86 @@ class LoginView : UIView{
             }
         }else { // 회원가입 로직
             print("회원가입 로직")
+            
+        }
+    }
+    
+    func loginAction() -> Bool{
+        var id = emailTextField.text!
+        var password = passwordTextField.text!
+        
+        if id.isEmpty { // 아이디 빈칸체크
+            helper.showAlert(vc: self, message: "아이디를 입력해주세요.")
+        }else if password.isEmpty { // 비밀번호 빈칸체크
+            helper.showAlert(vc: self, message: "비밀번호를 입력해주세요.")
+        }else { // 빈칸은 아님
+            // 서버통신이후 유효한 아이디/비밀번호인지 체크후 다음화면으로
+            serverLogin(id: id, password: password)
+        }
+        
+        return true
+    }
+    
+    func serverLogin(id: String, password: String) {
+        print(#function)
+        print(id)
+        print(password)
+        let url = "http://13.209.114.45:8080/api/v1/login"
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = "POST"
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "accept")
+        request.setValue("utf-8", forHTTPHeaderField: "Accept-Charset")
+    
+        request.timeoutInterval = 10
+        
+        let params = [
+            "username": id,
+            "password": password
+        ] as Dictionary
+
+//         httpBody 에 parameters 추가
+            do {
+                try request.httpBody = JSONSerialization.data(withJSONObject: params, options: [])
+            } catch {
+            print("http Body Error")
+        }
+        
+        AF.request(request).responseJSON { (response) in
+            switch response.result {
+            case .success:
+                print("POST 성공")
+                print(response)
+                do {
+                    let dicCreate = try JSONSerialization.jsonObject(with: Data(response.data!), options: []) as! NSArray // [jsonArray In jsonObject 형식 데이터를 파싱 실시 : 유니코드 형식 문자열이 자동으로 변환됨]
+//                    print(dicCreate)
+                    self.dataParsing(dicCreate: dicCreate)
+                    
+                    
+                } catch {
+                    print("catch :: ", error.localizedDescription)
+                }
+            case .failure(let error):
+                print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+            }
+        }
+    }
+    
+    func dataParsing(dicCreate : NSArray){
+        for i in 0...dicCreate.count - 1 {
+            let firstResult = dicCreate[i]
+            do {
+                let jsonData = try JSONSerialization.data(withJSONObject: firstResult, options: JSONSerialization.WritingOptions.prettyPrinted)
+                let json = try JSONSerialization.jsonObject(with: jsonData, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any]
+                
+                if let jsonN = json {
+                    print(jsonN)
+                }else {
+                    print("nil")
+                }
+            } catch{
+                print(error)
+            }
             
         }
     }
