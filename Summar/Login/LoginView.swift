@@ -13,6 +13,8 @@ import Alamofire
 /// 로그인 화면
 class LoginView : UIView{
     
+    let helper : Helper = Helper()
+    
     let imageView : UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -129,6 +131,7 @@ class LoginView : UIView{
         emailTextField.placeholder = "이메일 주소" // placeholder
         emailTextField.layer.borderWidth = 1
         emailTextField.layer.cornerRadius = 10
+        emailTextField.autocapitalizationType = .none
         emailTextField.layer.borderColor = CGColor(red: 204/255, green: 205/255, blue: 210/255, alpha: 1)
         emailTextField.addLeftPadding() // leftPadding 추가
         emailTextField.snp.makeConstraints{(make) in
@@ -271,7 +274,26 @@ class LoginView : UIView{
         }
     }
     
-    func loginAction() {
+    func loginAction() -> Bool{
+        var id = emailTextField.text!
+        var password = passwordTextField.text!
+        
+        if id.isEmpty { // 아이디 빈칸체크
+            helper.showAlert(vc: self, message: "아이디를 입력해주세요.")
+        }else if password.isEmpty { // 비밀번호 빈칸체크
+            helper.showAlert(vc: self, message: "비밀번호를 입력해주세요.")
+        }else { // 빈칸은 아님
+            // 서버통신이후 유효한 아이디/비밀번호인지 체크후 다음화면으로
+            serverLogin(id: id, password: password)
+        }
+        
+        return true
+    }
+    
+    func serverLogin(id: String, password: String) {
+        print(#function)
+        print(id)
+        print(password)
         let url = "http://13.209.114.45:8080/api/v1/login"
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "POST"
@@ -282,8 +304,8 @@ class LoginView : UIView{
         request.timeoutInterval = 10
         
         let params = [
-            "username": "newy12",
-            "password": "123" 
+            "username": id,
+            "password": password
         ] as Dictionary
 
 //         httpBody 에 parameters 추가
