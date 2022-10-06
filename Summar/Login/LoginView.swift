@@ -281,11 +281,13 @@ class LoginView : UIView{
                 print("로그인")
                 loginAction()
             case 3:
-                print("소셜로그인 구글")
+                print("소셜로그인 카카오")
             case 4:
-                print("소셜로그인 애플")
+                print("소셜로그인 네이버")
             case 5:
-                print("소셜로그인 페이스북")
+                print("소셜로그인 구글")
+            case 6:
+                print("소셜로그인 애플")
             default:
                 print("default")
             }
