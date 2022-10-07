@@ -9,9 +9,10 @@ import Foundation
 import UIKit
 import SnapKit
 import Alamofire
+import AuthenticationServices // 애플 로그인 https://huisoo.tistory.com/3
 
 /// 로그인 화면
-class LoginView : UIView{
+class LoginView : UIView {
     
     let helper : Helper = Helper()
     
@@ -288,6 +289,7 @@ class LoginView : UIView{
                 print("소셜로그인 구글")
             case 6:
                 print("소셜로그인 애플")
+                appleSignInButtonPress()
             default:
                 print("default")
             }
@@ -297,7 +299,7 @@ class LoginView : UIView{
         }
     }
     
-    func loginAction() -> Bool{
+    func loginAction(){
         var id = emailTextField.text!
         var password = passwordTextField.text!
         
@@ -309,8 +311,6 @@ class LoginView : UIView{
             // 서버통신이후 유효한 아이디/비밀번호인지 체크후 다음화면으로
             serverLogin(id: id, password: password)
         }
-        
-        return true
     }
     
     func serverLogin(id: String, password: String) {
@@ -344,9 +344,14 @@ class LoginView : UIView{
                 print("POST 성공")
                 print(response)
                 do {
-                    let dicCreate = try JSONSerialization.jsonObject(with: Data(response.data!), options: []) as! NSArray // [jsonArray In jsonObject 형식 데이터를 파싱 실시 : 유니코드 형식 문자열이 자동으로 변환됨]
+                    let dicCreate = try JSONSerialization.jsonObject(with: Data(response.data!), options: []) as! NSDictionary // [jsonArray In jsonObject 형식 데이터를 파싱 실시 : 유니코드 형식 문자열이 자동으로 변환됨]
+////                    print(dicCreate)
+//                    self.dataParsing(dicCreate: dicCreate)
+//                    print(type(of: response))
 //                    print(dicCreate)
-                    self.dataParsing(dicCreate: dicCreate)
+                    
+                    print(dicCreate["accessToken"]!)
+                    print(dicCreate["refreshToken"]!)
                     
                     
                 } catch {
@@ -381,4 +386,49 @@ class LoginView : UIView{
         fatalError("init(coder:) has not been implemented")
     }
     
+}
+
+
+extension LoginView : ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.window!
+    }
+    
+    // Apple Login Button Pressed
+    func appleSignInButtonPress() {
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+            
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+    }
+    
+    
+    // Apple ID 연동 성공 시
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        switch authorization.credential {
+        // Apple ID
+        case let appleIDCredential as ASAuthorizationAppleIDCredential:
+                
+            // 계정 정보 가져오기
+            let userIdentifier = appleIDCredential.user
+            let fullName = appleIDCredential.fullName
+            let email = appleIDCredential.email
+                
+            print("User ID : \(userIdentifier)")
+            print("User Email : \(email ?? "")")
+            print("User Name : \((fullName?.givenName ?? "") + (fullName?.familyName ?? ""))")
+
+        default:
+            break
+        }
+    }
+        
+    // Apple ID 연동 실패 시
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        // Handle error.
+    }
 }
