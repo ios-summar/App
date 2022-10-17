@@ -27,3 +27,8 @@ extension UITextField {
         self.leftViewMode = ViewMode.always
     }
 }
+
+extension UIColor {
+    static var summarFontColor1 = UIColor.init(red: 31/255, green: 65/255, blue: 185/255, alpha: 1)
+    static var summarFontColor2 = UIColor.init(red: 53/255, green: 97/255, blue: 254/255, alpha: 1)
+}

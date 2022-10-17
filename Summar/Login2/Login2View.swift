@@ -14,83 +14,106 @@ import AuthenticationServices // 애플 로그인 https://huisoo.tistory.com/3
 /// 로그인 화면
 class Login2View : UIView {
     
+    let helper : Helper = Helper()
+    
     let imageView : UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "SignUpImage")
         return imageView
-    }()
-    
-    let titleLabel : UILabel = {
-        let titleLabel = UILabel()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        return titleLabel
     }()
     
     let emailTextField : UITextField = {
         let emailTextField = UITextField()
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
+        emailTextField.keyboardType = .emailAddress
+        emailTextField.placeholder = "아이디" // placeholder
+        emailTextField.layer.borderWidth = 1
+        emailTextField.layer.cornerRadius = 4
+        emailTextField.autocapitalizationType = .none
+        emailTextField.layer.backgroundColor = CGColor(red: 244/255, green: 246/255, blue: 254/255, alpha: 1)
+        emailTextField.layer.borderColor = CGColor(red: 244/255, green: 246/255, blue: 254/255, alpha: 1)
+        emailTextField.addLeftPadding() // leftPadding 추가
         return emailTextField
     }()
     
     let passwordTextField : UITextField = {
         let passwordTextField = UITextField()
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
+        passwordTextField.isSecureTextEntry = true // 비밀번호가 화면에 노출되지 않게
+        passwordTextField.placeholder = "비밀번호" // placeholder
+        passwordTextField.layer.borderWidth = 1
+        passwordTextField.layer.cornerRadius = 4
+        passwordTextField.layer.backgroundColor = CGColor(red: 244/255, green: 246/255, blue: 254/255, alpha: 1)
+        passwordTextField.layer.borderColor = CGColor(red: 244/255, green: 246/255, blue: 254/255, alpha: 1)
+        passwordTextField.addLeftPadding() // leftPadding 추가
         return passwordTextField
     }()
     
     let findBtn : UIButton = {
         let findBtn = UIButton()
         findBtn.translatesAutoresizingMaskIntoConstraints = false
+        findBtn.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+        findBtn.setTitle("아이디 찾기", for: .normal)
+        findBtn.setTitleColor(UIColor.summarFontColor1, for: .normal)
+        findBtn.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
+        findBtn.tag = 0
         return findBtn
+    }()
+    
+    let findBtn2 : UIButton = {
+        let findBtn2 = UIButton()
+        findBtn2.translatesAutoresizingMaskIntoConstraints = false
+        findBtn2.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+        findBtn2.setTitle("비밀번호 찾기", for: .normal)
+        findBtn2.setTitleColor(UIColor.summarFontColor1, for: .normal)
+        findBtn2.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
+        findBtn2.tag = 1
+        return findBtn2
     }()
     
     let loginBtn : UIButton = {
         let loginBtn = UIButton()
         loginBtn.translatesAutoresizingMaskIntoConstraints = false
+        loginBtn.setTitle("로그인", for: .normal)
+        loginBtn.setTitleColor(.white, for: .normal)
+        loginBtn.titleLabel?.font = .systemFont(ofSize: 16)
+        loginBtn.backgroundColor = .systemGray
+        loginBtn.layer.cornerRadius = 5
+        loginBtn.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
+        loginBtn.tag = 2
         return loginBtn
     }()
     
     let registerLabel : UILabel = {
         let registerLabel = UILabel()
         registerLabel.translatesAutoresizingMaskIntoConstraints = false
+        registerLabel.textColor = UIColor(red: 79/255, green: 79/255, blue: 79/255, alpha: 1)
+        registerLabel.text = "Summar의 회원이 되세요!"
+        registerLabel.font = UIFont.systemFont(ofSize: 13)
         return registerLabel
     }()
     
     let viewLine : UIView = {
         let viewLine = UIView()
         viewLine.translatesAutoresizingMaskIntoConstraints = false
+        viewLine.backgroundColor = UIColor(displayP3Red: 197/255, green: 197/255, blue: 197/255, alpha: 1)
         return viewLine
     }()
     
-    let loginLabel : UILabel = {
-        let loginLabel = UILabel()
-        loginLabel.translatesAutoresizingMaskIntoConstraints = false
-        return loginLabel
+    
+    let registerBtn : UIButton = {
+        let registerBtn = UIButton()
+        registerBtn.translatesAutoresizingMaskIntoConstraints = false
+        registerBtn.backgroundColor = UIColor.summarFontColor2
+        registerBtn.layer.cornerRadius = 4
+        registerBtn.setTitle("회원가입", for: .normal)
+        registerBtn.setTitleColor(UIColor.white, for: .normal)
+        registerBtn.tag = 3
+        registerBtn.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
+        return registerBtn
     }()
     
-    let socialLoginBtn1 : UIButton = {
-        let socialLoginBtn1 = UIButton()
-        socialLoginBtn1.translatesAutoresizingMaskIntoConstraints = false
-        return socialLoginBtn1
-    }()
-    
-    let socialLoginBtn2 : UIButton = {
-        let socialLoginBtn2 = UIButton()
-        socialLoginBtn2.translatesAutoresizingMaskIntoConstraints = false
-        return socialLoginBtn2
-    }()
-    
-    let socialLoginBtn3 : UIButton = {
-        let socialLoginBtn3 = UIButton()
-        socialLoginBtn3.translatesAutoresizingMaskIntoConstraints = false
-        return socialLoginBtn3
-    }()
-    
-    let socialLoginBtn4 : UIButton = {
-        let socialLoginBtn4 = UIButton()
-        socialLoginBtn4.translatesAutoresizingMaskIntoConstraints = false
-        return socialLoginBtn4
-    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -98,65 +121,34 @@ class Login2View : UIView {
         backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         
         addSubview(imageView)
-//        addSubview(titleLabel)
         addSubview(emailTextField)
         addSubview(passwordTextField)
         
-//        addSubview(findBtn)
+        addSubview(findBtn)
+        addSubview(viewLine)
+        addSubview(findBtn2)
+        
         addSubview(loginBtn)
         addSubview(registerLabel)
         
-        addSubview(viewLine)
-        addSubview(loginLabel)
+        addSubview(registerBtn)
         
-        addSubview(socialLoginBtn1)
-        addSubview(socialLoginBtn2)
-        addSubview(socialLoginBtn3)
-        addSubview(socialLoginBtn4)
         
-//        imageView.backgroundColor = UIColor.blue
-        imageView.image = UIImage(named: "SignUpImage")
         imageView.snp.makeConstraints {(make) in
-            make.topMargin.equalTo(self.safeAreaLayoutGuide.snp.top).offset(30)
-//            make.leftMargin.equalTo(self.safeAreaLayoutGuide.snp.left).offset(100)
-//            make.rightMargin.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-100)
+            make.topMargin.equalTo(self.safeAreaLayoutGuide.snp.top).offset(40)
             make.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
             make.width.equalTo(200)
             make.height.equalTo(166)
         }
         
-        
-//        titleLabel.text = "손쉽게 써머에 합류하기"
-//        titleLabel.font = UIFont.boldSystemFont(ofSize: 25)
-//        titleLabel.snp.makeConstraints{(make) in
-//            make.topMargin.equalTo(imageView.snp.bottom).offset(30)
-//            make.leftMargin.equalTo(25)
-//        }
-        
-        
-        emailTextField.keyboardType = .emailAddress
-        emailTextField.placeholder = "이메일 주소" // placeholder
-        emailTextField.layer.borderWidth = 1
-        emailTextField.layer.cornerRadius = 5
-        emailTextField.autocapitalizationType = .none
-        emailTextField.layer.backgroundColor = CGColor(red: 244/255, green: 246/255, blue: 254/255, alpha: 1)
-        emailTextField.layer.borderColor = CGColor(red: 244/255, green: 246/255, blue: 254/255, alpha: 1)
-        emailTextField.addLeftPadding() // leftPadding 추가
         emailTextField.snp.makeConstraints{(make) in
-            make.topMargin.equalTo(imageView.snp.bottom).offset(40)
+            make.topMargin.equalTo(imageView.snp.bottom).offset(60)
             make.leftMargin.equalTo(25)
             make.rightMargin.equalTo(-25)
             make.height.equalTo(52)
         }
         
         
-        passwordTextField.isSecureTextEntry = true // 비밀번호가 화면에 노출되지 않게
-        passwordTextField.placeholder = "비밀번호" // placeholder
-        passwordTextField.layer.borderWidth = 1
-        passwordTextField.layer.cornerRadius = 5
-        passwordTextField.layer.backgroundColor = CGColor(red: 244/255, green: 246/255, blue: 254/255, alpha: 1)
-        passwordTextField.layer.borderColor = CGColor(red: 244/255, green: 246/255, blue: 254/255, alpha: 1)
-        passwordTextField.addLeftPadding() // leftPadding 추가
         passwordTextField.snp.makeConstraints{(make) in
             make.topMargin.equalTo(emailTextField.snp.bottom).offset(20)
             make.leftMargin.equalTo(25)
@@ -164,132 +156,61 @@ class Login2View : UIView {
             make.height.equalTo(52)
         }
         
-
-//        findBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-//        findBtn.setTitle("비밀번호를 잊어버리셨나요?", for: .normal)
-//        findBtn.setTitleColor(.systemBlue, for: .normal)
-//        findBtn.addTarget(self, action: #selector(self.btnAction(_:)), for: .touchUpInside)
-//        findBtn.tag = 0
-//        findBtn.snp.makeConstraints{(make) in
-//            make.topMargin.equalTo(passwordTextField.snp.bottom).offset(15)
-//            make.leftMargin.equalTo(25)
-//            make.height.equalTo(30)
-//        }
-        
-        
-        loginBtn.setTitle("로그인 하기", for: .normal)
-        loginBtn.setTitleColor(.white, for: .normal)
-        loginBtn.backgroundColor = UIColor.systemBlue
-        loginBtn.layer.cornerRadius = 5
-        loginBtn.addTarget(self, action: #selector(self.btnAction(_:)), for: .touchUpInside)
-        loginBtn.tag = 1
         loginBtn.snp.makeConstraints{(make) in
             make.topMargin.equalTo(passwordTextField.snp.bottom).offset(28)
+            make.rightMargin.equalTo(-25)
+            make.width.equalTo(100)
+            make.height.equalTo(52)
+        }
+        
+        findBtn.snp.makeConstraints{(make) in
+            make.centerY.equalTo(self.loginBtn)
+            make.leftMargin.equalTo(25)
+            make.height.equalTo(30)
+        }
+        
+        
+        viewLine.snp.makeConstraints{(make) in
+            make.centerY.equalTo(loginBtn)
+            make.leftMargin.equalTo(findBtn.snp.right).offset(18)
+            make.height.equalTo(15)
+            make.width.equalTo(1)
+        }
+        
+        
+        findBtn2.snp.makeConstraints{(make) in
+            make.centerY.equalTo(self.loginBtn)
+            make.leftMargin.equalTo(viewLine.snp.right).offset(18)
+            make.height.equalTo(30)
+        }
+        
+        
+        registerLabel.snp.makeConstraints{(make) in
+            make.topMargin.equalTo(findBtn.snp.bottom).offset(100)
+            make.leftMargin.equalTo(25)
+        }
+        
+
+        registerBtn.snp.makeConstraints{(make) in
+            make.topMargin.equalTo(registerLabel.snp.bottom).offset(15)
             make.leftMargin.equalTo(25)
             make.rightMargin.equalTo(-25)
             make.height.equalTo(52)
         }
-
-        
-//        registerLabel.font = registerLabel.font.withSize(15)
-//        registerLabel.textColor = UIColor.systemGray
-//        registerLabel.text = "아직도 써머의 회원이 아니신가요? 회원가입"
-//        let attributedStr = NSMutableAttributedString(string: registerLabel.text!)
-//        attributedStr.addAttribute(.foregroundColor, value: UIColor.systemBlue, range: (registerLabel.text! as NSString).range(of: "회원가입"))
-//        attributedStr.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 15), range: (registerLabel.text! as NSString).range(of: "회원가입"))
-//        registerLabel.attributedText = attributedStr
-//        registerLabel.tag = 2
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(self.btnAction(_:)))
-//        registerLabel.isUserInteractionEnabled = true
-//        registerLabel.addGestureRecognizer(tap)
-//        registerLabel.snp.makeConstraints{(make) in
-//            make.topMargin.equalTo(loginBtn.snp.bottom).offset(17.5)
-//            make.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
-//        }
-        
-        
-        viewLine.backgroundColor = UIColor.systemGray5
-        viewLine.snp.makeConstraints{(make) in
-            make.topMargin.equalTo(registerLabel.snp.bottom).offset(30)
-            make.leftMargin.equalTo(25)
-            make.rightMargin.equalTo(-25)
-            make.height.equalTo(1)
-        }
-        
-        
-//        loginLabel.font = loginLabel.font.withSize(15)
-//        loginLabel.textColor = UIColor.systemGray
-//        loginLabel.text = "또는 아래 방법으로 쉽게 로그인하기"
-//        loginLabel.snp.makeConstraints{(make) in
-//            make.topMargin.equalTo(viewLine.snp.bottom).offset(17.5)
-//            make.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
-//        }
-        
-        
-        socialLoginBtn1.backgroundColor = UIColor.yellow
-        socialLoginBtn1.layer.cornerRadius = 25
-        socialLoginBtn1.tag = 3
-        socialLoginBtn1.addTarget(self, action: #selector(self.btnAction(_:)), for: .touchUpInside)
-        socialLoginBtn1.snp.makeConstraints{(make) in
-            make.height.width.equalTo(50)
-            make.topMargin.equalTo(loginLabel.snp.bottom).offset(30)
-            make.rightMargin.equalTo(self.socialLoginBtn2.snp.left).offset(-30)
-        }
-        
-        
-        socialLoginBtn2.backgroundColor = UIColor.green
-        socialLoginBtn2.layer.cornerRadius = 25
-        socialLoginBtn2.tag = 4
-        socialLoginBtn2.addTarget(self, action: #selector(self.btnAction(_:)), for: .touchUpInside)
-        socialLoginBtn2.snp.makeConstraints{(make) in
-            make.height.width.equalTo(50)
-            make.topMargin.equalTo(loginLabel.snp.bottom).offset(30)
-//            make.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
-            make.rightMargin.equalTo(self.safeAreaLayoutGuide.snp.centerX).offset(-20)
-        }
-
-        
-        socialLoginBtn3.backgroundColor = UIColor(red: 218/255, green: 69/255, blue: 72/255, alpha: 1)
-        socialLoginBtn3.layer.cornerRadius = 25
-        socialLoginBtn3.tag = 5
-        socialLoginBtn3.addTarget(self, action: #selector(self.btnAction(_:)), for: .touchUpInside)
-        socialLoginBtn3.snp.makeConstraints{(make) in
-            make.height.width.equalTo(50)
-            make.topMargin.equalTo(loginLabel.snp.bottom).offset(30)
-//            make.leftMargin.equalTo(self.socialLoginBtn2.snp.right).offset(20)
-            make.leftMargin.equalTo(self.safeAreaLayoutGuide.snp.centerX).offset(20)
-        }
-        
-        
-        socialLoginBtn4.backgroundColor = UIColor.black
-        socialLoginBtn4.layer.cornerRadius = 25
-        socialLoginBtn4.tag = 6
-        socialLoginBtn4.addTarget(self, action: #selector(self.btnAction(_:)), for: .touchUpInside)
-        socialLoginBtn4.snp.makeConstraints{(make) in
-            make.height.width.equalTo(50)
-            make.topMargin.equalTo(loginLabel.snp.bottom).offset(30)
-//            make.leftMargin.equalTo(self.socialLoginBtn2.snp.right).offset(20)
-            make.leftMargin.equalTo(self.socialLoginBtn3.snp.right).offset(30)
-        }
-        
     }
     
     @objc func btnAction(_ sender: Any){
         if let tagIndex = (sender as AnyObject).tag { // 그외 로직
             switch tagIndex {
             case 0:
-                print("비밀번호찾기")
+                print("아이디 찾기")
             case 1:
+                print("비밀번호 찾기")
+            case 2:
                 print("로그인")
                 loginAction()
             case 3:
-                print("소셜로그인 카카오")
-            case 4:
-                print("소셜로그인 네이버")
-            case 5:
-                print("소셜로그인 구글")
-            case 6:
-                print("소셜로그인 애플")
+                print("회원가입")
             default:
                 print("default")
             }
@@ -302,6 +223,15 @@ class Login2View : UIView {
     func loginAction(){
         var id = emailTextField.text!
         var password = passwordTextField.text!
+        
+        if id.isEmpty { // 아이디 빈칸체크
+            helper.showAlert(vc: self, message: "아이디를 입력해주세요.")
+        }else if password.isEmpty { // 비밀번호 빈칸체크
+            helper.showAlert(vc: self, message: "비밀번호를 입력해주세요.")
+        }else { // 빈칸은 아님
+            // 서버통신이후 유효한 아이디/비밀번호인지 체크후 다음화면으로
+            serverLogin(id: id, password: password)
+        }
     }
     
     func serverLogin(id: String, password: String) {
