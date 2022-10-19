@@ -2,7 +2,7 @@
 //  LoginController.swift
 //  Summar
 //
-//  Created by ukBook on 2022/09/08.
+//  Created by ukBook on 2022/10/16.
 //
 
 import UIKit
@@ -27,4 +27,3 @@ class LoginController: UIViewController {
     }
 
 }
-

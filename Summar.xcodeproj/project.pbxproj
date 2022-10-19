@@ -7,38 +7,42 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04852F8E28FE72A300A3EED9 /* SocialLogin.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04852F8D28FE72A300A3EED9 /* SocialLogin.storyboard */; };
+		04852F9028FE72AF00A3EED9 /* SocialLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04852F8F28FE72AF00A3EED9 /* SocialLoginController.swift */; };
+		04852F9228FE72E400A3EED9 /* SocialLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04852F9128FE72E400A3EED9 /* SocialLoginView.swift */; };
+		04D4448328FE356400C7C44F /* StartIndexController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D4448228FE356400C7C44F /* StartIndexController.swift */; };
+		04D4448628FE35E800C7C44F /* StartIndex.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04D4448528FE35E800C7C44F /* StartIndex.storyboard */; };
 		A28EC0DA28CA1BC000F5BF98 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28EC0D928CA1BC000F5BF98 /* AppDelegate.swift */; };
 		A28EC0DC28CA1BC000F5BF98 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28EC0DB28CA1BC000F5BF98 /* SceneDelegate.swift */; };
-		A28EC0DE28CA1BC000F5BF98 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28EC0DD28CA1BC000F5BF98 /* LoginController.swift */; };
-		A28EC0E128CA1BC000F5BF98 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A28EC0DF28CA1BC000F5BF98 /* Main.storyboard */; };
 		A28EC0E328CA1BC100F5BF98 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A28EC0E228CA1BC100F5BF98 /* Assets.xcassets */; };
 		A28EC0E628CA1BC100F5BF98 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A28EC0E428CA1BC100F5BF98 /* LaunchScreen.storyboard */; };
-		A2A7699E28FBF71A003EE3CD /* Login2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2A7699D28FBF71A003EE3CD /* Login2.storyboard */; };
-		A2A769A228FBF742003EE3CD /* Login2Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A769A128FBF742003EE3CD /* Login2Controller.swift */; };
-		A2A769A428FBF74F003EE3CD /* Login2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A769A328FBF74F003EE3CD /* Login2View.swift */; };
+		A2A7699E28FBF71A003EE3CD /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2A7699D28FBF71A003EE3CD /* Login.storyboard */; };
+		A2A769A228FBF742003EE3CD /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A769A128FBF742003EE3CD /* LoginController.swift */; };
+		A2A769A428FBF74F003EE3CD /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A769A328FBF74F003EE3CD /* LoginView.swift */; };
 		A2ADEBA728D081050018A358 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ADEBA628D081050018A358 /* Helper.swift */; };
-		A2D9706028CF7B6300CE4620 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D9705F28CF7B6300CE4620 /* LoginView.swift */; };
 		D8872805D47E10468746D85D /* Pods_Summar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D332E402DA0C18F47A52999 /* Pods_Summar.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		043D982A28EFB673008C862F /* Summar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Summar.entitlements; sourceTree = "<group>"; };
+		04852F8D28FE72A300A3EED9 /* SocialLogin.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SocialLogin.storyboard; sourceTree = "<group>"; };
+		04852F8F28FE72AF00A3EED9 /* SocialLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginController.swift; sourceTree = "<group>"; };
+		04852F9128FE72E400A3EED9 /* SocialLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginView.swift; sourceTree = "<group>"; };
+		04D4448228FE356400C7C44F /* StartIndexController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartIndexController.swift; sourceTree = "<group>"; };
+		04D4448528FE35E800C7C44F /* StartIndex.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = StartIndex.storyboard; sourceTree = "<group>"; };
 		6D332E402DA0C18F47A52999 /* Pods_Summar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Summar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F74F5831F1FB4EBDF4B3789 /* Pods-Summar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Summar.debug.xcconfig"; path = "Target Support Files/Pods-Summar/Pods-Summar.debug.xcconfig"; sourceTree = "<group>"; };
 		9B086346D0C44E796CDFBB50 /* Pods-Summar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Summar.release.xcconfig"; path = "Target Support Files/Pods-Summar/Pods-Summar.release.xcconfig"; sourceTree = "<group>"; };
 		A28EC0D628CA1BC000F5BF98 /* Summar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Summar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A28EC0D928CA1BC000F5BF98 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A28EC0DB28CA1BC000F5BF98 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		A28EC0DD28CA1BC000F5BF98 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
-		A28EC0E028CA1BC000F5BF98 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A28EC0E228CA1BC100F5BF98 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A28EC0E528CA1BC100F5BF98 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A28EC0E728CA1BC100F5BF98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A2A7699D28FBF71A003EE3CD /* Login2.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login2.storyboard; sourceTree = "<group>"; };
-		A2A769A128FBF742003EE3CD /* Login2Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login2Controller.swift; sourceTree = "<group>"; };
-		A2A769A328FBF74F003EE3CD /* Login2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login2View.swift; sourceTree = "<group>"; };
+		A2A7699D28FBF71A003EE3CD /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
+		A2A769A128FBF742003EE3CD /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		A2A769A328FBF74F003EE3CD /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		A2ADEBA628D081050018A358 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
-		A2D9705F28CF7B6300CE4620 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +57,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04852F8C28FE729100A3EED9 /* SocialLogin */ = {
+			isa = PBXGroup;
+			children = (
+				04852F8D28FE72A300A3EED9 /* SocialLogin.storyboard */,
+				04852F8F28FE72AF00A3EED9 /* SocialLoginController.swift */,
+				04852F9128FE72E400A3EED9 /* SocialLoginView.swift */,
+			);
+			path = SocialLogin;
+			sourceTree = "<group>";
+		};
+		04D4448428FE35B800C7C44F /* StartIndex */ = {
+			isa = PBXGroup;
+			children = (
+				04D4448228FE356400C7C44F /* StartIndexController.swift */,
+				04D4448528FE35E800C7C44F /* StartIndex.storyboard */,
+			);
+			path = StartIndex;
+			sourceTree = "<group>";
+		};
 		2ABCF6E3510353C58FAC70D0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -68,16 +91,6 @@
 				9B086346D0C44E796CDFBB50 /* Pods-Summar.release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		A225068628CF66FA005F166E /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				A28EC0DD28CA1BC000F5BF98 /* LoginController.swift */,
-				A2D9705F28CF7B6300CE4620 /* LoginView.swift */,
-				A28EC0DF28CA1BC000F5BF98 /* Main.storyboard */,
-			);
-			path = Login;
 			sourceTree = "<group>";
 		};
 		A28EC0CD28CA1BC000F5BF98 = {
@@ -102,9 +115,10 @@
 			isa = PBXGroup;
 			children = (
 				043D982A28EFB673008C862F /* Summar.entitlements */,
-				A2A7699C28FBF60C003EE3CD /* Login2 */,
+				04852F8C28FE729100A3EED9 /* SocialLogin */,
+				04D4448428FE35B800C7C44F /* StartIndex */,
+				A2A7699C28FBF60C003EE3CD /* Login */,
 				A2ADEBA528D080FF0018A358 /* Helper */,
-				A225068628CF66FA005F166E /* Login */,
 				A28EC0D928CA1BC000F5BF98 /* AppDelegate.swift */,
 				A28EC0DB28CA1BC000F5BF98 /* SceneDelegate.swift */,
 				A28EC0E228CA1BC100F5BF98 /* Assets.xcassets */,
@@ -114,14 +128,14 @@
 			path = Summar;
 			sourceTree = "<group>";
 		};
-		A2A7699C28FBF60C003EE3CD /* Login2 */ = {
+		A2A7699C28FBF60C003EE3CD /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				A2A7699D28FBF71A003EE3CD /* Login2.storyboard */,
-				A2A769A128FBF742003EE3CD /* Login2Controller.swift */,
-				A2A769A328FBF74F003EE3CD /* Login2View.swift */,
+				A2A7699D28FBF71A003EE3CD /* Login.storyboard */,
+				A2A769A128FBF742003EE3CD /* LoginController.swift */,
+				A2A769A328FBF74F003EE3CD /* LoginView.swift */,
 			);
-			path = Login2;
+			path = Login;
 			sourceTree = "<group>";
 		};
 		A2ADEBA528D080FF0018A358 /* Helper */ = {
@@ -194,8 +208,9 @@
 			files = (
 				A28EC0E628CA1BC100F5BF98 /* LaunchScreen.storyboard in Resources */,
 				A28EC0E328CA1BC100F5BF98 /* Assets.xcassets in Resources */,
-				A28EC0E128CA1BC000F5BF98 /* Main.storyboard in Resources */,
-				A2A7699E28FBF71A003EE3CD /* Login2.storyboard in Resources */,
+				04D4448628FE35E800C7C44F /* StartIndex.storyboard in Resources */,
+				04852F8E28FE72A300A3EED9 /* SocialLogin.storyboard in Resources */,
+				A2A7699E28FBF71A003EE3CD /* Login.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,27 +263,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A2A769A228FBF742003EE3CD /* Login2Controller.swift in Sources */,
-				A28EC0DE28CA1BC000F5BF98 /* LoginController.swift in Sources */,
+				A2A769A228FBF742003EE3CD /* LoginController.swift in Sources */,
 				A28EC0DA28CA1BC000F5BF98 /* AppDelegate.swift in Sources */,
 				A2ADEBA728D081050018A358 /* Helper.swift in Sources */,
-				A2A769A428FBF74F003EE3CD /* Login2View.swift in Sources */,
-				A2D9706028CF7B6300CE4620 /* LoginView.swift in Sources */,
+				A2A769A428FBF74F003EE3CD /* LoginView.swift in Sources */,
 				A28EC0DC28CA1BC000F5BF98 /* SceneDelegate.swift in Sources */,
+				04D4448328FE356400C7C44F /* StartIndexController.swift in Sources */,
+				04852F9028FE72AF00A3EED9 /* SocialLoginController.swift in Sources */,
+				04852F9228FE72E400A3EED9 /* SocialLoginView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		A28EC0DF28CA1BC000F5BF98 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A28EC0E028CA1BC000F5BF98 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		A28EC0E428CA1BC100F5BF98 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -407,8 +415,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Summar/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = Login2.storyboard;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UILaunchStoryboardName = StartIndex.storyboard;
+				INFOPLIST_KEY_UIMainStoryboardFile = StartIndex;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -438,8 +446,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Summar/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = Login2.storyboard;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UILaunchStoryboardName = StartIndex.storyboard;
+				INFOPLIST_KEY_UIMainStoryboardFile = StartIndex;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;

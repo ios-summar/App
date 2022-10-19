@@ -29,6 +29,10 @@ extension UITextField {
 }
 
 extension UIColor {
-    static var summarFontColor1 = UIColor.init(red: 31/255, green: 65/255, blue: 185/255, alpha: 1)
-    static var summarFontColor2 = UIColor.init(red: 53/255, green: 97/255, blue: 254/255, alpha: 1)
+    static var summarColor1 = UIColor.init(red: 31/255, green: 65/255, blue: 185/255, alpha: 1)
+    static var summarColor2 = UIColor.init(red: 53/255, green: 97/255, blue: 254/255, alpha: 1)
+    static var kakaoColor = UIColor.init(red: 250/255, green: 227/255, blue: 0/255, alpha: 1)
+    static var appleColor = UIColor.init(red: 52/255, green: 52/255, blue: 52/255, alpha: 1)
+    static var naverColor = UIColor.init(red: 45/255, green: 180/255, blue: 0/255, alpha: 1)
+    static var googleColor = UIColor.init(red: 245/255, green: 86/255, blue: 73/255, alpha: 1)
 }
