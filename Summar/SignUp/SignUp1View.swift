@@ -39,6 +39,23 @@ class SignUp1View : UIView {
         return viewLine3
     }()
     
+    var checkboxAll : UIImageView = {
+        let checkboxAll = UIImageView()
+        checkboxAll.translatesAutoresizingMaskIntoConstraints = false
+        checkboxAll.image = UIImage(systemName: "square") //checkmark.square
+        checkboxAll.tintColor = .black
+        return checkboxAll
+    }()
+    
+    var checkboxAllBtn : UIButton = {
+        let checkboxAllBtn = UIButton()
+        checkboxAllBtn.translatesAutoresizingMaskIntoConstraints = false
+        checkboxAllBtn.setTitle("전체 약관동의", for: .normal)
+        checkboxAllBtn.setTitleColor(.black, for: .normal)
+        checkboxAllBtn.sizeToFit()
+        return checkboxAllBtn
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -47,6 +64,9 @@ class SignUp1View : UIView {
         addSubview(viewLine1)
         addSubview(viewLine2)
         addSubview(viewLine3)
+        
+        addSubview(checkboxAll)
+        addSubview(checkboxAllBtn)
         
         viewLine2.snp.makeConstraints {(make) in
             make.topMargin.equalTo(self.safeAreaLayoutGuide.snp.top).offset(20)
@@ -67,6 +87,19 @@ class SignUp1View : UIView {
             make.leftMargin.equalTo(viewLine2.snp.right).offset(20)
             make.width.equalTo(viewWidth)
             make.height.equalTo(2)
+        }
+        
+        checkboxAll.snp.makeConstraints{(make) in
+            make.topMargin.equalTo(viewLine1).offset(62)
+            make.leftMargin.equalTo(25)
+            make.width.equalTo(24)
+            make.height.equalTo(24)
+        }
+
+        checkboxAllBtn.snp.makeConstraints{(make) in
+            make.centerY.equalTo(checkboxAll.snp.centerY)
+            make.leftMargin.equalTo(checkboxAll.snp.right).offset(20)
+            make.height.equalTo(19)
         }
     }
     
