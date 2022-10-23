@@ -68,7 +68,7 @@ extension StartIndexController : UITableViewDelegate, UITableViewDataSource {
         case 1:
             moveScreen(storyboard: "SocialLogin", controller: "SocialLoginController")
         case 2:
-            print("2")
+            moveScreen(storyboard: "SignUp1", controller: "SignUp1Controller")
         default:
             print("default")
         }
