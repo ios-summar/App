@@ -35,5 +35,6 @@ extension UIColor {
     static var appleColor = UIColor.init(red: 52/255, green: 52/255, blue: 52/255, alpha: 1)
     static var naverColor = UIColor.init(red: 45/255, green: 180/255, blue: 0/255, alpha: 1)
     static var googleColor = UIColor.init(red: 245/255, green: 86/255, blue: 73/255, alpha: 1)
-    static var grayColor = UIColor.init(red: 205/255, green: 205/255, blue: 205/255, alpha: 1)
+    static var grayColor205 = UIColor.init(red: 205/255, green: 205/255, blue: 205/255, alpha: 1)
+    static var grayColor197 = UIColor.init(red: 197/255, green: 197/255, blue: 197/255, alpha: 1)
 }
