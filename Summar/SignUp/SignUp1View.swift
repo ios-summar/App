@@ -18,6 +18,11 @@ class SignUp1View : UIView {
         return divScreen
     }()
     
+    let bottomBtnWidth : CGFloat = {
+        var screenWidth = UIScreen.main.bounds.size.width
+        return screenWidth / 2 - 30
+    }()
+    
     let viewLine1 : UIView = {
         let viewLine1 = UIView()
         viewLine1.translatesAutoresizingMaskIntoConstraints = false
@@ -44,6 +49,7 @@ class SignUp1View : UIView {
         checkboxAll.translatesAutoresizingMaskIntoConstraints = false
         checkboxAll.image = UIImage(systemName: "square") //checkmark.square
         checkboxAll.tintColor = UIColor.grayColor197
+        checkboxAll.tag = 1
         return checkboxAll
     }()
     
@@ -54,6 +60,7 @@ class SignUp1View : UIView {
         checkboxAllBtn.setTitleColor(.black, for: .normal)
         checkboxAllBtn.titleLabel?.font = .systemFont(ofSize: 18)
         checkboxAllBtn.sizeToFit()
+        checkboxAllBtn.tag = 2
         return checkboxAllBtn
     }()
     
@@ -62,6 +69,7 @@ class SignUp1View : UIView {
         checkbox1.translatesAutoresizingMaskIntoConstraints = false
         checkbox1.image = UIImage(systemName: "square") //checkmark.square
         checkbox1.tintColor = UIColor.grayColor197
+        checkbox1.tag = 11
         return checkbox1
     }()
     
@@ -72,6 +80,7 @@ class SignUp1View : UIView {
         checkboxBtn1.setTitleColor(.black, for: .normal)
         checkboxBtn1.titleLabel?.font = .systemFont(ofSize: 15)
         checkboxBtn1.sizeToFit()
+        checkboxBtn1.tag = 12
         return checkboxBtn1
     }()
     
@@ -82,6 +91,7 @@ class SignUp1View : UIView {
         contentBtn1.setTitleColor(UIColor(red: 79/255, green: 79/255, blue: 79/255, alpha: 1), for: .normal)
         contentBtn1.titleLabel?.font = .systemFont(ofSize: 13)
         contentBtn1.sizeToFit()
+        contentBtn1.tag = 13
         return contentBtn1
     }()
     
@@ -97,6 +107,7 @@ class SignUp1View : UIView {
         checkbox2.translatesAutoresizingMaskIntoConstraints = false
         checkbox2.image = UIImage(systemName: "square") //checkmark.square
         checkbox2.tintColor = UIColor.grayColor197
+        checkbox2.tag = 21
         return checkbox2
     }()
     
@@ -107,6 +118,7 @@ class SignUp1View : UIView {
         checkboxBtn2.setTitleColor(.black, for: .normal)
         checkboxBtn2.titleLabel?.font = .systemFont(ofSize: 15)
         checkboxBtn2.sizeToFit()
+        checkboxBtn2.tag = 22
         return checkboxBtn2
     }()
     
@@ -117,6 +129,7 @@ class SignUp1View : UIView {
         contentBtn2.setTitleColor(UIColor(red: 79/255, green: 79/255, blue: 79/255, alpha: 1), for: .normal)
         contentBtn2.titleLabel?.font = .systemFont(ofSize: 13)
         contentBtn2.sizeToFit()
+        contentBtn2.tag = 23
         return contentBtn2
     }()
     
@@ -132,6 +145,7 @@ class SignUp1View : UIView {
         checkbox3.translatesAutoresizingMaskIntoConstraints = false
         checkbox3.image = UIImage(systemName: "square") //checkmark.square
         checkbox3.tintColor = UIColor.grayColor197
+        checkbox3.tag = 31
         return checkbox3
     }()
     
@@ -142,6 +156,7 @@ class SignUp1View : UIView {
         checkboxBtn3.setTitleColor(.black, for: .normal)
         checkboxBtn3.titleLabel?.font = .systemFont(ofSize: 15)
         checkboxBtn3.sizeToFit()
+        checkboxBtn3.tag = 32
         return checkboxBtn3
     }()
     
@@ -152,6 +167,7 @@ class SignUp1View : UIView {
         contentBtn3.setTitleColor(UIColor(red: 79/255, green: 79/255, blue: 79/255, alpha: 1), for: .normal)
         contentBtn3.titleLabel?.font = .systemFont(ofSize: 13)
         contentBtn3.sizeToFit()
+        contentBtn3.tag = 33
         return contentBtn3
     }()
     
@@ -162,10 +178,39 @@ class SignUp1View : UIView {
         return viewLine1
     }()
     
+    let previousBtn : UIButton = {
+        let previousBtn = UIButton()
+        previousBtn.translatesAutoresizingMaskIntoConstraints = false
+        previousBtn.backgroundColor = .white
+        previousBtn.layer.borderColor = UIColor.summarColor2.cgColor
+        previousBtn.layer.borderWidth = 2
+        previousBtn.layer.cornerRadius = 4
+        previousBtn.setTitle("이전", for: .normal)
+        previousBtn.setTitleColor(UIColor.summarColor2, for: .normal)
+        previousBtn.titleLabel?.font = .boldSystemFont(ofSize: 17)
+        previousBtn.tag = 41
+        return previousBtn
+    }()
+    
+    let nextBtn : UIButton = {
+        let nextBtn = UIButton()
+        nextBtn.translatesAutoresizingMaskIntoConstraints = false
+        nextBtn.backgroundColor = UIColor.summarColor2
+        nextBtn.layer.cornerRadius = 4
+        nextBtn.layer.borderWidth = 2
+        nextBtn.layer.borderColor = UIColor.summarColor2.cgColor
+        nextBtn.setTitle("다음", for: .normal)
+        nextBtn.setTitleColor(.white, for: .normal)
+        nextBtn.titleLabel?.font = .boldSystemFont(ofSize: 17)
+        nextBtn.tag = 42
+        return nextBtn
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        print(viewWidth)
+        //btn click Action
+        btnAddTarget()
         
         addSubview(viewLine1)
         addSubview(viewLine2)
@@ -188,6 +233,10 @@ class SignUp1View : UIView {
         addSubview(checkboxBtn3)
         addSubview(contentBtn3)
         addSubview(viewLine6)
+        
+        addSubview(nextBtn)
+        addSubview(previousBtn)
+        
         
         // 상단 프로세스 바
         viewLine2.snp.makeConstraints {(make) in
@@ -311,6 +360,45 @@ class SignUp1View : UIView {
         }
         //
         
+        previousBtn.snp.makeConstraints{(make) in
+            make.bottomMargin.equalTo(-20)
+            make.leftMargin.equalTo(20)
+            make.rightMargin.equalTo(self.safeAreaLayoutGuide.snp.centerX).offset(-20)
+            make.height.equalTo(52)
+        }
+        
+        nextBtn.snp.makeConstraints{(make) in
+            make.bottomMargin.equalTo(-20)
+            make.rightMargin.equalTo(-20)
+            make.leftMargin.equalTo(self.safeAreaLayoutGuide.snp.centerX).offset(20)
+            make.height.equalTo(52)
+        }
+    }
+    
+    func btnAddTarget(){
+        checkboxAllBtn.addTarget(self, action: #selector(btnAction(sender:)), for: .touchUpInside)
+        checkboxBtn1.addTarget(self, action: #selector(btnAction(sender:)), for: .touchUpInside)
+        contentBtn1.addTarget(self, action: #selector(btnAction(sender:)), for: .touchUpInside)
+        checkboxBtn2.addTarget(self, action: #selector(btnAction(sender:)), for: .touchUpInside)
+        contentBtn2.addTarget(self, action: #selector(btnAction(sender:)), for: .touchUpInside)
+        checkboxBtn3.addTarget(self, action: #selector(btnAction(sender:)), for: .touchUpInside)
+        contentBtn3.addTarget(self, action: #selector(btnAction(sender:)), for: .touchUpInside)
+        previousBtn.addTarget(self, action: #selector(btnAction(sender:)), for: .touchUpInside)
+        nextBtn.addTarget(self, action: #selector(btnAction(sender:)), for: .touchUpInside)
+        
+        let tapGesture0 = UITapGestureRecognizer(target: self, action: #selector(btnAction(sender:)))
+        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(btnAction(sender:)))
+        let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(btnAction(sender:)))
+        let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(btnAction(sender:)))
+        
+        checkboxAll.addGestureRecognizer(tapGesture0)
+        checkbox1.addGestureRecognizer(tapGesture1)
+        checkbox2.addGestureRecognizer(tapGesture2)
+        checkbox3.addGestureRecognizer(tapGesture3)
+    }
+    
+    @objc func btnAction(sender : Any){
+        print((sender as AnyObject).tag!)
     }
     
     required init?(coder: NSCoder) {

@@ -136,17 +136,8 @@ class SocialLoginView : UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        let tapGesture0 = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
-        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
-        let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
-        let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
-        let tapGesture4 = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
-
-        kakaoFrame.addGestureRecognizer(tapGesture0)
-        appleFrame.addGestureRecognizer(tapGesture1)
-        naverFrame.addGestureRecognizer(tapGesture2)
-        googleFrame.addGestureRecognizer(tapGesture3)
-        normalFrame.addGestureRecognizer(tapGesture4)
+        //Image View click Action
+        addUITapGestureRecognizer()
         
         addSubview(self.imageView)
         
@@ -278,6 +269,20 @@ class SocialLoginView : UIView {
             make.width.equalTo(20)
         }
         
+    }
+    
+    func addUITapGestureRecognizer(){
+        let tapGesture0 = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
+        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
+        let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
+        let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
+        let tapGesture4 = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
+        
+        kakaoFrame.addGestureRecognizer(tapGesture0)
+        appleFrame.addGestureRecognizer(tapGesture1)
+        naverFrame.addGestureRecognizer(tapGesture2)
+        googleFrame.addGestureRecognizer(tapGesture3)
+        normalFrame.addGestureRecognizer(tapGesture4)
     }
     
     /// 로그인 버튼 Action
