@@ -29,7 +29,8 @@ class StartIndexController : UIViewController {
     func indexAdd(){
         indexArr.append("로그인")
         indexArr.append("소셜로그인")
-        indexArr.append("회원가입")
+        indexArr.append("회원가입1")
+        indexArr.append("회원가입2")
         
         tableInit()
     }
@@ -50,7 +51,7 @@ class StartIndexController : UIViewController {
 
 extension StartIndexController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return indexArr.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -69,6 +70,8 @@ extension StartIndexController : UITableViewDelegate, UITableViewDataSource {
             moveScreen(storyboard: "SocialLogin", controller: "SocialLoginController")
         case 2:
             moveScreen(storyboard: "SignUp1", controller: "SignUp1Controller")
+        case 3:
+            moveScreen(storyboard: "SignUp2", controller: "SignUp2Controller")
         default:
             print("default")
         }

@@ -10,6 +10,9 @@
 		04852F8E28FE72A300A3EED9 /* SocialLogin.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04852F8D28FE72A300A3EED9 /* SocialLogin.storyboard */; };
 		04852F9028FE72AF00A3EED9 /* SocialLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04852F8F28FE72AF00A3EED9 /* SocialLoginController.swift */; };
 		04852F9228FE72E400A3EED9 /* SocialLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04852F9128FE72E400A3EED9 /* SocialLoginView.swift */; };
+		04A69BD32907CF8E00EF7133 /* SignUp2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04A69BD22907CF8E00EF7133 /* SignUp2.storyboard */; };
+		04A69BD52907CFA300EF7133 /* SignUp2Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A69BD42907CFA300EF7133 /* SignUp2Controller.swift */; };
+		04A69BD72907CFAE00EF7133 /* SignUp2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A69BD62907CFAE00EF7133 /* SignUp2View.swift */; };
 		04D4448328FE356400C7C44F /* StartIndexController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D4448228FE356400C7C44F /* StartIndexController.swift */; };
 		04D4448628FE35E800C7C44F /* StartIndex.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04D4448528FE35E800C7C44F /* StartIndex.storyboard */; };
 		8000A4B3BD809F1645A92A9C /* Pods_Summar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 696FB193C5810C457FEDB58D /* Pods_Summar.framework */; };
@@ -31,6 +34,9 @@
 		04852F8D28FE72A300A3EED9 /* SocialLogin.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SocialLogin.storyboard; sourceTree = "<group>"; };
 		04852F8F28FE72AF00A3EED9 /* SocialLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginController.swift; sourceTree = "<group>"; };
 		04852F9128FE72E400A3EED9 /* SocialLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginView.swift; sourceTree = "<group>"; };
+		04A69BD22907CF8E00EF7133 /* SignUp2.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignUp2.storyboard; sourceTree = "<group>"; };
+		04A69BD42907CFA300EF7133 /* SignUp2Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp2Controller.swift; sourceTree = "<group>"; };
+		04A69BD62907CFAE00EF7133 /* SignUp2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp2View.swift; sourceTree = "<group>"; };
 		04D4448228FE356400C7C44F /* StartIndexController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartIndexController.swift; sourceTree = "<group>"; };
 		04D4448528FE35E800C7C44F /* StartIndex.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = StartIndex.storyboard; sourceTree = "<group>"; };
 		4BE0229876F93DCBC8B7F329 /* Pods-Summar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Summar.debug.xcconfig"; path = "Target Support Files/Pods-Summar/Pods-Summar.debug.xcconfig"; sourceTree = "<group>"; };
@@ -76,6 +82,9 @@
 		04A69BD12907CEC500EF7133 /* SignUp2 */ = {
 			isa = PBXGroup;
 			children = (
+				04A69BD22907CF8E00EF7133 /* SignUp2.storyboard */,
+				04A69BD42907CFA300EF7133 /* SignUp2Controller.swift */,
+				04A69BD62907CFAE00EF7133 /* SignUp2View.swift */,
 			);
 			path = SignUp2;
 			sourceTree = "<group>";
@@ -232,6 +241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A28EC0E628CA1BC100F5BF98 /* LaunchScreen.storyboard in Resources */,
+				04A69BD32907CF8E00EF7133 /* SignUp2.storyboard in Resources */,
 				A28EC0E328CA1BC100F5BF98 /* Assets.xcassets in Resources */,
 				A2CAEDDF29050A570053D6C9 /* SignUp1.storyboard in Resources */,
 				04D4448628FE35E800C7C44F /* StartIndex.storyboard in Resources */,
@@ -291,6 +301,7 @@
 			files = (
 				A2A769A228FBF742003EE3CD /* LoginController.swift in Sources */,
 				A28EC0DA28CA1BC000F5BF98 /* AppDelegate.swift in Sources */,
+				04A69BD52907CFA300EF7133 /* SignUp2Controller.swift in Sources */,
 				A2CAEDE129050A630053D6C9 /* SignUp1Controller.swift in Sources */,
 				A2ADEBA728D081050018A358 /* Helper.swift in Sources */,
 				A2A769A428FBF74F003EE3CD /* LoginView.swift in Sources */,
@@ -299,6 +310,7 @@
 				04D4448328FE356400C7C44F /* StartIndexController.swift in Sources */,
 				04852F9028FE72AF00A3EED9 /* SocialLoginController.swift in Sources */,
 				04852F9228FE72E400A3EED9 /* SocialLoginView.swift in Sources */,
+				04A69BD72907CFAE00EF7133 /* SignUp2View.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

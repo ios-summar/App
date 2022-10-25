@@ -9,7 +9,13 @@ import Foundation
 import UIKit
 import SnapKit
 
+protocol PushViewDelegate: class {
+    func pushView(storyboard: String, controller: String)
+}
+
 class SignUp1View : UIView {
+    
+    weak var delegate: PushViewDelegate?
     
     let helper = Helper()
     var checkboxArr = [false, false, false, false]
@@ -181,31 +187,33 @@ class SignUp1View : UIView {
         return viewLine1
     }()
     
-    let previousBtn : UIButton = {
-        let previousBtn = UIButton()
-        previousBtn.translatesAutoresizingMaskIntoConstraints = false
-        previousBtn.backgroundColor = .white
-        previousBtn.layer.borderColor = UIColor.summarColor2.cgColor
-        previousBtn.layer.borderWidth = 2
-        previousBtn.layer.cornerRadius = 4
-        previousBtn.setTitle("이전", for: .normal)
-        previousBtn.setTitleColor(UIColor.summarColor2, for: .normal)
-        previousBtn.titleLabel?.font = .boldSystemFont(ofSize: 17)
-        previousBtn.tag = 41
-        return previousBtn
-    }()
+//    let previousBtn : UIButton = {
+//        let previousBtn = UIButton()
+//        previousBtn.translatesAutoresizingMaskIntoConstraints = false
+//        previousBtn.backgroundColor = .white
+//        previousBtn.layer.borderColor = UIColor.summarColor2.cgColor
+//        previousBtn.layer.borderWidth = 2
+//        previousBtn.layer.cornerRadius = 4
+//        previousBtn.setTitle("이전", for: .normal)
+//        previousBtn.setTitleColor(UIColor.summarColor2, for: .normal)
+//        previousBtn.titleLabel?.font = .boldSystemFont(ofSize: 17)
+//        previousBtn.tag = 41
+//        return previousBtn
+//    }()
     
     let nextBtn : UIButton = {
         let nextBtn = UIButton()
         nextBtn.translatesAutoresizingMaskIntoConstraints = false
-        nextBtn.backgroundColor = UIColor.summarColor2
+//        nextBtn.backgroundColor = UIColor.summarColor2
+        nextBtn.backgroundColor = UIColor.grayColor197
         nextBtn.layer.cornerRadius = 4
-        nextBtn.layer.borderWidth = 2
-        nextBtn.layer.borderColor = UIColor.summarColor2.cgColor
+//        nextBtn.layer.borderWidth = 2
+//        nextBtn.layer.borderColor = UIColor.summarColor2.cgColor
         nextBtn.setTitle("다음", for: .normal)
         nextBtn.setTitleColor(.white, for: .normal)
         nextBtn.titleLabel?.font = .boldSystemFont(ofSize: 17)
         nextBtn.tag = 42
+        nextBtn.isEnabled = false
         return nextBtn
     }()
     
@@ -238,7 +246,7 @@ class SignUp1View : UIView {
         addSubview(viewLine6)
         
         addSubview(nextBtn)
-        addSubview(previousBtn)
+//        addSubview(previousBtn)
         
         
         // 상단 프로세스 바
@@ -363,17 +371,17 @@ class SignUp1View : UIView {
         }
         //
         
-        previousBtn.snp.makeConstraints{(make) in
-            make.bottomMargin.equalTo(-20)
-            make.leftMargin.equalTo(20)
-            make.rightMargin.equalTo(self.safeAreaLayoutGuide.snp.centerX).offset(-20)
-            make.height.equalTo(52)
-        }
+//        previousBtn.snp.makeConstraints{(make) in
+//            make.bottomMargin.equalTo(-20)
+//            make.leftMargin.equalTo(20)
+//            make.rightMargin.equalTo(self.safeAreaLayoutGuide.snp.centerX).offset(-20)
+//            make.height.equalTo(52)
+//        }
         
         nextBtn.snp.makeConstraints{(make) in
             make.bottomMargin.equalTo(-20)
             make.rightMargin.equalTo(-20)
-            make.leftMargin.equalTo(self.safeAreaLayoutGuide.snp.centerX).offset(20)
+            make.leftMargin.equalTo(20)
             make.height.equalTo(52)
         }
     }
@@ -386,7 +394,7 @@ class SignUp1View : UIView {
         contentBtn2.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
         checkboxBtn3.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
         contentBtn3.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
-        previousBtn.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
+//        previousBtn.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
         nextBtn.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
         
         let tapGesture0 = UITapGestureRecognizer(target: self, action: #selector(btnAction(_:)))
@@ -469,6 +477,7 @@ class SignUp1View : UIView {
             }
         }
         print("화면 이동")
+        delegate?.pushView(storyboard: "SignUp2", controller: "SignUp2Controller")
     }
     
     func checkBoxToggle(index : Int){
@@ -530,6 +539,14 @@ class SignUp1View : UIView {
                 }
             }
         }
+        
+        if checkboxArr[1] && checkboxArr[2] {
+            nextBtn.backgroundColor = UIColor.summarColor2
+            nextBtn.isEnabled = true
+        }else {
+            nextBtn.backgroundColor = UIColor.grayColor197
+            nextBtn.isEnabled = false
+        }
     }
     
     /// ImageView 변경 함수
@@ -543,7 +560,7 @@ class SignUp1View : UIView {
             if index { // 이미지 변환 square -> checkmark.square
                 for x in 0 ... uiImageViewArr.count - 1 {
                     uiImageViewArr[x].image = UIImage(systemName: "checkmark.square")
-                    uiImageViewArr[x].tintColor = .black
+                    uiImageViewArr[x].tintColor = UIColor.summarColor2
                 }
             }else { // 이미지 변환 checkmark.square -> square
                 for x in 0 ... uiImageViewArr.count - 1 {
@@ -554,7 +571,7 @@ class SignUp1View : UIView {
         }else { // 그 이외
             if index { // 이미지 변환 square -> checkmark.square
                 uiImageView?.image = UIImage(systemName: "checkmark.square")
-                uiImageView?.tintColor = .black
+                uiImageView?.tintColor = UIColor.summarColor2
             }else { // 이미지 변환 checkmark.square -> square
                 uiImageView?.image = UIImage(systemName: "square")
                 uiImageView?.tintColor = UIColor.grayColor197
