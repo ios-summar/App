@@ -10,6 +10,9 @@ import UIKit
 import SnapKit
 
 class SignUp1View : UIView {
+    
+    let helper = Helper()
+    var checkboxArr = [false, false, false, false]
 
     let viewWidth : CGFloat = {
         // 뷰 전체 폭 길이
@@ -376,29 +379,187 @@ class SignUp1View : UIView {
     }
     
     func btnAddTarget(){
-        checkboxAllBtn.addTarget(self, action: #selector(btnAction(sender:)), for: .touchUpInside)
-        checkboxBtn1.addTarget(self, action: #selector(btnAction(sender:)), for: .touchUpInside)
-        contentBtn1.addTarget(self, action: #selector(btnAction(sender:)), for: .touchUpInside)
-        checkboxBtn2.addTarget(self, action: #selector(btnAction(sender:)), for: .touchUpInside)
-        contentBtn2.addTarget(self, action: #selector(btnAction(sender:)), for: .touchUpInside)
-        checkboxBtn3.addTarget(self, action: #selector(btnAction(sender:)), for: .touchUpInside)
-        contentBtn3.addTarget(self, action: #selector(btnAction(sender:)), for: .touchUpInside)
-        previousBtn.addTarget(self, action: #selector(btnAction(sender:)), for: .touchUpInside)
-        nextBtn.addTarget(self, action: #selector(btnAction(sender:)), for: .touchUpInside)
+        checkboxAllBtn.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
+        checkboxBtn1.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
+        contentBtn1.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
+        checkboxBtn2.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
+        contentBtn2.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
+        checkboxBtn3.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
+        contentBtn3.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
+        previousBtn.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
+        nextBtn.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
         
-        let tapGesture0 = UITapGestureRecognizer(target: self, action: #selector(btnAction(sender:)))
-        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(btnAction(sender:)))
-        let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(btnAction(sender:)))
-        let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(btnAction(sender:)))
+        let tapGesture0 = UITapGestureRecognizer(target: self, action: #selector(btnAction(_:)))
+        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(btnAction(_:)))
+        let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(btnAction(_:)))
+        let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(btnAction(_:)))
         
         checkboxAll.addGestureRecognizer(tapGesture0)
         checkbox1.addGestureRecognizer(tapGesture1)
         checkbox2.addGestureRecognizer(tapGesture2)
         checkbox3.addGestureRecognizer(tapGesture3)
+        
+        checkboxAll.isUserInteractionEnabled = true
+        checkbox1.isUserInteractionEnabled = true
+        checkbox2.isUserInteractionEnabled = true
+        checkbox3.isUserInteractionEnabled = true
+        
+
     }
     
-    @objc func btnAction(sender : Any){
-        print((sender as AnyObject).tag!)
+    @objc func btnAction(_ sender : Any){
+//        print((sender as AnyObject).tag)
+//        print((sender as? UITapGestureRecognizer)?.view?.tag)
+        
+        if let tagNum = (sender as AnyObject).tag {
+//            print(tagNum)
+            switch tagNum {
+            // 체크박스 옆 버튼
+            case 2:
+                print("전체약관동의")
+                checkBoxToggle(index: 0)
+            case 12:
+                print("[필수] 써머 이용약관")
+                checkBoxToggle(index: 1)
+            case 22:
+                print("[필수] 개인정보수집동의")
+                checkBoxToggle(index: 2)
+            case 32:
+                print("[선택] 마케팅 정보 수신 약관")
+                checkBoxToggle(index: 3)
+                
+            // 내용 보기
+            case 13:
+                print("[필수] 써머 이용약관 내용보기")
+            case 23:
+                print("[필수] 개인정보수집동의 내용보기")
+            case 33:
+                print("[선택] 마케팅 정보 수신 약관 내용보기")
+                
+            // 하단 버튼
+            case 41:
+                print("이전")
+            case 42:
+                nextPage()
+            default:
+                print("default")
+            }
+        }else if let tagNum = (sender as? UITapGestureRecognizer)?.view?.tag {
+            switch tagNum {
+            case 1:
+                checkBoxToggle(index: 0)
+            case 11:
+                checkBoxToggle(index: 1)
+            case 21:
+                checkBoxToggle(index: 2)
+            case 31:
+                checkBoxToggle(index: 3)
+            default:
+                print("default")
+            }
+        }
+            
+    }
+    
+    func nextPage(){
+        for x in 1 ... 2 {
+            if !checkboxArr[x] { // 필수 약관동의 X
+                helper.showAlert(vc: self, message: "필수 약관에 동의하셔야 회원가입이 가능합니다.")
+                return
+            }
+        }
+        print("화면 이동")
+    }
+    
+    func checkBoxToggle(index : Int){
+        // 1. true / false 값 변환
+        // 2. true / false 값으로 전체동의 박스도 확인
+        // 3. 이미지 변환 square(빈박스) <-> checkmark.square(체크박스)
+        
+        let imageViewArr = [checkboxAll, checkbox1, checkbox2, checkbox3]
+        
+        // 1. true / false 값 변환
+        if checkboxArr[index] {
+            checkboxArr[index] = false
+        }else {
+            checkboxArr[index] = true
+        }
+        
+        if index == 0 { // 전체 약관동의
+            if checkboxArr[0] { // 빈박스에서 박스채우기
+                checkboxArr[0] = true
+                checkboxArr[1] = true
+                checkboxArr[2] = true
+                checkboxArr[3] = true
+                
+                changeImage(nil, imageViewArr, true)
+            }else { // 체크박스에서 빈박스로
+                checkboxArr[0] = false
+                checkboxArr[1] = false
+                checkboxArr[2] = false
+                checkboxArr[3] = false
+                
+                changeImage(nil, imageViewArr, false)
+            }
+        }else {
+            if checkboxArr[index] {
+                if checkboxArr[1] && checkboxArr[2] && checkboxArr[3] {
+                    checkboxArr[0] = true
+                    checkboxArr[1] = true
+                    checkboxArr[2] = true
+                    checkboxArr[3] = true
+                    
+                    changeImage(nil, imageViewArr, true)
+                }else {
+                    checkboxArr[index] = true
+                    changeImage(imageViewArr[index], nil, true)
+                }
+            }else {
+                if !checkboxArr[1] && !checkboxArr[2] && !checkboxArr[3] {
+                    checkboxArr[0] = false
+                    checkboxArr[1] = false
+                    checkboxArr[2] = false
+                    checkboxArr[3] = false
+                    
+                    changeImage(nil, imageViewArr, false)
+                }else {
+                    checkboxArr[0] = false
+                    checkboxArr[index] = false
+                    changeImage(imageViewArr[0], nil, false)
+                    changeImage(imageViewArr[index], nil, false)
+                }
+            }
+        }
+    }
+    
+    /// ImageView 변경 함수
+    /// - Parameters:
+    ///   - uiImageView: uiImageView => 해당 함수인자가 값이 있을때 해당 이미지뷰 이미지 변경
+    ///   - uiImageViewArr: imageView 배열 => 해당 함수인자가 nil이 아닐때 전체 체크, 전체 '미'체크
+    ///   - index: true / false 값으로 checkmark.square <-> square 변경
+    func changeImage(_ uiImageView: UIImageView?,_ uiImageViewArr: [UIImageView]? , _ index : Bool){
+        
+        if let uiImageViewArr = uiImageViewArr { // 전체 약관동의
+            if index { // 이미지 변환 square -> checkmark.square
+                for x in 0 ... uiImageViewArr.count - 1 {
+                    uiImageViewArr[x].image = UIImage(systemName: "checkmark.square")
+                    uiImageViewArr[x].tintColor = .black
+                }
+            }else { // 이미지 변환 checkmark.square -> square
+                for x in 0 ... uiImageViewArr.count - 1 {
+                    uiImageViewArr[x].image = UIImage(systemName: "square")
+                    uiImageViewArr[x].tintColor = UIColor.grayColor197
+                }
+            }
+        }else { // 그 이외
+            if index { // 이미지 변환 square -> checkmark.square
+                uiImageView?.image = UIImage(systemName: "checkmark.square")
+                uiImageView?.tintColor = .black
+            }else { // 이미지 변환 checkmark.square -> square
+                uiImageView?.image = UIImage(systemName: "square")
+                uiImageView?.tintColor = UIColor.grayColor197
+            }
+        }
     }
     
     required init?(coder: NSCoder) {
