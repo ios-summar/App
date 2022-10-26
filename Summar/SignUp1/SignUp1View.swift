@@ -9,13 +9,14 @@ import Foundation
 import UIKit
 import SnapKit
 
-protocol PushViewDelegate: class {
+protocol Delegate: class {
     func pushView(storyboard: String, controller: String)
+    func moveSignUp2()
 }
 
 class SignUp1View : UIView {
     
-    weak var delegate: PushViewDelegate?
+    weak var delegate: Delegate?
     
     let helper = Helper()
     var checkboxArr = [false, false, false, false]
@@ -32,26 +33,26 @@ class SignUp1View : UIView {
         return screenWidth / 2 - 30
     }()
     
-    let viewLine1 : UIView = {
-        let viewLine1 = UIView()
-        viewLine1.translatesAutoresizingMaskIntoConstraints = false
-        viewLine1.backgroundColor = UIColor.summarColor2
-        return viewLine1
-    }()
-    
-    let viewLine2 : UIView = {
-        let viewLine2 = UIView()
-        viewLine2.translatesAutoresizingMaskIntoConstraints = false
-        viewLine2.backgroundColor = UIColor.grayColor205
-        return viewLine2
-    }()
-    
-    let viewLine3 : UIView = {
-        let viewLine3 = UIView()
-        viewLine3.translatesAutoresizingMaskIntoConstraints = false
-        viewLine3.backgroundColor = UIColor.grayColor205
-        return viewLine3
-    }()
+//    let viewLine1 : UIView = {
+//        let viewLine1 = UIView()
+//        viewLine1.translatesAutoresizingMaskIntoConstraints = false
+//        viewLine1.backgroundColor = UIColor.summarColor2
+//        return viewLine1
+//    }()
+//
+//    let viewLine2 : UIView = {
+//        let viewLine2 = UIView()
+//        viewLine2.translatesAutoresizingMaskIntoConstraints = false
+//        viewLine2.backgroundColor = UIColor.grayColor205
+//        return viewLine2
+//    }()
+//
+//    let viewLine3 : UIView = {
+//        let viewLine3 = UIView()
+//        viewLine3.translatesAutoresizingMaskIntoConstraints = false
+//        viewLine3.backgroundColor = UIColor.grayColor205
+//        return viewLine3
+//    }()
     
     var checkboxAll : UIImageView = {
         let checkboxAll = UIImageView()
@@ -223,9 +224,9 @@ class SignUp1View : UIView {
         //btn click Action
         btnAddTarget()
         
-        addSubview(viewLine1)
-        addSubview(viewLine2)
-        addSubview(viewLine3)
+//        addSubview(viewLine1)
+//        addSubview(viewLine2)
+//        addSubview(viewLine3)
         
         addSubview(checkboxAll)
         addSubview(checkboxAllBtn)
@@ -250,31 +251,31 @@ class SignUp1View : UIView {
         
         
         // 상단 프로세스 바
-        viewLine2.snp.makeConstraints {(make) in
-            make.topMargin.equalTo(self.safeAreaLayoutGuide.snp.top).offset(20)
-            make.centerX.equalTo(self.snp.centerX)
-            make.width.equalTo(viewWidth)
-            make.height.equalTo(2)
-        }
-        
-        viewLine1.snp.makeConstraints {(make) in
-            make.centerY.equalTo(viewLine2.snp.centerY)
-            make.rightMargin.equalTo(viewLine2.snp.left).offset(-20)
-            make.width.equalTo(viewWidth)
-            make.height.equalTo(2)
-        }
-        
-        viewLine3.snp.makeConstraints {(make) in
-            make.centerY.equalTo(viewLine2.snp.centerY)
-            make.leftMargin.equalTo(viewLine2.snp.right).offset(20)
-            make.width.equalTo(viewWidth)
-            make.height.equalTo(2)
-        }
+//        viewLine2.snp.makeConstraints {(make) in
+//            make.topMargin.equalTo(self.safeAreaLayoutGuide.snp.top).offset(20)
+//            make.centerX.equalTo(self.snp.centerX)
+//            make.width.equalTo(viewWidth)
+//            make.height.equalTo(2)
+//        }
+//
+//        viewLine1.snp.makeConstraints {(make) in
+//            make.centerY.equalTo(viewLine2.snp.centerY)
+//            make.rightMargin.equalTo(viewLine2.snp.left).offset(-20)
+//            make.width.equalTo(viewWidth)
+//            make.height.equalTo(2)
+//        }
+//
+//        viewLine3.snp.makeConstraints {(make) in
+//            make.centerY.equalTo(viewLine2.snp.centerY)
+//            make.leftMargin.equalTo(viewLine2.snp.right).offset(20)
+//            make.width.equalTo(viewWidth)
+//            make.height.equalTo(2)
+//        }
         //
         
         // 전체 약관동의
         checkboxAll.snp.makeConstraints{(make) in
-            make.topMargin.equalTo(viewLine1).offset(62)
+            make.topMargin.equalTo(22)
             make.leftMargin.equalTo(25)
             make.width.equalTo(24)
             make.height.equalTo(24)
@@ -477,7 +478,7 @@ class SignUp1View : UIView {
             }
         }
         print("화면 이동")
-        delegate?.pushView(storyboard: "SignUp2", controller: "SignUp2Controller")
+        delegate?.moveSignUp2()
     }
     
     func checkBoxToggle(index : Int){
