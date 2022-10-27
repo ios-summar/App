@@ -1,14 +1,15 @@
 //
-//  SignUp2View.swift
+//  SignUp3View.swift
 //  Summar
 //
-//  Created by mac on 2022/10/25.
+//  Created by mac on 2022/10/27.
 //
 
 import Foundation
+import UIKit
 import SnapKit
 
-class SignUp2View : UIView {
+class SignUp3View : UIView {
     
     let helper = Helper()
     

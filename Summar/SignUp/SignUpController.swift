@@ -1,5 +1,5 @@
 //
-//  SignUp1Controller.swift
+//  SignUpController.swift
 //  Summar
 //
 //  Created by ukBook on 2022/10/23.
@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class SignUp1Controller : UIViewController, Delegate {
+class SignUpController : UIViewController, Delegate {
     func moveSignUp2() {
         progressBar.progress = 0.66666666
         animation(viewAnimation: signUp1View)
