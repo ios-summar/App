@@ -31,6 +31,7 @@ class StartIndexController : UIViewController {
         indexArr.append("소셜로그인")
         indexArr.append("회원가입1")
         indexArr.append("회원가입2")
+        indexArr.append("휴대폰 인증")
         
         tableInit()
     }

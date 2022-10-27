@@ -22,8 +22,6 @@ class SignUp2View : UIView {
         super.init(frame: frame)
         addSubview(testLabel)
 
-        self.backgroundColor = .blue
-        
         testLabel.snp.makeConstraints{(make) in
             make.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
             make.centerY.equalTo(self.safeAreaLayoutGuide.snp.centerY)

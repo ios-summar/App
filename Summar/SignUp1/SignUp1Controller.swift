@@ -40,7 +40,7 @@ class SignUp1Controller : UIViewController, Delegate {
         super.viewDidLoad()
         view.addSubview(signUp1View)
         view.addSubview(progressBar)
-        view.addSubview(signUp2View)
+//        view.addSubview(signUp2View)
         signUp1View.delegate = self
         
         layoutInit()
@@ -70,19 +70,15 @@ class SignUp1Controller : UIViewController, Delegate {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 viewAnimation.removeFromSuperview()
             }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.anima(self.signUp2View)
+
+
+            }
+            
         })
         
-        UIView.animate(withDuration: 0.5, animations: {
-                self.signUp2View.frame.origin.x = -self.signUp2View.frame.width
-            
-            // layout
-            self.signUp2View.snp.makeConstraints{(make) in
-                make.top.equalTo(self.progressBar.snp.bottom).offset(20)
-                make.left.equalTo(0)
-                make.right.equalTo(0)
-                make.bottom.equalTo(0)
-            }
-        })
+        
         
 //        { (_) in
 //            UIView.animate(withDuration: 2, delay: 1, options: [.curveEaseIn], animations: {
@@ -95,6 +91,16 @@ class SignUp1Controller : UIViewController, Delegate {
     func anima(_ view: UIView){
         UIView.transition(with: self.view, duration: 0.25, options: [.transitionCrossDissolve], animations: {
             self.view.addSubview(view)
+            
+            // layout
+        self.signUp2View.snp.makeConstraints{(make) in
+            make.top.equalTo(self.progressBar.snp.bottom).offset(20)
+            make.left.equalTo(0)
+            make.right.equalTo(0)
+            make.bottom.equalTo(0)
+        }
+            
+            self.signUp2View.frame.origin.x = -100
         }, completion: nil)
 
 //        UIView.transition(with: self.view, duration: 0.25, options: [.transitionCrossDissolve], animations: {
