@@ -37,6 +37,7 @@ extension UIColor {
     static var googleColor = UIColor.init(red: 245/255, green: 86/255, blue: 73/255, alpha: 1)
     static var grayColor205 = UIColor.init(red: 205/255, green: 205/255, blue: 205/255, alpha: 1)
     static var grayColor197 = UIColor.init(red: 197/255, green: 197/255, blue: 197/255, alpha: 1)
+    static var textFieldColor = UIColor.init(red: 243/255, green: 246/255, blue: 255/255, alpha: 1)
 }
 
 extension String {

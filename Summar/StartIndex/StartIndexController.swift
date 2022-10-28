@@ -27,7 +27,7 @@ class StartIndexController : UIViewController {
     }
     
     func indexAdd(){
-        indexArr.append("로그인")
+        indexArr.append("시작화면")
         indexArr.append("소셜로그인")
         indexArr.append("회원가입")
         
@@ -65,7 +65,7 @@ extension StartIndexController : UITableViewDelegate, UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            moveScreen(storyboard: "Login", controller: "LoginController")
+            moveScreen(storyboard: "Start", controller: "StartController")
         case 1:
             moveScreen(storyboard: "SocialLogin", controller: "SocialLoginController")
         case 2:

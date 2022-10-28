@@ -10,11 +10,22 @@ import UIKit
 
 class SocialLoginView : UIView {
     
-    let imageView : UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "SignUpImage")
-        return imageView
+//    let imageView : UIImageView = {
+//        let imageView = UIImageView()
+//        imageView.translatesAutoresizingMaskIntoConstraints = false
+//        imageView.image = UIImage(named: "SignUpImage")
+//        return imageView
+//    }()
+    
+    let label1 : UILabel = {
+        let label1 = UILabel()
+        label1.text = "써머와 함께\n나만의 커리어를 위한\n포트폴리오를 만들어 볼까요?"
+        label1.textAlignment = .left
+        label1.textColor = UIColor.summarColor1
+        label1.font = .boldSystemFont(ofSize: 24)
+        label1.numberOfLines = 0
+        label1.sizeToFit()
+        return label1
     }()
     
     let kakaoFrame : UIView = {
@@ -28,7 +39,7 @@ class SocialLoginView : UIView {
     
     let kakaoLabel : UILabel = {
         let kakaoLabel = UILabel()
-        kakaoLabel.text = "카카오톡으로 로그인"
+        kakaoLabel.text = "카카오톡으로 시작하기"
         kakaoLabel.textColor = .black
         kakaoLabel.font = .boldSystemFont(ofSize: 17.5)
         return kakaoLabel
@@ -41,7 +52,7 @@ class SocialLoginView : UIView {
     }()
     
     let appleFrame : UIView = {
-        let appleFrame = UIButton()
+        let appleFrame = UIView()
         appleFrame.translatesAutoresizingMaskIntoConstraints = false
         appleFrame.backgroundColor = UIColor.appleColor
         appleFrame.layer.cornerRadius = 4
@@ -51,7 +62,7 @@ class SocialLoginView : UIView {
     
     let appleLabel : UILabel = {
         let appleLabel = UILabel()
-        appleLabel.text = "애플계정으로 로그인"
+        appleLabel.text = "애플계정으로 시작하기"
         appleLabel.textColor = .white
         appleLabel.font = .boldSystemFont(ofSize: 17.5)
         return appleLabel
@@ -74,7 +85,7 @@ class SocialLoginView : UIView {
     
     let naverLabel : UILabel = {
         let naverLabel = UILabel()
-        naverLabel.text = "네이버로 로그인"
+        naverLabel.text = "네이버로 시작하기"
         naverLabel.textColor = .white
         naverLabel.font = .boldSystemFont(ofSize: 17.5)
         return naverLabel
@@ -97,7 +108,7 @@ class SocialLoginView : UIView {
     
     let googleLabel : UILabel = {
         let googleLabel = UILabel()
-        googleLabel.text = "구글로 로그인"
+        googleLabel.text = "구글로 시작하기"
         googleLabel.textColor = .white
         googleLabel.font = .boldSystemFont(ofSize: 17.5)
         return googleLabel
@@ -109,28 +120,16 @@ class SocialLoginView : UIView {
         return googleImageView
     }()
     
-    let normalFrame : UIView = {
-        let normalFrame = UIButton()
-        normalFrame.translatesAutoresizingMaskIntoConstraints = false
-        normalFrame.layer.borderWidth = 1
-        normalFrame.layer.borderColor = UIColor.black.cgColor//UIColor(red: 205/255, green: 205/255, blue: 205/255, alpha: 1).cgColor
-        normalFrame.layer.cornerRadius = 4
-        normalFrame.tag = 4
-        return normalFrame
-    }()
-    
-    let normalLabel : UILabel = {
-        let normalLabel = UILabel()
-        normalLabel.text = "일반회원 로그인"
-        normalLabel.textColor = .black
-        normalLabel.font = .boldSystemFont(ofSize: 17.5)
-        return normalLabel
-    }()
-    
-    let normalImageView : UIImageView = {
-        let normalImageView = UIImageView()
-        normalImageView.image = UIImage(named: "normal")
-        return normalImageView
+    let notLogin : UIButton = {
+        let notLogin = UIButton()
+        notLogin.setTitleColor(UIColor(red: 79/255, green: 79/255, blue: 79/255, alpha: 1), for: .normal)
+        notLogin.tintColor = UIColor(red: 79/255, green: 79/255, blue: 79/255, alpha: 1)
+        notLogin.setTitle("그냥 둘러볼래요   ", for: .normal)
+        notLogin.titleLabel?.font = .systemFont(ofSize: 15)
+//        notLogin.sizeToFit()
+        notLogin.setImage(UIImage(systemName: "greaterthan"), for: .normal)
+        notLogin.semanticContentAttribute = .forceLeftToRight
+        return notLogin
     }()
     
     override init(frame: CGRect) {
@@ -139,7 +138,7 @@ class SocialLoginView : UIView {
         //Image View click Action
         addUITapGestureRecognizer()
         
-        addSubview(self.imageView)
+        addSubview(label1)
         
         // 카카오 로그인
         addSubview(kakaoFrame)
@@ -161,21 +160,18 @@ class SocialLoginView : UIView {
         googleFrame.addSubview(googleLabel)
         googleFrame.addSubview(googleImageView)
         
-        // 일반 로그인
-        addSubview(normalFrame)
-        normalFrame.addSubview(normalLabel)
-        normalFrame.addSubview(normalImageView)
+        addSubview(notLogin)
         
         
-        imageView.snp.makeConstraints {(make) in
+        label1.snp.makeConstraints {(make) in
             make.topMargin.equalTo(self.safeAreaLayoutGuide.snp.top).offset(40)
             make.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
-            make.width.equalTo(200)
-            make.height.equalTo(166)
+            make.leftMargin.equalTo(50)
+            make.rightMargin.equalTo(-50)
         }
         
         kakaoFrame.snp.makeConstraints{(make) in
-            make.topMargin.equalTo(imageView.snp.bottom).offset(60)
+            make.topMargin.equalTo(label1.snp.bottom).offset(120)
             make.leftMargin.equalTo(25)
             make.rightMargin.equalTo(-25)
             make.height.equalTo(52)
@@ -250,23 +246,9 @@ class SocialLoginView : UIView {
             make.width.equalTo(20)
         }
         
-        normalFrame.snp.makeConstraints{(make) in
+        notLogin.snp.makeConstraints{(make) in
             make.topMargin.equalTo(googleFrame.snp.bottom).offset(20)
-            make.leftMargin.equalTo(25)
             make.rightMargin.equalTo(-25)
-            make.height.equalTo(52)
-        }
-        
-        normalLabel.snp.makeConstraints{(make) in
-            make.centerX.equalTo(normalFrame)
-            make.centerY.equalTo(normalFrame)
-        }
-        
-        normalImageView.snp.makeConstraints{(make) in
-            make.centerY.equalTo(normalFrame)
-            make.leftMargin.equalTo(normalFrame.snp.left).offset(25)
-            make.height.equalTo(20)
-            make.width.equalTo(20)
         }
         
     }
@@ -276,13 +258,11 @@ class SocialLoginView : UIView {
         let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
-        let tapGesture4 = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         
         kakaoFrame.addGestureRecognizer(tapGesture0)
         appleFrame.addGestureRecognizer(tapGesture1)
         naverFrame.addGestureRecognizer(tapGesture2)
         googleFrame.addGestureRecognizer(tapGesture3)
-        normalFrame.addGestureRecognizer(tapGesture4)
     }
     
     /// 로그인 버튼 Action
@@ -298,8 +278,6 @@ class SocialLoginView : UIView {
                 print(naverLabel.text!)
             case 3:
                 print(googleLabel.text!)
-            case 4:
-                print(normalLabel.text!)
             default:
                 print("default")
             }

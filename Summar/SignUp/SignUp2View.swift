@@ -51,8 +51,6 @@ class SignUp2View : UIView, UITextFieldDelegate {
         addSubview(titleLabel)
         addSubview(sendBtn)
         addSubview(cellPhoneTextField)
-        
-//        checkMaxLength(textField: cellPhoneTextField, maxLength: 11)
 
         titleLabel.snp.makeConstraints{(make) in
             make.topMargin.equalTo(56)

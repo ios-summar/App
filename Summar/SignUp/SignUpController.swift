@@ -9,29 +9,19 @@ import Foundation
 import UIKit
 import SnapKit
 
-class SignUpController : UIViewController, Delegate {
+class SignUpController : UIViewController, signUp1Delegate{
     func moveSignUp2() {
-        progressBar.progress = 0.66666666
+        progressBar.progress = 1.0
         animation(viewAnimation: signUp1View)
     }
-    
     
     let progressBar : UIProgressView = {
         let progressBar = UIProgressView()
         progressBar.trackTintColor = .lightGray
         progressBar.progressTintColor = UIColor.summarColor2
-        progressBar.progress = 0.33333333
+        progressBar.progress = 0.5
         return progressBar
     }()
-    
-    func pushView(storyboard: String, controller: String) {
-//        let storyboard = UIStoryboard(name: storyboard, bundle: nil)
-//        let vc = storyboard.instantiateViewController(withIdentifier: controller)
-//        self.navigationController?.pushViewController(vc, animated: true)
-        UIView.animate(withDuration: 0.5, animations: {
-            self.signUp1View.alpha = 0
-        })
-    }
     
     let signUp1View = SignUp1View()
     let signUp2View = SignUp2View()
@@ -72,20 +62,9 @@ class SignUpController : UIViewController, Delegate {
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.anima(self.signUp2View)
-
-
             }
             
         })
-        
-        
-        
-//        { (_) in
-//            UIView.animate(withDuration: 2, delay: 1, options: [.curveEaseIn], animations: {
-//                viewAnimation.frame.origin.x -= viewAnimation.frame.width
-//            })
-//
-//        }
     }
     
     func anima(_ view: UIView){
@@ -102,9 +81,5 @@ class SignUpController : UIViewController, Delegate {
             
             self.signUp2View.frame.origin.x = -100
         }, completion: nil)
-
-//        UIView.transition(with: self.view, duration: 0.25, options: [.transitionCrossDissolve], animations: {
-//          subview.removeFromSuperview()
-//        }, completion: nil)
     }
  }
