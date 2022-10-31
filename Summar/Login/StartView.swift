@@ -59,7 +59,6 @@ class StartView : UIView {
         nextBtn.layer.cornerRadius = 4
         nextBtn.setTitle("시작해볼까요?", for: .normal)
         nextBtn.setTitleColor(UIColor.white, for: .normal)
-        nextBtn.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
         return nextBtn
     }()
     
@@ -82,7 +81,7 @@ class StartView : UIView {
         label2.snp.makeConstraints{(make) in
             make.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
             make.topMargin.equalTo(label1.snp.bottom).offset(30)
-        }
+        } 
         
         imageView.snp.makeConstraints {(make) in
             make.topMargin.equalTo(label2.snp.bottom).offset(70)
@@ -93,8 +92,8 @@ class StartView : UIView {
         
         nextBtn.snp.makeConstraints {(make) in
             make.bottomMargin.equalTo(-135)
-            make.leftMargin.equalTo(25)
-            make.rightMargin.equalTo(-25)
+            make.leftMargin.equalTo(20)
+            make.rightMargin.equalTo(-20)
             make.height.equalTo(52)
         }
         

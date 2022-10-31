@@ -8,27 +8,50 @@
 import Foundation
 import UIKit
 import SnapKit
+import Alamofire
 
 class SignUpController : UIViewController, signUp1Delegate{
-    func moveSignUp2() {
-        progressBar.progress = 1.0
-        animation(viewAnimation: signUp1View)
+    func sendBtnEnable(_ TF: Bool) {
+        if TF {
+            sendBtn.isEnabled = true
+            sendBtn.backgroundColor = UIColor.summarColor2
+        }else {
+            sendBtn.isEnabled = false
+            sendBtn.backgroundColor = UIColor.grayColor205
+        }
     }
     
     let progressBar : UIProgressView = {
         let progressBar = UIProgressView()
+        progressBar.translatesAutoresizingMaskIntoConstraints = false
         progressBar.trackTintColor = .lightGray
         progressBar.progressTintColor = UIColor.summarColor2
         progressBar.progress = 0.5
         return progressBar
     }()
     
+    let sendBtn : UIButton = {
+        let sendBtn = UIButton()
+        sendBtn.translatesAutoresizingMaskIntoConstraints = false
+        sendBtn.setTitle("다음", for: .normal)
+        sendBtn.setTitleColor(.white, for: .normal)
+        sendBtn.titleLabel?.font = .systemFont(ofSize: 15)
+        sendBtn.backgroundColor = UIColor.grayColor205
+        sendBtn.layer.cornerRadius = 4
+        sendBtn.isEnabled = false
+        sendBtn.addTarget(self, action: #selector(btnAction), for: .touchUpInside)
+        return sendBtn
+    }()
+    
     let signUp1View = SignUp1View()
     let signUp2View = SignUp2View()
+    
+    var nickName: String? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(signUp1View)
+        view.addSubview(sendBtn)
         view.addSubview(progressBar)
 //        view.addSubview(signUp2View)
         signUp1View.delegate = self
@@ -44,24 +67,31 @@ class SignUpController : UIViewController, signUp1Delegate{
             make.height.equalTo(5)
         }
         
+        sendBtn.snp.makeConstraints{(make) in
+            make.bottomMargin.equalTo(-20)
+            make.leftMargin.equalTo(20)
+            make.rightMargin.equalTo(-20)
+            make.height.equalTo(52)
+        }
+
+        
         // layout
         signUp1View.snp.makeConstraints{(make) in
             make.top.equalTo(progressBar.snp.bottom).offset(20)
             make.left.equalTo(0)
             make.right.equalTo(0)
-            make.bottom.equalTo(0)
+            make.bottom.equalTo(sendBtn.snp.top).offset(-20)
         }
-        
     }
     
-    private func animation(viewAnimation: UIView) {
+    private func animation(viewAnimation1: UIView, viewAnimation2: UIView) {
         UIView.animate(withDuration: 0.5, animations: {
-            viewAnimation.frame.origin.x = -viewAnimation.frame.width
+            viewAnimation1.frame.origin.x = -viewAnimation1.frame.width
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                viewAnimation.removeFromSuperview()
+                viewAnimation1.removeFromSuperview()
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.anima(self.signUp2View)
+                self.anima(viewAnimation2)
             }
             
         })
@@ -72,14 +102,20 @@ class SignUpController : UIViewController, signUp1Delegate{
             self.view.addSubview(view)
             
             // layout
-        self.signUp2View.snp.makeConstraints{(make) in
-            make.top.equalTo(self.progressBar.snp.bottom).offset(20)
+        view.snp.makeConstraints{(make) in
+            make.top.equalTo(0)
             make.left.equalTo(0)
-            make.right.equalTo(0)
-            make.bottom.equalTo(0)
+            make.right.equalTo(100)
+            make.bottom.equalTo(self.sendBtn.snp.top).offset(-20)
         }
             
-            self.signUp2View.frame.origin.x = -100
+        view.frame.origin.x = -100
+            
         }, completion: nil)
+    }
+    
+    @objc func btnAction(){
+        progressBar.progress = 1.0
+        animation(viewAnimation1: signUp1View, viewAnimation2: signUp2View)
     }
  }
