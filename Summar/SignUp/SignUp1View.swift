@@ -19,6 +19,21 @@ class SignUp1View : UIView, UITextFieldDelegate {
     weak var delegate: signUp1Delegate?
     
     let helper = Helper()
+    let request = ServerRequest()
+    
+    let serverURL = { () -> String in
+        let url = Bundle.main.url(forResource: "Network", withExtension: "plist")
+        let dictionary = NSDictionary(contentsOf: url!)
+
+        // 각 데이터 형에 맞도록 캐스팅 해줍니다.
+        #if DEBUG
+        var LocalURL = dictionary!["DebugURL"] as? String
+        #elseif RELEASE
+        var LocalURL = dictionary!["ReleaseURL"] as? String
+        #endif
+        
+        return LocalURL!
+    }
     
     let titleLabel : UILabel = {
         let titleLabel = UILabel()
@@ -33,7 +48,6 @@ class SignUp1View : UIView, UITextFieldDelegate {
     let nickNameTextField : UITextField = {
         let nickNameTextField = UITextField()
         nickNameTextField.translatesAutoresizingMaskIntoConstraints = false
-        nickNameTextField.keyboardType = .numberPad
         nickNameTextField.layer.borderWidth = 1
         nickNameTextField.layer.borderColor = UIColor.white.cgColor
         nickNameTextField.backgroundColor = UIColor.textFieldColor
@@ -66,6 +80,11 @@ class SignUp1View : UIView, UITextFieldDelegate {
         nickNameEnableLabel.sizeToFit()
         return nickNameEnableLabel
     }()
+    
+    var requestGETBOOL : (Bool) -> (Bool) = {_ in
+        print("dd")
+        return true
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -106,55 +125,71 @@ class SignUp1View : UIView, UITextFieldDelegate {
         }
         
         if textField.text?.count ?? 0 >= 2 {
-            self.delegate?.sendBtnEnable(true)
+            if helper.checkNickNamePolicy(text: textField.text!) { // 한글, 영어, 숫자임
+                // GET방식으로 닉네임 중복체크
+                requestGETBOOL(requestUrl: "/user/nicknameCheck/\(textField.text!)")
+            }else { // 한글, 영어, 숫자가 아님.
+                enableNickname(enable: false, content: "닉네임은 한글, 영어, 숫자만 사용 가능합니다.")
+            }
         }else {
             if textField.text?.count ?? 0 == 0 {
-                disableNickname(content: nil)
+                enableNickname(enable: false, content: nil)
             }else {
-                disableNickname(content: "닉네임을 두글자 이상 입력해주세요.")
+                enableNickname(enable: false, content: "닉네임을 두글자 이상 입력해주세요.")
             }
         }
     }
     
-    func disableNickname(content: String?){
-        self.delegate?.sendBtnEnable(false)
-        
-        if content != nil {
+    func enableNickname(enable: Bool, content: String?){
+        if enable {
+            self.delegate?.sendBtnEnable(true)
             nickNameEnableLabel.text = content
-            nickNameEnableLabel.textColor = .systemRed
-            nickNameTextField.layer.borderColor = UIColor.systemRed.cgColor
+            nickNameEnableLabel.textColor = .systemGreen
+            nickNameTextField.layer.borderColor = UIColor.systemGreen.cgColor
         }else {
-            nickNameEnableLabel.text = ""
-            nickNameEnableLabel.textColor = .white
-            nickNameTextField.layer.borderColor = UIColor.white.cgColor
+            self.delegate?.sendBtnEnable(false)
+            if content != nil {
+                nickNameEnableLabel.text = content
+                nickNameEnableLabel.textColor = .systemRed
+                nickNameTextField.layer.borderColor = UIColor.systemRed.cgColor
+            }else {
+                nickNameEnableLabel.text = ""
+                nickNameEnableLabel.textColor = .white
+                nickNameTextField.layer.borderColor = UIColor.white.cgColor
+            }
         }
     }
     
-    func overlapNickname(nickName: String) {
-        print(nickName)
-        let url = "http://13.209.114.45:8080/api/v1/user/nicknameCheck/\(nickName)"
-        var request = URLRequest(url: URL(string: url)!)
-        request.httpMethod = "GET"
-        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "accept")
-        request.setValue("utf-8", forHTTPHeaderField: "Accept-Charset")
-    
-        request.timeoutInterval = 10
-        
-        AF.request(request).responseJSON { (response) in
-            switch response.result {
-            case .success:
-                print("GET 성공")
-                print(response)
-                do {
-                    
-                } catch {
-                    print("catch :: ", error.localizedDescription)
+    func requestGETBOOL(requestUrl : String!){
+        // URL 객체 정의
+//                let url = URL(string: serverURL()+requestUrl)
+                let urlStr = self.serverURL()+requestUrl
+                let encoded = urlStr.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                let myURL = URL(string: encoded!)
+                // URLRequest 객체를 정의
+                var request = URLRequest(url: myURL!)
+                request.httpMethod = "GET"
+
+                // HTTP 메시지 헤더
+                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                request.addValue("application/json", forHTTPHeaderField: "Accept")
+                let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                    // 서버가 응답이 없거나 통신이 실패
+                    if let e = error {
+                        self.helper.showAlert(vc: self, message: "네트워크 상태를 확인해주세요.")
+                    }
+
+                    var responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+//                    print(responseString!)
+                    DispatchQueue.main.async {
+                        if responseString! == "true"{ // 중복
+                            self.enableNickname(enable: false, content: "중복된 닉네임입니다.")
+                        }else {
+                            self.enableNickname(enable: true, content: "사용 가능한 닉네임입니다.")
+                        }
+                    }
                 }
-            case .failure(let error):
-                print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
-            }
-        }
+                task.resume()
     }
     
     required init?(coder: NSCoder) {

@@ -8,4 +8,5 @@ target 'Summar' do
   # Pods for Summar
    pod 'SnapKit'
    pod 'Alamofire'
+   pod 'IQKeyboardManagerSwift'
 end

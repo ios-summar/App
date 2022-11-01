@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import AuthenticationServices
 
 class SocialLoginView : UIView {
     
@@ -126,9 +127,8 @@ class SocialLoginView : UIView {
         notLogin.tintColor = UIColor(red: 79/255, green: 79/255, blue: 79/255, alpha: 1)
         notLogin.setTitle("그냥 둘러볼래요   ", for: .normal)
         notLogin.titleLabel?.font = .systemFont(ofSize: 15)
-//        notLogin.sizeToFit()
         notLogin.setImage(UIImage(systemName: "greaterthan"), for: .normal)
-        notLogin.semanticContentAttribute = .forceLeftToRight
+        notLogin.semanticContentAttribute = .forceRightToLeft
         return notLogin
     }()
     
@@ -274,6 +274,7 @@ class SocialLoginView : UIView {
                 print(kakaoLabel.text!)
             case 1:
                 print(appleLabel.text!)
+                appleLogin()
             case 2:
                 print(naverLabel.text!)
             case 3:
@@ -286,5 +287,48 @@ class SocialLoginView : UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension SocialLoginView : ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+        @available(iOS 13.0, *)
+        func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+            return self.window!
+        }
+    
+    func appleLogin(){
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+            
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+    }
+    
+    // Apple ID 연동 성공 시
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        switch authorization.credential {
+        // Apple ID
+        case let appleIDCredential as ASAuthorizationAppleIDCredential:
+                
+            // 계정 정보 가져오기
+            let userIdentifier = appleIDCredential.user
+            let fullName = appleIDCredential.fullName
+            let email = appleIDCredential.email
+                
+            print("User ID : \(userIdentifier)")
+            print("User Email : \(email ?? "")")
+            print("User Name : \((fullName?.givenName ?? "") + (fullName?.familyName ?? ""))")
+
+        default:
+            break
+        }
+    }
+        
+    // Apple ID 연동 실패 시
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        // Handle error.
     }
 }

@@ -19,11 +19,11 @@ class Helper : UIView{
         vc?.window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
     
-    private func checkNickNamePolicy(text: String) -> Bool {
+    func checkNickNamePolicy(text: String) -> Bool {
         // String -> Array
         let arr = Array(text)
-        // 정규식 pattern. 한글, 영어, 숫자, 밑줄(_)만 있어야함
-        let pattern = "^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]$"
+        // 정규식 pattern. 한글, 영어, 숫자만 있어야함
+        let pattern = "^[가-힣a-zA-Z0-9]$"
         if let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive) {
             var index = 0
             while index < arr.count { // string 내 각 문자 하나하나 마다 정규식 체크 후 충족하지 못한것은 제거.
@@ -54,6 +54,7 @@ extension UIColor {
     static var appleColor = UIColor.init(red: 52/255, green: 52/255, blue: 52/255, alpha: 1)
     static var naverColor = UIColor.init(red: 45/255, green: 180/255, blue: 0/255, alpha: 1)
     static var googleColor = UIColor.init(red: 245/255, green: 86/255, blue: 73/255, alpha: 1)
+    static var grayColor245 = UIColor.init(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
     static var grayColor205 = UIColor.init(red: 205/255, green: 205/255, blue: 205/255, alpha: 1)
     static var grayColor197 = UIColor.init(red: 197/255, green: 197/255, blue: 197/255, alpha: 1)
     static var textFieldColor = UIColor.init(red: 243/255, green: 246/255, blue: 255/255, alpha: 1)
