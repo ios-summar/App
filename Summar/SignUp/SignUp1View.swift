@@ -56,6 +56,7 @@ class SignUp1View : UIView, UITextFieldDelegate {
         nickNameTextField.addLeftPadding()
         nickNameTextField.font = .systemFont(ofSize: 15)
         nickNameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        nickNameTextField.textColor = .black
         return nickNameTextField
     }()
     

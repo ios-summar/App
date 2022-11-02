@@ -10,4 +10,5 @@ target 'Summar' do
    pod 'Alamofire'
    pod 'IQKeyboardManagerSwift'
    pod 'naveridlogin-sdk-ios'
+   pod 'GoogleSignIn'
 end

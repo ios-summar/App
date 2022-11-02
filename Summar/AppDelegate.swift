@@ -5,6 +5,9 @@
 //  Created by ukBook on 2022/09/08.
 //
 
+// 구글 클라이언트 ID
+// 127377779027-m9qhbusr0f0goqbqlfrh6a0boifnsb9k.apps.googleusercontent.com
+
 import UIKit
 import AuthenticationServices // 애플 로그인 https://huisoo.tistory.com/3
 import IQKeyboardManagerSwift
@@ -15,21 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        IQKeyboardManager.shared.enable = true
-        IQKeyboardManager.shared.enableAutoToolbar = false
-        IQKeyboardManager.shared.shouldResignOnTouchOutside = true
-        
         application.registerForRemoteNotifications()
-        let instance = NaverThirdPartyLoginConnection.getSharedInstance()
-        instance?.isNaverAppOauthEnable = true //네이버앱 로그인 설정
-        instance?.isInAppOauthEnable = true //사파리 로그인 설정
+        IQKeyboardManagerInit()
+        NaverLoginInit()
+        GoogleLoginInit()
         
-        instance?.isOnlyPortraitSupportedInIphone() //인증 화면을 iPhone의 세로 모드에서만 사용하기
-
-        instance?.serviceUrlScheme = "summar" //URL Scheme
-        instance?.consumerKey = "eEUszVbCE9CSk90JQ5ip" //클라이언트 아이디
-        instance?.consumerSecret = "Yn878F60Qu" //시크릿 아이디
-        instance?.appName = "써머" //앱이름
         
 //        let appleIDProvider = ASAuthorizationAppleIDProvider()
 //            appleIDProvider.getCredentialState(forUserID: /* 로그인에 사용한 User Identifier */) { (credentialState, error) in
@@ -67,6 +60,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         NaverThirdPartyLoginConnection.getSharedInstance()?.application(app, open: url, options: options)
         return true
+    }
+    
+    func IQKeyboardManagerInit() {
+        IQKeyboardManager.shared.enable = true
+        IQKeyboardManager.shared.enableAutoToolbar = false
+        IQKeyboardManager.shared.shouldResignOnTouchOutside = true
+    }
+    
+    func NaverLoginInit() {
+        let instance = NaverThirdPartyLoginConnection.getSharedInstance()
+        instance?.isNaverAppOauthEnable = true //네이버앱 로그인 설정
+        instance?.isInAppOauthEnable = true //사파리 로그인 설정
+        
+        instance?.isOnlyPortraitSupportedInIphone() //인증 화면을 iPhone의 세로 모드에서만 사용하기
+
+        instance?.serviceUrlScheme = "summar" //URL Scheme
+        instance?.consumerKey = "eEUszVbCE9CSk90JQ5ip" //클라이언트 아이디
+        instance?.consumerSecret = "Yn878F60Qu" //시크릿 아이디
+        instance?.appName = "써머" //앱이름
+    }
+    
+    func GoogleLoginInit() {
+        // OAuth 2.0 클라이언트 ID
+//        GIDSignIn.sharedInstance().clientID = "127377779027-m9qhbusr0f0goqbqlfrh6a0boifnsb9k.apps.googleusercontent.com.apps.googleusercontent.com"
     }
 }
 

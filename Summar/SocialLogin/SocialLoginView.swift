@@ -159,6 +159,7 @@ class SocialLoginView : UIView{
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .white
         
         naverLoginInstance?.requestDeleteToken()
         
@@ -450,7 +451,10 @@ extension SocialLoginView : ASAuthorizationControllerDelegate, ASAuthorizationCo
             print(object["id"] ?? "")
             print(object["nickname"] ?? nil)
             print(object["profile_image"] ?? nil)
-              
+            
+            let userIdentifier = object["id"] ?? ""
+            
+            self.requestGETCheckId(requestUrl: "/user/userIdCheck/\(userIdentifier)")
             }
       }
     

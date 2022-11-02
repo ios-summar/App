@@ -56,6 +56,8 @@ class SignUpController : UIViewController, signUp1Delegate{
         view.addSubview(sendBtn)
         view.addSubview(progressBar)
 //        view.addSubview(signUp2View)
+        self.view.backgroundColor = .white
+        
         signUp1View.delegate = self
 
         helper.showAlertAction(vc: self, message: "회원정보가 없어\n회원가입 화면으로 이동합니다.")
