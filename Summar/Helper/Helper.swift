@@ -19,6 +19,31 @@ class Helper : UIView{
         vc?.window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
     
+    func showAlertAction(vc: UIViewController?, preferredStyle: UIAlertController.Style = .alert, title: String = "", message: String = "", completeTitle: String = "확인", _ completeHandler:(() -> Void)? = nil){
+                
+                guard let currentVc = vc else {
+                    completeHandler?()
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
+                    
+                    let completeAction = UIAlertAction(title: completeTitle, style: .default) { action in
+                        completeHandler?()
+                        if message == "네트워크 연결 상태를 확인해주세요."{
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                exit(0)
+                            }
+                        }
+                    }
+                    
+                    alert.addAction(completeAction)
+                    
+                    currentVc.present(alert, animated: true, completion: nil)
+                }
+    }
+    
     func checkNickNamePolicy(text: String) -> Bool {
         // String -> Array
         let arr = Array(text)

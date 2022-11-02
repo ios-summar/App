@@ -9,4 +9,5 @@ target 'Summar' do
    pod 'SnapKit'
    pod 'Alamofire'
    pod 'IQKeyboardManagerSwift'
+   pod 'naveridlogin-sdk-ios'
 end

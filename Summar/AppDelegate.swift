@@ -8,6 +8,7 @@
 import UIKit
 import AuthenticationServices // 애플 로그인 https://huisoo.tistory.com/3
 import IQKeyboardManagerSwift
+import NaverThirdPartyLogin
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +18,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.enableAutoToolbar = false
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
+        
+        application.registerForRemoteNotifications()
+        let instance = NaverThirdPartyLoginConnection.getSharedInstance()
+        instance?.isNaverAppOauthEnable = true //네이버앱 로그인 설정
+        instance?.isInAppOauthEnable = true //사파리 로그인 설정
+        
+        instance?.isOnlyPortraitSupportedInIphone() //인증 화면을 iPhone의 세로 모드에서만 사용하기
+
+        instance?.serviceUrlScheme = "summar" //URL Scheme
+        instance?.consumerKey = "eEUszVbCE9CSk90JQ5ip" //클라이언트 아이디
+        instance?.consumerSecret = "Yn878F60Qu" //시크릿 아이디
+        instance?.appName = "써머" //앱이름
         
 //        let appleIDProvider = ASAuthorizationAppleIDProvider()
 //            appleIDProvider.getCredentialState(forUserID: /* 로그인에 사용한 User Identifier */) { (credentialState, error) in
@@ -50,7 +63,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-
-
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        NaverThirdPartyLoginConnection.getSharedInstance()?.application(app, open: url, options: options)
+        return true
+    }
 }
 

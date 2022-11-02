@@ -81,10 +81,6 @@ class SignUp1View : UIView, UITextFieldDelegate {
         return nickNameEnableLabel
     }()
     
-    var requestGETBOOL : (Bool) -> (Bool) = {_ in
-        print("dd")
-        return true
-    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)

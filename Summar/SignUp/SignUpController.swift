@@ -8,9 +8,11 @@
 import Foundation
 import UIKit
 import SnapKit
-import Alamofire
 
 class SignUpController : UIViewController, signUp1Delegate{
+    
+    let helper : Helper = Helper()
+    
     func sendBtnEnable(_ TF: Bool) {
         if TF {
             sendBtn.isEnabled = true
@@ -55,6 +57,8 @@ class SignUpController : UIViewController, signUp1Delegate{
         view.addSubview(progressBar)
 //        view.addSubview(signUp2View)
         signUp1View.delegate = self
+
+        helper.showAlertAction(vc: self, message: "회원정보가 없어\n회원가입 화면으로 이동합니다.")
         
         layoutInit()
     }

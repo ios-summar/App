@@ -8,8 +8,33 @@
 import Foundation
 import UIKit
 import AuthenticationServices
+import NaverThirdPartyLogin
+import Alamofire
 
-class SocialLoginView : UIView {
+protocol SocialLoginDelegate : class {
+    func moveScreen(storyboard: String, controller: String)
+}
+
+class SocialLoginView : UIView{
+    
+    weak var delegate : SocialLoginDelegate?
+    
+    let helper : Helper = Helper()
+    let naverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
+    
+    let serverURL = { () -> String in
+        let url = Bundle.main.url(forResource: "Network", withExtension: "plist")
+        let dictionary = NSDictionary(contentsOf: url!)
+
+        // 각 데이터 형에 맞도록 캐스팅 해줍니다.
+        #if DEBUG
+        var LocalURL = dictionary!["DebugURL"] as? String
+        #elseif RELEASE
+        var LocalURL = dictionary!["ReleaseURL"] as? String
+        #endif
+        
+        return LocalURL!
+    }
     
 //    let imageView : UIImageView = {
 //        let imageView = UIImageView()
@@ -134,6 +159,8 @@ class SocialLoginView : UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        naverLoginInstance?.requestDeleteToken()
         
         //Image View click Action
         addUITapGestureRecognizer()
@@ -271,12 +298,14 @@ class SocialLoginView : UIView {
         if let viewTag = sender.view?.tag {
             switch viewTag {
             case 0:
-                print(kakaoLabel.text!)
+                print(kakaoLabel.text!) // https://sujinnaljin.medium.com/ios-카카오톡-소셜-로그인-58a525e6f219
             case 1:
                 print(appleLabel.text!)
                 appleLogin()
             case 2:
                 print(naverLabel.text!)
+                naverLoginInstance?.delegate = self
+                naverLoginInstance?.requestThirdPartyLogin()
             case 3:
                 print(googleLabel.text!)
             default:
@@ -290,11 +319,11 @@ class SocialLoginView : UIView {
     }
 }
 
-extension SocialLoginView : ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
-        @available(iOS 13.0, *)
-        func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-            return self.window!
-        }
+extension SocialLoginView : ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding, NaverThirdPartyLoginConnectionDelegate  {
+    @available(iOS 13.0, *)
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.window!
+    }
     
     func appleLogin(){
         let appleIDProvider = ASAuthorizationAppleIDProvider()
@@ -321,7 +350,11 @@ extension SocialLoginView : ASAuthorizationControllerDelegate, ASAuthorizationCo
             print("User ID : \(userIdentifier)")
             print("User Email : \(email ?? "")")
             print("User Name : \((fullName?.givenName ?? "") + (fullName?.familyName ?? ""))")
-
+            //    User ID : 001370.85ccb33de51e42159f1d114615cc7de5.0717
+            //    User Email : wetaxmobile@gmail.com
+            //    User Name : SmartWetax
+            
+            requestGETCheckId(requestUrl: "/user/userIdCheck/\(userIdentifier)")
         default:
             break
         }
@@ -331,4 +364,94 @@ extension SocialLoginView : ASAuthorizationControllerDelegate, ASAuthorizationCo
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         // Handle error.
     }
+    
+    func requestGETCheckId(requestUrl : String!){
+        // URL 객체 정의
+//                let url = URL(string: serverURL()+requestUrl)
+                let urlStr = self.serverURL()+requestUrl
+                print(urlStr)
+                let encoded = urlStr.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                let myURL = URL(string: encoded!)
+                // URLRequest 객체를 정의
+                var request = URLRequest(url: myURL!)
+                request.httpMethod = "GET"
+
+                // HTTP 메시지 헤더
+                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                request.addValue("application/json", forHTTPHeaderField: "Accept")
+                let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                    // 서버가 응답이 없거나 통신이 실패
+                    if let e = error {
+                        self.helper.showAlert(vc: self, message: "네트워크 상태를 확인해주세요.\n\(e)")
+                    }
+
+                    var responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+                    print(responseString!)
+                    DispatchQueue.main.async {
+                        if responseString! == "true"{ // 회원가입 이력 있음
+                            self.delegate?.moveScreen(storyboard: "Home", controller: "HomeController")
+                        }else { // 회원가입 이력 없음
+                            self.delegate?.moveScreen(storyboard: "SignUp", controller: "SignUpController")
+                        }
+                    }
+                }
+                task.resume()
+    }
+    
+    
+    func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
+        print(#function)
+        getNaverInfo()
+    }
+    
+    func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
+        print(#function)
+    }
+    
+    func oauth20ConnectionDidFinishDeleteToken() {
+        print(#function)
+        naverLoginInstance?.requestDeleteToken()
+    }
+    
+    func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
+        print("[Error] :", error.localizedDescription)
+    }
+    
+    private func getNaverInfo() {
+        guard let isValidAccessToken = naverLoginInstance?.isValidAccessTokenExpireTimeNow() else { return }
+        
+        if !isValidAccessToken {
+          return
+        }
+        
+        guard let tokenType = naverLoginInstance?.tokenType else { return }
+        guard let accessToken = naverLoginInstance?.accessToken else { return }
+        
+        let urlStr = "https://openapi.naver.com/v1/nid/me"
+        let url = URL(string: urlStr)!
+        
+        let authorization = "\(tokenType) \(accessToken)"
+        
+        let req = AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": authorization])
+        
+        req.responseJSON { response in
+            print(response.value!)
+              guard let result = response.value as? [String: Any] else { return }
+              guard let object = result["response"] as? [String: Any] else { return }
+            
+            print("result =>", result)
+            
+            print("result1 =>", result["message"])
+            print("result2 =>", result["resultcode"])
+            
+            print("object =>", object)
+            
+            print(object["email"] ?? "")
+            print(object["id"] ?? "")
+            print(object["nickname"] ?? nil)
+            print(object["profile_image"] ?? nil)
+              
+            }
+      }
+    
 }

@@ -1,24 +1,28 @@
 PODS:
   - Alamofire (5.6.1)
   - IQKeyboardManagerSwift (6.5.10)
+  - naveridlogin-sdk-ios (4.1.5)
   - SnapKit (5.6.0)
 
 DEPENDENCIES:
   - Alamofire
   - IQKeyboardManagerSwift
+  - naveridlogin-sdk-ios
   - SnapKit
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - IQKeyboardManagerSwift
+    - naveridlogin-sdk-ios
     - SnapKit
 
 SPEC CHECKSUMS:
   Alamofire: 87bd8c952f9a4454320fce00d9cc3de57bcadaf5
   IQKeyboardManagerSwift: 52962c76ab33532f15ad9f3ff4e5715eda5335bb
+  naveridlogin-sdk-ios: 4351fe7162cd6b8b6dbb37bd7cc205304fa1d889
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
 
-PODFILE CHECKSUM: 430ffb9de26de135aec8f728e9bfa0025ccb0268
+PODFILE CHECKSUM: 70bca364488f20588325649409c3b74677940bb5
 
 COCOAPODS: 1.10.2
