@@ -35,6 +35,10 @@ class SignUp1View : UIView, UITextFieldDelegate {
         return LocalURL!
     }
     
+    var accessoryView: UIView = {
+        return UIView(frame: CGRect(x: 0.0, y: 0.0, width: UIScreen.main.bounds.width, height: 72.0))
+    }()
+    
     let titleLabel : UILabel = {
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -47,6 +51,7 @@ class SignUp1View : UIView, UITextFieldDelegate {
     
     let nickNameTextField : UITextField = {
         let nickNameTextField = UITextField()
+//        nickNameTextField.inputAccessoryView = self.accessoryView
         nickNameTextField.translatesAutoresizingMaskIntoConstraints = false
         nickNameTextField.layer.borderWidth = 1
         nickNameTextField.layer.borderColor = UIColor.white.cgColor

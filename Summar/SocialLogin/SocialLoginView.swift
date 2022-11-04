@@ -45,8 +45,8 @@ class SocialLoginView : UIView{
     
     let label1 : UILabel = {
         let label1 = UILabel()
-        label1.text = "써머와 함께\n나만의 커리어를 위한\n포트폴리오를 만들어 볼까요?"
-        label1.textAlignment = .left
+        label1.text = "나만의 커리어를 위한\n써머리 만들기"
+        label1.textAlignment = .center
         label1.textColor = UIColor.summarColor1
         label1.font = .boldSystemFont(ofSize: 24)
         label1.numberOfLines = 0
@@ -192,14 +192,14 @@ class SocialLoginView : UIView{
         
         
         label1.snp.makeConstraints {(make) in
-            make.topMargin.equalTo(self.safeAreaLayoutGuide.snp.top).offset(40)
+            make.topMargin.equalTo(self.safeAreaLayoutGuide.snp.top).offset(60)
             make.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
             make.leftMargin.equalTo(50)
             make.rightMargin.equalTo(-50)
         }
         
         kakaoFrame.snp.makeConstraints{(make) in
-            make.topMargin.equalTo(label1.snp.bottom).offset(120)
+            make.bottomMargin.equalTo(appleFrame.snp.top).offset(-20)
             make.leftMargin.equalTo(25)
             make.rightMargin.equalTo(-25)
             make.height.equalTo(52)
@@ -218,7 +218,7 @@ class SocialLoginView : UIView{
         }
         
         appleFrame.snp.makeConstraints{(make) in
-            make.topMargin.equalTo(kakaoFrame.snp.bottom).offset(20)
+            make.bottomMargin.equalTo(naverFrame.snp.top).offset(-20)
             make.leftMargin.equalTo(25)
             make.rightMargin.equalTo(-25)
             make.height.equalTo(52)
@@ -237,7 +237,7 @@ class SocialLoginView : UIView{
         }
         
         naverFrame.snp.makeConstraints{(make) in
-            make.topMargin.equalTo(appleFrame.snp.bottom).offset(20)
+            make.bottomMargin.equalTo(googleFrame.snp.top).offset(-20)
             make.leftMargin.equalTo(25)
             make.rightMargin.equalTo(-25)
             make.height.equalTo(52)
@@ -256,7 +256,7 @@ class SocialLoginView : UIView{
         }
         
         googleFrame.snp.makeConstraints{(make) in
-            make.topMargin.equalTo(naverFrame.snp.bottom).offset(20)
+            make.bottomMargin.equalTo(notLogin.snp.top).offset(-40)
             make.leftMargin.equalTo(25)
             make.rightMargin.equalTo(-25)
             make.height.equalTo(52)
@@ -275,8 +275,8 @@ class SocialLoginView : UIView{
         }
         
         notLogin.snp.makeConstraints{(make) in
-            make.topMargin.equalTo(googleFrame.snp.bottom).offset(20)
             make.rightMargin.equalTo(-25)
+            make.bottomMargin.equalTo(-50)
         }
         
     }

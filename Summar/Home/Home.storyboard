@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,18 +17,53 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HOME" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vey-Od-s2R">
-                                <rect key="frame" x="182.5" y="437.5" width="49" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w07-sp-slb">
+                                <rect key="frame" x="141.5" y="430.5" width="131" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="카카오 로그아웃"/>
+                                <connections>
+                                    <action selector="btnAction:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="uRH-Zn-YZd"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="06F-pg-RTo">
+                                <rect key="frame" x="150" y="475.5" width="114" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="애플계정 로그아웃"/>
+                                <connections>
+                                    <action selector="btnAction:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="zs0-YG-yBb"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GYJ-dB-KLp">
+                                <rect key="frame" x="150" y="520.5" width="114" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="네이버로 로그아웃"/>
+                                <connections>
+                                    <action selector="btnAction:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="M6o-DI-llV"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qq8-bV-ryD">
+                                <rect key="frame" x="150" y="565.5" width="114" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="구글 로그아웃"/>
+                                <connections>
+                                    <action selector="btnAction:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="yHc-KB-Cle"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Vey-Od-s2R" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="8hZ-zK-hbu"/>
-                            <constraint firstItem="Vey-Od-s2R" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="c4I-T0-izv"/>
+                            <constraint firstItem="GYJ-dB-KLp" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="150" id="5QQ-vb-NUX"/>
+                            <constraint firstItem="Qq8-bV-ryD" firstAttribute="top" secondItem="GYJ-dB-KLp" secondAttribute="bottom" constant="10" id="7ye-GY-4kt"/>
+                            <constraint firstItem="06F-pg-RTo" firstAttribute="top" secondItem="w07-sp-slb" secondAttribute="bottom" constant="10" id="JQM-VO-OX1"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="GYJ-dB-KLp" secondAttribute="trailing" constant="150" id="ToY-2v-KZd"/>
+                            <constraint firstItem="GYJ-dB-KLp" firstAttribute="top" secondItem="06F-pg-RTo" secondAttribute="bottom" constant="10" id="TrC-Ni-Vxt"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="06F-pg-RTo" secondAttribute="trailing" constant="150" id="Y7A-Xp-Zpj"/>
+                            <constraint firstItem="06F-pg-RTo" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="150" id="aee-GZ-VK4"/>
+                            <constraint firstItem="w07-sp-slb" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="iOK-7w-BOJ"/>
+                            <constraint firstItem="w07-sp-slb" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="sGc-r0-h6R"/>
+                            <constraint firstItem="Qq8-bV-ryD" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="150" id="t1i-75-HSR"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="Qq8-bV-ryD" secondAttribute="trailing" constant="150" id="xnf-ep-H9a"/>
                         </constraints>
                     </view>
                 </viewController>
