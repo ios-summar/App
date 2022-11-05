@@ -12,6 +12,7 @@ import Alamofire
 
 protocol signUp1Delegate : class {
     func sendBtnEnable(_ TF: Bool)
+    func nextBtn()
 }
 
 class SignUp1View : UIView, UITextFieldDelegate {
@@ -42,16 +43,17 @@ class SignUp1View : UIView, UITextFieldDelegate {
     let titleLabel : UILabel = {
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = "써머에서 이용할 닉네임을 정해주세요"
+        titleLabel.numberOfLines = 2
+        titleLabel.text = "써머에서 이용할\n닉네임을 정해주세요"
         titleLabel.textAlignment = .left
         titleLabel.textColor = UIColor.summarColor1
-        titleLabel.font = .boldSystemFont(ofSize: 20)
+        titleLabel.font = .boldSystemFont(ofSize: 28)
+        titleLabel.sizeToFit()
         return titleLabel
     }()
     
     let nickNameTextField : UITextField = {
         let nickNameTextField = UITextField()
-//        nickNameTextField.inputAccessoryView = self.accessoryView
         nickNameTextField.translatesAutoresizingMaskIntoConstraints = false
         nickNameTextField.layer.borderWidth = 1
         nickNameTextField.layer.borderColor = UIColor.white.cgColor
@@ -87,6 +89,17 @@ class SignUp1View : UIView, UITextFieldDelegate {
         return nickNameEnableLabel
     }()
     
+    let keyboardUpBtn : UIButton = {
+        let keyboardUpBtn = UIButton()
+        keyboardUpBtn.translatesAutoresizingMaskIntoConstraints = false
+        keyboardUpBtn.setTitle("다음", for: .normal)
+        keyboardUpBtn.setTitleColor(.white, for: .normal)
+        keyboardUpBtn.titleLabel?.font = .systemFont(ofSize: 15)
+        keyboardUpBtn.backgroundColor = UIColor.grayColor205
+        keyboardUpBtn.layer.cornerRadius = 4
+        keyboardUpBtn.addTarget(self, action: #selector(nextAction), for: .touchUpInside)
+        return keyboardUpBtn
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -94,18 +107,30 @@ class SignUp1View : UIView, UITextFieldDelegate {
         addSubview(nickNameTextField)
         addSubview(nickNameEnableLabel)
         
+        // 키보드 팝업시 위 버튼 추가
+        nickNameTextField.inputAccessoryView = accessoryView
+        accessoryView.addSubview(keyboardUpBtn)
+        
+        helper.lineSpacing(titleLabel, 10) // lineSpacing
+        
+        keyboardUpBtn.snp.makeConstraints{(make) in
+            make.bottomMargin.equalTo(-20)
+            make.leftMargin.equalTo(0)
+            make.rightMargin.equalTo(0)
+            make.height.equalTo(52)
+        }
 
         titleLabel.snp.makeConstraints{(make) in
             make.topMargin.equalTo(30)
             make.leftMargin.equalTo(25)
-            make.height.equalTo(24)
+//            make.height.equalTo(24)
         }
         
         nickNameTextField.snp.makeConstraints{(make) in
             make.topMargin.equalTo(titleLabel.snp.bottom).offset(40)
             make.leftMargin.equalTo(25)
             make.rightMargin.equalTo(-25)
-            make.height.equalTo(52)
+            make.height.equalTo(60)
         }
         
         nickNameEnableLabel.snp.makeConstraints{(make) in
@@ -119,6 +144,10 @@ class SignUp1View : UIView, UITextFieldDelegate {
 //            make.rightMargin.equalTo(-25)
 //            make.height.equalTo(52)
 //        }
+    }
+    
+    @objc func nextAction(){
+        self.delegate?.nextBtn()
     }
     
     @objc func textFieldDidChange(_ textField: UITextField){
@@ -145,11 +174,13 @@ class SignUp1View : UIView, UITextFieldDelegate {
     func enableNickname(enable: Bool, content: String?){
         if enable {
             self.delegate?.sendBtnEnable(true)
+            self.sendBtnEnable(true)
             nickNameEnableLabel.text = content
             nickNameEnableLabel.textColor = .systemGreen
             nickNameTextField.layer.borderColor = UIColor.systemGreen.cgColor
         }else {
             self.delegate?.sendBtnEnable(false)
+            self.sendBtnEnable(false)
             if content != nil {
                 nickNameEnableLabel.text = content
                 nickNameEnableLabel.textColor = .systemRed
@@ -192,6 +223,16 @@ class SignUp1View : UIView, UITextFieldDelegate {
                     }
                 }
                 task.resume()
+    }
+    
+    func sendBtnEnable(_ TF: Bool) {
+        if TF {
+            keyboardUpBtn.isEnabled = true
+            keyboardUpBtn.backgroundColor = UIColor.summarColor2
+        }else {
+            keyboardUpBtn.isEnabled = false
+            keyboardUpBtn.backgroundColor = UIColor.grayColor205
+        }
     }
     
     required init?(coder: NSCoder) {

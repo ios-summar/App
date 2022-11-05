@@ -23,6 +23,11 @@ class SignUpController : UIViewController, signUp1Delegate{
         }
     }
     
+    func nextBtn() {
+        progressBar.progress = 1.0
+        animation(viewAnimation1: signUp1View, viewAnimation2: signUp2View)
+    }
+    
     let progressBar : UIProgressView = {
         let progressBar = UIProgressView()
         progressBar.translatesAutoresizingMaskIntoConstraints = false
