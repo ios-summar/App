@@ -62,6 +62,14 @@ class Helper : UIView{
         }
         return true
     }
+    
+    func lineSpacing(_ uiLabel: UILabel, _ lineCF: CGFloat){
+        let attrString = NSMutableAttributedString(string: uiLabel.text!)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = lineCF
+        attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
+        uiLabel.attributedText = attrString
+    }
 }
 
 extension UITextField {

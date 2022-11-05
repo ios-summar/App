@@ -150,10 +150,11 @@ class SocialLoginView : UIView{
         let notLogin = UIButton()
         notLogin.setTitleColor(UIColor(red: 79/255, green: 79/255, blue: 79/255, alpha: 1), for: .normal)
         notLogin.tintColor = UIColor(red: 79/255, green: 79/255, blue: 79/255, alpha: 1)
-        notLogin.setTitle("그냥 둘러볼래요   ", for: .normal)
+        notLogin.setTitle("그냥 둘러볼래요  ", for: .normal)
         notLogin.titleLabel?.font = .systemFont(ofSize: 15)
         notLogin.setImage(UIImage(systemName: "greaterthan"), for: .normal)
         notLogin.semanticContentAttribute = .forceRightToLeft
+        notLogin.addTarget(self, action: #selector(goHome), for: .touchUpInside)
         return notLogin
     }()
     
@@ -313,6 +314,10 @@ class SocialLoginView : UIView{
                 print("default")
             }
         }
+    }
+    
+    @objc func goHome(){
+        self.delegate?.moveScreen(storyboard: "Home", controller: "HomeController")
     }
     
     required init?(coder: NSCoder) {
