@@ -65,19 +65,17 @@ extension StartIndexController : UITableViewDelegate, UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            moveScreen(storyboard: "Start", controller: "StartController")
+            moveScreen(StartController())
         case 1:
-            moveScreen(storyboard: "SocialLogin", controller: "SocialLoginController")
+            moveScreen(SocialLoginController())
         case 2:
-            moveScreen(storyboard: "SignUp", controller: "SignUpController")
+            moveScreen(SignUpController())
         default:
             print("default")
         }
     }
     
-    func moveScreen(storyboard: String, controller: String) {
-        let storyboard = UIStoryboard(name: storyboard, bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: controller)
-        self.navigationController?.pushViewController(vc, animated: true)
+    func moveScreen(_ viewC: UIViewController) {
+        self.navigationController?.pushViewController(viewC, animated: true)
     }
 }

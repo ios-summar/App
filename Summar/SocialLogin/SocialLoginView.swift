@@ -12,7 +12,7 @@ import NaverThirdPartyLogin
 import Alamofire
 
 protocol SocialLoginDelegate : class {
-    func moveScreen(storyboard: String, controller: String)
+    func moveScreen(_ viewC: UIViewController)
 }
 
 class SocialLoginView : UIView{
@@ -317,7 +317,7 @@ class SocialLoginView : UIView{
     }
     
     @objc func goHome(){
-        self.delegate?.moveScreen(storyboard: "Home", controller: "HomeController")
+        self.delegate?.moveScreen(HomeController())
     }
     
     required init?(coder: NSCoder) {
@@ -395,9 +395,9 @@ extension SocialLoginView : ASAuthorizationControllerDelegate, ASAuthorizationCo
                     print(responseString!)
                     DispatchQueue.main.async {
                         if responseString! == "true"{ // 회원가입 이력 있음
-                            self.delegate?.moveScreen(storyboard: "Home", controller: "HomeController")
+                            self.delegate?.moveScreen(HomeController())
                         }else { // 회원가입 이력 없음
-                            self.delegate?.moveScreen(storyboard: "SignUp", controller: "SignUpController")
+                            self.delegate?.moveScreen(SignUpController())
                         }
                     }
                 }

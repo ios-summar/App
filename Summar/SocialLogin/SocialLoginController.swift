@@ -28,9 +28,7 @@ class SocialLoginController : UIViewController, SocialLoginDelegate {
         }
     }
     
-    func moveScreen(storyboard: String, controller: String) {
-        let storyboard = UIStoryboard(name: storyboard, bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: controller)
-        self.navigationController?.pushViewController(vc, animated: true)
+    func moveScreen(_ viewC: UIViewController) {
+        self.navigationController?.pushViewController(viewC, animated: true)
     }
 }
