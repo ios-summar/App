@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		040D79FA2918FA3F0018B6A0 /* KakaoLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D79F92918FA3F0018B6A0 /* KakaoLoginManager.swift */; };
+		040D79FC2918FB2A0018B6A0 /* AppleLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D79FB2918FB2A0018B6A0 /* AppleLoginManager.swift */; };
+		040D79FE2918FB4B0018B6A0 /* NaverLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D79FD2918FB4B0018B6A0 /* NaverLoginManager.swift */; };
+		040D7A002918FB530018B6A0 /* GoogleLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D79FF2918FB530018B6A0 /* GoogleLoginManager.swift */; };
 		04852F9028FE72AF00A3EED9 /* SocialLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04852F8F28FE72AF00A3EED9 /* SocialLoginController.swift */; };
 		04852F9228FE72E400A3EED9 /* SocialLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04852F9128FE72E400A3EED9 /* SocialLoginView.swift */; };
 		04904BDC290A5D96004ED5ED /* SignUp3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04904BDB290A5D96004ED5ED /* SignUp3View.swift */; };
@@ -30,6 +34,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		040D79F92918FA3F0018B6A0 /* KakaoLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginManager.swift; sourceTree = "<group>"; };
+		040D79FB2918FB2A0018B6A0 /* AppleLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginManager.swift; sourceTree = "<group>"; };
+		040D79FD2918FB4B0018B6A0 /* NaverLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginManager.swift; sourceTree = "<group>"; };
+		040D79FF2918FB530018B6A0 /* GoogleLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleLoginManager.swift; sourceTree = "<group>"; };
 		043D982A28EFB673008C862F /* Summar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Summar.entitlements; sourceTree = "<group>"; };
 		04852F8F28FE72AF00A3EED9 /* SocialLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginController.swift; sourceTree = "<group>"; };
 		04852F9128FE72E400A3EED9 /* SocialLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginView.swift; sourceTree = "<group>"; };
@@ -74,6 +82,10 @@
 			children = (
 				04852F8F28FE72AF00A3EED9 /* SocialLoginController.swift */,
 				04852F9128FE72E400A3EED9 /* SocialLoginView.swift */,
+				040D79F92918FA3F0018B6A0 /* KakaoLoginManager.swift */,
+				040D79FB2918FB2A0018B6A0 /* AppleLoginManager.swift */,
+				040D79FD2918FB4B0018B6A0 /* NaverLoginManager.swift */,
+				040D79FF2918FB530018B6A0 /* GoogleLoginManager.swift */,
 			);
 			path = SocialLogin;
 			sourceTree = "<group>";
@@ -297,11 +309,15 @@
 			files = (
 				A2A769A228FBF742003EE3CD /* StartController.swift in Sources */,
 				A28EC0DA28CA1BC000F5BF98 /* AppDelegate.swift in Sources */,
+				040D79FA2918FA3F0018B6A0 /* KakaoLoginManager.swift in Sources */,
 				04FB196929122B5C00E9EE54 /* HomeController.swift in Sources */,
+				040D7A002918FB530018B6A0 /* GoogleLoginManager.swift in Sources */,
 				04FB196D29122B7B00E9EE54 /* HomeViewModel.swift in Sources */,
+				040D79FE2918FB4B0018B6A0 /* NaverLoginManager.swift in Sources */,
 				04FB196B29122B6700E9EE54 /* HomeView.swift in Sources */,
 				A2CAEDE129050A630053D6C9 /* SignUpController.swift in Sources */,
 				A2ADEBA728D081050018A358 /* Helper.swift in Sources */,
+				040D79FC2918FB2A0018B6A0 /* AppleLoginManager.swift in Sources */,
 				A2A769A428FBF74F003EE3CD /* StartView.swift in Sources */,
 				A28EC0DC28CA1BC000F5BF98 /* SceneDelegate.swift in Sources */,
 				04CCEAFD2910A61D009DBE05 /* ServerRequest.swift in Sources */,
