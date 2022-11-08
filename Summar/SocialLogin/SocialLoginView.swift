@@ -20,6 +20,7 @@ class SocialLoginView : UIView{
     weak var delegate : SocialLoginDelegate?
     
     let helper : Helper = Helper()
+    let appleLoginManager : AppleLoginManager = AppleLoginManager()
     let naverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
     
     let serverURL = { () -> String in
@@ -303,7 +304,7 @@ class SocialLoginView : UIView{
                 print(kakaoLabel.text!) // https://sujinnaljin.medium.com/ios-카카오톡-소셜-로그인-58a525e6f219
             case 1:
                 print(appleLabel.text!)
-                appleLogin()
+                appleLoginManager.appleLogin()
             case 2:
                 print(naverLabel.text!)
                 naverLoginInstance?.delegate = self
@@ -325,51 +326,7 @@ class SocialLoginView : UIView{
     }
 }
 
-extension SocialLoginView : ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding, NaverThirdPartyLoginConnectionDelegate  {
-    @available(iOS 13.0, *)
-    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        return self.window!
-    }
-    
-    func appleLogin(){
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        let request = appleIDProvider.createRequest()
-        request.requestedScopes = [.fullName, .email]
-            
-        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-        authorizationController.delegate = self
-        authorizationController.presentationContextProvider = self
-        authorizationController.performRequests()
-    }
-    
-    // Apple ID 연동 성공 시
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        switch authorization.credential {
-        // Apple ID
-        case let appleIDCredential as ASAuthorizationAppleIDCredential:
-                
-            // 계정 정보 가져오기
-            let userIdentifier = appleIDCredential.user
-            let fullName = appleIDCredential.fullName
-            let email = appleIDCredential.email
-                
-            print("User ID : \(userIdentifier)")
-            print("User Email : \(email ?? "")")
-            print("User Name : \((fullName?.givenName ?? "") + (fullName?.familyName ?? ""))")
-            //    User ID : 001370.85ccb33de51e42159f1d114615cc7de5.0717
-            //    User Email : wetaxmobile@gmail.com
-            //    User Name : SmartWetax
-            
-            requestGETCheckId(requestUrl: "/user/userIdCheck/\(userIdentifier)")
-        default:
-            break
-        }
-    }
-        
-    // Apple ID 연동 실패 시
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        // Handle error.
-    }
+extension SocialLoginView : NaverThirdPartyLoginConnectionDelegate  {
     
     func requestGETCheckId(requestUrl : String!){
         // URL 객체 정의
