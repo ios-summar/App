@@ -9,15 +9,17 @@ import Foundation
 import UIKit
 import SnapKit
 
-class SocialLoginController : UIViewController, SocialLoginDelegate {
+class SocialLoginController : UIViewController, SocialLoginDelegate, ServerDelegate {
     
     let socialLoginView = SocialLoginView()
+    let serverRequest = ServerRequest()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(socialLoginView)
         
         socialLoginView.delegate = self
+        serverRequest.delegate = self
         
         // layout
         socialLoginView.snp.makeConstraints{(make) in
@@ -28,7 +30,7 @@ class SocialLoginController : UIViewController, SocialLoginDelegate {
         }
     }
     
-    func moveScreen(_ viewC: UIViewController) {
-        self.navigationController?.pushViewController(viewC, animated: true)
+    func pushScreen(_ VC: UIViewController) {
+        self.navigationController?.pushViewController(VC, animated: true)
     }
 }

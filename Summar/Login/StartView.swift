@@ -12,7 +12,7 @@ import Alamofire
 import AuthenticationServices // 애플 로그인 https://huisoo.tistory.com/3
 
 protocol Delegate : class {
-    func moveScreen(_ viewC: UIViewController)
+    func pushScreen(_ viewC: UIViewController)
 }
 
 /// => 앱 최초설치   스플레시 스크린 ->  시작 화면
@@ -101,7 +101,7 @@ class StartView : UIView {
     
     @objc func btnAction(_ sender: Any){
         print(#function)
-        delegate?.moveScreen(SocialLoginController())
+        delegate?.pushScreen(SocialLoginController())
     }
     
     

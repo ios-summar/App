@@ -27,7 +27,7 @@ class StartController: UIViewController, Delegate {
         }
     }
     
-    func moveScreen(_ viewC: UIViewController) {
+    func pushScreen(_ viewC: UIViewController) {
         self.navigationController?.pushViewController(viewC, animated: true)
     }
 }

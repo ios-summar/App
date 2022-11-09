@@ -20,7 +20,7 @@ class SignUp1View : UIView, UITextFieldDelegate {
     weak var delegate: signUp1Delegate?
     
     let helper = Helper()
-    let request = ServerRequest()
+//    let request = ServerRequest()
     
     let serverURL = { () -> String in
         let url = Bundle.main.url(forResource: "Network", withExtension: "plist")

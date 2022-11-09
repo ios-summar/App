@@ -65,17 +65,17 @@ extension StartIndexController : UITableViewDelegate, UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            moveScreen(StartController())
+            pushScreen(StartController())
         case 1:
-            moveScreen(SocialLoginController())
+            pushScreen(SocialLoginController())
         case 2:
-            moveScreen(SignUpController())
+            pushScreen(SignUpController())
         default:
             print("default")
         }
     }
     
-    func moveScreen(_ viewC: UIViewController) {
+    func pushScreen(_ viewC: UIViewController) {
         self.navigationController?.pushViewController(viewC, animated: true)
     }
 }
