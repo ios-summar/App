@@ -41,19 +41,15 @@ class KakaoLoginManager : NSObject {
             if let id = User?.id {
                 print("id => ", id)
             }
-            
-             if let name = User?.kakaoAccount?.profile?.nickname {
-//                userName = name
-                 print("name => ", name)
-             }
-             if let mail = User?.kakaoAccount?.email {
-//                userMail = mail
-                 print("mail => ", mail)
-             }
-             if let profile = User?.kakaoAccount?.profile?.profileImageUrl {
-//                profileImage = profile
-                 print("profile => ", profile)
-             }
+            if let name = User?.kakaoAccount?.profile?.nickname {
+                print("name => ", name)
+            }
+            if let mail = User?.kakaoAccount?.email {
+                print("mail => ", mail)
+            }
+            if let profile = User?.kakaoAccount?.profile?.profileImageUrl {
+                print("profile => ", profile)
+            }
         }
     }
 }
