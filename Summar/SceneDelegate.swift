@@ -8,11 +8,14 @@
 import UIKit
 import NaverThirdPartyLogin
 import GoogleSignIn
+import KakaoSDKAuth
+import KakaoSDKUser
+import KakaoSDKCommon
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
+    let instance = NaverThirdPartyLoginConnection.getSharedInstance()
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -29,14 +32,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-      NaverThirdPartyLoginConnection
-        .getSharedInstance()?
-        .receiveAccessToken(URLContexts.first?.url)
-        
-        guard let scheme = URLContexts.first?.url.scheme else { return }
-        if scheme.contains("com.googleusercontent.apps") {
-            GIDSignIn.sharedInstance.handle(URLContexts.first!.url)
+        print("URLContexts.first?.url => \n", URLContexts.first?.url)
+        if let url = URLContexts.first?.url {
+            if (AuthApi.isKakaoTalkLoginUrl(url)) { // 카카오 로그인 처리
+                _ = AuthController.handleOpenUrl(url: url)
+            }else { // 네이버 로그인 처리
+                instance?.receiveAccessToken(URLContexts.first?.url)
+            }
         }
+        
+        
+
+//        guard let scheme = URLContexts.first?.url.scheme else { return }
+//        if scheme.contains("com.googleusercontent.apps") {
+//            GIDSignIn.sharedInstance.handle(URLContexts.first!.url)
+//        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

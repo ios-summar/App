@@ -17,24 +17,21 @@ class KakaoLoginManager : NSObject {
     
     func kakaoLogin() {
         print(#function)
-        if (UserApi.isKakaoTalkLoginAvailable()) {
-            print("!!!!!!!!!!!!!!!!!!!!!!")
+        if (UserApi.isKakaoTalkLoginAvailable()) { // 카카오톡 어플이 있을 때
             UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
-                print("@@@@@@@@@@@@@@@@@@@@")
-                print("loginWithKakaoTalk oauthToken =>\n", oauthToken)
-                if let oauthToken = oauthToken {
+                if let error = error {
+                   print(error)
+                }else {
                     self.getUserInfo()
                 }
-                print("loginWithKakaoAccount error =>\n", error)
             }
-        } else {
+        } else { // 카카오톡 어플이 없을 때
             UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
-                print("##################")
-                print("loginWithKakaoAccount oauthToken =>\n", oauthToken)
-                if let oauthToken = oauthToken {
+                if let error = error {
+                   print(error)
+                }else {
                     self.getUserInfo()
                 }
-                print("loginWithKakaoAccount error =>\n", error)
             }
         }
     }

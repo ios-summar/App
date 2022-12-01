@@ -62,15 +62,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         NaverThirdPartyLoginConnection.getSharedInstance()?.application(app, open: url, options: options)
-        
-        if AuthApi.isKakaoTalkLoginUrl(url) {
-            // 카카오톡에서 서비스 앱으로 돌아왔을 때 카카오 로그인 처리를 정상적으로 완료
-            return AuthController.handleOpenUrl(url: url)
-        }
-        
-        if GIDSignIn.sharedInstance.handle(url){
-            return true
-        }
         return true
     }
     
