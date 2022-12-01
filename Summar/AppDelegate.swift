@@ -12,6 +12,10 @@ import UIKit
 import AuthenticationServices // 애플 로그인 https://huisoo.tistory.com/3
 import IQKeyboardManagerSwift
 import NaverThirdPartyLogin
+import GoogleSignIn
+import KakaoSDKAuth
+import KakaoSDKUser
+import KakaoSDKCommon
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,9 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         application.registerForRemoteNotifications()
         IQKeyboardManagerInit()
+        KakaoLoginInit()
         NaverLoginInit()
-        GoogleLoginInit()
-        
         
 //        let appleIDProvider = ASAuthorizationAppleIDProvider()
 //            appleIDProvider.getCredentialState(forUserID: /* 로그인에 사용한 User Identifier */) { (credentialState, error) in
@@ -59,6 +62,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         NaverThirdPartyLoginConnection.getSharedInstance()?.application(app, open: url, options: options)
+        
+        if AuthApi.isKakaoTalkLoginUrl(url) {
+            // 카카오톡에서 서비스 앱으로 돌아왔을 때 카카오 로그인 처리를 정상적으로 완료
+            return AuthController.handleOpenUrl(url: url)
+        }
+        
+        if GIDSignIn.sharedInstance.handle(url){
+            return true
+        }
         return true
     }
     
@@ -68,6 +80,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
     }
     
+    func KakaoLoginInit() {
+        KakaoSDK.initSDK(appKey: "c82291c69573fe735c2c917069993cd9")
+    }
+    
     func NaverLoginInit() {
         let instance = NaverThirdPartyLoginConnection.getSharedInstance()
         instance?.isNaverAppOauthEnable = true //네이버앱 로그인 설정
@@ -75,15 +91,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         instance?.isOnlyPortraitSupportedInIphone() //인증 화면을 iPhone의 세로 모드에서만 사용하기
 
+//        instance?.serviceUrlScheme = "summar" //URL Scheme
+//        instance?.consumerKey = "eEUszVbCE9CSk90JQ5ip" //클라이언트 아이디
+//        instance?.consumerSecret = "Yn878F60Qu" //시크릿 아이디
+//        instance?.appName = "써머" //앱이름
+        
+        
         instance?.serviceUrlScheme = "summar" //URL Scheme
-        instance?.consumerKey = "eEUszVbCE9CSk90JQ5ip" //클라이언트 아이디
-        instance?.consumerSecret = "Yn878F60Qu" //시크릿 아이디
-        instance?.appName = "써머" //앱이름
-    }
-    
-    func GoogleLoginInit() {
-        // OAuth 2.0 클라이언트 ID
-//        GIDSignIn.sharedInstance().clientID = "127377779027-m9qhbusr0f0goqbqlfrh6a0boifnsb9k.apps.googleusercontent.com.apps.googleusercontent.com"
+        instance?.consumerKey = "vhRSDiuXtzI9d8oPXZL6" //클라이언트 아이디
+        instance?.consumerSecret = "Jop9G0kyP8" //시크릿 아이디
+        instance?.appName = "summar" //앱이름
     }
 }
 

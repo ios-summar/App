@@ -15,6 +15,17 @@ PODS:
     - GTMSessionFetcher/Core (< 3.0, >= 1.5)
   - GTMSessionFetcher/Core (2.0.0)
   - IQKeyboardManagerSwift (6.5.10)
+  - KakaoSDKAuth (2.11.3):
+    - KakaoSDKCommon (= 2.11.3)
+  - KakaoSDKCommon (2.11.3):
+    - KakaoSDKCommon/Common (= 2.11.3)
+    - KakaoSDKCommon/Network (= 2.11.3)
+  - KakaoSDKCommon/Common (2.11.3)
+  - KakaoSDKCommon/Network (2.11.3):
+    - Alamofire (~> 5.1)
+    - KakaoSDKCommon/Common (= 2.11.3)
+  - KakaoSDKUser (2.11.3):
+    - KakaoSDKAuth (= 2.11.3)
   - naveridlogin-sdk-ios (4.1.5)
   - SnapKit (5.6.0)
 
@@ -22,6 +33,8 @@ DEPENDENCIES:
   - Alamofire
   - GoogleSignIn
   - IQKeyboardManagerSwift
+  - KakaoSDKAuth
+  - KakaoSDKUser
   - naveridlogin-sdk-ios
   - SnapKit
 
@@ -33,6 +46,9 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - IQKeyboardManagerSwift
+    - KakaoSDKAuth
+    - KakaoSDKCommon
+    - KakaoSDKUser
     - naveridlogin-sdk-ios
     - SnapKit
 
@@ -43,9 +59,12 @@ SPEC CHECKSUMS:
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 681175626052e03fdde7952f7e9c7a9785719506
   IQKeyboardManagerSwift: 52962c76ab33532f15ad9f3ff4e5715eda5335bb
+  KakaoSDKAuth: a64dde90516e18fdfc35b83bbad2677c3675c329
+  KakaoSDKCommon: b4235203f67a5b6ee2df75eaf9bbc863c6d92e09
+  KakaoSDKUser: 9a42e9b74855ce876b071c841418aa6726534010
   naveridlogin-sdk-ios: 4351fe7162cd6b8b6dbb37bd7cc205304fa1d889
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
 
-PODFILE CHECKSUM: d35ba3fe12b9bc572fdea98146e6931f70e9e677
+PODFILE CHECKSUM: fec3b2a43afb837e050d9700a51c2bc59920892c
 
 COCOAPODS: 1.10.2

@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import Alamofire
+import GoogleSignIn
 
 protocol SocialLoginDelegate : class {
     func pushScreen(_ VC: UIViewController)
@@ -18,8 +19,10 @@ class SocialLoginView : UIView{
     weak var delegate : SocialLoginDelegate?
     
     let helper : Helper = Helper()
+    let kakaoLoginManager = KakaoLoginManager()
     let appleLoginManager = AppleLoginManager()
     let naverLoginManager = NaverLoginManager()
+    let googleLoginManager = GoogleLoginManager()
     
     let serverURL = { () -> String in
         let url = Bundle.main.url(forResource: "Network", withExtension: "plist")
@@ -145,18 +148,25 @@ class SocialLoginView : UIView{
         return googleImageView
     }()
     
-    let notLogin : UIButton = {
-        let notLogin = UIButton()
-        notLogin.setTitleColor(UIColor(red: 79/255, green: 79/255, blue: 79/255, alpha: 1), for: .normal)
-        notLogin.tintColor = UIColor(red: 79/255, green: 79/255, blue: 79/255, alpha: 1)
-        notLogin.setTitle("그냥 둘러볼래요  ", for: .normal)
-        notLogin.titleLabel?.font = .systemFont(ofSize: 15)
-        notLogin.setImage(UIImage(systemName: "greaterthan"), for: .normal)
-        notLogin.semanticContentAttribute = .forceRightToLeft
-        notLogin.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
-        notLogin.tag = 4
-        return notLogin
+    let socialImageView : UIImageView = {
+        let socialImageView = UIImageView()
+        socialImageView.image = UIImage(named: "SocialLoginImage")
+        socialImageView.sizeToFit()
+        return socialImageView
     }()
+    
+//    let notLogin : UIButton = {
+//        let notLogin = UIButton()
+//        notLogin.setTitleColor(UIColor(red: 79/255, green: 79/255, blue: 79/255, alpha: 1), for: .normal)
+//        notLogin.tintColor = UIColor(red: 79/255, green: 79/255, blue: 79/255, alpha: 1)
+//        notLogin.setTitle("그냥 둘러볼래요  ", for: .normal)
+//        notLogin.titleLabel?.font = .systemFont(ofSize: 15)
+//        notLogin.setImage(UIImage(systemName: "greaterthan"), for: .normal)
+//        notLogin.semanticContentAttribute = .forceRightToLeft
+//        notLogin.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
+//        notLogin.tag = 4
+//        return notLogin
+//    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -189,14 +199,21 @@ class SocialLoginView : UIView{
         googleFrame.addSubview(googleLabel)
         googleFrame.addSubview(googleImageView)
         
-        addSubview(notLogin)
+        addSubview(socialImageView)
         
         
         label1.snp.makeConstraints {(make) in
-            make.topMargin.equalTo(self.safeAreaLayoutGuide.snp.top).offset(60)
+            make.topMargin.equalTo(self.safeAreaLayoutGuide.snp.top).offset(40)
             make.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
             make.leftMargin.equalTo(50)
             make.rightMargin.equalTo(-50)
+        }
+        
+        socialImageView.snp.makeConstraints{(make) in
+            make.bottomMargin.equalTo(kakaoFrame.snp.top).offset(0)
+            make.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
+//            make.leftMargin.equalTo(50)
+//            make.rightMargin.equalTo(-50)
         }
         
         kakaoFrame.snp.makeConstraints{(make) in
@@ -257,7 +274,7 @@ class SocialLoginView : UIView{
         }
         
         googleFrame.snp.makeConstraints{(make) in
-            make.bottomMargin.equalTo(notLogin.snp.top).offset(-40)
+            make.bottomMargin.equalTo(-70)
             make.leftMargin.equalTo(25)
             make.rightMargin.equalTo(-25)
             make.height.equalTo(52)
@@ -275,10 +292,10 @@ class SocialLoginView : UIView{
             make.width.equalTo(20)
         }
         
-        notLogin.snp.makeConstraints{(make) in
-            make.rightMargin.equalTo(-25)
-            make.bottomMargin.equalTo(-50)
-        }
+//        notLogin.snp.makeConstraints{(make) in
+//            make.rightMargin.equalTo(-25)
+//            make.bottomMargin.equalTo(-50)
+//        }
         
     }
     
@@ -287,13 +304,11 @@ class SocialLoginView : UIView{
         let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
-        let tapGesture4 = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         
         kakaoFrame.addGestureRecognizer(tapGesture0)
         appleFrame.addGestureRecognizer(tapGesture1)
         naverFrame.addGestureRecognizer(tapGesture2)
         googleFrame.addGestureRecognizer(tapGesture3)
-        notLogin.addGestureRecognizer(tapGesture4)
     }
     
     /// 로그인 버튼 Action
@@ -303,6 +318,7 @@ class SocialLoginView : UIView{
             switch viewTag {
             case 0: //카카오톡으로 시작하기
                 print(kakaoLabel.text!) // https://sujinnaljin.medium.com/ios-카카오톡-소셜-로그인-58a525e6f219
+                kakaoLoginManager.kakaoLogin()
                 
             case 1: // 애플계정으로 시작하기
                 print(appleLabel.text!)
@@ -314,10 +330,7 @@ class SocialLoginView : UIView{
                 
             case 3: // 구글로 시작하기
                 print(googleLabel.text!)
-                
-            case 4: // 그냥 둘러볼래요 >
-                print((notLogin.titleLabel?.text)!)
-                self.delegate?.pushScreen(HomeController())
+                googleLoginManager.googleLogin()
                 
             default:
                 print("default")

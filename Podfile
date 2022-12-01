@@ -9,6 +9,8 @@ target 'Summar' do
    pod 'SnapKit'
    pod 'Alamofire'
    pod 'IQKeyboardManagerSwift'
-   pod 'naveridlogin-sdk-ios'
-   pod 'GoogleSignIn'
+   pod 'naveridlogin-sdk-ios' # 네이버 로그인
+   pod 'GoogleSignIn'  # 구글로그인
+   pod 'KakaoSDKAuth'  # 카카오 사용자 인증
+   pod 'KakaoSDKUser'  # 카카오 로그인, 사용자 관리
 end
