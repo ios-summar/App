@@ -318,7 +318,13 @@ class SocialLoginView : UIView{
             switch viewTag {
             case 0: //카카오톡으로 시작하기
                 print(kakaoLabel.text!) // https://sujinnaljin.medium.com/ios-카카오톡-소셜-로그인-58a525e6f219
-                kakaoLoginManager.kakaoLogin()
+                var identifier = kakaoLoginManager.kakaoLogin()
+                if let identifier = identifier {
+                    print("identifier => ", identifier)
+                }else {
+                    print("identifier else")
+                    self.delegate?.pushScreen(SignUpController())
+                }
                 
             case 1: // 애플계정으로 시작하기
                 print(appleLabel.text!)
