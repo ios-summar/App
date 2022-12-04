@@ -10,64 +10,45 @@ import KakaoSDKUser
 import KakaoSDKAuth
 import KakaoSDKCommon
 
+protocol kakaoDelegate : AnyObject {
+    func pushIdentifier(identifier: String)
+}
+
 class KakaoLoginManager : NSObject {
-
-    var returnString : String? = nil
-    var identifier : String? = nil
     
-    override init() {
-        print(#file)
-    }
+    weak var delegate : kakaoDelegate?
     
-    func kakaoLogin() -> String? {
-        print("1")
-
+    func kakaoLogin() {
             if (UserApi.isKakaoTalkLoginAvailable()) { // 카카오톡 어플이 있을 때
-                print("2")
                 DispatchQueue.global().sync {
                     UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
-                        print("3")
                         if let error = error {
                             print(error)
-                            self.returnString = nil
                         }else {
-                            print("4")
-                            self.returnString = self.getUserInfo()
+                            self.getUserInfo()
                         }
-                        print("5")
                     }
-                    return self.returnString
                 }
             } else { // 카카오톡 어플이 없을 때
                 UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
                     if let error = error {
                         print(error)
-                        self.returnString = nil
                     }else {
-                        self.returnString = self.getUserInfo()
+                        self.getUserInfo()
                     }
                 }
-                return self.returnString
             }
-        return nil
     }
     
     // MARK : - 해당 함수에서 회원인지 확인
-    func getUserInfo() -> String? {
-        print("8")
+    func getUserInfo() {
         UserApi.shared.me { User, Error in
-            print("9")
             if let id = User?.id {
-                print("10")
                 print("id => ", id)
-                self.identifier = String(id)
-//                self.delegate?.pushScreen(SignUpController())
+                self.delegate?.pushIdentifier(identifier: String(id))
             }else {
-                self.identifier = nil
+                print(Error)
             }
-            print("11")
         }
-        print("12")
-        return self.identifier ?? nil
     }
 }

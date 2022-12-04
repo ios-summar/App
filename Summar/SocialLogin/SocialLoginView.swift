@@ -14,7 +14,7 @@ protocol SocialLoginDelegate : class {
     func pushScreen(_ VC: UIViewController)
 }
 
-class SocialLoginView : UIView{
+class SocialLoginView : UIView, kakaoDelegate{
     
     weak var delegate : SocialLoginDelegate?
     
@@ -172,6 +172,8 @@ class SocialLoginView : UIView{
         super.init(frame: frame)
         backgroundColor = .white
         
+        kakaoLoginManager.delegate = self
+        
 //        naverLoginInstance?.requestDeleteToken()
         
         //Image View click Action
@@ -318,13 +320,7 @@ class SocialLoginView : UIView{
             switch viewTag {
             case 0: //카카오톡으로 시작하기
                 print(kakaoLabel.text!) // https://sujinnaljin.medium.com/ios-카카오톡-소셜-로그인-58a525e6f219
-                var identifier = kakaoLoginManager.kakaoLogin()
-                if let identifier = identifier {
-                    print("identifier => ", identifier)
-                }else {
-                    print("identifier else")
-                    self.delegate?.pushScreen(SignUpController())
-                }
+                kakaoLoginManager.kakaoLogin()
                 
             case 1: // 애플계정으로 시작하기
                 print(appleLabel.text!)
@@ -342,6 +338,10 @@ class SocialLoginView : UIView{
                 print("default")
             }
         }
+    }
+    
+    func pushIdentifier(identifier: String) {
+        self.delegate?.pushScreen(SignUpController())
     }
     
     required init?(coder: NSCoder) {
