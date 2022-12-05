@@ -10,10 +10,9 @@ import AuthenticationServices
 
 class AppleLoginManager : NSObject{
     weak var viewController: UIViewController?
-//    weak var delegate: AppleLoginManagerDelegate?
+    weak var delegate: SocialSuccessDelegate?
     
     let serverRequest = ServerRequest()
-    
     let helper : Helper = Helper()
     let serverURL = { () -> String in
         let url = Bundle.main.url(forResource: "Network", withExtension: "plist")
@@ -69,7 +68,10 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate, ASAuthorization
             //    User Email : wetaxmobile@gmail.com
             //    User Name : SmartWetax
             
-            serverRequest.requestGETCheckId(requestUrl: "/user/userIdCheck/\(userIdentifier)")
+//            serverRequest.requestGETCheckId(requestUrl: "/user/userIdCheck/\(userIdentifier)")
+            
+            // 여기서 서버 요청이후 true/false 화면이동 (회원가입 유무 판단)
+            self.delegate?.pushIdentifier(SignUpController.shared, userIdentifier)
             
         default:
             break

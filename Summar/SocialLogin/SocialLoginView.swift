@@ -11,10 +11,10 @@ import Alamofire
 import GoogleSignIn
 
 protocol SocialLoginDelegate : class {
-    func pushScreen(_ VC: UIViewController)
+    func pushScreen(_ VC: UIViewController, _ identifier: String?)
 }
 
-class SocialLoginView : UIView, kakaoDelegate{
+class SocialLoginView : UIView, SocialSuccessDelegate{
     
     weak var delegate : SocialLoginDelegate?
     
@@ -172,7 +172,11 @@ class SocialLoginView : UIView, kakaoDelegate{
         super.init(frame: frame)
         backgroundColor = .white
         
+        // 대리자 설정
         kakaoLoginManager.delegate = self
+        appleLoginManager.delegate = self
+        naverLoginManager.delegate = self
+        googleLoginManager.delegate = self
         
 //        naverLoginInstance?.requestDeleteToken()
         
@@ -340,8 +344,9 @@ class SocialLoginView : UIView, kakaoDelegate{
         }
     }
     
-    func pushIdentifier(identifier: String) {
-        self.delegate?.pushScreen(SignUpController())
+    //소셜로그인 -> 회원가입 데이터 전달
+    func pushIdentifier(_ VC: UIViewController,_ identifier: String?) {
+        self.delegate?.pushScreen(VC, identifier)
     }
     
     required init?(coder: NSCoder) {

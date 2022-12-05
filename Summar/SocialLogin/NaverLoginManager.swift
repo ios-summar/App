@@ -11,6 +11,8 @@ import Alamofire
 
 class NaverLoginManager: NSObject {
     
+    weak var delegate: SocialSuccessDelegate?
+    
     let serverRequest = ServerRequest()
     let naverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
     
@@ -82,7 +84,10 @@ extension NaverLoginManager: NaverThirdPartyLoginConnectionDelegate {
             
             let userIdentifier = object["id"] ?? ""
             
-            self.serverRequest.requestGETCheckId(requestUrl: "/user/userIdCheck/\(userIdentifier)")
+//            self.serverRequest.requestGETCheckId(requestUrl: "/user/userIdCheck/\(userIdentifier)")
+            // 여기서 서버 요청이후 true/false 화면이동 (회원가입 유무 판단)
+            self.delegate?.pushIdentifier(SignUpController.shared, object["id"] as! String)
+            
             }
       }
 }

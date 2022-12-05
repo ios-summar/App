@@ -10,13 +10,13 @@ import KakaoSDKUser
 import KakaoSDKAuth
 import KakaoSDKCommon
 
-protocol kakaoDelegate : AnyObject {
-    func pushIdentifier(identifier: String)
+protocol SocialSuccessDelegate : AnyObject {
+    func pushIdentifier(_ VC: UIViewController,_ identifier: String?)
 }
 
 class KakaoLoginManager : NSObject {
     
-    weak var delegate : kakaoDelegate?
+    weak var delegate : SocialSuccessDelegate?
     
     func kakaoLogin() {
             if (UserApi.isKakaoTalkLoginAvailable()) { // 카카오톡 어플이 있을 때
@@ -45,7 +45,7 @@ class KakaoLoginManager : NSObject {
         UserApi.shared.me { User, Error in
             if let id = User?.id {
                 print("id => ", id)
-                self.delegate?.pushIdentifier(identifier: String(id))
+                self.delegate?.pushIdentifier(SignUpController.shared, String(id))
             }else {
                 print(Error)
             }

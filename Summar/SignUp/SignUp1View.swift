@@ -10,14 +10,13 @@ import UIKit
 import SnapKit
 import Alamofire
 
-protocol signUp1Delegate : class {
-    func sendBtnEnable(_ TF: Bool)
-    func nextBtn()
+protocol SignUp1Delegate : class {
+    func nextBtn(_ nickName: String)
 }
 
 class SignUp1View : UIView, UITextFieldDelegate {
     
-    weak var delegate: signUp1Delegate?
+    weak var delegate: SignUp1Delegate?
     
     let helper = Helper()
 //    let request = ServerRequest()
@@ -75,6 +74,7 @@ class SignUp1View : UIView, UITextFieldDelegate {
         sendBtn.titleLabel?.font = .systemFont(ofSize: 15)
         sendBtn.backgroundColor = UIColor.grayColor205
         sendBtn.layer.cornerRadius = 4
+        sendBtn.addTarget(self, action: #selector(nextAction), for: .touchUpInside)
         return sendBtn
     }()
     
@@ -106,6 +106,7 @@ class SignUp1View : UIView, UITextFieldDelegate {
         addSubview(titleLabel)
         addSubview(nickNameTextField)
         addSubview(nickNameEnableLabel)
+        addSubview(sendBtn)
         
         // 키보드 팝업시 위 버튼 추가
         nickNameTextField.inputAccessoryView = accessoryView
@@ -114,9 +115,9 @@ class SignUp1View : UIView, UITextFieldDelegate {
         helper.lineSpacing(titleLabel, 10) // lineSpacing
         
         keyboardUpBtn.snp.makeConstraints{(make) in
-            make.bottomMargin.equalTo(-20)
-            make.leftMargin.equalTo(0)
-            make.rightMargin.equalTo(0)
+            make.bottomMargin.equalTo(-25)
+            make.leftMargin.equalTo(20)
+            make.rightMargin.equalTo(-20)
             make.height.equalTo(52)
         }
 
@@ -138,16 +139,16 @@ class SignUp1View : UIView, UITextFieldDelegate {
             make.leftMargin.equalTo(30)
         }
         
-//        sendBtn.snp.makeConstraints{(make) in
-//            make.bottomMargin.equalTo(-20)
-//            make.leftMargin.equalTo(25)
-//            make.rightMargin.equalTo(-25)
-//            make.height.equalTo(52)
-//        }
+        sendBtn.snp.makeConstraints{(make) in
+            make.bottomMargin.equalTo(-25)
+            make.leftMargin.equalTo(25)
+            make.rightMargin.equalTo(-25)
+            make.height.equalTo(52)
+        }
     }
     
     @objc func nextAction(){
-        self.delegate?.nextBtn()
+        self.delegate?.nextBtn(nickNameTextField.text!)
     }
     
     @objc func textFieldDidChange(_ textField: UITextField){
@@ -155,7 +156,7 @@ class SignUp1View : UIView, UITextFieldDelegate {
             textField.deleteBackward()
         }
         
-        if textField.text?.count ?? 0 >= 2 {
+        if textField.text?.count ?? 0 >= 1 {
             if helper.checkNickNamePolicy(text: textField.text!) { // 한글, 영어, 숫자임
                 // GET방식으로 닉네임 중복체크
                 requestGETBOOL(requestUrl: "/user/nicknameCheck/\(textField.text!)")
@@ -173,13 +174,11 @@ class SignUp1View : UIView, UITextFieldDelegate {
     
     func enableNickname(enable: Bool, content: String?){
         if enable {
-            self.delegate?.sendBtnEnable(true)
             self.sendBtnEnable(true)
             nickNameEnableLabel.text = content
             nickNameEnableLabel.textColor = .systemGreen
             nickNameTextField.layer.borderColor = UIColor.systemGreen.cgColor
         }else {
-            self.delegate?.sendBtnEnable(false)
             self.sendBtnEnable(false)
             if content != nil {
                 nickNameEnableLabel.text = content
@@ -229,9 +228,15 @@ class SignUp1View : UIView, UITextFieldDelegate {
         if TF {
             keyboardUpBtn.isEnabled = true
             keyboardUpBtn.backgroundColor = UIColor.summarColor2
+            
+            sendBtn.isEnabled = true
+            sendBtn.backgroundColor = UIColor.summarColor2
         }else {
             keyboardUpBtn.isEnabled = false
             keyboardUpBtn.backgroundColor = UIColor.grayColor205
+            
+            sendBtn.isEnabled = false
+            sendBtn.backgroundColor = UIColor.grayColor205
         }
     }
     

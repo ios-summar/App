@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class SocialLoginController : UIViewController, SocialLoginDelegate, ServerDelegate {
+class SocialLoginController : UIViewController, SocialLoginDelegate {
     
     let socialLoginView = SocialLoginView()
     let serverRequest = ServerRequest()
@@ -19,7 +19,7 @@ class SocialLoginController : UIViewController, SocialLoginDelegate, ServerDeleg
         self.view.addSubview(socialLoginView)
         
         socialLoginView.delegate = self
-        serverRequest.delegate = self
+//        serverRequest.delegate = self
         
         // layout
         socialLoginView.snp.makeConstraints{(make) in
@@ -30,7 +30,15 @@ class SocialLoginController : UIViewController, SocialLoginDelegate, ServerDeleg
         }
     }
     
-    func pushScreen(_ VC: UIViewController) {
-        self.navigationController?.pushViewController(VC, animated: true)
+    func pushScreen(_ VC: UIViewController, _ identifier: String?) {
+        
+        if VC == SignUpController.shared {
+            let svc = SignUpController.shared
+            svc.identifier = identifier
+            self.navigationController?.pushViewController(svc, animated: true)
+        }else if VC == HomeController() { // 싱글톤 객체로 변경예정
+            let svc = HomeController()
+            self.navigationController?.pushViewController(svc, animated: true)
+        }
     }
 }

@@ -9,23 +9,59 @@ import Foundation
 import UIKit
 import SnapKit
 
-class SignUpController : UIViewController, signUp1Delegate{
+class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate{
+    
+    static let shared = SignUpController()
+    
     
     let helper : Helper = Helper()
     
-    func sendBtnEnable(_ TF: Bool) {
-        if TF {
-            sendBtn.isEnabled = true
-            sendBtn.backgroundColor = UIColor.summarColor2
-        }else {
-            sendBtn.isEnabled = false
-            sendBtn.backgroundColor = UIColor.grayColor205
+    var identifier: String? = nil
+    var nickName: String? = nil
+    var majorFirst: String? = nil
+    var majorSecond: String? = nil
+    
+    var requestDic: Dictionary<String, String> = Dictionary<String, String>()
+    
+    
+    func nextBtn(_ nickName: String) {
+        self.nickName = nickName
+        
+        progressBar.progress = 1.0
+        animation(viewAnimation1: signUp1View, viewAnimation2: signUp2View)
+        
+        if let identifier = identifier {
+            print("identifier =>", identifier)
+            print("nickName =>", nickName)
         }
     }
     
-    func nextBtn() {
-        progressBar.progress = 1.0
-        animation(viewAnimation1: signUp1View, viewAnimation2: signUp2View)
+    // 최종 회원가입
+    func majorInput(major1: String, major2: String) {
+        self.majorFirst = major1
+        self.majorSecond = major2
+        
+        print("\(#line) =>", identifier)
+        print("\(#line) =>", nickName)
+        print("\(#line) =>", majorFirst)
+        print("\(#line) =>", majorSecond)
+        
+        if let identifier = identifier {
+            requestDic["identifier"] = identifier
+        }
+        
+        if let nickName = nickName {
+            requestDic["nickName"] = nickName
+        }
+        
+        if let majorFirst = majorFirst, let majorSecond = majorSecond{
+            requestDic["majorFirst"] = majorFirst
+            requestDic["majorSecond"] = majorSecond
+        }
+        
+        print("requestDic => ", requestDic)
+        
+        //서버요청
     }
     
     let progressBar : UIProgressView = {
@@ -37,33 +73,20 @@ class SignUpController : UIViewController, signUp1Delegate{
         return progressBar
     }()
     
-    let sendBtn : UIButton = {
-        let sendBtn = UIButton()
-        sendBtn.translatesAutoresizingMaskIntoConstraints = false
-        sendBtn.setTitle("다음", for: .normal)
-        sendBtn.setTitleColor(.white, for: .normal)
-        sendBtn.titleLabel?.font = .systemFont(ofSize: 15)
-        sendBtn.backgroundColor = UIColor.grayColor205
-        sendBtn.layer.cornerRadius = 4
-        sendBtn.isEnabled = false
-        sendBtn.addTarget(self, action: #selector(btnAction), for: .touchUpInside)
-        return sendBtn
-    }()
     
     let signUp1View = SignUp1View()
     let signUp2View = SignUp2View()
     
-    var nickName: String? = nil
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(signUp1View)
-        view.addSubview(sendBtn)
+//        view.addSubview(sendBtn)
         view.addSubview(progressBar)
 //        view.addSubview(signUp2View)
         self.view.backgroundColor = .white
         
         signUp1View.delegate = self
+        signUp2View.delegate = self
 
         helper.showAlertAction(vc: self, message: "회원정보가 없어\n회원가입 화면으로 이동합니다.")
         
@@ -78,12 +101,12 @@ class SignUpController : UIViewController, signUp1Delegate{
             make.height.equalTo(5)
         }
         
-        sendBtn.snp.makeConstraints{(make) in
-            make.bottomMargin.equalTo(-20)
-            make.leftMargin.equalTo(20)
-            make.rightMargin.equalTo(-20)
-            make.height.equalTo(52)
-        }
+//        sendBtn.snp.makeConstraints{(make) in
+//            make.bottomMargin.equalTo(-20)
+//            make.leftMargin.equalTo(20)
+//            make.rightMargin.equalTo(-20)
+//            make.height.equalTo(52)
+//        }
 
         
         // layout
@@ -91,7 +114,7 @@ class SignUpController : UIViewController, signUp1Delegate{
             make.top.equalTo(progressBar.snp.bottom).offset(20)
             make.left.equalTo(0)
             make.right.equalTo(0)
-            make.bottom.equalTo(sendBtn.snp.top).offset(-20)
+            make.bottom.equalTo(0)
         }
     }
     
@@ -117,7 +140,7 @@ class SignUpController : UIViewController, signUp1Delegate{
             make.top.equalTo(0)
             make.left.equalTo(0)
             make.right.equalTo(100)
-            make.bottom.equalTo(self.sendBtn.snp.top).offset(-20)
+            make.bottom.equalTo(0)
         }
             
         view.frame.origin.x = -100
