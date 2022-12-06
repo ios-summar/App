@@ -71,7 +71,7 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate, ASAuthorization
 //            serverRequest.requestGETCheckId(requestUrl: "/user/userIdCheck/\(userIdentifier)")
             
             // 여기서 서버 요청이후 true/false 화면이동 (회원가입 유무 판단)
-            self.delegate?.pushIdentifier(SignUpController.shared, userIdentifier)
+//            self.delegate?.pushIdentifier(SignUpController.shared, userIdentifier)
             
         default:
             break

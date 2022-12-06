@@ -11,12 +11,23 @@ import KakaoSDKAuth
 import KakaoSDKCommon
 
 protocol SocialSuccessDelegate : AnyObject {
-    func pushIdentifier(_ VC: UIViewController,_ identifier: String?)
+    func pushIdentifier(_ VC: UIViewController,_ requestDic: Dictionary<String, String>)
 }
 
-class KakaoLoginManager : NSObject {
+class KakaoLoginManager : NSObject, ServerDelegate {
     
     weak var delegate : SocialSuccessDelegate?
+    
+    let helper = Helper()
+    let request = ServerRequest()
+    
+    var requestDic : Dictionary<String, String> = Dictionary<String, String>()
+    
+    override init() {
+        super.init()
+        print(#file , #function)
+        request.delegate = self
+    }
     
     func kakaoLogin() {
             if (UserApi.isKakaoTalkLoginAvailable()) { // 카카오톡 어플이 있을 때
@@ -45,10 +56,25 @@ class KakaoLoginManager : NSObject {
         UserApi.shared.me { User, Error in
             if let id = User?.id {
                 print("id => ", id)
-                self.delegate?.pushIdentifier(SignUpController.shared, String(id))
+                self.requestDic["userEmail"] = String(id)+"33325423"
+                self.requestDic["userNickName"] = ""
+                self.requestDic["major1"] = ""
+                self.requestDic["major2"] = ""
+                self.requestDic["socialType"] = "KAKAO"
+                
+                self.request.requestPost("/user/login", self.requestDic) // 이후 memberYN으로 화면이동
             }else {
                 print(Error)
             }
+        }
+    }
+    
+    func memberYN(_ TF: Bool,_ requestDic: Dictionary<String, String>) {
+        print(#file , #function)
+        if TF { // 로그인 화면으로
+            self.delegate?.pushIdentifier(HomeController.shared, requestDic)
+        }else { // 회원가입 화면으로
+            self.delegate?.pushIdentifier(SignUpController.shared, requestDic)
         }
     }
 }

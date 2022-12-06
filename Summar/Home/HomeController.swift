@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 
 class HomeController : UIViewController {
+    static let shared = HomeController()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

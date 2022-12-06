@@ -38,7 +38,7 @@ class GoogleLoginManager: NSObject {
                 print("User Email : \(email)")
                 print("User Name : \((fullName))")
                 
-                self.delegate?.pushIdentifier(SignUpController.shared, userId)
+//                self.delegate?.pushIdentifier(SignUpController.shared, userId)
                 
             } else {
                 print("Error : User Data Not Found")

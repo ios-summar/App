@@ -16,7 +16,7 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate{
     
     let helper : Helper = Helper()
     
-    var identifier: String? = nil
+//    var identifier: String? = nil
     var nickName: String? = nil
     var majorFirst: String? = nil
     var majorSecond: String? = nil
@@ -30,10 +30,7 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate{
         progressBar.progress = 1.0
         animation(viewAnimation1: signUp1View, viewAnimation2: signUp2View)
         
-        if let identifier = identifier {
-            print("identifier =>", identifier)
-            print("nickName =>", nickName)
-        }
+        print("\(#line) requestDic => ", requestDic)
     }
     
     // 최종 회원가입
@@ -41,14 +38,9 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate{
         self.majorFirst = major1
         self.majorSecond = major2
         
-        print("\(#line) =>", identifier)
         print("\(#line) =>", nickName)
         print("\(#line) =>", majorFirst)
         print("\(#line) =>", majorSecond)
-        
-        if let identifier = identifier {
-            requestDic["identifier"] = identifier
-        }
         
         if let nickName = nickName {
             requestDic["nickName"] = nickName
@@ -59,7 +51,7 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate{
             requestDic["majorSecond"] = majorSecond
         }
         
-        print("requestDic => ", requestDic)
+        print("\(#line) requestDic => ", requestDic)
         
         //서버요청
     }

@@ -30,14 +30,14 @@ class SocialLoginController : UIViewController, SocialLoginDelegate {
         }
     }
     
-    func pushScreen(_ VC: UIViewController, _ identifier: String?) {
-        
+    func pushScreen(_ VC: UIViewController, _ requestDic: Dictionary<String, String>) {
+        print(#file , #function)
         if VC == SignUpController.shared {
             let svc = SignUpController.shared
-            svc.identifier = identifier
+            svc.requestDic = requestDic
             self.navigationController?.pushViewController(svc, animated: true)
-        }else if VC == HomeController() { // 싱글톤 객체로 변경예정
-            let svc = HomeController()
+        }else if VC == HomeController.shared {
+            let svc = HomeController.shared
             self.navigationController?.pushViewController(svc, animated: true)
         }
     }
