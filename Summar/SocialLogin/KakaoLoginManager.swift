@@ -21,11 +21,11 @@ class KakaoLoginManager : NSObject, ServerDelegate {
     let helper = Helper()
     let request = ServerRequest()
     
+    let socialType = "KAKAO"
     var requestDic : Dictionary<String, String> = Dictionary<String, String>()
     
     override init() {
         super.init()
-        print(#file , #function)
         request.delegate = self
     }
     
@@ -56,13 +56,13 @@ class KakaoLoginManager : NSObject, ServerDelegate {
         UserApi.shared.me { User, Error in
             if let id = User?.id {
                 print("id => ", id)
-                self.requestDic["userEmail"] = String(id)+"33325423"
+                self.requestDic["userEmail"] = String(id)
                 self.requestDic["userNickName"] = ""
                 self.requestDic["major1"] = ""
                 self.requestDic["major2"] = ""
-                self.requestDic["socialType"] = "KAKAO"
+                self.requestDic["socialType"] = self.socialType
                 
-                self.request.requestPost("/user/login", self.requestDic) // 이후 memberYN으로 화면이동
+                self.request.login("/user/login", self.requestDic) // 이후 memberYN으로 화면이동
             }else {
                 print(Error)
             }

@@ -8,12 +8,17 @@
 import Foundation
 import AuthenticationServices
 
-class AppleLoginManager : NSObject{
+class AppleLoginManager : NSObject, ServerDelegate{
     weak var viewController: UIViewController?
     weak var delegate: SocialSuccessDelegate?
     
-    let serverRequest = ServerRequest()
+    let request = ServerRequest()
     let helper : Helper = Helper()
+    
+    
+    let socialType = "APPLE"
+    var requestDic : Dictionary<String, String> = Dictionary<String, String>()
+    
     let serverURL = { () -> String in
         let url = Bundle.main.url(forResource: "Network", withExtension: "plist")
         let dictionary = NSDictionary(contentsOf: url!)
@@ -26,6 +31,11 @@ class AppleLoginManager : NSObject{
         #endif
         
         return LocalURL!
+    }
+    
+    override init() {
+        super.init()
+        request.delegate = self
     }
     
     func setAppleLoginPresentationAnchorView(_ view: UIViewController) {
@@ -68,11 +78,13 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate, ASAuthorization
             //    User Email : wetaxmobile@gmail.com
             //    User Name : SmartWetax
             
-//            serverRequest.requestGETCheckId(requestUrl: "/user/userIdCheck/\(userIdentifier)")
+            self.requestDic["userEmail"] = userIdentifier
+            self.requestDic["userNickName"] = ""
+            self.requestDic["major1"] = ""
+            self.requestDic["major2"] = ""
+            self.requestDic["socialType"] = self.socialType
             
-            // 여기서 서버 요청이후 true/false 화면이동 (회원가입 유무 판단)
-//            self.delegate?.pushIdentifier(SignUpController.shared, userIdentifier)
-            
+            self.request.login("/user/login", self.requestDic) // 이후 memberYN으로 화면이동
         default:
             break
         }
@@ -81,6 +93,16 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate, ASAuthorization
     // Apple ID 연동 실패 시
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         // Handle error.
+    }
+    
+    
+    func memberYN(_ TF: Bool, _ requestDic: Dictionary<String, String>) {
+        print(#file , #function)
+        if TF { // 로그인 화면으로
+            self.delegate?.pushIdentifier(HomeController.shared, requestDic)
+        }else { // 회원가입 화면으로
+            self.delegate?.pushIdentifier(SignUpController.shared, requestDic)
+        }
     }
     
 }

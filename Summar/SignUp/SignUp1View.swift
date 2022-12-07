@@ -15,6 +15,7 @@ protocol SignUp1Delegate : class {
 }
 
 class SignUp1View : UIView, UITextFieldDelegate {
+    static let shared = SignUp1View()
     
     weak var delegate: SignUp1Delegate?
     
@@ -149,6 +150,18 @@ class SignUp1View : UIView, UITextFieldDelegate {
     
     @objc func nextAction(){
         self.delegate?.nextBtn(nickNameTextField.text!)
+        
+        // 초기화
+        nickNameTextField.text = ""
+        keyboardUpBtn.isEnabled = false
+        keyboardUpBtn.backgroundColor = UIColor.grayColor205
+        
+        sendBtn.isEnabled = false
+        sendBtn.backgroundColor = UIColor.grayColor205
+        
+        nickNameEnableLabel.text = ""
+        nickNameEnableLabel.textColor = .white
+        nickNameTextField.layer.borderColor = UIColor.white.cgColor
     }
     
     @objc func textFieldDidChange(_ textField: UITextField){

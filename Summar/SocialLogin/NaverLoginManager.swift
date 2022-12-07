@@ -9,18 +9,21 @@ import Foundation
 import NaverThirdPartyLogin
 import Alamofire
 
-class NaverLoginManager: NSObject {
+class NaverLoginManager: NSObject, ServerDelegate {
     
     weak var delegate: SocialSuccessDelegate?
+    let request = ServerRequest()
     
-    let serverRequest = ServerRequest()
     let naverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
     
+    let socialType = "NAVER"
+    var requestDic : Dictionary<String, String> = Dictionary<String, String>()
     
     override init() {
         super.init()
         print("naver init()")
         naverLoginInstance?.requestDeleteToken()
+        request.delegate = self
     }
     
     func naverLogin() {
@@ -82,12 +85,26 @@ extension NaverLoginManager: NaverThirdPartyLoginConnectionDelegate {
             print(object["nickname"] ?? nil)
             print(object["profile_image"] ?? nil)
             
-            let userIdentifier = object["id"] ?? ""
+            let userIdentifier = object["id"] as? String
             
-//            self.serverRequest.requestGETCheckId(requestUrl: "/user/userIdCheck/\(userIdentifier)")
-            // 여기서 서버 요청이후 true/false 화면이동 (회원가입 유무 판단)
-//            self.delegate?.pushIdentifier(SignUpController.shared, object["id"] as! String)
+            self.requestDic["userEmail"] = userIdentifier
+            self.requestDic["userNickName"] = ""
+            self.requestDic["major1"] = ""
+            self.requestDic["major2"] = ""
+            self.requestDic["socialType"] = self.socialType
+            
+            self.request.login("/user/login", self.requestDic) // 이후 memberYN으로 화면이동
+            
             
             }
       }
+    
+    func memberYN(_ TF: Bool,_ requestDic: Dictionary<String, String>) {
+        print(#file , #function)
+        if TF { // 로그인 화면으로
+            self.delegate?.pushIdentifier(HomeController.shared, requestDic)
+        }else { // 회원가입 화면으로
+            self.delegate?.pushIdentifier(SignUpController.shared, requestDic)
+        }
+    }
 }

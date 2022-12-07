@@ -14,6 +14,8 @@ protocol SignUp2Delegate : AnyObject {
 }
 
 class SignUp2View : UIView{
+    static let shared = SignUp2View()
+    
     let pickerData = ["" ,"인문계열" , "사회계열" , "교육계열" , "공학계열" , "자연계열" , "의약계열" , "예체능계열"]  // 피커뷰에 보여줄 테스트 데이터
     let majorName1 = ["" ,"언어ㆍ문학", "인문과학"] //인문계열
     let majorName2 = ["" ,"경영ㆍ경제", "사회과학", "법률"] //사회계열
@@ -276,6 +278,9 @@ class SignUp2View : UIView{
     
     @objc func nextAction(){
         self.delegate?.majorInput(major1: editMajor.text!, major2: majorTextField.text!)
+        
+        editMajor.text = ""
+        majorTextField.text = ""
     }
     
     
