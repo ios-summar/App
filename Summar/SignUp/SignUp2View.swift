@@ -144,21 +144,21 @@ class SignUp2View : UIView{
         editMajor.snp.makeConstraints{(make) in
             make.topMargin.equalTo(titleLabel.snp.bottom).offset(40)
             make.leftMargin.equalTo(25)
-            make.rightMargin.equalTo(-125)
+            make.rightMargin.equalTo(-25)
             make.height.equalTo(60)
         }
         
         majorTextField.snp.makeConstraints{(make) in
             make.topMargin.equalTo(editMajor.snp.bottom).offset(20)
             make.leftMargin.equalTo(25)
-            make.rightMargin.equalTo(-125)
+            make.rightMargin.equalTo(-25)
             make.height.equalTo(60)
         }
         
         sendBtn.snp.makeConstraints{(make) in
             make.bottomMargin.equalTo(-25)
             make.leftMargin.equalTo(25)
-            make.rightMargin.equalTo(-125)
+            make.rightMargin.equalTo(-25)
             make.height.equalTo(52)
         }
         

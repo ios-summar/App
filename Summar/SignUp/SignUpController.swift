@@ -9,7 +9,12 @@ import Foundation
 import UIKit
 import SnapKit
 
-class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate{
+class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, ServerDelegate{
+    func memberYN(_ TF: Bool, _ requestDic: Dictionary<String, String>) {
+        progressBar.progress = 1.0
+        animation(viewAnimation1: signUp2View, viewAnimation2: signUp3View)
+    }
+    
     static let shared = SignUpController()
     
     let helper : Helper = Helper()
@@ -22,13 +27,15 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate{
         progressBar.translatesAutoresizingMaskIntoConstraints = false
         progressBar.trackTintColor = .lightGray
         progressBar.progressTintColor = UIColor.summarColor2
-        progressBar.progress = 0.5
+        progressBar.progress = 0.3
         return progressBar
     }()
     
     
     let signUp1View = SignUp1View.shared
     let signUp2View = SignUp2View.shared
+    let signUp3View = SignUp3View.shared
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +45,7 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate{
         
         signUp1View.delegate = self
         signUp2View.delegate = self
+        request.delegate = self
 
 //        helper.showAlertAction(vc: self, message: "회원정보가 없어\n회원가입 화면으로 이동합니다.")
 //
@@ -58,6 +66,7 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate{
         print(#file , #function)
         self.signUp1View.removeFromSuperview()
         self.signUp2View.removeFromSuperview()
+        self.signUp3View.removeFromSuperview()
     }
     
     func layoutInit() {
@@ -81,7 +90,7 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate{
         requestDic["userNickName"] = nickName
         print("\(#line) requestDic => ", requestDic)
         
-        progressBar.progress = 1.0
+        progressBar.progress = 0.6
         animation(viewAnimation1: signUp1View, viewAnimation2: signUp2View)
     }
     
@@ -100,9 +109,9 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate{
     private func animation(viewAnimation1: UIView, viewAnimation2: UIView) {
         UIView.animate(withDuration: 0.5, animations: {
             viewAnimation1.frame.origin.x = -viewAnimation1.frame.width
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 viewAnimation1.removeFromSuperview()
-            }
+//            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 self.anima(viewAnimation2)
             }
@@ -118,17 +127,10 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate{
         view.snp.makeConstraints{(make) in
             make.top.equalTo(0)
             make.left.equalTo(0)
-            make.right.equalTo(100)
+            make.right.equalTo(0)
             make.bottom.equalTo(0)
         }
             
-        view.frame.origin.x = -100
-            
         }, completion: nil)
-    }
-    
-    @objc func btnAction(){
-        progressBar.progress = 1.0
-        animation(viewAnimation1: signUp1View, viewAnimation2: signUp2View)
     }
  }

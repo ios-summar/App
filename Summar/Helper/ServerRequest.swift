@@ -88,7 +88,7 @@ class ServerRequest: NSObject {
         request.timeoutInterval = 10
         
         // POST 로 보낼 정보
-        let params = requestDic
+        var params = requestDic
         
         // httpBody 에 parameters 추가
         do {
@@ -109,7 +109,10 @@ class ServerRequest: NSObject {
                 print(json["loginStatus"])
                 print(json["refreshToken"])
                 
+                params["loginStatus"] = json["loginStatus"]
+                
                 let loginStatus = json["loginStatus"]
+                
                 
                 if loginStatus == "로그인" {
                     self.delegate?.memberYN(true, params)
@@ -117,7 +120,7 @@ class ServerRequest: NSObject {
                     self.delegate?.memberYN(false, params)
                 }else if loginStatus == "회원가입완료" {
                     // 로그인후 홈화면으로
-                    print("회원가입 완료")
+                    self.delegate?.memberYN(true, params)
                 }
                 
             case .failure(let error):

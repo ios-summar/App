@@ -30,6 +30,7 @@ class StartIndexController : UIViewController {
         indexArr.append("시작화면")
         indexArr.append("소셜로그인")
         indexArr.append("회원가입")
+        indexArr.append("회원가입3")
         
         
         tableInit()
@@ -70,6 +71,8 @@ extension StartIndexController : UITableViewDelegate, UITableViewDataSource {
             pushScreen(SocialLoginController())
         case 2:
             pushScreen(SignUpController())
+        case 3:
+            pushScreen(SignUp3Controller())
         default:
             print("default")
         }
