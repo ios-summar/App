@@ -85,6 +85,7 @@ class SignUp2View : UIView{
         editMajor.backgroundColor = UIColor.textFieldColor
         editMajor.layer.cornerRadius = 4
         editMajor.placeholder = "전공 계열선택"
+        editMajor.attributedPlaceholder = NSAttributedString(string: "전공 계열선택", attributes: [NSAttributedString.Key.foregroundColor : UIColor.grayColor205])
         editMajor.addLeftPadding()
         editMajor.font = .systemFont(ofSize: 15)
         editMajor.textColor = .black
@@ -102,6 +103,7 @@ class SignUp2View : UIView{
         majorTextField.backgroundColor = UIColor.textFieldColor
         majorTextField.layer.cornerRadius = 4
         majorTextField.placeholder = "전공 학과선택"
+        majorTextField.attributedPlaceholder = NSAttributedString(string: "전공 학과선택", attributes: [NSAttributedString.Key.foregroundColor : UIColor.grayColor205])
         majorTextField.addLeftPadding()
         majorTextField.textColor = .black
         majorTextField.font = .systemFont(ofSize: 15)
@@ -136,7 +138,7 @@ class SignUp2View : UIView{
         helper.lineSpacing(titleLabel, 10) // lineSpacing
         
         titleLabel.snp.makeConstraints{(make) in
-            make.topMargin.equalTo(56)
+            make.topMargin.equalTo(30)
             make.leftMargin.equalTo(25)
 //            make.height.equalTo(24)
         }

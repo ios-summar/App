@@ -10,11 +10,21 @@ import UIKit
 
 class HomeController : UIViewController {
     static let shared = HomeController()
+
+    let homeView = HomeView.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.view.backgroundColor = .white
+        self.view.addSubview(homeView)
+        
+        // layout
+        homeView.snp.makeConstraints{(make) in
+            make.top.equalTo(0)
+            make.left.equalTo(0)
+            make.right.equalTo(0)
+            make.bottom.equalTo(0)
+        }
     }
     
     // 소셜로그인 로그아웃

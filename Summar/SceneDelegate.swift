@@ -48,6 +48,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //            GIDSignIn.sharedInstance.handle(URLContexts.first!.url)
 //        }
     }
+    
+    func changeRootVC(_ vc:UIViewController, animated: Bool) {
+        guard let window = self.window else { return }
+        window.rootViewController = vc // 전환
+        
+        UIView.transition(with: window, duration: 0.2, options: [.transitionCrossDissolve], animations: nil, completion: nil)
+      }
 
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.

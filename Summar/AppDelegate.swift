@@ -27,6 +27,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         KakaoLoginInit()
         NaverLoginInit()
         
+        if let userInfo = UserDefaults.standard.dictionary(forKey: "UserInfo") {
+            print(#file , #function)
+            print(userInfo)
+        }else {
+            print("UserInfo is nil")
+        }
+        
 //        let appleIDProvider = ASAuthorizationAppleIDProvider()
 //            appleIDProvider.getCredentialState(forUserID: /* 로그인에 사용한 User Identifier */) { (credentialState, error) in
 //                switch credentialState {

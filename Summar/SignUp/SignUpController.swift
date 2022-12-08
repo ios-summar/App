@@ -11,6 +11,8 @@ import SnapKit
 
 class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, ServerDelegate{
     func memberYN(_ TF: Bool, _ requestDic: Dictionary<String, String>) {
+        self.arrowBackWard.removeFromSuperview()
+        
         progressBar.progress = 1.0
         animation(viewAnimation1: signUp2View, viewAnimation2: signUp3View)
     }
@@ -29,6 +31,13 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, Ser
         progressBar.progressTintColor = UIColor.summarColor2
         progressBar.progress = 0.3
         return progressBar
+    }()
+    
+    let arrowBackWard : UIButton = {
+        let arrowBackWard = UIButton()
+        arrowBackWard.setImage(UIImage(systemName: "arrow.backward"), for: .normal)
+        arrowBackWard.addTarget(self, action: #selector(forwardAction), for: .touchUpInside)
+        return arrowBackWard
     }()
     
     
@@ -56,6 +65,7 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, Ser
         print(#file , #function)
         view.addSubview(signUp1View)
         view.addSubview(progressBar)
+        view.addSubview(arrowBackWard)
         
         helper.showAlertAction(vc: self, message: "회원정보가 없어\n회원가입 화면으로 이동합니다.")
         
@@ -77,9 +87,17 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, Ser
             make.height.equalTo(5)
         }
         
+        arrowBackWard.snp.makeConstraints{(make) in
+            make.topMargin.equalTo(progressBar.snp.bottom).offset(30)
+            make.leftMargin.equalTo(10)
+//            make.rightMargin.equalTo(-10)
+            make.width.equalTo(25)
+            make.height.equalTo(25)
+        }
+        
         // layout
         signUp1View.snp.makeConstraints{(make) in
-            make.top.equalTo(progressBar.snp.bottom).offset(20)
+            make.top.equalTo(arrowBackWard.snp.bottom).offset(10)
             make.left.equalTo(0)
             make.right.equalTo(0)
             make.bottom.equalTo(0)
@@ -125,12 +143,23 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, Ser
             
         // layout
         view.snp.makeConstraints{(make) in
-            make.top.equalTo(0)
+            make.top.equalTo(self.arrowBackWard.snp.bottom).offset(10)
             make.left.equalTo(0)
             make.right.equalTo(0)
             make.bottom.equalTo(0)
         }
             
         }, completion: nil)
+    }
+    
+    @objc func forwardAction() {
+        print("progressBar.progress => ", progressBar.progress)
+        
+        if progressBar.progress == 0.3{
+            self.navigationController?.popViewController(animated: true)
+        } else if progressBar.progress == 0.6{
+            progressBar.progress = 0.3
+            animation(viewAnimation1: signUp2View, viewAnimation2: signUp1View)
+        }
     }
  }

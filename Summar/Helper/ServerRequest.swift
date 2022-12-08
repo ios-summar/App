@@ -13,7 +13,6 @@ protocol ServerDelegate : AnyObject {
 }
 
 class ServerRequest: NSObject {
-    
     weak var delegate : ServerDelegate?
     
     let serverURL = { () -> String in
@@ -29,40 +28,6 @@ class ServerRequest: NSObject {
         
         return LocalURL!
     }
-    
-    
-    //    func requestGETCheckId(requestUrl : String!){
-    //        // URL 객체 정의
-    ////                let url = URL(string: serverURL()+requestUrl)
-    //                let urlStr = self.serverURL()+requestUrl
-    //                print(urlStr)
-    //                let encoded = urlStr.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-    //                let myURL = URL(string: encoded!)
-    //                // URLRequest 객체를 정의
-    //                var request = URLRequest(url: myURL!)
-    //                request.httpMethod = "GET"
-    //
-    //                // HTTP 메시지 헤더
-    //                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    //                request.addValue("application/json", forHTTPHeaderField: "Accept")
-    //                let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-    //                    // 서버가 응답이 없거나 통신이 실패
-    //                    if let e = error {
-    ////                        self.helper.showAlert(vc: self, message: "네트워크 상태를 확인해주세요.\n\(e)")
-    //                    }
-    //
-    //                    var responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-    //                    print(responseString!)
-    //                    DispatchQueue.main.async {
-    //                        if responseString! == "true"{ // 회원가입 이력 있음
-    //                            self.delegate?.pushScreen(HomeController())
-    //                        }else { // 회원가입 이력 없음
-    //                            self.delegate?.pushScreen(SignUpController())
-    //                        }
-    //                    }
-    //                }
-    //                task.resume()
-    //    }
     
     func requestGet(_ url: String) {
         let url = "http://13.209.114.45:8080/api/v1\(url)"
@@ -114,12 +79,31 @@ class ServerRequest: NSObject {
                 let loginStatus = json["loginStatus"]
                 
                 
-                if loginStatus == "로그인" {
+                if loginStatus == "로그인"{
+                    //UserDefault에 회원정보 저장
+                    print(#line ,type(of: params["userEmail"]))
+                    
+                    UserDefaults.standard.set(params["userEmail"], forKey: "userEmail")
+//                    UserDefaults.standard.set(params["userNickName"], forKey: "userNickName")
+//                    UserDefaults.standard.set(params["major1"], forKey: "major1")
+//                    UserDefaults.standard.set(params["major2"], forKey: "major2")
+                    UserDefaults.standard.set(params["socialType"], forKey: "socialType")
+                    
                     self.delegate?.memberYN(true, params)
-                }else if loginStatus == "회원가입" {
+                } else if loginStatus == "회원가입"{
                     self.delegate?.memberYN(false, params)
-                }else if loginStatus == "회원가입완료" {
-                    // 로그인후 홈화면으로
+                } else if loginStatus == "회원가입완료"{
+                    print(#line ,type(of: params["userEmail"]))
+                    
+                    //UserDefault에 회원정보 저장
+                    UserDefaults.standard.set(params["userEmail"], forKey: "userEmail")
+                    UserDefaults.standard.set(params["userNickName"], forKey: "userNickName")
+                    UserDefaults.standard.set(params["major1"], forKey: "major1")
+                    UserDefaults.standard.set(params["major2"], forKey: "major2")
+                    UserDefaults.standard.set(params["socialType"], forKey: "socialType")
+                    
+                    
+                    
                     self.delegate?.memberYN(true, params)
                 }
                 

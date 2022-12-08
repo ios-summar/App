@@ -60,6 +60,7 @@ class SignUp1View : UIView, UITextFieldDelegate {
         nickNameTextField.backgroundColor = UIColor.textFieldColor
         nickNameTextField.layer.cornerRadius = 4
         nickNameTextField.placeholder = "영문 또는 한글 2~8자"
+        nickNameTextField.attributedPlaceholder = NSAttributedString(string: "영문 또는 한글 2~8자", attributes: [NSAttributedString.Key.foregroundColor : UIColor.grayColor205])
         nickNameTextField.addLeftPadding()
         nickNameTextField.font = .systemFont(ofSize: 15)
         nickNameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -149,8 +150,6 @@ class SignUp1View : UIView, UITextFieldDelegate {
     }
     
     @objc func nextAction(){
-        self.delegate?.nextBtn(nickNameTextField.text!)
-        
         // 초기화
         nickNameTextField.text = ""
         keyboardUpBtn.isEnabled = false
@@ -162,6 +161,9 @@ class SignUp1View : UIView, UITextFieldDelegate {
         nickNameEnableLabel.text = ""
         nickNameEnableLabel.textColor = .white
         nickNameTextField.layer.borderColor = UIColor.white.cgColor
+        
+        self.delegate?.nextBtn(nickNameTextField.text!)
+
     }
     
     @objc func textFieldDidChange(_ textField: UITextField){

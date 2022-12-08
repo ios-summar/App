@@ -38,7 +38,8 @@ class SocialLoginController : UIViewController, SocialLoginDelegate {
             self.navigationController?.pushViewController(svc, animated: true)
         }else if VC == HomeController.shared {
             let svc = HomeController.shared
-            self.navigationController?.pushViewController(svc, animated: true)
+//            self.navigationController?.pushViewController(svc, animated: true)
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(svc, animated: false)
         }
     }
 }
