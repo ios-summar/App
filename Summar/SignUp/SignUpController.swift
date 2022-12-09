@@ -11,7 +11,7 @@ import SnapKit
 
 class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, ServerDelegate{
     func memberYN(_ TF: Bool, _ requestDic: Dictionary<String, String>) {
-        progressBar.progress = 1.0
+        progressBarAnimate(1.0)
         animation(viewAnimation1: signUp2View, viewAnimation2: signUp3View)
         
         self.arrowBackWard.removeFromSuperview()
@@ -108,7 +108,7 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, Ser
         requestDic["userNickName"] = nickName
         print("\(#line) requestDic => ", requestDic)
         
-        progressBar.progress = 0.6
+        progressBarAnimate(0.6)
         animation(viewAnimation1: signUp1View, viewAnimation2: signUp2View)
     }
     
@@ -163,6 +163,12 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, Ser
         }, completion: nil)
     }
     
+    func progressBarAnimate(_ f: Float){
+        UIView.animate(withDuration: 1) {
+            self.progressBar.setProgress(f, animated: true)
+        }
+    }
+    
     // MARK : - arrowBackWard Action progressBar.progress로 분기처리 view만 갈아끼움
     @objc func forwardAction() {
         print("progressBar.progress => ", progressBar.progress)
@@ -170,7 +176,7 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, Ser
         if progressBar.progress == 0.3{
             self.navigationController?.popViewController(animated: true)
         } else if progressBar.progress == 0.6{
-            progressBar.progress = 0.3
+            progressBarAnimate(0.3)
             animation(viewAnimation1: signUp2View, viewAnimation2: signUp1View)
         }
     }
