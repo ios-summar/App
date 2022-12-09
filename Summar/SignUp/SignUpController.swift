@@ -10,6 +10,14 @@ import UIKit
 import SnapKit
 
 class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, ServerDelegate{
+    func nextBtn(_ nickName: String) {
+        requestDic["userNickName"] = nickName
+        print("\(#line) requestDic => ", requestDic)
+        
+        progressBarAnimate(0.6)
+        animation(viewAnimation1: signUp1View, viewAnimation2: signUp2View)
+    }
+    
     func memberYN(_ TF: Bool, _ requestDic: Dictionary<String, String>) {
         progressBarAnimate(1.0)
         animation(viewAnimation1: signUp2View, viewAnimation2: signUp3View)
@@ -102,14 +110,6 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, Ser
             make.right.equalTo(0)
             make.bottom.equalTo(0)
         }
-    }
-    
-    func nextBtn(_ nickName: String) {
-        requestDic["userNickName"] = nickName
-        print("\(#line) requestDic => ", requestDic)
-        
-        progressBarAnimate(0.6)
-        animation(viewAnimation1: signUp1View, viewAnimation2: signUp2View)
     }
     
     // 최종 회원가입

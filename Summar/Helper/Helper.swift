@@ -81,16 +81,24 @@ extension UITextField {
 }
 
 extension UIColor {
+    //Main Color
     static var summarColor1 = UIColor.init(red: 31/255, green: 65/255, blue: 185/255, alpha: 1)
     static var summarColor2 = UIColor.init(red: 53/255, green: 97/255, blue: 254/255, alpha: 1)
+    
+    //Social Login COlor
     static var kakaoColor = UIColor.init(red: 250/255, green: 227/255, blue: 0/255, alpha: 1)
     static var appleColor = UIColor.init(red: 52/255, green: 52/255, blue: 52/255, alpha: 1)
     static var naverColor = UIColor.init(red: 45/255, green: 180/255, blue: 0/255, alpha: 1)
     static var googleColor = UIColor.init(red: 245/255, green: 86/255, blue: 73/255, alpha: 1)
+    
+    //Gray Color
     static var grayColor245 = UIColor.init(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
     static var grayColor205 = UIColor.init(red: 205/255, green: 205/255, blue: 205/255, alpha: 1)
     static var grayColor197 = UIColor.init(red: 197/255, green: 197/255, blue: 197/255, alpha: 1)
     static var textFieldColor = UIColor.init(red: 243/255, green: 246/255, blue: 255/255, alpha: 1)
+    
+    //HomeView
+    static var homeTitleColor = UIColor.init(red: 44/255, green: 80/255, blue: 206/255, alpha: 1)
 }
 
 extension String {

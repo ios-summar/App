@@ -17,14 +17,19 @@ class HomeController : UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.view.addSubview(homeView)
+//        homeView.layer.borderColor = UIColor.blue.cgColor
+//        homeView.layer.borderWidth = 5
+//        homeView.backgroundColor = .grayColor197
         
         // layout
         homeView.snp.makeConstraints{(make) in
-            make.top.equalTo(0)
-            make.left.equalTo(0)
-            make.right.equalTo(0)
-            make.bottom.equalTo(0)
+            make.topMargin.equalTo(self.view.safeAreaInsets.top).offset(10)
+            make.leftMargin.equalTo(0)
+            make.rightMargin.equalTo(0)
+            make.height.equalTo(50)
         }
+        
+        
     }
     
     // 소셜로그인 로그아웃

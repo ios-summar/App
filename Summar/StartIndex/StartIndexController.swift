@@ -27,7 +27,7 @@ class StartIndexController : UIViewController {
     }
     
     func indexAdd(){
-        indexArr.append("시작화면")
+        indexArr.append("홈화면")
         indexArr.append("소셜로그인")
         indexArr.append("회원가입")
         indexArr.append("회원가입3")
@@ -66,7 +66,7 @@ extension StartIndexController : UITableViewDelegate, UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            pushScreen(StartController())
+            pushScreen(HomeController())
         case 1:
             pushScreen(SocialLoginController())
         case 2:
