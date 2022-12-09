@@ -11,10 +11,10 @@ import SnapKit
 
 class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, ServerDelegate{
     func memberYN(_ TF: Bool, _ requestDic: Dictionary<String, String>) {
-        self.arrowBackWard.removeFromSuperview()
-        
         progressBar.progress = 1.0
         animation(viewAnimation1: signUp2View, viewAnimation2: signUp3View)
+        
+        self.arrowBackWard.removeFromSuperview()
     }
     
     static let shared = SignUpController()
@@ -140,18 +140,30 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, Ser
     func anima(_ view: UIView){
         UIView.transition(with: self.view, duration: 0.25, options: [.transitionCrossDissolve], animations: {
             self.view.addSubview(view)
+         
             
-        // layout
-        view.snp.makeConstraints{(make) in
-            make.top.equalTo(self.arrowBackWard.snp.bottom).offset(10)
-            make.left.equalTo(0)
-            make.right.equalTo(0)
-            make.bottom.equalTo(0)
-        }
+            // arrowBackWard Remove로 인한 분기처리
+            if view == self.signUp3View {
+                view.snp.makeConstraints{(make) in
+                    make.top.equalTo(30)
+                    make.left.equalTo(0)
+                    make.right.equalTo(0)
+                    make.bottom.equalTo(0)
+                }
+            }else {
+                // layout
+                view.snp.makeConstraints{(make) in
+                    make.top.equalTo(self.arrowBackWard.snp.bottom).offset(10)
+                    make.left.equalTo(0)
+                    make.right.equalTo(0)
+                    make.bottom.equalTo(0)
+                }
+            }
             
         }, completion: nil)
     }
     
+    // MARK : - arrowBackWard Action progressBar.progress로 분기처리 view만 갈아끼움
     @objc func forwardAction() {
         print("progressBar.progress => ", progressBar.progress)
         

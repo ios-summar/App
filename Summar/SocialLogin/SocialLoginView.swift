@@ -50,7 +50,7 @@ class SocialLoginView : UIView, SocialSuccessDelegate{
         label1.text = "나만의 커리어를 위한\n써머리 만들기"
         label1.textAlignment = .center
         label1.textColor = UIColor.summarColor1
-        label1.font = .boldSystemFont(ofSize: 24)
+        label1.font = .boldSystemFont(ofSize: 28)
         label1.numberOfLines = 0
         label1.sizeToFit()
         return label1
