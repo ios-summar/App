@@ -97,8 +97,10 @@ extension UIColor {
     static var grayColor197 = UIColor.init(red: 197/255, green: 197/255, blue: 197/255, alpha: 1)
     static var textFieldColor = UIColor.init(red: 243/255, green: 246/255, blue: 255/255, alpha: 1)
     
-    //HomeView
+    //HomeController
     static var homeTitleColor = UIColor.init(red: 44/255, green: 80/255, blue: 206/255, alpha: 1)
+    static var UIBarColor = UIColor.init(red: 240/255, green: 242/255, blue: 246/255, alpha: 1)
+    
 }
 
 extension String {
