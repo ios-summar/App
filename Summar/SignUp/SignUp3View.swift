@@ -52,7 +52,7 @@ class SignUp3View : UIView {
     
     let signUpImage : UIImageView = {
         let SignUpImage = UIImageView()
-        SignUpImage.image = UIImage(named: "SignUpImage")
+        SignUpImage.image = UIImage(named: "SignUpImage 300x249.23")
         SignUpImage.sizeToFit()
         return SignUpImage
     }()
@@ -94,8 +94,8 @@ class SignUp3View : UIView {
         signUpImage.snp.makeConstraints{(make) in
             make.topMargin.equalTo(subTitle.snp.bottom).offset(70)
             make.centerX.equalTo(subTitle.snp.centerX)
-            make.width.equalTo(btnWidth)
-            make.height.equalTo(btnHeight)
+            make.width.equalTo(300)
+            make.height.equalTo(249.23)
         }
         
         goBtn.snp.makeConstraints{(make) in

@@ -174,7 +174,7 @@ class SignUp1View : UIView, UITextFieldDelegate {
         if textField.text?.count ?? 0 >= 1 {
             if helper.checkNickNamePolicy(text: textField.text!) { // 한글, 영어, 숫자임
                 // GET방식으로 닉네임 중복체크
-                requestGETBOOL(requestUrl: "/user/nicknameCheck/\(textField.text!)")
+                requestGETBOOL(requestUrl: "/user/nicknameCheck?nickname=\(textField.text!)")
             }else { // 한글, 영어, 숫자가 아님.
                 enableNickname(enable: false, content: "닉네임은 한글, 영어, 숫자만 사용 가능합니다.")
             }

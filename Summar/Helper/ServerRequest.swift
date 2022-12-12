@@ -55,6 +55,8 @@ class ServerRequest: NSObject {
         // POST 로 보낼 정보
         var params = requestDic
         
+        print("/login params => \(params)")
+        
         // httpBody 에 parameters 추가
         do {
             try request.httpBody = JSONSerialization.data(withJSONObject: params, options: [])
@@ -83,11 +85,7 @@ class ServerRequest: NSObject {
                     //UserDefault에 회원정보 저장
                     print(#line ,type(of: params["userEmail"]))
                     
-                    UserDefaults.standard.set(params["userEmail"], forKey: "userEmail")
-//                    UserDefaults.standard.set(params["userNickName"], forKey: "userNickName")
-//                    UserDefaults.standard.set(params["major1"], forKey: "major1")
-//                    UserDefaults.standard.set(params["major2"], forKey: "major2")
-                    UserDefaults.standard.set(params["socialType"], forKey: "socialType")
+                    UserDefaults.standard.set(json, forKey: "UserInfo")
                     
                     self.delegate?.memberYN(true, params)
                 } else if loginStatus == "회원가입"{
@@ -96,12 +94,13 @@ class ServerRequest: NSObject {
                     print(#line ,type(of: params["userEmail"]))
                     
                     //UserDefault에 회원정보 저장
-                    UserDefaults.standard.set(params["userEmail"], forKey: "userEmail")
-                    UserDefaults.standard.set(params["userNickName"], forKey: "userNickName")
-                    UserDefaults.standard.set(params["major1"], forKey: "major1")
-                    UserDefaults.standard.set(params["major2"], forKey: "major2")
-                    UserDefaults.standard.set(params["socialType"], forKey: "socialType")
+//                    UserDefaults.standard.set(params["userEmail"], forKey: "userEmail")
+//                    UserDefaults.standard.set(params["usernickName"], forKey: "usernickName")
+//                    UserDefaults.standard.set(params["major1"], forKey: "major1")
+//                    UserDefaults.standard.set(params["major2"], forKey: "major2")
+//                    UserDefaults.standard.set(params["socialType"], forKey: "socialType")
                     
+                    UserDefaults.standard.set(params, forKey: "UserInfo")
                     
                     
                     self.delegate?.memberYN(true, params)

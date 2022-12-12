@@ -25,6 +25,7 @@
 		A28EC0DC28CA1BC000F5BF98 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28EC0DB28CA1BC000F5BF98 /* SceneDelegate.swift */; };
 		A28EC0E328CA1BC100F5BF98 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A28EC0E228CA1BC100F5BF98 /* Assets.xcassets */; };
 		A28EC0E628CA1BC100F5BF98 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A28EC0E428CA1BC100F5BF98 /* LaunchScreen.storyboard */; };
+		A2933E7029472EB100B84C5B /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2933E6F29472EB100B84C5B /* TitleView.swift */; };
 		A2A769A228FBF742003EE3CD /* StartController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A769A128FBF742003EE3CD /* StartController.swift */; };
 		A2A769A428FBF74F003EE3CD /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A769A328FBF74F003EE3CD /* StartView.swift */; };
 		A2ADEBA728D081050018A358 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ADEBA628D081050018A358 /* Helper.swift */; };
@@ -64,6 +65,7 @@
 		A28EC0E228CA1BC100F5BF98 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A28EC0E528CA1BC100F5BF98 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A28EC0E728CA1BC100F5BF98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A2933E6F29472EB100B84C5B /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
 		A2A769A128FBF742003EE3CD /* StartController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartController.swift; sourceTree = "<group>"; };
 		A2A769A328FBF74F003EE3CD /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
 		A2ADEBA628D081050018A358 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 			isa = PBXGroup;
 			children = (
 				A2ECB36429448CD10005D88C /* TabbarHomeController.swift */,
+				A2933E6F29472EB100B84C5B /* TitleView.swift */,
 			);
 			path = 1TabbarHome;
 			sourceTree = "<group>";
@@ -370,6 +373,7 @@
 				040D79FA2918FA3F0018B6A0 /* KakaoLoginManager.swift in Sources */,
 				A2ECB36929448E9F0005D88C /* TabbarFeed.swift in Sources */,
 				04FB196929122B5C00E9EE54 /* HomeController.swift in Sources */,
+				A2933E7029472EB100B84C5B /* TitleView.swift in Sources */,
 				040D7A002918FB530018B6A0 /* GoogleLoginManager.swift in Sources */,
 				04FB196D29122B7B00E9EE54 /* HomeViewModel.swift in Sources */,
 				040D79FE2918FB4B0018B6A0 /* NaverLoginManager.swift in Sources */,

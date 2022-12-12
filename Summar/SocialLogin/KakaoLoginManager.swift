@@ -57,7 +57,7 @@ class KakaoLoginManager : NSObject, ServerDelegate {
             if let id = User?.id {
                 print("id => ", id)
                 self.requestDic["userEmail"] = String(id)
-                self.requestDic["userNickName"] = ""
+                self.requestDic["userNickname"] = ""
                 self.requestDic["major1"] = ""
                 self.requestDic["major2"] = ""
                 self.requestDic["socialType"] = self.socialType

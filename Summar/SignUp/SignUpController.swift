@@ -11,7 +11,7 @@ import SnapKit
 
 class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, ServerDelegate{
     func nextBtn(_ nickName: String) {
-        requestDic["userNickName"] = nickName
+        requestDic["userNickname"] = nickName
         print("\(#line) requestDic => ", requestDic)
         
         progressBarAnimate(0.6)

@@ -12,24 +12,22 @@ import SnapKit
 class TabbarHomeController : UIViewController {
     static let shared = TabbarHomeController()
     
-    let label : UILabel = {
-        let label = UILabel()
-        label.text = "홈"
-        label.textColor = .black
-        label.numberOfLines = 0
-        return label
-    }()
+    let titleView = TitleView.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.addSubview(label)
+        self.view.addSubview(titleView)
+        titleView.layer.borderColor = UIColor.blue.cgColor
+        titleView.layer.borderWidth = 5
+        titleView.backgroundColor = .grayColor197
+        self.view.backgroundColor = .magenta
         
-        label.snp.makeConstraints{(make) in
-            make.centerX.equalTo(self.view.safeAreaLayoutGuide.snp.centerX)
-            make.centerY.equalTo(self.view.safeAreaLayoutGuide.snp.centerY)
-            make.width.equalTo(300)
-            make.width.equalTo(300)
+        titleView.snp.makeConstraints{(make) in
+            make.topMargin.equalTo(self.view.safeAreaInsets.top).offset(10)
+            make.leftMargin.equalTo(0)
+            make.rightMargin.equalTo(0)
+            make.height.equalTo(50)
         }
     }
 }

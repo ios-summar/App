@@ -16,7 +16,13 @@ class HomeController : UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        self.view.addSubview(homeView)
+//        self.view.addSubview(homeView)
+        
+        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
+            print("UserInfo => ", value)
+        }else {
+            print("userInfo nil")
+        }
         
         UITabBar.appearance().barTintColor = UIColor.summarColor1
         UITabBar.appearance().backgroundColor = UIColor.UIBarColor
@@ -27,13 +33,12 @@ class HomeController : UITabBarController {
 //        homeView.backgroundColor = .grayColor197
         
         // layout
-        homeView.snp.makeConstraints{(make) in
-            make.topMargin.equalTo(self.view.safeAreaInsets.top).offset(10)
-            make.leftMargin.equalTo(0)
-            make.rightMargin.equalTo(0)
-            make.height.equalTo(50)
-        }
-        
+//        homeView.snp.makeConstraints{(make) in
+//            make.topMargin.equalTo(self.view.safeAreaInsets.top).offset(10)
+//            make.leftMargin.equalTo(0)
+//            make.rightMargin.equalTo(0)
+//            make.height.equalTo(50)
+//        }
         
     }
     
@@ -41,9 +46,9 @@ class HomeController : UITabBarController {
           viewControllers = [
             createNavController(for: TabbarHomeController.shared, title: NSLocalizedString("홈", comment: ""), image: UIImage(systemName: "house")!),
             createNavController(for: TabbarClipping.shared, title: NSLocalizedString("스크랩보기", comment: ""), image: UIImage(systemName: "newspaper")!),
-              createNavController(for: TabbarFeed.shared, title: NSLocalizedString("피드작성", comment: ""), image: UIImage(systemName: "square.and.pencil")!),
-              createNavController(for: TabbarSearch.shared, title: NSLocalizedString("검색", comment: ""), image: UIImage(systemName: "magnifyingglass")!),
-              createNavController(for: TabbarMyInfo.shared, title: NSLocalizedString("마이 써머리", comment: ""), image: UIImage(systemName: "person")!)
+            createNavController(for: TabbarFeed.shared, title: NSLocalizedString("피드작성", comment: ""), image: UIImage(systemName: "square.and.pencil")!),
+            createNavController(for: TabbarSearch.shared, title: NSLocalizedString("검색", comment: ""), image: UIImage(systemName: "magnifyingglass")!),
+            createNavController(for: TabbarMyInfo.shared, title: NSLocalizedString("마이 써머리", comment: ""), image: UIImage(systemName: "person")!)
           ]
     }
     
@@ -56,23 +61,6 @@ class HomeController : UITabBarController {
         return navController
     }
     
-    // 소셜로그인 로그아웃
-    @IBAction func btnAction(_ sender: Any) {
-        let objTitle = (sender as? UIButton)?.titleLabel?.text!
-        
-        switch objTitle {
-        case "카카오 로그아웃":
-            print("1")
-        case "애플계정 로그아웃":
-            print("2")
-        case "네이버로 로그아웃":
-            print("3")
-        case "구글 로그아웃":
-            print("4")
-        default:
-            print("default")
-        }
-    }
 }
 
 

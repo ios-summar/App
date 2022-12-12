@@ -1,5 +1,5 @@
 //
-//  HomeView.swift
+//  TitleView.swift
 //  Summar
 //
 //  Created by mac on 2022/11/02.
@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 
 
-class HomeView: UIView{
-    static let shared = HomeView()
+class TitleView: UIView{
+    static let shared = TitleView()
     
     let title : UIImageView = {
         let title = UIImageView()
