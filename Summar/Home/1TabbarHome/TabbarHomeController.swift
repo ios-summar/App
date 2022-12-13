@@ -14,20 +14,37 @@ class TabbarHomeController : UIViewController {
     
     let titleView = TitleView.shared
     
+    let scrollView : UIScrollView = {
+        let view = UIScrollView()
+        view.backgroundColor = .white
+        view.layer.borderColor = UIColor.white.cgColor
+        view.layer.borderWidth = 5
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.addSubview(titleView)
-        titleView.layer.borderColor = UIColor.blue.cgColor
+        self.view.addSubview(scrollView)
+        titleView.layer.borderColor = UIColor.white.cgColor
         titleView.layer.borderWidth = 5
-        titleView.backgroundColor = .grayColor197
-        self.view.backgroundColor = .magenta
+        titleView.backgroundColor = .white
+        self.view.backgroundColor = .grayColor197
         
         titleView.snp.makeConstraints{(make) in
             make.topMargin.equalTo(self.view.safeAreaInsets.top).offset(10)
             make.leftMargin.equalTo(0)
             make.rightMargin.equalTo(0)
-            make.height.equalTo(50)
+            make.height.equalTo(40)
+        }
+        
+        scrollView.snp.makeConstraints{(make) in
+            make.topMargin.equalTo(titleView.snp.bottom)
+            make.leftMargin.equalTo(0)
+            make.rightMargin.equalTo(0)
+            make.height.equalTo(500)
         }
     }
 }

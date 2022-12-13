@@ -11,12 +11,9 @@ import UIKit
 class HomeController : UITabBarController {
     static let shared = HomeController()
 
-    let homeView = HomeView.shared
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-//        self.view.addSubview(homeView)
         
         if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
             print("UserInfo => ", value)
@@ -27,18 +24,6 @@ class HomeController : UITabBarController {
         UITabBar.appearance().barTintColor = UIColor.summarColor1
         UITabBar.appearance().backgroundColor = UIColor.UIBarColor
         setupVCs()
-        
-//        homeView.layer.borderColor = UIColor.blue.cgColor
-//        homeView.layer.borderWidth = 5
-//        homeView.backgroundColor = .grayColor197
-        
-        // layout
-//        homeView.snp.makeConstraints{(make) in
-//            make.topMargin.equalTo(self.view.safeAreaInsets.top).offset(10)
-//            make.leftMargin.equalTo(0)
-//            make.rightMargin.equalTo(0)
-//            make.height.equalTo(50)
-//        }
         
     }
     
@@ -56,8 +41,7 @@ class HomeController : UITabBarController {
         let navController = UINavigationController(rootViewController:  rootViewController)
         navController.tabBarItem.title = title
         navController.tabBarItem.image = image
-        navController.navigationBar.prefersLargeTitles = true
-//        rootViewController.navigationItem.title = title
+        navController.isNavigationBarHidden = true
         return navController
     }
     
