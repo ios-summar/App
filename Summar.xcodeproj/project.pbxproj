@@ -15,6 +15,7 @@
 		04852F9228FE72E400A3EED9 /* SocialLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04852F9128FE72E400A3EED9 /* SocialLoginView.swift */; };
 		04904BDC290A5D96004ED5ED /* SignUp3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04904BDB290A5D96004ED5ED /* SignUp3View.swift */; };
 		04A69BD72907CFAE00EF7133 /* SignUp2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A69BD62907CFAE00EF7133 /* SignUp2View.swift */; };
+		04B864E529494D0600D814D9 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B864E429494D0600D814D9 /* HomeView.swift */; };
 		04CCEAFD2910A61D009DBE05 /* ServerRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CCEAFC2910A61D009DBE05 /* ServerRequest.swift */; };
 		04CCEAFF2910A6EC009DBE05 /* Network.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04CCEAFE2910A6EC009DBE05 /* Network.plist */; };
 		04D4448328FE356400C7C44F /* StartIndexController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D4448228FE356400C7C44F /* StartIndexController.swift */; };
@@ -49,6 +50,7 @@
 		04852F9128FE72E400A3EED9 /* SocialLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginView.swift; sourceTree = "<group>"; };
 		04904BDB290A5D96004ED5ED /* SignUp3View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp3View.swift; sourceTree = "<group>"; };
 		04A69BD62907CFAE00EF7133 /* SignUp2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp2View.swift; sourceTree = "<group>"; };
+		04B864E429494D0600D814D9 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		04CCEAFC2910A61D009DBE05 /* ServerRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerRequest.swift; sourceTree = "<group>"; };
 		04CCEAFE2910A6EC009DBE05 /* Network.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Network.plist; sourceTree = "<group>"; };
 		04D4448228FE356400C7C44F /* StartIndexController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartIndexController.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 			children = (
 				A2ECB36429448CD10005D88C /* TabbarHomeController.swift */,
 				A2933E6F29472EB100B84C5B /* TitleView.swift */,
+				04B864E429494D0600D814D9 /* HomeView.swift */,
 			);
 			path = 1TabbarHome;
 			sourceTree = "<group>";
@@ -365,6 +368,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04B864E529494D0600D814D9 /* HomeView.swift in Sources */,
 				A2A769A228FBF742003EE3CD /* StartController.swift in Sources */,
 				A28EC0DA28CA1BC000F5BF98 /* AppDelegate.swift in Sources */,
 				040D79FA2918FA3F0018B6A0 /* KakaoLoginManager.swift in Sources */,
