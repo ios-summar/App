@@ -16,6 +16,7 @@
 		04904BDC290A5D96004ED5ED /* SignUp3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04904BDB290A5D96004ED5ED /* SignUp3View.swift */; };
 		04A69BD72907CFAE00EF7133 /* SignUp2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A69BD62907CFAE00EF7133 /* SignUp2View.swift */; };
 		04B864E529494D0600D814D9 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B864E429494D0600D814D9 /* HomeView.swift */; };
+		04B864F1294AEAB400D814D9 /* HomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B864EF294AEAB400D814D9 /* HomeCollectionViewCell.swift */; };
 		04CCEAFD2910A61D009DBE05 /* ServerRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CCEAFC2910A61D009DBE05 /* ServerRequest.swift */; };
 		04CCEAFF2910A6EC009DBE05 /* Network.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04CCEAFE2910A6EC009DBE05 /* Network.plist */; };
 		04D4448328FE356400C7C44F /* StartIndexController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D4448228FE356400C7C44F /* StartIndexController.swift */; };
@@ -51,6 +52,7 @@
 		04904BDB290A5D96004ED5ED /* SignUp3View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp3View.swift; sourceTree = "<group>"; };
 		04A69BD62907CFAE00EF7133 /* SignUp2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp2View.swift; sourceTree = "<group>"; };
 		04B864E429494D0600D814D9 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		04B864EF294AEAB400D814D9 /* HomeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewCell.swift; sourceTree = "<group>"; };
 		04CCEAFC2910A61D009DBE05 /* ServerRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerRequest.swift; sourceTree = "<group>"; };
 		04CCEAFE2910A6EC009DBE05 /* Network.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Network.plist; sourceTree = "<group>"; };
 		04D4448228FE356400C7C44F /* StartIndexController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartIndexController.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 				A2ECB36429448CD10005D88C /* TabbarHomeController.swift */,
 				A2933E6F29472EB100B84C5B /* TitleView.swift */,
 				04B864E429494D0600D814D9 /* HomeView.swift */,
+				04B864EF294AEAB400D814D9 /* HomeCollectionViewCell.swift */,
 			);
 			path = 1TabbarHome;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				A2ECB36929448E9F0005D88C /* TabbarFeed.swift in Sources */,
 				04FB196929122B5C00E9EE54 /* HomeController.swift in Sources */,
 				A2933E7029472EB100B84C5B /* TitleView.swift in Sources */,
+				04B864F1294AEAB400D814D9 /* HomeCollectionViewCell.swift in Sources */,
 				040D7A002918FB530018B6A0 /* GoogleLoginManager.swift in Sources */,
 				04FB196D29122B7B00E9EE54 /* HomeViewModel.swift in Sources */,
 				040D79FE2918FB4B0018B6A0 /* NaverLoginManager.swift in Sources */,
