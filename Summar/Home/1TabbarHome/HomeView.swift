@@ -15,7 +15,12 @@ class HomeView: UIView{
     var arrProductPhotos = [
         UIImage(systemName: "doc"),
         UIImage(systemName: "doc.fill"),
-        UIImage(systemName: "doc.circle")
+        UIImage(systemName: "doc.circle"),
+        UIImage(systemName: "square.and.arrow.up"),
+        UIImage(systemName: "square.and.arrow.up.circle"),
+        UIImage(systemName: "square.and.arrow.up.circle.fill"),
+        UIImage(systemName: "square.and.arrow.up.trianglebadge.exclamationmark"),
+        UIImage(systemName: "square.and.arrow.down")
     ]
     var timer : Timer?
     var currentCelIndex = 0
@@ -59,11 +64,49 @@ class HomeView: UIView{
     // 이미지 슬라이더
     
     let view2 = UIView()
+    let view2Label : UILabel = {
+        let label = UILabel()
+        label.text = "써머 메이트 추천 포트폴리오"
+        label.textColor = .black
+        label.font = .boldSystemFont(ofSize: 20)
+        label.sizeToFit()
+        return label
+    }()
+    let view2UIImageView : UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "questionmark.circle")
+        imageView.sizeToFit()
+        imageView.tintColor = .black
+        return imageView
+    }()
+    
+    let view2SubView : UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.summarColor2
+        view.layer.cornerRadius = 5
+        return view
+    }()
+    let polygon : UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(systemName: "triangle.fill")
+        view.tintColor = UIColor.summarColor2
+        return view
+    }()
+    let view2SubViewLabel : UILabel = {
+        let label = UILabel()
+        label.text = "동종 직무군의 전공 과목 데이터를 분석하여 추천합니다."
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 14)
+        label.sizeToFit()
+        return label
+    }()
+    
     let view3 = UIView()
         
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        _ = [view1, view2, view3, view2SubView].map { self.contentView.addSubview($0)}
         
         //이미지 슬라이더 view1
         addSubview(scrollView) // 메인뷰에
@@ -76,6 +119,14 @@ class HomeView: UIView{
         sliderProgressBar.progress =  Float( Float(currentCelIndex + 1) / Float(arrProductPhotos.count))
         //
         
+        //써머 메이트 추천 포트폴리오
+        self.view2.addSubview(view2Label)
+        self.view2.addSubview(view2UIImageView)
+        //
+        
+        //동종 직무군의 전공 과목 데이터를 분석하여 추천합니다.
+        self.view2SubView.addSubview(polygon)
+        self.view2SubView.addSubview(view2SubViewLabel)
         
         scrollView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview() // 스크롤뷰가 표현될 영역
@@ -86,12 +137,14 @@ class HomeView: UIView{
             make.centerX.top.bottom.equalToSuperview()
         }
         
-        _ = [view1, view2, view3].map { self.contentView.addSubview($0)}
+//        view1.layer.borderWidth = 1
+//        view1.layer.borderColor = UIColor.black.cgColor
         
-        view1.layer.borderWidth = 1
-        view1.layer.borderColor = UIColor.black.cgColor
+//        view2.backgroundColor = .black
+//        view2.layer.borderWidth = 1
+//        view2.layer.borderColor = UIColor.black.cgColor
         
-        view2.backgroundColor = .black
+        
         view3.backgroundColor = .blue
         
         
@@ -129,16 +182,64 @@ class HomeView: UIView{
             make.right.equalTo(sliderLabel.snp.left).offset(-10)
         }
         
+        //써머 메이트 추천 포트폴리오
         view2.snp.makeConstraints { (make) in
             
             make.top.equalTo(view1.snp.bottom).offset(30)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(300)
+            make.leading.equalTo(30)
+            make.trailing.equalTo(-30)
+            make.height.equalTo(40)
         }
+        
+        view2Label.snp.makeConstraints { (make) in
+            
+//            make.top.equalTo(view2.snp.bottom).offset(30)
+            make.centerY.equalTo(view2.snp.centerY)
+            make.left.equalTo(view2.snp.left)
+//            make.trailing.equalTo(-30)
+//            make.height.equalTo(400)
+        }
+        
+        view2UIImageView.snp.makeConstraints { (make) in
+            
+//            make.top.equalTo(view2.snp.bottom).offset(30)
+            make.centerY.equalTo(view2.snp.centerY)
+            make.right.equalTo(view2.snp.right)
+            make.height.equalTo(view2.snp.height)
+            make.width.equalTo(view2.snp.height)
+//            make.trailing.equalTo(-30)
+//            make.height.equalTo(400)
+        }
+        
+        view2SubView.snp.makeConstraints { (make) in
+            
+            make.top.equalTo(view2.snp.bottom).offset(25)
+            make.leading.equalTo(30)
+            make.trailing.equalTo(-20)
+            make.height.equalTo(50)
+        }
+        
+        view2SubViewLabel.snp.makeConstraints { (make) in
+
+            make.centerY.equalToSuperview()
+            make.left.equalTo(10)
+            
+        }
+
+        //동종 직무군의 전공 과목 데이터를 분석하여 추천합니다.
+        polygon.snp.makeConstraints { (make) in
+            
+            make.top.equalTo(view2SubView.snp.top).offset(-15)
+            make.centerX.equalTo(view2UIImageView.snp.centerX)
+            make.width.equalTo(20)
+            make.height.equalTo(20)
+//            make.right.equalTo(view2SubView.snp.right)
+        }
+        
         
         view3.snp.makeConstraints { (make) in
             
-            make.top.equalTo(view2.snp.bottom)
+            make.top.equalTo(view2SubView.snp.bottom).offset(120)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(300)
             make.bottom.equalToSuperview() // 이것이 중요함
