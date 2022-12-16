@@ -11,7 +11,7 @@ import Alamofire
 import GoogleSignIn
 
 protocol SocialLoginDelegate : class {
-    func pushScreen(_ VC: UIViewController, _ requestDic: Dictionary<String, String>)
+    func pushScreen(_ VC: UIViewController, _ requestDic: Dictionary<String, Any>)
 }
 
 class SocialLoginView : UIView, SocialSuccessDelegate{
@@ -345,7 +345,7 @@ class SocialLoginView : UIView, SocialSuccessDelegate{
     }
     
     //소셜로그인 -> 회원가입 데이터 전달
-    func pushIdentifier(_ VC: UIViewController,_ requestDic: Dictionary<String, String>) {
+    func pushIdentifier(_ VC: UIViewController,_ requestDic: Dictionary<String, Any>) {
         print(#function)
         self.delegate?.pushScreen(VC, requestDic)
     }

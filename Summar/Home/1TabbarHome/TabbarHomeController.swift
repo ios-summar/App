@@ -12,7 +12,7 @@ import SnapKit
 class TabbarHomeController : UIViewController {
     static let shared = TabbarHomeController()
     
-    let titleView = TitleView.shared
+    let titleView = TitleViewHome.shared
     let homeView = HomeView.shared
     
     override func viewDidLoad() {

@@ -68,7 +68,7 @@ class GoogleLoginManager: NSObject, ServerDelegate {
         print("Disconnect")
     }
     
-    func memberYN(_ TF: Bool,_ requestDic: Dictionary<String, String>) {
+    func memberYN(_ TF: Bool,_ requestDic: Dictionary<String, Any>) {
         print(#file , #function)
         if TF { // 로그인 화면으로
             self.delegate?.pushIdentifier(HomeController.shared, requestDic)

@@ -30,7 +30,7 @@ class SocialLoginController : UIViewController, SocialLoginDelegate {
         }
     }
     
-    func pushScreen(_ VC: UIViewController, _ requestDic: Dictionary<String, String>) {
+    func pushScreen(_ VC: UIViewController, _ requestDic: Dictionary<String, Any>) {
         print(#file , #function)
         if VC == SignUpController.shared {
             let svc = SignUpController.shared

@@ -12,6 +12,9 @@ import SnapKit
 class TabbarMyInfo : UIViewController {
     static let shared = TabbarMyInfo()
     
+    let titleViewMyInfo = TitleViewMyInfo.shared
+    let myInfoView = MyInfoView.shared
+    
     let label : UILabel = {
         let label = UILabel()
         label.text = "마이 써머리"
@@ -22,13 +25,23 @@ class TabbarMyInfo : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(label)
+        self.view.addSubview(titleViewMyInfo)
+        self.view.addSubview(myInfoView)
         
-        label.snp.makeConstraints{(make) in
-            make.centerX.equalTo(self.view.safeAreaLayoutGuide.snp.centerX)
-            make.centerY.equalTo(self.view.safeAreaLayoutGuide.snp.centerY)
-            make.width.equalTo(300)
-            make.width.equalTo(300)
+        titleViewMyInfo.snp.makeConstraints{(make) in
+            
+            make.topMargin.equalTo(self.view.safeAreaInsets.top).offset(10)
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.height.equalTo(60)
+        }
+        
+        myInfoView.snp.makeConstraints{(make) in
+            
+            make.topMargin.equalTo(self.titleViewMyInfo.snp.bottom)
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
     }
 }

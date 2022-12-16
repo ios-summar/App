@@ -9,7 +9,7 @@ import Foundation
 import Alamofire
 
 protocol ServerDelegate : AnyObject {
-    func memberYN(_ TF: Bool,_ requestDic: Dictionary<String, String>)
+    func memberYN(_ TF: Bool,_ requestDic: Dictionary<String, Any>)
 }
 
 class ServerRequest: NSObject {
@@ -44,7 +44,7 @@ class ServerRequest: NSObject {
     }
     
     // MARK : - 로그인, 회원가입 func => 서버의 loginStatus 값으로 회원인지, 회원이 아닌지 확인후 화면 이동
-    func login(_ url: String,_ requestDic: Dictionary<String, String>){
+    func login(_ url: String,_ requestDic: Dictionary<String, Any>){
         let responseBool : Bool? = nil
         let url = serverURL() + url
         var request = URLRequest(url: URL(string: url)!)
@@ -70,7 +70,7 @@ class ServerRequest: NSObject {
                 //                        let value = String(data: response.data!, encoding: .utf8)
                 print(value)
                 
-                let json = value as! Dictionary<String, String>
+                let json = value as! Dictionary<String, Any>
                 
                 print(json["accessToken"])
                 print(json["loginStatus"])
@@ -78,7 +78,7 @@ class ServerRequest: NSObject {
                 
                 params["loginStatus"] = json["loginStatus"]
                 
-                let loginStatus = json["loginStatus"]
+                let loginStatus = json["loginStatus"] as! String
                 
                 
                 if loginStatus == "로그인"{
@@ -93,12 +93,8 @@ class ServerRequest: NSObject {
                 } else if loginStatus == "회원가입완료"{
                     print(#line ,type(of: params["userEmail"]))
                     
-                    //UserDefault에 회원정보 저장
-//                    UserDefaults.standard.set(params["userEmail"], forKey: "userEmail")
-//                    UserDefaults.standard.set(params["usernickName"], forKey: "usernickName")
-//                    UserDefaults.standard.set(params["major1"], forKey: "major1")
-//                    UserDefaults.standard.set(params["major2"], forKey: "major2")
-//                    UserDefaults.standard.set(params["socialType"], forKey: "socialType")
+                    params["follower"] = 0
+                    params["following"] = 0
                     
                     UserDefaults.standard.set(params, forKey: "UserInfo")
                     

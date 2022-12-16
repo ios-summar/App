@@ -150,6 +150,8 @@ class SignUp1View : UIView, UITextFieldDelegate {
     }
     
     @objc func nextAction(){
+        self.delegate?.nextBtn(nickNameTextField.text!)
+        
         // 초기화
         nickNameTextField.text = ""
         keyboardUpBtn.isEnabled = false
@@ -161,8 +163,6 @@ class SignUp1View : UIView, UITextFieldDelegate {
         nickNameEnableLabel.text = ""
         nickNameEnableLabel.textColor = .white
         nickNameTextField.layer.borderColor = UIColor.white.cgColor
-        
-        self.delegate?.nextBtn(nickNameTextField.text!)
 
     }
     

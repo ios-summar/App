@@ -11,6 +11,7 @@ import SnapKit
 
 class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, ServerDelegate{
     func nextBtn(_ nickName: String) {
+        print("nickName => \(nickName)")
         requestDic["userNickname"] = nickName
         print("\(#line) requestDic => ", requestDic)
         
@@ -18,7 +19,7 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, Ser
         animation(viewAnimation1: signUp1View, viewAnimation2: signUp2View)
     }
     
-    func memberYN(_ TF: Bool, _ requestDic: Dictionary<String, String>) {
+    func memberYN(_ TF: Bool, _ requestDic: Dictionary<String, Any>) {
         progressBarAnimate(1.0)
         animation(viewAnimation1: signUp2View, viewAnimation2: signUp3View)
         
@@ -30,7 +31,7 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, Ser
     let helper : Helper = Helper()
     let request = ServerRequest()
     
-    var requestDic: Dictionary<String, String> = Dictionary<String, String>()
+    var requestDic: Dictionary<String, Any> = Dictionary<String, Any>()
     
     let progressBar : UIProgressView = {
         let progressBar = UIProgressView()
