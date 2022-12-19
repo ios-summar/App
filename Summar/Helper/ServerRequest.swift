@@ -13,8 +13,10 @@ protocol ServerDelegate : AnyObject {
 }
 
 class ServerRequest: NSObject {
+    static let shared = ServerRequest()
     weak var delegate : ServerDelegate?
     
+    // MARK: - Summar 서버 URL
     let serverURL = { () -> String in
         let url = Bundle.main.url(forResource: "Network", withExtension: "plist")
         let dictionary = NSDictionary(contentsOf: url!)
@@ -43,9 +45,8 @@ class ServerRequest: NSObject {
         }
     }
     
-    // MARK : - 로그인, 회원가입 func => 서버의 loginStatus 값으로 회원인지, 회원이 아닌지 확인후 화면 이동
+    // MARK: - 로그인, 회원가입 func => 서버의 loginStatus 값으로 회원인지, 회원이 아닌지 확인후 화면 이동
     func login(_ url: String,_ requestDic: Dictionary<String, Any>){
-        let responseBool : Bool? = nil
         let url = serverURL() + url
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "POST"
@@ -64,17 +65,19 @@ class ServerRequest: NSObject {
             print("http Body Error")
         }
         
-        AF.request(request).responseJSON { response in
+        AF.request(request)
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
             switch response.result {
             case .success(let value):
-                //                        let value = String(data: response.data!, encoding: .utf8)
                 print(value)
                 
-                let json = value as! Dictionary<String, Any>
+                var json = value as! Dictionary<String, Any>
                 
-                print(json["accessToken"])
-                print(json["loginStatus"])
-                print(json["refreshToken"])
+//                print(json["accessToken"])
+//                print(json["loginStatus"])
+//                print(json["refreshToken"])
+                json["userEmail"] = params["userEmail"]
                 
                 params["loginStatus"] = json["loginStatus"]
                 
@@ -86,6 +89,9 @@ class ServerRequest: NSObject {
                     print(#line ,type(of: params["userEmail"]))
                     
                     UserDefaults.standard.set(json, forKey: "UserInfo")
+                    UserDefaults.standard.set(json["accessToken"], forKey: "accessToken")
+                    UserDefaults.standard.set(json["refreshToken"], forKey: "refreshToken")
+                    
                     
                     self.delegate?.memberYN(true, params)
                 } else if loginStatus == "회원가입"{
@@ -97,13 +103,38 @@ class ServerRequest: NSObject {
                     params["following"] = 0
                     
                     UserDefaults.standard.set(params, forKey: "UserInfo")
-                    
+                    UserDefaults.standard.set(json["accessToken"], forKey: "accessToken")
+                    UserDefaults.standard.set(json["refreshToken"], forKey: "refreshToken")
                     
                     self.delegate?.memberYN(true, params)
                 }
                 
             case .failure(let error):
                 print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+            }
+        }
+    }
+    
+    // MARK: - https://github.com/arifinfrds/iOS-MVVM-Alamofire
+    func requestMyInfo(_ url: String, completion: @escaping (UserInfo?, Error?) -> ()) {
+        let url = "http://13.209.114.45:8080/api/v1\(url)"
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.request(url,
+                       method: .get,
+                       parameters: nil,
+                       encoding: URLEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json",
+                                 "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { json in
+                //여기서 가져온 데이터를 자유롭게 활용하세요.
+                print("json => \(json)")
+    //            if let userInfo = json {
+    //                completion(userInfo, nil)
+    //                return
+    //            }
             }
         }
     }

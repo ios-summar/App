@@ -26,9 +26,10 @@ class TitleViewMyInfo: UIView{
         gear.setImage(UIImage(systemName: "gearshape"), for: .normal) // ios 14.0
         gear.tintColor = .black
         gear.imageView?.contentMode = .scaleToFill
-        gear.imageEdgeInsets = UIEdgeInsets(top: 32, left: 35, bottom: 33, right: 35)
+        gear.imageEdgeInsets = UIEdgeInsets(top: 32, left: 33, bottom: 33, right: 33)
         gear.addTarget(self, action: #selector(topBtnAction(_:)), for: .touchUpInside)
         gear.tag = 1
+//        gear.layer.borderWidth = 1
         return gear
     }()
     
@@ -37,6 +38,8 @@ class TitleViewMyInfo: UIView{
         super.init(frame: frame)
         addSubview(title)
         addSubview(gear)
+        
+        backgroundColor = UIColor.BackgroundColor
         
         title.snp.makeConstraints{(make) in
             make.centerX.centerY.equalToSuperview()

@@ -12,7 +12,7 @@ class AppleLoginManager : NSObject, ServerDelegate{
     weak var viewController: UIViewController?
     weak var delegate: SocialSuccessDelegate?
     
-    let request = ServerRequest()
+    let request = ServerRequest.shared
     let helper : Helper = Helper()
     
     
@@ -60,7 +60,7 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate, ASAuthorization
         authorizationController.performRequests()
     }
     
-    // Apple ID 연동 성공 시
+    // MARK: - Apple ID 연동 성공 시
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         switch authorization.credential {
         // Apple ID
@@ -89,13 +89,13 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate, ASAuthorization
             break
         }
     }
-        
-    // Apple ID 연동 실패 시
+    
+    // MARK: - Apple ID 연동 실패 시
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         // Handle error.
     }
     
-    
+    // MARK: - 화면이동 Delegate
     func memberYN(_ TF: Bool, _ requestDic: Dictionary<String, Any>) {
         print(#file , #function)
         if TF { // 로그인 화면으로

@@ -12,14 +12,12 @@ import SnapKit
 class SocialLoginController : UIViewController, SocialLoginDelegate {
     
     let socialLoginView = SocialLoginView()
-    let serverRequest = ServerRequest()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(socialLoginView)
         
         socialLoginView.delegate = self
-//        serverRequest.delegate = self
         
         // layout
         socialLoginView.snp.makeConstraints{(make) in
@@ -29,16 +27,15 @@ class SocialLoginController : UIViewController, SocialLoginDelegate {
             make.bottom.equalTo(0)
         }
     }
-    
+
+    // MARK: - DB에 회원 유무 확인후 화면 이동
     func pushScreen(_ VC: UIViewController, _ requestDic: Dictionary<String, Any>) {
-        print(#file , #function)
         if VC == SignUpController.shared {
             let svc = SignUpController.shared
             svc.requestDic = requestDic
             self.navigationController?.pushViewController(svc, animated: true)
         }else if VC == HomeController.shared {
             let svc = HomeController.shared
-//            self.navigationController?.pushViewController(svc, animated: true)
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(svc, animated: false)
         }
     }

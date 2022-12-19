@@ -174,7 +174,7 @@ class SignUp1View : UIView, UITextFieldDelegate {
         if textField.text?.count ?? 0 >= 1 {
             if helper.checkNickNamePolicy(text: textField.text!) { // 한글, 영어, 숫자임
                 // GET방식으로 닉네임 중복체크
-                requestGETBOOL(requestUrl: "/user/nicknameCheck?nickname=\(textField.text!)")
+                requestGETBOOL(requestUrl: "/user/nickname-check?nickname=\(textField.text!)")
             }else { // 한글, 영어, 숫자가 아님.
                 enableNickname(enable: false, content: "닉네임은 한글, 영어, 숫자만 사용 가능합니다.")
             }
@@ -208,35 +208,35 @@ class SignUp1View : UIView, UITextFieldDelegate {
     }
     
     func requestGETBOOL(requestUrl : String!){
-        // URL 객체 정의
-//                let url = URL(string: serverURL()+requestUrl)
-                let urlStr = self.serverURL()+requestUrl
-                let encoded = urlStr.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-                let myURL = URL(string: encoded!)
-                // URLRequest 객체를 정의
-                var request = URLRequest(url: myURL!)
-                request.httpMethod = "GET"
-
-                // HTTP 메시지 헤더
-                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-                request.addValue("application/json", forHTTPHeaderField: "Accept")
-                let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-                    // 서버가 응답이 없거나 통신이 실패
-                    if let e = error {
-                        self.helper.showAlert(vc: self, message: "네트워크 상태를 확인해주세요.")
-                    }
-
-                    var responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-//                    print(responseString!)
-                    DispatchQueue.main.async {
-                        if responseString! == "true"{ // 중복
-                            self.enableNickname(enable: false, content: "중복된 닉네임입니다.")
-                        }else {
-                            self.enableNickname(enable: true, content: "사용 가능한 닉네임입니다.")
-                        }
+        let url = serverURL() + requestUrl
+        let encodedString = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        var request = URLRequest(url: URL(string: encodedString)!)
+        request.httpMethod = "GET"
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.timeoutInterval = 10
+        
+        AF.request(request)
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+            switch response.result {
+            case .success(let value):
+                let json = value as! Dictionary<String, Any>
+                let resultJson = json["result"] as! Dictionary<String, Any>
+                
+                let result = resultJson["result"]
+                
+                DispatchQueue.main.async {
+                    if result as! Int == 1{ // 중복
+                        self.enableNickname(enable: false, content: "중복된 닉네임입니다.")
+                    }else {
+                        self.enableNickname(enable: true, content: "사용 가능한 닉네임입니다.")
                     }
                 }
-                task.resume()
+                
+            case .failure(let error):
+                print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+            }
+        }
     }
     
     func sendBtnEnable(_ TF: Bool) {

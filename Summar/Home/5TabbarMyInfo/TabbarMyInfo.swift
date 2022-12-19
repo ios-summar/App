@@ -28,6 +28,7 @@ class TabbarMyInfo : UIViewController {
         self.view.addSubview(titleViewMyInfo)
         self.view.addSubview(myInfoView)
         
+        // MARK: - 마이 써머리 상단 타이틀, 버튼 
         titleViewMyInfo.snp.makeConstraints{(make) in
             
             make.topMargin.equalTo(self.view.safeAreaInsets.top).offset(10)
@@ -37,12 +38,17 @@ class TabbarMyInfo : UIViewController {
         }
         
         myInfoView.snp.makeConstraints{(make) in
-            
+
             make.topMargin.equalTo(self.titleViewMyInfo.snp.bottom)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.bottom.equalToSuperview()
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        myInfoView.requestMyInfo()
+        print(#file , #function)
     }
 }
 

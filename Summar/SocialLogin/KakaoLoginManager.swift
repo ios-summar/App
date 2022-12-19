@@ -19,7 +19,7 @@ class KakaoLoginManager : NSObject, ServerDelegate {
     weak var delegate : SocialSuccessDelegate?
     
     let helper = Helper()
-    let request = ServerRequest()
+    let request = ServerRequest.shared
     
     let socialType = "KAKAO"
     var requestDic : Dictionary<String, String> = Dictionary<String, String>()
@@ -29,6 +29,7 @@ class KakaoLoginManager : NSObject, ServerDelegate {
         request.delegate = self
     }
     
+    // MARK: - 카카오 로그인
     func kakaoLogin() {
             if (UserApi.isKakaoTalkLoginAvailable()) { // 카카오톡 어플이 있을 때
                 DispatchQueue.global().sync {
@@ -51,7 +52,7 @@ class KakaoLoginManager : NSObject, ServerDelegate {
             }
     }
     
-    // MARK : - 해당 함수에서 회원인지 확인
+    // MARK: - 해당 함수에서 회원인지 확인
     func getUserInfo() {
         UserApi.shared.me { User, Error in
             if let id = User?.id {
@@ -69,6 +70,7 @@ class KakaoLoginManager : NSObject, ServerDelegate {
         }
     }
     
+    // MARK: - 화면이동 Delegate
     func memberYN(_ TF: Bool,_ requestDic: Dictionary<String, Any>) {
         print(#file , #function)
         if TF { // 로그인 화면으로

@@ -99,8 +99,20 @@ extension UIColor {
     
     //HomeController
     static var homeTitleColor = UIColor.init(red: 44/255, green: 80/255, blue: 206/255, alpha: 1)
+    static var homeViewColor = UIColor.init(red: 242/255, green: 243/255, blue: 248/255, alpha: 1)
     static var UIBarColor = UIColor.init(red: 240/255, green: 242/255, blue: 246/255, alpha: 1)
     
+    //1TabbarHome
+    
+    //2TabbarClipping
+
+    //3TabbarFeed
+
+    //4TabbarSearch
+    
+    //5TabbarMyInfo
+    static var BackgroundColor = UIColor.init(red: 251/255, green: 251/255, blue: 253/255, alpha: 1)
+    static var followShadowColor = UIColor.init(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
 }
 
 extension String {

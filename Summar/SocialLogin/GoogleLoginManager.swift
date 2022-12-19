@@ -13,7 +13,7 @@ class GoogleLoginManager: NSObject, ServerDelegate {
     weak var delegate : SocialSuccessDelegate?
     
     let helper = Helper()
-    let request = ServerRequest()
+    let request = ServerRequest.shared
     
     let socialType = "GOOGLE"
     var requestDic : Dictionary<String, String> = Dictionary<String, String>()
@@ -23,6 +23,7 @@ class GoogleLoginManager: NSObject, ServerDelegate {
         request.delegate = self
     }
     
+    // MARK: - 구글 로그인
     func googleLogin() {
         
         let config = GIDConfiguration(clientID: "889837360140-sbhsh841die0v2gd36muj7e4qj9f0lad.apps.googleusercontent.com")
@@ -63,11 +64,12 @@ class GoogleLoginManager: NSObject, ServerDelegate {
         }
     }
         
-    // 구글 로그인 연동 해제했을때 불러오는 메소드
+    // MARK: - 구글 로그인 연동 해제했을때 불러오는 메소드
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
         print("Disconnect")
     }
     
+    // MARK: - 화면이동 Delegate
     func memberYN(_ TF: Bool,_ requestDic: Dictionary<String, Any>) {
         print(#file , #function)
         if TF { // 로그인 화면으로

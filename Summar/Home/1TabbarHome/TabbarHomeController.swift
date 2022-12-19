@@ -20,7 +20,7 @@ class TabbarHomeController : UIViewController {
         
         self.view.addSubview(titleView)
         self.view.addSubview(homeView)
-        titleView.backgroundColor = .white
+        titleView.backgroundColor = UIColor.BackgroundColor
         
         titleView.snp.makeConstraints{(make) in
             make.topMargin.equalTo(self.view.safeAreaInsets.top).offset(10)

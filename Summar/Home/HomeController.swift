@@ -13,7 +13,7 @@ class HomeController : UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = UIColor.BackgroundColor
         
         if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
             print("UserInfo => ", value)
@@ -27,6 +27,7 @@ class HomeController : UITabBarController {
         
     }
     
+    // MARK: - UIBar Create NavigtaionController
     func setupVCs() {
           viewControllers = [
             createNavController(for: TabbarHomeController.shared, title: NSLocalizedString("홈", comment: ""), image: UIImage(systemName: "house")!),

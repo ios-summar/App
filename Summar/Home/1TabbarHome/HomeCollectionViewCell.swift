@@ -12,7 +12,7 @@ class HomeCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
-        backgroundColor = .white
+        backgroundColor = UIColor.BackgroundColor
         addSubview(imgProudctPhoto)
         
         imgProudctPhoto.snp.makeConstraints{(make) in

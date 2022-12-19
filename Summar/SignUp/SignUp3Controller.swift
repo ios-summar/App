@@ -13,7 +13,6 @@ class SignUp3Controller : UIViewController{
     static let shared = SignUp3Controller()
     
     let helper : Helper = Helper()
-    let request = ServerRequest()
     
     var requestDic: Dictionary<String, String> = Dictionary<String, String>()
     

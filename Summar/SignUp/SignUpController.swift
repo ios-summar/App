@@ -29,7 +29,7 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, Ser
     static let shared = SignUpController()
     
     let helper : Helper = Helper()
-    let request = ServerRequest()
+    let request = ServerRequest.shared
     
     var requestDic: Dictionary<String, Any> = Dictionary<String, Any>()
     
@@ -88,6 +88,7 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, Ser
         self.signUp3View.removeFromSuperview()
     }
     
+    // MARK: - 레이아웃 init
     func layoutInit() {
         progressBar.snp.makeConstraints{(make) in
             make.topMargin.equalTo(20)
@@ -113,7 +114,7 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, Ser
         }
     }
     
-    // 최종 회원가입
+    // MARK: - 최종 회원가입
     func majorInput(major1: String, major2: String) {
         requestDic["major1"] = major1
         requestDic["major2"] = major2

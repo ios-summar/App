@@ -38,13 +38,6 @@ class SocialLoginView : UIView, SocialSuccessDelegate{
         return LocalURL!
     }
     
-//    let imageView : UIImageView = {
-//        let imageView = UIImageView()
-//        imageView.translatesAutoresizingMaskIntoConstraints = false
-//        imageView.image = UIImage(named: "SignUpImage")
-//        return imageView
-//    }()
-    
     let label1 : UILabel = {
         let label1 = UILabel()
         label1.text = "나만의 커리어를 위한\n써머리 만들기"
@@ -155,19 +148,6 @@ class SocialLoginView : UIView, SocialSuccessDelegate{
         return socialImageView
     }()
     
-//    let notLogin : UIButton = {
-//        let notLogin = UIButton()
-//        notLogin.setTitleColor(UIColor(red: 79/255, green: 79/255, blue: 79/255, alpha: 1), for: .normal)
-//        notLogin.tintColor = UIColor(red: 79/255, green: 79/255, blue: 79/255, alpha: 1)
-//        notLogin.setTitle("그냥 둘러볼래요  ", for: .normal)
-//        notLogin.titleLabel?.font = .systemFont(ofSize: 15)
-//        notLogin.setImage(UIImage(systemName: "greaterthan"), for: .normal)
-//        notLogin.semanticContentAttribute = .forceRightToLeft
-//        notLogin.addTarget(self, action: #selector(handleTap), for: .touchUpInside)
-//        notLogin.tag = 4
-//        return notLogin
-//    }()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -218,8 +198,6 @@ class SocialLoginView : UIView, SocialSuccessDelegate{
         socialImageView.snp.makeConstraints{(make) in
             make.bottomMargin.equalTo(kakaoFrame.snp.top).offset(0)
             make.centerX.equalTo(self.safeAreaLayoutGuide.snp.centerX)
-//            make.leftMargin.equalTo(50)
-//            make.rightMargin.equalTo(-50)
         }
         
         kakaoFrame.snp.makeConstraints{(make) in
@@ -297,12 +275,6 @@ class SocialLoginView : UIView, SocialSuccessDelegate{
             make.height.equalTo(20)
             make.width.equalTo(20)
         }
-        
-//        notLogin.snp.makeConstraints{(make) in
-//            make.rightMargin.equalTo(-25)
-//            make.bottomMargin.equalTo(-50)
-//        }
-        
     }
     
     func addUITapGestureRecognizer(){
@@ -344,7 +316,7 @@ class SocialLoginView : UIView, SocialSuccessDelegate{
         }
     }
     
-    //소셜로그인 -> 회원가입 데이터 전달
+    // MARK: - 소셜로그인 -> 회원가입 데이터 전달
     func pushIdentifier(_ VC: UIViewController,_ requestDic: Dictionary<String, Any>) {
         print(#function)
         self.delegate?.pushScreen(VC, requestDic)

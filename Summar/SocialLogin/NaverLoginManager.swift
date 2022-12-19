@@ -12,7 +12,7 @@ import Alamofire
 class NaverLoginManager: NSObject, ServerDelegate {
     
     weak var delegate: SocialSuccessDelegate?
-    let request = ServerRequest()
+    let request = ServerRequest.shared
     
     let naverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
     
@@ -51,6 +51,7 @@ extension NaverLoginManager: NaverThirdPartyLoginConnectionDelegate {
         print("[Error] :", error.localizedDescription)
     }
     
+    // MARK: - 네이버 로그인
     private func getNaverInfo() {
         guard let isValidAccessToken = naverLoginInstance?.isValidAccessTokenExpireTimeNow() else { return }
         
@@ -99,6 +100,7 @@ extension NaverLoginManager: NaverThirdPartyLoginConnectionDelegate {
             }
       }
     
+    // MARK: - 화면이동 Delegate
     func memberYN(_ TF: Bool,_ requestDic: Dictionary<String, Any>) {
         print(#file , #function)
         if TF { // 로그인 화면으로
