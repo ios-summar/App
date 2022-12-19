@@ -116,7 +116,7 @@ class ServerRequest: NSObject {
     }
     
     // MARK: - https://github.com/arifinfrds/iOS-MVVM-Alamofire
-    func requestMyInfo(_ url: String, completion: @escaping (UserInfo?, Error?) -> ()) {
+    func requestMyInfo(_ url: String, completion: @escaping (Dictionary<String, Any>, Error?) -> ()) {
         let url = "http://13.209.114.45:8080/api/v1\(url)"
         if let token = UserDefaults.standard.string(forKey: "accessToken") {
             print("url => \(url)")
@@ -128,13 +128,19 @@ class ServerRequest: NSObject {
                        headers: ["Content-Type":"application/json", "Accept":"application/json",
                                  "Authorization":"Bearer \(token)"])
             .validate(statusCode: 200..<300)
-            .responseJSON { json in
-                //여기서 가져온 데이터를 자유롭게 활용하세요.
-                print("json => \(json)")
-    //            if let userInfo = json {
-    //                completion(userInfo, nil)
-    //                return
-    //            }
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                print(value)
+                var json = value as! Dictionary<String, Any>
+                
+//                if let userInfo = json {
+                completion(json, nil)
+                return
+//                }
+                case .failure(let error):
+                    print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                }
             }
         }
     }

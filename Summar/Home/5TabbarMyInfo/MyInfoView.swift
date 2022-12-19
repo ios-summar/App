@@ -279,6 +279,7 @@ class MyInfoView: UIView{
                             return
                         }
                     print(" nil!!!!")
+                    print("userInfo => \(userInfo["result"])")
 //                        self.error = nil
 //                        self.isLoading = false
 //                        self.photo = photo

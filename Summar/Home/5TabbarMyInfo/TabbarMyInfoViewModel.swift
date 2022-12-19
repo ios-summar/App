@@ -43,13 +43,15 @@ class TabbarMyInfoViewModel {
     func fetchPhoto(withId id: Int) {
         self.request?.requestMyInfo("/user/user-info?userEmail=2549549837", completion: { (json, error) in
             if let error = error {
+                print("\(#line) error")
                 self.error = error
                 self.isLoading = false
                 return
             }
             self.error = nil
             self.isLoading = false
-            self.userInfo = json
+//            self.userInfo = json
+            print("json => \(json)")
         })
     }
     
