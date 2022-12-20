@@ -45,15 +45,13 @@ class MyInfoView: UIView{
         label.font = .boldSystemFont(ofSize: 16)
         label.textColor = .black
         label.sizeToFit()
-        label.text = ""
         return label
     }()
     let major : UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 15)
+        label.font = .systemFont(ofSize: 13)
         label.textColor = .black
         label.sizeToFit()
-        label.text=""
         return label
     }()
     let followerView : UIView = {
@@ -66,18 +64,13 @@ class MyInfoView: UIView{
     let followerCount : UILabel = {
         let UILabel = UILabel()
         UILabel.font = .boldSystemFont(ofSize: 16)
-//        UILabel.layer.borderWidth = 1
-//        UILabel.layer.borderColor = UIColor.black.cgColor
         UILabel.textAlignment = .center
-        UILabel.text = "10K"
         return UILabel
     }()
     let followerLabel : UILabel = {
         let UILabel = UILabel()
         UILabel.font = .systemFont(ofSize: 15)
         UILabel.text = "팔로워"
-//        UILabel.layer.borderWidth = 1
-//        UILabel.layer.borderColor = UIColor.black.cgColor
         UILabel.textAlignment = .center
         return UILabel
     }()
@@ -91,18 +84,13 @@ class MyInfoView: UIView{
     let followingCount : UILabel = {
         let UILabel = UILabel()
         UILabel.font = .boldSystemFont(ofSize: 16)
-//        UILabel.layer.borderWidth = 1
-//        UILabel.layer.borderColor = UIColor.black.cgColor
         UILabel.textAlignment = .center
-        UILabel.text = "10K"
         return UILabel
     }()
     let followingLabel : UILabel = {
         let UILabel = UILabel()
         UILabel.font = .systemFont(ofSize: 15)
         UILabel.text = "팔로잉"
-//        UILabel.layer.borderWidth = 1
-//        UILabel.layer.borderColor = UIColor.black.cgColor
         UILabel.textAlignment = .center
         return UILabel
     }()
@@ -116,9 +104,6 @@ class MyInfoView: UIView{
     let introductLabel : UILabel = {
         let UILabel = UILabel()
         UILabel.font = .systemFont(ofSize: 15)
-        UILabel.text = "작성된 자기소개가 없습니다. 😥\n자기소개를 작성해 자신을 소개해보세요."
-//        UILabel.textColor = UIColor.init(red: 51/255, green: 51/255, blue: 51/255, alpha: 1)
-//        UILabel.textAlignment = .left
         UILabel.textColor = .systemBlue
         UILabel.textAlignment = .center
         UILabel.numberOfLines = 0
@@ -253,24 +238,6 @@ class MyInfoView: UIView{
         requestMyInfo()
     }
     
-    func profileInit(){
-        if let value = UserInfo {
-            let UserInfoNickName = value["userNickname"] as! String
-            let UserInfoMajor1 = value["major1"] as! String
-            let UserInfoMajor2 = value["major2"] as! String
-            let UserInfoFollower = value["follower"] as! Int
-            let UserInfoFollowing = value["following"] as! Int
-            
-            nickName.text = UserInfoNickName
-            major.text = UserInfoMajor2
-            followerCount.text = String(UserInfoFollower)
-            followingCount.text = String(UserInfoFollowing)
-        }else {
-            nickName.text = "정보 가져오기 실패"
-            major.text = "다시 로그인 해주세요"
-        }
-    }
-    
     func requestMyInfo(){
         if let value = UserInfo {
             let userId = value["userEmail"] as! String
@@ -281,6 +248,7 @@ class MyInfoView: UIView{
                 self.major.text = self.viewModel.major2String
                 self.followerCount.text = String(self.viewModel.followerInt ?? 0)
                 self.followingCount.text = String(self.viewModel.followingInt ?? 0)
+                self.introductLabel.text = self.viewModel.introduceString
 //                self.headerImageView.sd_setImage(with: self.viewModel.photoUrl, completed: nil)
             }
         }else {

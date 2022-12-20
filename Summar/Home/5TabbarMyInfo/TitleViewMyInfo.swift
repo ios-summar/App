@@ -29,7 +29,6 @@ class TitleViewMyInfo: UIView{
         gear.imageEdgeInsets = UIEdgeInsets(top: 32, left: 33, bottom: 33, right: 33)
         gear.addTarget(self, action: #selector(topBtnAction(_:)), for: .touchUpInside)
         gear.tag = 1
-//        gear.layer.borderWidth = 1
         return gear
     }()
     
@@ -57,7 +56,7 @@ class TitleViewMyInfo: UIView{
         let tagValue = (sender as? UIButton)?.tag
         
         switch tagValue {
-        case 1: // Heart Event
+        case 1: // gear Event
             print("gear")
         default:
             print("default")

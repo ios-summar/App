@@ -117,7 +117,7 @@ class ServerRequest: NSObject {
     }
     
     // MARK: - https://github.com/arifinfrds/iOS-MVVM-Alamofire
-    func requestMyInfo(_ url: String, completion: @escaping (Dictionary<String, Any>, Error?) -> ()) {
+    func requestMyInfo(_ url: String, completion: @escaping (UserInfo?, Error?) -> ()) {
         let url = "http://13.209.114.45:8080/api/v1\(url)"
         if let token = UserDefaults.standard.string(forKey: "accessToken") {
             print("url => \(url)")
@@ -132,18 +132,34 @@ class ServerRequest: NSObject {
             .responseJSON { response in
                 switch response.result {
                 case .success(let value):
-                print(value)
-                print("response.data! \(response.data!)")
-                var json = value as! Dictionary<String, Any>
-                let sodeul = try? JSONDecoder().decode(UserInfo.self, from: response.data!)
-                    print("sodeul => \(sodeul)")
-//                if let userInfo = json {
-                completion(json, nil)
-                return
-//                }
+//                    print("value ==> \(value)")
+                    guard let result = response.data else {return}
+                                    
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(UserInfo.self, from: response.data!)
+//                        print("json => \(json)")
+                        
+                        completion(json, nil)
+                        
+                    } catch {
+                        print("error! \(error)")
+                    }
                 case .failure(let error):
+                    var statusCode = response.response?.statusCode
+                    self.reloadToken(statusCode)
+                    
                     print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
                 }
+            }
+        }
+    }
+    
+    func reloadToken(_ statusCode: Int?){
+        if let statusCode = statusCode {
+            if statusCode == 500{
+                // 토큰 재요청
+                print("토큰 재요청 -> UserDefault Change -> 서버요청")
             }
         }
     }
