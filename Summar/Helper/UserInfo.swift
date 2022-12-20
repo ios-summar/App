@@ -1,6 +1,7 @@
 import Foundation
 import Alamofire
 
+// https://nsios.tistory.com/21
 struct UserInfo: Codable {
     let userEmail: String?
     let userNickname: String?
@@ -16,10 +17,21 @@ struct UserInfo: Codable {
         case userNickname = "userNickname"
         case major1 = "major1"
         case major2 = "major2"
-        case socialType = "socialType"
+        case socialType = "social_Type"
         case follower = "follower"
         case following = "following"
         case introduce = "introduce"
+    }
+    
+    init(userEmail: String?, userNickname: String?, major1: String?, major2: String?, socialType: String?, follower: Int?, following: Int?, introduce: String?) {
+        self.userEmail = userEmail
+        self.userNickname = userNickname
+        self.major1 = major1
+        self.major2 = major2
+        self.socialType = socialType
+        self.follower = follower
+        self.following = following
+        self.introduce = introduce
     }
 }
 

@@ -11,6 +11,10 @@ import UIKit
 class MyInfoView: UIView{
     static let shared = MyInfoView()
     let request = ServerRequest.shared
+    
+    // MARK: - Injection
+    let viewModel = TabbarMyInfoViewModel()
+    
     // MARK: - Properties
         private var userInfo: UserInfo? {
             didSet {
@@ -246,7 +250,7 @@ class MyInfoView: UIView{
             make.bottom.equalToSuperview()
         }
         
-        profileInit()
+        requestMyInfo()
     }
     
     func profileInit(){
@@ -270,23 +274,19 @@ class MyInfoView: UIView{
     func requestMyInfo(){
         if let value = UserInfo {
             let userId = value["userEmail"] as! String
-//            self.request.requestMyInfo("/user/find-user?userEmail=\(userId)")
-            self.request.requestMyInfo("/user/user-info?userEmail=\(userId)", completion: { (userInfo, error) in
-                        if let error = error {
-                            print(error)
-//                            self.error = error
-//                            self.isLoading = false
-                            return
-                        }
-                    print(" nil!!!!")
-                    print("userInfo => \(userInfo["result"])")
-//                        self.error = nil
-//                        self.isLoading = false
-//                        self.photo = photo
-                    })
+            viewModel.getUserInfo(withId: userId)
+            
+            viewModel.didFinishFetch = {
+                self.nickName.text = self.viewModel.nicknameString
+                self.major.text = self.viewModel.major2String
+                self.followerCount.text = String(self.viewModel.followerInt ?? 0)
+                self.followingCount.text = String(self.viewModel.followingInt ?? 0)
+//                self.headerImageView.sd_setImage(with: self.viewModel.photoUrl, completed: nil)
+            }
         }else {
             print(#file , "\(#function) else")
         }
+        
     }
     
     required init?(coder: NSCoder) {

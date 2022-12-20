@@ -78,6 +78,7 @@ class ServerRequest: NSObject {
 //                print(json["loginStatus"])
 //                print(json["refreshToken"])
                 json["userEmail"] = params["userEmail"]
+                json["socialType"] = params["socialType"]
                 
                 params["loginStatus"] = json["loginStatus"]
                 
@@ -132,8 +133,10 @@ class ServerRequest: NSObject {
                 switch response.result {
                 case .success(let value):
                 print(value)
+                print("response.data! \(response.data!)")
                 var json = value as! Dictionary<String, Any>
-                
+                let sodeul = try? JSONDecoder().decode(UserInfo.self, from: response.data!)
+                    print("sodeul => \(sodeul)")
 //                if let userInfo = json {
                 completion(json, nil)
                 return
