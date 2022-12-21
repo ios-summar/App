@@ -10,7 +10,14 @@ import UIKit
 
 class HomeView: UIView{
     static let shared = HomeView()
+    let helper = Helper.shared
     private let cellReuseIdentifier = "collectionCell"
+    private let tableCellReuseIdentifier = "tableCell"
+    
+    var arr: Array<Feed> = []
+    
+    let Feed1 = Feed()
+    let Feed2 = Feed()
     
     var arrProductPhotos = [
         UIImage(systemName: "doc"),
@@ -63,50 +70,20 @@ class HomeView: UIView{
     }()
     // 이미지 슬라이더
     
-    let view2 = UIView()
-    let view2Label : UILabel = {
-        let label = UILabel()
-        label.text = "써머 메이트 추천 포트폴리오"
-        label.textColor = .black
-        label.font = .boldSystemFont(ofSize: 20)
-        label.sizeToFit()
-        return label
-    }()
-    let view2UIImageView : UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "questionmark.circle")
-        imageView.sizeToFit()
-        imageView.tintColor = .black
-        return imageView
-    }()
-    
-    let view2SubView : UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.summarColor2
-        view.layer.cornerRadius = 5
-        return view
-    }()
-    let polygon : UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(systemName: "triangle.fill")
-        view.tintColor = UIColor.summarColor2
-        return view
-    }()
-    let view2SubViewLabel : UILabel = {
-        let label = UILabel()
-        label.text = "동종 직무군의 전공 과목 데이터를 분석하여 추천합니다."
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 14)
-        label.sizeToFit()
-        return label
-    }()
-    
     let view3 = UIView()
+    let view3TableView : UITableView = {
+        let view = UITableView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        view.layer.borderWidth = 1
+//        view.backgroundColor = .magenta
+        return view
+    }()
         
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        _ = [view1, view2, view3, view2SubView].map { self.contentView.addSubview($0)}
+        _ = [view1, view3].map { self.contentView.addSubview($0)}
         
         //이미지 슬라이더 view1
         addSubview(scrollView) // 메인뷰에
@@ -119,14 +96,8 @@ class HomeView: UIView{
         sliderProgressBar.progress =  Float( Float(currentCelIndex + 1) / Float(arrProductPhotos.count))
         //
         
-        //써머 메이트 추천 포트폴리오
-        self.view2.addSubview(view2Label)
-        self.view2.addSubview(view2UIImageView)
-        //
+        self.view3.addSubview(view3TableView)
         
-        //동종 직무군의 전공 과목 데이터를 분석하여 추천합니다.
-        self.view2SubView.addSubview(polygon)
-        self.view2SubView.addSubview(view2SubViewLabel)
         
         scrollView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview() // 스크롤뷰가 표현될 영역
@@ -136,14 +107,6 @@ class HomeView: UIView{
             make.width.equalToSuperview()
             make.centerX.top.bottom.equalToSuperview()
         }
-        
-//        view1.layer.borderWidth = 1
-//        view1.layer.borderColor = UIColor.black.cgColor
-        
-//        view2.backgroundColor = .black
-//        view2.layer.borderWidth = 1
-//        view2.layer.borderColor = UIColor.black.cgColor
-        
         
         view3.backgroundColor = .blue
         
@@ -182,71 +145,24 @@ class HomeView: UIView{
             make.right.equalTo(sliderLabel.snp.left).offset(-10)
         }
         
-        //써머 메이트 추천 포트폴리오
-        view2.snp.makeConstraints { (make) in
+        
+        view3.snp.makeConstraints { (make) in
             
             make.top.equalTo(view1.snp.bottom).offset(30)
             make.leading.equalTo(30)
             make.trailing.equalTo(-30)
-            make.height.equalTo(40)
-        }
-        
-        view2Label.snp.makeConstraints { (make) in
-            
-//            make.top.equalTo(view2.snp.bottom).offset(30)
-            make.centerY.equalTo(view2.snp.centerY)
-            make.left.equalTo(view2.snp.left)
-//            make.trailing.equalTo(-30)
-//            make.height.equalTo(400)
-        }
-        
-        view2UIImageView.snp.makeConstraints { (make) in
-            
-//            make.top.equalTo(view2.snp.bottom).offset(30)
-            make.centerY.equalTo(view2.snp.centerY)
-            make.right.equalTo(view2.snp.right)
-            make.height.equalTo(view2.snp.height)
-            make.width.equalTo(view2.snp.height)
-//            make.trailing.equalTo(-30)
-//            make.height.equalTo(400)
-        }
-        
-        view2SubView.snp.makeConstraints { (make) in
-            
-            make.top.equalTo(view2.snp.bottom).offset(25)
-            make.leading.equalTo(30)
-            make.trailing.equalTo(-20)
-            make.height.equalTo(50)
-        }
-        
-        view2SubViewLabel.snp.makeConstraints { (make) in
-
-            make.centerY.equalToSuperview()
-            make.left.equalTo(10)
-            
-        }
-
-        //동종 직무군의 전공 과목 데이터를 분석하여 추천합니다.
-        polygon.snp.makeConstraints { (make) in
-            
-            make.top.equalTo(view2SubView.snp.top).offset(-15)
-            make.centerX.equalTo(view2UIImageView.snp.centerX)
-            make.width.equalTo(20)
-            make.height.equalTo(20)
-//            make.right.equalTo(view2SubView.snp.right)
-        }
-        
-        
-        view3.snp.makeConstraints { (make) in
-            
-            make.top.equalTo(view2SubView.snp.bottom).offset(120)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(300)
+            make.height.equalTo(600)
             make.bottom.equalToSuperview() // 이것이 중요함
+        }
+        
+        view3TableView.snp.makeConstraints { (make) in
+            
+            make.top.left.bottom.right.equalToSuperview()
         }
         
         //홈화면 이미지 슬라이더
         imgSlider()
+        testFeed()
     }
 
     
@@ -255,7 +171,9 @@ class HomeView: UIView{
     }
 }
 
-extension HomeView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+extension HomeView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDelegate, UITableViewDataSource{
+    
+    // MARK: - 이미지 슬라이더
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return arrProductPhotos.count
     }
@@ -299,6 +217,35 @@ extension HomeView: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         
         sliderLabel.text = "\(currentCelIndex + 1) / \(arrProductPhotos.count)"
         sliderProgressBar.progress = Float( Float(currentCelIndex + 1) / Float(arrProductPhotos.count))
+    }
+    
+    // MARK: - 피드
+    func testFeed(){
+        arr.append(Feed1)
+        arr.append(Feed2)
+        
+        view3TableView.register(HomeTableViewCell.self, forCellReuseIdentifier: tableCellReuseIdentifier)
+        
+        view3TableView.delegate = self
+        view3TableView.dataSource = self
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 240
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return arr.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = view3TableView.dequeueReusableCell(withIdentifier: tableCellReuseIdentifier, for: indexPath) as! HomeTableViewCell
+        helper.lineSpacing(cell.introductLabel, 10)
+        cell.nickName.text = "욱승"
+        cell.major.text = "컴퓨터 / 통신"
+        cell.introductLabel.text = "introductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabel"
+        return cell
+        return UITableViewCell()
     }
     
 }

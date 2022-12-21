@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 class Helper : UIView{
+    static let shared = Helper()
     func showAlert(vc: UIView?, preferredStyle: UIAlertController.Style = .alert, title: String = "알림", message: String = "", completTitle: String = "확인") {
         guard let currentVc = vc else {
             return
