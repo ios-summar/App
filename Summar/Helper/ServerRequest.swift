@@ -16,6 +16,9 @@ class ServerRequest: NSObject {
     static let shared = ServerRequest()
     weak var delegate : ServerDelegate?
     
+    var param : Dictionary<String, Any> = Dictionary<String, Any>()
+    var requestParam : Dictionary<String, String> = Dictionary<String, String>()
+    
     // MARK: - Summar 서버 URL
     let serverURL = { () -> String in
         let url = Bundle.main.url(forResource: "Network", withExtension: "plist")
@@ -116,9 +119,9 @@ class ServerRequest: NSObject {
         }
     }
     
-    // MARK: - https://github.com/arifinfrds/iOS-MVVM-Alamofire
+    // MARK: - 마이 써머리 https://github.com/arifinfrds/iOS-MVVM-Alamofire
     func requestMyInfo(_ url: String, completion: @escaping (UserInfo?, Error?) -> ()) {
-        let url = "http://13.209.114.45:8080/api/v1\(url)"
+        let url = serverURL() + url
         if let token = UserDefaults.standard.string(forKey: "accessToken") {
             print("url => \(url)")
             print(token)
@@ -147,7 +150,7 @@ class ServerRequest: NSObject {
                     }
                 case .failure(let error):
                     var statusCode = response.response?.statusCode
-                    self.reloadToken(statusCode)
+                    self.reloadToken(statusCode, #function)
                     
                     print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
                 }
@@ -155,11 +158,69 @@ class ServerRequest: NSObject {
         }
     }
     
-    func reloadToken(_ statusCode: Int?){
+    // MARK: - AccessToken 재발급
+    func requestAccessToken(_ url: String, completion: @escaping (String?, Error?) -> ()) {
+        let url = serverURL() + url
+        print("url => \(url)")
+        
+        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo") {
+            param = value
+        }
+        
+        print(param)
+        
+        requestParam["userEmail"] = param["userEmail"] as! String
+        
+            AF.request(url,
+                       method: .post,
+                       parameters: requestParam,
+                       encoding: URLEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    print("value ==> \(value)")
+                    guard let result = response.data else {return}
+                                    
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(UserInfo.self, from: response.data!)
+//                        print("json => \(json)")
+                        
+                        completion("asd", nil)
+                        
+                    } catch {
+                        print("error! \(error)")
+                    }
+                case .failure(let error):
+                    var statusCode = response.response?.statusCode
+                    print("statusCode => \(statusCode)")
+//                    self.reloadToken(statusCode, #function)
+                    
+                    print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                }
+            }
+    }
+    
+    // MARK: - AccessToken 혹은 RefreshToken 재요청
+    func reloadToken(_ statusCode: Int?,_ function : String?){
         if let statusCode = statusCode {
             if statusCode == 500{
                 // 토큰 재요청
                 print("토큰 재요청 -> UserDefault Change -> 서버요청")
+                
+                self.requestAccessToken("/user/give-access-token", completion: {(acessToken, error) in
+                    if let error = error {
+                        print("error \(error)")
+                    }
+                    if let acessToken = acessToken {
+                        print("acessToken \(acessToken)")
+                        UserDefaults.standard.set(acessToken, forKey: "accessToken")
+                    }
+                })
+                
+                print("contains =>",function?.contains("requestMyInfo"))
             }
         }
     }

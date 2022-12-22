@@ -29,6 +29,7 @@
 		04D4448328FE356400C7C44F /* StartIndexController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D4448228FE356400C7C44F /* StartIndexController.swift */; };
 		04FB196929122B5C00E9EE54 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FB196829122B5C00E9EE54 /* HomeController.swift */; };
 		04FB196D29122B7B00E9EE54 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FB196C29122B7B00E9EE54 /* HomeViewModel.swift */; };
+		278CE7D99D2CEBF622C299E4 /* Pods_Summar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 302C122322BBCE5F0DD710EC /* Pods_Summar.framework */; };
 		A28EC0DA28CA1BC000F5BF98 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28EC0D928CA1BC000F5BF98 /* AppDelegate.swift */; };
 		A28EC0DC28CA1BC000F5BF98 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28EC0DB28CA1BC000F5BF98 /* SceneDelegate.swift */; };
 		A28EC0E328CA1BC100F5BF98 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A28EC0E228CA1BC100F5BF98 /* Assets.xcassets */; };
@@ -47,11 +48,9 @@
 		A2ECB36929448E9F0005D88C /* TabbarFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ECB36829448E9F0005D88C /* TabbarFeed.swift */; };
 		A2ECB36B29448EAF0005D88C /* TabbarSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ECB36A29448EAF0005D88C /* TabbarSearch.swift */; };
 		A2ECB36D29448EC10005D88C /* TabbarMyInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ECB36C29448EC10005D88C /* TabbarMyInfo.swift */; };
-		F1B432238E038B0B9F532252 /* Pods_Summar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A4FAA86B416E55AB1629EFA /* Pods_Summar.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		001F40C8A510396FA32F22D3 /* Pods-Summar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Summar.release.xcconfig"; path = "Target Support Files/Pods-Summar/Pods-Summar.release.xcconfig"; sourceTree = "<group>"; };
 		040D79F92918FA3F0018B6A0 /* KakaoLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginManager.swift; sourceTree = "<group>"; };
 		040D79FB2918FB2A0018B6A0 /* AppleLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginManager.swift; sourceTree = "<group>"; };
 		040D79FD2918FB4B0018B6A0 /* NaverLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginManager.swift; sourceTree = "<group>"; };
@@ -75,7 +74,8 @@
 		04D4448228FE356400C7C44F /* StartIndexController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartIndexController.swift; sourceTree = "<group>"; };
 		04FB196829122B5C00E9EE54 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		04FB196C29122B7B00E9EE54 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
-		8A4FAA86B416E55AB1629EFA /* Pods_Summar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Summar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		302C122322BBCE5F0DD710EC /* Pods_Summar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Summar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6FB2ECF7F2CF77C30EF6EE77 /* Pods-Summar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Summar.debug.xcconfig"; path = "Target Support Files/Pods-Summar/Pods-Summar.debug.xcconfig"; sourceTree = "<group>"; };
 		A28EC0D628CA1BC000F5BF98 /* Summar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Summar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A28EC0D928CA1BC000F5BF98 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A28EC0DB28CA1BC000F5BF98 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -96,7 +96,7 @@
 		A2ECB36829448E9F0005D88C /* TabbarFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarFeed.swift; sourceTree = "<group>"; };
 		A2ECB36A29448EAF0005D88C /* TabbarSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarSearch.swift; sourceTree = "<group>"; };
 		A2ECB36C29448EC10005D88C /* TabbarMyInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarMyInfo.swift; sourceTree = "<group>"; };
-		EC2B9ED678898814A7CC3F51 /* Pods-Summar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Summar.debug.xcconfig"; path = "Target Support Files/Pods-Summar/Pods-Summar.debug.xcconfig"; sourceTree = "<group>"; };
+		FC931268FAFE2DEE3C8756A7 /* Pods-Summar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Summar.release.xcconfig"; path = "Target Support Files/Pods-Summar/Pods-Summar.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,7 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F1B432238E038B0B9F532252 /* Pods_Summar.framework in Frameworks */,
+				278CE7D99D2CEBF622C299E4 /* Pods_Summar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,11 +155,19 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		429DA08B2A89F78A3BBA2690 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				302C122322BBCE5F0DD710EC /* Pods_Summar.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		58B08D91E3EF8339D22738BD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				EC2B9ED678898814A7CC3F51 /* Pods-Summar.debug.xcconfig */,
-				001F40C8A510396FA32F22D3 /* Pods-Summar.release.xcconfig */,
+				6FB2ECF7F2CF77C30EF6EE77 /* Pods-Summar.debug.xcconfig */,
+				FC931268FAFE2DEE3C8756A7 /* Pods-Summar.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -170,7 +178,7 @@
 				A28EC0D828CA1BC000F5BF98 /* Summar */,
 				A28EC0D728CA1BC000F5BF98 /* Products */,
 				58B08D91E3EF8339D22738BD /* Pods */,
-				E77BFBF61C202CDB7CDDABC3 /* Frameworks */,
+				429DA08B2A89F78A3BBA2690 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -283,14 +291,6 @@
 			path = 5TabbarMyInfo;
 			sourceTree = "<group>";
 		};
-		E77BFBF61C202CDB7CDDABC3 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				8A4FAA86B416E55AB1629EFA /* Pods_Summar.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -298,11 +298,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A28EC0EA28CA1BC100F5BF98 /* Build configuration list for PBXNativeTarget "Summar" */;
 			buildPhases = (
-				C90B90DDED206F9BDCB106B8 /* [CP] Check Pods Manifest.lock */,
+				AB06BC4404674EC6FAECF0F4 /* [CP] Check Pods Manifest.lock */,
 				A28EC0D228CA1BC000F5BF98 /* Sources */,
 				A28EC0D328CA1BC000F5BF98 /* Frameworks */,
 				A28EC0D428CA1BC000F5BF98 /* Resources */,
-				483BE530D5E7469AE2F0AD0B /* [CP] Embed Pods Frameworks */,
+				0962A9757ACD1B1E60CE43D4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -360,7 +360,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		483BE530D5E7469AE2F0AD0B /* [CP] Embed Pods Frameworks */ = {
+		0962A9757ACD1B1E60CE43D4 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -377,7 +377,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Summar/Pods-Summar-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C90B90DDED206F9BDCB106B8 /* [CP] Check Pods Manifest.lock */ = {
+		AB06BC4404674EC6FAECF0F4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -576,7 +576,7 @@
 		};
 		A28EC0EB28CA1BC100F5BF98 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EC2B9ED678898814A7CC3F51 /* Pods-Summar.debug.xcconfig */;
+			baseConfigurationReference = 6FB2ECF7F2CF77C30EF6EE77 /* Pods-Summar.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -607,7 +607,7 @@
 		};
 		A28EC0EC28CA1BC100F5BF98 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 001F40C8A510396FA32F22D3 /* Pods-Summar.release.xcconfig */;
+			baseConfigurationReference = FC931268FAFE2DEE3C8756A7 /* Pods-Summar.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
