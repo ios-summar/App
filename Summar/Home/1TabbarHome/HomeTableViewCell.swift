@@ -50,10 +50,11 @@ class HomeTableViewCell: UITableViewCell {
         addSubview(major)
         addSubview(introductLabel)
         
-//        backgroundColor = .systemPink
+        backgroundColor = .white
         profileImg.snp.makeConstraints { (make) in
             
             make.top.equalTo(40)
+            make.left.equalTo(20)
             make.width.height.equalTo(55)
         }
         nickName.snp.makeConstraints { (make) in
@@ -69,14 +70,15 @@ class HomeTableViewCell: UITableViewCell {
         introductLabel.snp.makeConstraints { (make) in
             
             make.top.equalTo(profileImg.snp.bottom).offset(20)
-            make.left.right.equalToSuperview()
+            make.left.equalTo(20)
+            make.right.equalTo(-20)
             make.height.equalTo(100)
         }
         
     }
     
     required init?(coder: NSCoder) {
-        fatalError("Error")
+        fatalError("init(coder:) has not been implemented")
     }
 
 }

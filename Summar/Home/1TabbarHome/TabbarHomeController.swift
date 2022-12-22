@@ -26,7 +26,7 @@ class TabbarHomeController : UIViewController {
             make.topMargin.equalTo(self.view.safeAreaInsets.top).offset(10)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.height.equalTo(40)
+            make.height.equalTo(50)
         }
         
         homeView.snp.makeConstraints{(make) in

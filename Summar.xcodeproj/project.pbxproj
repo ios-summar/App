@@ -13,6 +13,9 @@
 		040D7A002918FB530018B6A0 /* GoogleLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D79FF2918FB530018B6A0 /* GoogleLoginManager.swift */; };
 		041EEE982952E708006263C7 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041EEE972952E708006263C7 /* Feed.swift */; };
 		041EEE9A2952F1C2006263C7 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041EEE992952F1C2006263C7 /* HomeTableViewCell.swift */; };
+		041EEE9C2954101B006263C7 /* BannerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041EEE9B2954101B006263C7 /* BannerTableViewCell.swift */; };
+		041EEE9E295435F6006263C7 /* WriteFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041EEE9D295435F6006263C7 /* WriteFeedController.swift */; };
+		041EEEA02954362D006263C7 /* WrtieFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041EEE9F2954362D006263C7 /* WrtieFeedView.swift */; };
 		04852F9028FE72AF00A3EED9 /* SocialLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04852F8F28FE72AF00A3EED9 /* SocialLoginController.swift */; };
 		04852F9228FE72E400A3EED9 /* SocialLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04852F9128FE72E400A3EED9 /* SocialLoginView.swift */; };
 		04904BDC290A5D96004ED5ED /* SignUp3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04904BDB290A5D96004ED5ED /* SignUp3View.swift */; };
@@ -55,6 +58,9 @@
 		040D79FF2918FB530018B6A0 /* GoogleLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleLoginManager.swift; sourceTree = "<group>"; };
 		041EEE972952E708006263C7 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
 		041EEE992952F1C2006263C7 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
+		041EEE9B2954101B006263C7 /* BannerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerTableViewCell.swift; sourceTree = "<group>"; };
+		041EEE9D295435F6006263C7 /* WriteFeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteFeedController.swift; sourceTree = "<group>"; };
+		041EEE9F2954362D006263C7 /* WrtieFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrtieFeedView.swift; sourceTree = "<group>"; };
 		043D982A28EFB673008C862F /* Summar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Summar.entitlements; sourceTree = "<group>"; };
 		04852F8F28FE72AF00A3EED9 /* SocialLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginController.swift; sourceTree = "<group>"; };
 		04852F9128FE72E400A3EED9 /* SocialLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginView.swift; sourceTree = "<group>"; };
@@ -234,6 +240,7 @@
 				A2933E6F29472EB100B84C5B /* TitleViewHome.swift */,
 				04B864E429494D0600D814D9 /* HomeView.swift */,
 				04B864EF294AEAB400D814D9 /* HomeCollectionViewCell.swift */,
+				041EEE9B2954101B006263C7 /* BannerTableViewCell.swift */,
 				041EEE992952F1C2006263C7 /* HomeTableViewCell.swift */,
 			);
 			path = 1TabbarHome;
@@ -251,6 +258,8 @@
 			isa = PBXGroup;
 			children = (
 				A2ECB36829448E9F0005D88C /* TabbarFeed.swift */,
+				041EEE9D295435F6006263C7 /* WriteFeedController.swift */,
+				041EEE9F2954362D006263C7 /* WrtieFeedView.swift */,
 			);
 			path = 3TabbarFeed;
 			sourceTree = "<group>";
@@ -397,11 +406,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				041EEEA02954362D006263C7 /* WrtieFeedView.swift in Sources */,
 				A2933E7429501B4800B84C5B /* TabbarMyInfoViewModel.swift in Sources */,
 				04B864E529494D0600D814D9 /* HomeView.swift in Sources */,
 				A2A769A228FBF742003EE3CD /* StartController.swift in Sources */,
 				A28EC0DA28CA1BC000F5BF98 /* AppDelegate.swift in Sources */,
 				041EEE982952E708006263C7 /* Feed.swift in Sources */,
+				041EEE9E295435F6006263C7 /* WriteFeedController.swift in Sources */,
 				040D79FA2918FA3F0018B6A0 /* KakaoLoginManager.swift in Sources */,
 				A2ECB36929448E9F0005D88C /* TabbarFeed.swift in Sources */,
 				04FB196929122B5C00E9EE54 /* HomeController.swift in Sources */,
@@ -412,6 +423,7 @@
 				040D79FE2918FB4B0018B6A0 /* NaverLoginManager.swift in Sources */,
 				A2CAEDE129050A630053D6C9 /* SignUpController.swift in Sources */,
 				A2933E72294F808500B84C5B /* UserInfo.swift in Sources */,
+				041EEE9C2954101B006263C7 /* BannerTableViewCell.swift in Sources */,
 				A2ADEBA728D081050018A358 /* Helper.swift in Sources */,
 				040D79FC2918FB2A0018B6A0 /* AppleLoginManager.swift in Sources */,
 				A2ECB36729448E870005D88C /* TabbarClipping.swift in Sources */,
