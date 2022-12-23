@@ -65,6 +65,7 @@ class MyInfoView: UIView{
         let UILabel = UILabel()
         UILabel.font = .boldSystemFont(ofSize: 16)
         UILabel.textAlignment = .center
+        UILabel.textColor = .black
         return UILabel
     }()
     let followerLabel : UILabel = {
@@ -72,6 +73,7 @@ class MyInfoView: UIView{
         UILabel.font = .systemFont(ofSize: 15)
         UILabel.text = "팔로워"
         UILabel.textAlignment = .center
+        UILabel.textColor = .black
         return UILabel
     }()
     let followingView : UIView = {
@@ -85,6 +87,7 @@ class MyInfoView: UIView{
         let UILabel = UILabel()
         UILabel.font = .boldSystemFont(ofSize: 16)
         UILabel.textAlignment = .center
+        UILabel.textColor = .black
         return UILabel
     }()
     let followingLabel : UILabel = {
@@ -92,6 +95,7 @@ class MyInfoView: UIView{
         UILabel.font = .systemFont(ofSize: 15)
         UILabel.text = "팔로잉"
         UILabel.textAlignment = .center
+        UILabel.textColor = .black
         return UILabel
     }()
     let introductView : UIView = {
