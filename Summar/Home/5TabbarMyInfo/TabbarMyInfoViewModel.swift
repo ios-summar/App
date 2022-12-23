@@ -7,9 +7,21 @@
 
 import Foundation
 
-class TabbarMyInfoViewModel {
+class TabbarMyInfoViewModel: reCallDelegate{
+    private var request = ServerRequest.shared
+    
+    func recallFunc(_ function: String?) {
+        print("function => \(function)")
+        getUserInfo()
+    }
+    
+    public init() {
+        request.reCalldelegate = self
+    }
+    
     // MARK: - Properties
     let myInfo = UserDefaults.standard.dictionary(forKey: "UserInfo")
+    
     
     private var userInfo: UserInfo? {
         didSet {
@@ -37,15 +49,13 @@ class TabbarMyInfoViewModel {
 //    var profileImg: URL?
     
     
-    private var request = ServerRequest.shared
-    
     // MARK: - Closures for callback, since we are not using the ViewModel to the View.
     var showAlertClosure: (() -> ())?
     var updateLoadingStatus: (() -> ())?
     var didFinishFetch: (() -> ())?
     
     // MARK: - Network call
-    func getUserInfo(withId userId: String) {
+    func getUserInfo() {
         if let value = myInfo {
             print("myInfo => \(myInfo)")
             let userId = value["userEmail"] as! String

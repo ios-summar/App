@@ -45,15 +45,14 @@ class HomeTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addSubview(profileImg)
-        addSubview(nickName)
-        addSubview(major)
-        addSubview(introductLabel)
+        contentView.addSubview(profileImg)
+        contentView.addSubview(nickName)
+        contentView.addSubview(major)
+        contentView.addSubview(introductLabel)
         
-        backgroundColor = .white
         profileImg.snp.makeConstraints { (make) in
             
-            make.top.equalTo(40)
+            make.top.equalTo(10)
             make.left.equalTo(20)
             make.width.height.equalTo(55)
         }
@@ -79,6 +78,20 @@ class HomeTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        print(#file , #function)
+        
+        print("!contentView.frame \(contentView.frame)")
+        print("!contentView \(contentView)")
+        
+        contentView.backgroundColor = .white
+        
+        
+          contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
+        print("!contentView.frame \(contentView.frame)")
     }
 
 }

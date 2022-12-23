@@ -12,9 +12,14 @@ protocol ServerDelegate : AnyObject {
     func memberYN(_ TF: Bool,_ requestDic: Dictionary<String, Any>)
 }
 
+protocol reCallDelegate : AnyObject {
+    func recallFunc(_ function : String?)
+}
+
 class ServerRequest: NSObject {
     static let shared = ServerRequest()
     weak var delegate : ServerDelegate?
+    weak var reCalldelegate : reCallDelegate?
     
     var param : Dictionary<String, Any> = Dictionary<String, Any>()
     var requestParam : Dictionary<String, String> = Dictionary<String, String>()
@@ -135,13 +140,11 @@ class ServerRequest: NSObject {
             .responseJSON { response in
                 switch response.result {
                 case .success(let value):
-//                    print("value ==> \(value)")
                     guard let result = response.data else {return}
                                     
                     do {
                         let decoder = JSONDecoder()
                         let json = try decoder.decode(UserInfo.self, from: response.data!)
-//                        print("json => \(json)")
                         
                         completion(json, nil)
                         
@@ -149,17 +152,17 @@ class ServerRequest: NSObject {
                         print("error! \(error)")
                     }
                 case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
                     var statusCode = response.response?.statusCode
                     self.reloadToken(statusCode, #function)
-                    
-                    print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
                 }
             }
         }
     }
     
     // MARK: - AccessToken 재발급
-    func requestAccessToken(_ url: String, completion: @escaping (String?, Error?) -> ()) {
+    func requestAccessToken(_ url: String, completion: @escaping (AccessToken?, Error?) -> ()) {
         let url = serverURL() + url
         print("url => \(url)")
         
@@ -167,14 +170,56 @@ class ServerRequest: NSObject {
             param = value
         }
         
-        print(param)
-        
         requestParam["userEmail"] = param["userEmail"] as! String
+        
+        print("requestAccessToken requestParam => \(requestParam)")
         
             AF.request(url,
                        method: .post,
                        parameters: requestParam,
-                       encoding: URLEncoding.default,
+                       encoding: JSONEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json"])
+            .validate(statusCode: 200..<300)
+            .responseJSON{ response in
+                switch response.result {
+                case .success(let value):
+                    guard let result = response.data else {return}
+                                    
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(AccessToken.self, from: response.data!)
+                        completion(json, nil)
+                        
+                    } catch {
+                        print("error! \(error)")
+                    }
+                case .failure(let error):
+                    print("🚫 !!Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+
+                    completion(nil, error)
+                    var statusCode = response.response?.statusCode
+                    print("requestAccessToken statusCode => \(statusCode)")
+                }
+            }
+    }
+    
+    // MARK: - RefreshToken, AccessToken 재발급
+    func requestRefreshToken(_ url: String, completion: @escaping (Token?, Error?) -> ()) {
+        let url = serverURL() + url
+        print("url => \(url)")
+
+        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo") {
+            param = value
+        }
+
+        print(param)
+
+        requestParam["userEmail"] = param["userEmail"] as! String
+
+            AF.request(url,
+                       method: .post,
+                       parameters: requestParam,
+                       encoding: JSONEncoding.default,
                        headers: ["Content-Type":"application/json", "Accept":"application/json"])
             .validate(statusCode: 200..<300)
             .responseJSON { response in
@@ -182,23 +227,21 @@ class ServerRequest: NSObject {
                 case .success(let value):
                     print("value ==> \(value)")
                     guard let result = response.data else {return}
-                                    
+
                     do {
                         let decoder = JSONDecoder()
-                        let json = try decoder.decode(UserInfo.self, from: response.data!)
-//                        print("json => \(json)")
-                        
-                        completion("asd", nil)
-                        
+                        let json = try decoder.decode(Token.self, from: response.data!)
+                        print("json => \(json)")
+
+                        completion(json, nil)
+
                     } catch {
                         print("error! \(error)")
+                        completion(nil, error)
                     }
                 case .failure(let error):
-                    var statusCode = response.response?.statusCode
-                    print("statusCode => \(statusCode)")
-//                    self.reloadToken(statusCode, #function)
-                    
-                    print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    print("🚫 ##Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    completion(nil, error)
                 }
             }
     }
@@ -208,19 +251,37 @@ class ServerRequest: NSObject {
         if let statusCode = statusCode {
             if statusCode == 500{
                 // 토큰 재요청
-                print("토큰 재요청 -> UserDefault Change -> 서버요청")
+                print("AccessToken 토큰 재요청 -> UserDefault Change -> 서버요청")
                 
-                self.requestAccessToken("/user/give-access-token", completion: {(acessToken, error) in
+                self.requestAccessToken("/user/give-access-token", completion: {(accessToken, error) in
+                    
                     if let error = error {
                         print("error \(error)")
+                        
+                        print("AccessToken AND RefreshToken 재요청 -> UserDefault Change -> 서버요청")
+                        
+                        self.requestRefreshToken("/user/give-both-token", completion: {(bothToken, error) in
+                            if let error = error {
+                                print("error \(error)")
+                            }
+                            if let bothToken = bothToken {
+                                print("bothToken \(bothToken)")
+                                let accessToken = bothToken.results.accessToken
+                                
+                                UserDefaults.standard.set(accessToken, forKey: "accessToken")
+                                self.reCalldelegate?.recallFunc(function)
+                            }
+                        })
                     }
-                    if let acessToken = acessToken {
-                        print("acessToken \(acessToken)")
-                        UserDefaults.standard.set(acessToken, forKey: "accessToken")
+                    
+                    if let accessToken = accessToken {
+                        let accessToken = accessToken.accessToken
+                        
+                        UserDefaults.standard.set(accessToken, forKey: "accessToken")
+                        self.reCalldelegate?.recallFunc(function)
                     }
                 })
                 
-                print("contains =>",function?.contains("requestMyInfo"))
             }
         }
     }

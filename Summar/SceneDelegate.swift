@@ -16,6 +16,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     let instance = NaverThirdPartyLoginConnection.getSharedInstance()
+    
+    var mainVC : UIViewController?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -24,9 +26,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.windowScene = windowScene
-//        window?.rootViewController = LoginController()
-        let mainVC = StartIndexController()
-        let navigationController = UINavigationController(rootViewController: mainVC)
+        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
+            mainVC = HomeController()
+        }else {
+            mainVC = SocialLoginController()
+
+        }
+
+        let navigationController = UINavigationController(rootViewController: mainVC!)
+        navigationController.isNavigationBarHidden = true
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }

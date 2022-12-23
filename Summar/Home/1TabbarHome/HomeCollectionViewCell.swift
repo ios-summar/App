@@ -22,6 +22,5 @@ class HomeCollectionViewCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        print(#file , #function)
     }
 }

@@ -104,7 +104,7 @@ class MyInfoView: UIView{
     let introductLabel : UILabel = {
         let UILabel = UILabel()
         UILabel.font = .systemFont(ofSize: 15)
-        UILabel.textColor = .systemBlue
+        UILabel.textColor = .systemPink
         UILabel.textAlignment = .center
         UILabel.numberOfLines = 0
         return UILabel
@@ -241,7 +241,7 @@ class MyInfoView: UIView{
     func requestMyInfo(){
         if let value = UserInfo {
             let userId = value["userEmail"] as! String
-            viewModel.getUserInfo(withId: userId)
+            viewModel.getUserInfo()
             
             viewModel.didFinishFetch = {
                 self.nickName.text = self.viewModel.nicknameString

@@ -88,14 +88,14 @@ class HomeController : UITabBarController {
             make.width.height.equalTo(size)
         }
         
-        middleButton.layer.cornerRadius = size / 2
+        middleButton.layer.cornerRadius = 15
         
         // shadow
 //        middleButton.layer.shadowColor = tColor?.cgColor
-        middleButton.layer.shadowOffset = CGSize(width: 0,
-                                                 height: 8)
-        middleButton.layer.shadowOpacity = 0.75
-        middleButton.layer.shadowRadius = 13
+//        middleButton.layer.shadowOffset = CGSize(width: 10, height: 10)
+//
+//        middleButton.layer.shadowOpacity = 1
+//        middleButton.layer.shadowRadius = 1
         
         // other
         middleButton.layer.masksToBounds = false

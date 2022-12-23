@@ -39,14 +39,15 @@ class BannerTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addSubview(view1)
+        contentView.addSubview(view1)
         backgroundColor = .white
         
         self.view1.addSubview(collectionView)
         view1.snp.makeConstraints{(make) in
-            make.top.bottom.equalToSuperview()
-            make.left.equalTo(30)
-            make.right.equalTo(-30)
+            make.top.left.bottom.right.equalToSuperview()
+//            make.top.bottom.equalToSuperview()
+//            make.left.equalTo(30)
+//            make.right.equalTo(-30)
         }
         
         collectionView.snp.makeConstraints{(make) in
@@ -64,6 +65,21 @@ class BannerTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        print(#file , #function)
+        
+        print("!contentView.frame \(contentView.frame)")
+        print("!contentView \(contentView)")
+        
+        contentView.backgroundColor = .clear
+        contentView.layer.borderWidth = 3
+        
+        
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
+        print("!contentView.frame \(contentView.frame)")
     }
 
 }
