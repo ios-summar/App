@@ -11,25 +11,18 @@ import SnapKit
 
 class TabbarSearch : UIViewController {
     static let shared = TabbarSearch()
-    
-    let label : UILabel = {
-        let label = UILabel()
-        label.text = "검색"
-        label.textColor = .black
-        label.numberOfLines = 0
-        return label
-    }()
+    let titleView = TitleViewSearch.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.addSubview(label)
+        self.view.addSubview(titleView)
         
-        label.snp.makeConstraints{(make) in
-            make.centerX.equalTo(self.view.safeAreaLayoutGuide.snp.centerX)
-            make.centerY.equalTo(self.view.safeAreaLayoutGuide.snp.centerY)
-            make.width.equalTo(300)
-            make.width.equalTo(300)
+        titleView.snp.makeConstraints{(make) in
+            make.topMargin.equalTo(self.view.safeAreaInsets.top).offset(10)
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.height.equalTo(60)
         }
     }
 }
