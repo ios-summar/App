@@ -26,6 +26,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.windowScene = windowScene
+        
+        // safeArea BackgroundColor가 Black이 되는것을 방지
+        window?.safeAreaLayoutGuide.owningView?.backgroundColor = .white
+        
         if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
             mainVC = HomeController()
         }else {

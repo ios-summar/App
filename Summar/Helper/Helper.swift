@@ -108,7 +108,7 @@ extension UIColor {
     //2TabbarClipping
 
     //3TabbarFeed
-
+    static var fontColor = UIColor.init(red: 140/255, green: 140/255, blue: 140/255, alpha: 1)
     //4TabbarSearch
     
     //5TabbarMyInfo
