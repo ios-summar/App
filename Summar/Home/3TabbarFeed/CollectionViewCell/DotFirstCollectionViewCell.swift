@@ -31,7 +31,7 @@ class DotFirstCollectionViewCell: UICollectionViewCell {
     let btn : UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .clear
-        btn.addTarget(self, action: #selector(addImg), for: .touchUpInside)
+//        btn.addTarget(self, action: #selector(addImg), for: .touchUpInside)
         return btn
     }()
     
@@ -89,9 +89,9 @@ class DotFirstCollectionViewCell: UICollectionViewCell {
         
     }
     
-    @objc func addImg(){
-        print(#file , #function)
-    }
+//    @objc func addImg(){
+//        print(#file , #function)
+//    }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)

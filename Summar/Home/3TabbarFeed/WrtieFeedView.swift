@@ -7,9 +7,13 @@
 
 import Foundation
 import UIKit
+import BSImagePicker
+import Photos
 
 class WriteFeedView : UIView, UITextViewDelegate {
     static let shared = WriteFeedView()
+    
+    var selectedAssets : [PHAsset]? = nil
     
     private let cellReuseIdentifier = "FeedCollectionCell"
     private let EmptyCellReuseIdentifier = "EmptyCollectionCell"
@@ -37,7 +41,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
         cv.register(EmptyCollectionViewCell.self, forCellWithReuseIdentifier: EmptyCellReuseIdentifier)
         cv.register(DotCollectionViewCell.self, forCellWithReuseIdentifier: DotCellReuseIdentifier)
         cv.register(DotFirstCollectionViewCell.self, forCellWithReuseIdentifier: DotFirstCellReuseIdentifier)
-        
+        cv.backgroundColor = .white
         return cv
     }()
     
@@ -186,7 +190,8 @@ class WriteFeedView : UIView, UITextViewDelegate {
         }
         
         
-        imgSlider()
+        collectionViewScroll.delegate = self
+        collectionViewScroll.dataSource = self
     }
     
     // MARK: - PlaceHolder 작업
@@ -248,9 +253,58 @@ extension WriteFeedView: UICollectionViewDelegate, UICollectionViewDataSource, U
         return 10
     }
     
-    func imgSlider(){
-        collectionViewScroll.delegate = self
-        collectionViewScroll.dataSource = self
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            pressedAddButton()
+        }else {
+            
+        }
     }
+    
+    func pressedAddButton() {
+        let imagePicker = ImagePickerController()
+           imagePicker.settings.selection.max = 5
+           imagePicker.settings.fetch.assets.supportedMediaTypes = [.image]
+        
+        let vc = WriteFeedController()
+        
+            vc.presentImagePicker(imagePicker, select: { (asset) in
+                print("Selected: \(asset)")
+            }, deselect: { (asset) in
+                print("Deselected: \(asset)")
+            }, cancel: { (assets) in
+                print("Canceled with selections: \(assets)")
+            }, finish: { (assets) in
+                print("Finished with selections: \(assets)")
+            }, completion: {
+                print("completion")
+            })
+    }
+    
+//    func convertAssetToImages() {
+//
+//            if selectedAssets.count != 0 {
+//
+//                for i in 0..<selectedAssets.count {
+//
+//                    let imageManager = PHImageManager.default()
+//                    let option = PHImageRequestOptions()
+//                    option.isSynchronous = true
+//                    var thumbnail = UIImage()
+//
+//                    imageManager.requestImage(for: selectedAssets[i],
+//                                              targetSize: CGSize(width: 200, height: 200),
+//                                              contentMode: .aspectFit,
+//                                              options: option) { (result, info) in
+//                        thumbnail = result!
+//                    }
+//
+//                    let data = thumbnail.jpegData(compressionQuality: 0.7)
+//                    let newImage = UIImage(data: data!)
+//
+////                    self.userSelectedImages.append(newImage! as UIImage)
+//                }
+//            }
+//        }
     
 }

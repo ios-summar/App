@@ -21,7 +21,6 @@ class FeedCollectionViewCell: UICollectionViewCell {
     let btn : UIButton = {
         let btn = UIButton()
         btn.backgroundColor = .clear
-        btn.addTarget(self, action: #selector(addImg), for: .touchUpInside)
         return btn
     }()
     
@@ -77,10 +76,6 @@ class FeedCollectionViewCell: UICollectionViewCell {
             make.centerX.equalToSuperview()
         }
         
-    }
-    
-    @objc func addImg(){
-        print(#file , #function)
     }
     
     required init?(coder: NSCoder) {

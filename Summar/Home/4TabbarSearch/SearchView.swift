@@ -17,11 +17,12 @@ class SearchView: UIView{
     let textField : UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
-        textField.backgroundColor = UIColor.systemGray5
+        textField.backgroundColor = UIColor.searchGray
         textField.textColor = .black
         textField.placeholder = "닉네임으로 검색"
         textField.addLeftPadding()
         textField.addTarget(self, action: #selector(search), for: .editingChanged)
+        textField.attributedPlaceholder = NSAttributedString(string: "닉네임으로 검색", attributes: [NSAttributedString.Key.foregroundColor : UIColor.imageViewColor])
         return textField
     }()
     
@@ -40,7 +41,7 @@ class SearchView: UIView{
     
     let view : UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.systemGray5
+        view.backgroundColor = UIColor.searchGray
         return view
     }()
     
@@ -48,7 +49,7 @@ class SearchView: UIView{
     let searchImageView : UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "person.fill.questionmark")
-        imageView.tintColor = .systemGray
+        imageView.tintColor = UIColor.imageViewColor
         return imageView
     }()
     
@@ -56,7 +57,7 @@ class SearchView: UIView{
         let label = UILabel()
         label.text = "닉네임을 검색해 사용자를 찾아보세요"
         label.font = .systemFont(ofSize: 17)
-        label.textColor = .systemGray
+        label.textColor = UIColor.imageViewColor
         label.sizeToFit()
         return label
     }()
@@ -64,7 +65,6 @@ class SearchView: UIView{
     lazy var searchTableView : UITableView = {
         let view = UITableView()
         view.backgroundColor = .white
-        
         return view
     }()
     
