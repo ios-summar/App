@@ -43,6 +43,11 @@ class HomeController : UITabBarController {
         
         UITabBar.appearance().barTintColor = UIColor.summarColor1
         UITabBar.appearance().backgroundColor = UIColor.UIBarColor
+        
+        // tabBar Custom
+        tabBar.layer.cornerRadius = tabBar.frame.height * 0.41
+        tabBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        
         setupVCs()
         addMiddleButton()
     }

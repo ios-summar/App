@@ -13,7 +13,7 @@ class MyInfoView: UIView{
     let request = ServerRequest.shared
     
     // MARK: - Injection
-    let viewModel = TabbarMyInfoViewModel()
+    let viewModel = MyInfoViewModel()
     
     // MARK: - Properties
         private var userInfo: UserInfo? {

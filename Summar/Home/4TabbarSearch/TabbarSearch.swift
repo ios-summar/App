@@ -11,18 +11,16 @@ import SnapKit
 
 class TabbarSearch : UIViewController {
     static let shared = TabbarSearch()
-    let titleView = TitleViewSearch.shared
+    let searchView = SearchView.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.addSubview(titleView)
+        self.view.addSubview(searchView)
         
-        titleView.snp.makeConstraints{(make) in
+        searchView.snp.makeConstraints{(make) in
             make.topMargin.equalTo(self.view.safeAreaInsets.top).offset(10)
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.height.equalTo(60)
+            make.left.right.bottom.equalToSuperview()
         }
     }
 }

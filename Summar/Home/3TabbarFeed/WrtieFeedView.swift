@@ -12,6 +12,10 @@ class WriteFeedView : UIView, UITextViewDelegate {
     static let shared = WriteFeedView()
     
     private let cellReuseIdentifier = "FeedCollectionCell"
+    private let EmptyCellReuseIdentifier = "EmptyCollectionCell"
+    private let DotCellReuseIdentifier = "DotCollectionCell"
+    private let DotFirstCellReuseIdentifier = "DotFirstCollectionCell"
+    
     let textViewPlaceHolder = "피드 내용은 2,000자 이내로 입력 가능합니다."
     
     let btnWidth : CGFloat = {
@@ -21,14 +25,19 @@ class WriteFeedView : UIView, UITextViewDelegate {
     
     // 슬라이더
     let view1 = UIView()
-    let collectionView : UICollectionView = {
+    lazy var collectionViewScroll : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
        
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.isScrollEnabled = true
-        cv.layer.cornerRadius = 7
+        cv.showsHorizontalScrollIndicator = false
+        cv.register(FeedCollectionViewCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
+        cv.register(EmptyCollectionViewCell.self, forCellWithReuseIdentifier: EmptyCellReuseIdentifier)
+        cv.register(DotCollectionViewCell.self, forCellWithReuseIdentifier: DotCellReuseIdentifier)
+        cv.register(DotFirstCollectionViewCell.self, forCellWithReuseIdentifier: DotFirstCellReuseIdentifier)
+        
         return cv
     }()
     
@@ -41,7 +50,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
     lazy var view2TextView : UITextView = {
         let textView = UITextView()
         textView.backgroundColor = UIColor.textFieldColor
-        textView.font = .systemFont(ofSize: 20)
+        textView.font = .systemFont(ofSize: 18)
         textView.text = textViewPlaceHolder
         textView.textColor = .lightGray
         textView.delegate = self
@@ -80,7 +89,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
     let registerBtn : UIButton = {
         let button = UIButton()
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 10
         button.backgroundColor = .summarColor2
         button.setTitle("등록", for: .normal)
         return button
@@ -89,7 +98,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
     let temporarySaveBtn : UIButton = {
         let button = UIButton()
         button.setTitleColor(UIColor.fontColor, for: .normal)
-        button.layer.cornerRadius = 3
+        button.layer.cornerRadius = 10
         button.backgroundColor = UIColor.init(red: 243/255, green: 243/255, blue: 243/255, alpha: 1)
         button.setTitle("임시저장", for: .normal)
         return button
@@ -115,7 +124,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
             addSubview($0)
 //            $0.layer.borderWidth = 1
         }
-        self.view1.addSubview(collectionView)
+        self.view1.addSubview(collectionViewScroll)
         self.view2.addSubview(view2TextView)
         
         view1.snp.makeConstraints{(make) in
@@ -124,7 +133,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
             make.height.equalTo(100)
         }
         
-        collectionView.snp.makeConstraints{(make) in
+        collectionViewScroll.snp.makeConstraints{(make) in
             make.top.left.bottom.right.equalToSuperview()
         }
         
@@ -164,14 +173,14 @@ class WriteFeedView : UIView, UITextViewDelegate {
         
         registerBtn.snp.makeConstraints{(make) in
             make.left.equalTo(self.safeAreaLayoutGuide.snp.centerX).offset(10)
-            make.bottom.equalTo(-30)
+            make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-20)
             make.right.equalTo(-20)
             make.height.equalTo(60)
         }
         
         temporarySaveBtn.snp.makeConstraints{(make) in
             make.right.equalTo(self.safeAreaLayoutGuide.snp.centerX).offset(-10)
-            make.bottom.equalTo(-30)
+            make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-20)
             make.left.equalTo(20)
             make.height.equalTo(60)
         }
@@ -180,6 +189,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
         imgSlider()
     }
     
+    // MARK: - PlaceHolder 작업
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text == textViewPlaceHolder {
             textView.text = nil
@@ -201,19 +211,37 @@ class WriteFeedView : UIView, UITextViewDelegate {
 }
 
 extension WriteFeedView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    // MARK: - 이미지 슬라이더
+    // MARK: - 피드 작성 collectionView 슬라이더
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return 12
     }
         
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! FeedCollectionViewCell
-        return cell
+        if indexPath.row != 11 {
+            if indexPath.row == 0 { // 첫번째 cell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! FeedCollectionViewCell
+                return cell
+            }else {
+                if indexPath.row == 1 { // 두번째 cell
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotFirstCellReuseIdentifier, for: indexPath) as! DotFirstCollectionViewCell
+                    return cell
+                }else { // 1,2번째 cell 제외한 나머지 cell
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotCellReuseIdentifier, for: indexPath) as! DotCollectionViewCell
+                    return cell
+                }
+            }
+        }else { // empty cell로 padding
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmptyCellReuseIdentifier, for: indexPath) as! EmptyCollectionViewCell
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 100, height: 100)
-        
+        if indexPath.row != 11 {
+            return CGSize(width: 100, height: 100)
+        }else {
+            return CGSize(width: 25, height: 100)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -221,10 +249,8 @@ extension WriteFeedView: UICollectionViewDelegate, UICollectionViewDataSource, U
     }
     
     func imgSlider(){
-        collectionView.register(FeedCollectionViewCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
-        
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        collectionViewScroll.delegate = self
+        collectionViewScroll.dataSource = self
     }
     
 }

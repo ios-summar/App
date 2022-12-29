@@ -7,7 +7,7 @@
 
 import Foundation
 
-class TabbarMyInfoViewModel: reCallDelegate{
+class MyInfoViewModel: reCallDelegate{
     private var request = ServerRequest.shared
     
     func recallFunc(_ function: String?) {

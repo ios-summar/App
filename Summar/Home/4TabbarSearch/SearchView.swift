@@ -12,6 +12,7 @@ import SnapKit
 
 class SearchView: UIView{
     static let shared = SearchView()
+    let viewModel = SearchViewModel.shared
     
     let textField : UITextField = {
         let textField = UITextField()
@@ -97,7 +98,7 @@ class SearchView: UIView{
         }
         
         view.snp.makeConstraints{(make) in
-            make.top.equalTo(textField.snp.bottom).offset(10)
+            make.top.equalTo(textField.snp.bottom).offset(20)
             make.left.bottom.right.equalToSuperview()
         }
         
@@ -131,12 +132,14 @@ class SearchView: UIView{
     }
     
     @objc func search(){
-        print(#file , #function)
-        
         if (textField.text?.isEmpty)! {
             isEmpty(true)
         }else {
+            let nickname = textField.text!
             isEmpty(false)
+            
+            //Network Call
+            viewModel.serachNickname(nickname)
         }
     }
     
@@ -162,7 +165,6 @@ class SearchView: UIView{
             }
         }else{
             xMark.alpha = 1.0
-            
             _ = [searchImageView, label].map {
                 $0.removeFromSuperview()
             }
