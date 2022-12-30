@@ -19,13 +19,11 @@ class EmptyCollectionViewCell: UICollectionViewCell {
         
         _ = [view].map {
             addSubview($0)
-//            $0.layer.borderWidth = 1
         }
         
         view.snp.makeConstraints{(make) in
             make.centerY.equalToSuperview()
             make.left.equalTo(25)
-//            make.right.equalTo(-25)
             make.width.equalTo(25)
             make.height.equalTo(100)
         }
