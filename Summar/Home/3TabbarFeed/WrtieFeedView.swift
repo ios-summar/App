@@ -10,10 +10,16 @@ import UIKit
 import BSImagePicker
 import Photos
 
+protocol ImagePickerDelegate : AnyObject {
+    func openPhoto(completion: @escaping([UIImage]?) -> ())
+}
+
 class WriteFeedView : UIView, UITextViewDelegate {
     static let shared = WriteFeedView()
     
-    var selectedAssets : [PHAsset]? = nil
+    weak var delegate : ImagePickerDelegate?
+    
+    var resultArr = [UIImage]()
     
     private let cellReuseIdentifier = "FeedCollectionCell"
     private let EmptyCellReuseIdentifier = "EmptyCollectionCell"
@@ -33,7 +39,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-       
+        
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.isScrollEnabled = true
         cv.showsHorizontalScrollIndicator = false
@@ -126,7 +132,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
         
         _ = [view1, view2, switch1, switch2, leftLabel, rightLabel, registerBtn, temporarySaveBtn].map {
             addSubview($0)
-//            $0.layer.borderWidth = 1
+            //            $0.layer.borderWidth = 1
         }
         self.view1.addSubview(collectionViewScroll)
         self.view2.addSubview(view2TextView)
@@ -218,26 +224,64 @@ class WriteFeedView : UIView, UITextViewDelegate {
 extension WriteFeedView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // MARK: - 피드 작성 collectionView 슬라이더
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 12
+        if resultArr.count == 0 { // 초기 셋팅
+            return 12
+        }else {
+            return resultArr.count + 2
+        }
     }
-        
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.row != 11 {
-            if indexPath.row == 0 { // 첫번째 cell
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! FeedCollectionViewCell
-                return cell
-            }else {
+        print(resultArr)
+        
+        if indexPath.row == 0 { // 첫번째 cell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! FeedCollectionViewCell
+            return cell
+        }
+        
+        if resultArr.count == 0 {  // 초기 셋팅
+            
+            if indexPath.row != 11 {
                 if indexPath.row == 1 { // 두번째 cell
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotFirstCellReuseIdentifier, for: indexPath) as! DotFirstCollectionViewCell
                     return cell
-                }else { // 1,2번째 cell 제외한 나머지 cell
+                }else { // 1, 2번째 cell 제외한 나머지 cell
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotCellReuseIdentifier, for: indexPath) as! DotCollectionViewCell
                     return cell
                 }
+            }else { // empty cell로 padding
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmptyCellReuseIdentifier, for: indexPath) as! EmptyCollectionViewCell
+                return cell
             }
-        }else { // empty cell로 padding
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmptyCellReuseIdentifier, for: indexPath) as! EmptyCollectionViewCell
-            return cell
+            
+        }else { // 이미지 피커 이후
+            if indexPath.row != resultArr.count + 1 {
+                if indexPath.row == 1 { // 두번째 cell
+                    if resultArr.count >= 1 {
+                        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotFirstCellReuseIdentifier, for: indexPath) as! DotFirstCollectionViewCell
+                        cell.addImg(resultArr[0])
+                        return cell
+                    }else {
+                        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotFirstCellReuseIdentifier, for: indexPath) as! DotFirstCollectionViewCell
+                        return cell
+                    }
+                }else { // 1,2번째 cell 제외한 나머지 cell 2..3..4..5..6..
+                    // resultArr.count 2 indexPath.row 2
+                    print("resultArr.count => \(resultArr.count)")
+                    print("indexPath.row - 1 => \(indexPath.row - 1)")
+                    if resultArr.count > indexPath.row - 1 {
+                        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotCellReuseIdentifier, for: indexPath) as! DotCollectionViewCell
+                        cell.addImg(resultArr[indexPath.row - 1])
+                        return cell
+                    }else {
+                        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotCellReuseIdentifier, for: indexPath) as! DotCollectionViewCell
+                        return cell
+                    }
+                }
+            }else { // empty cell로 padding
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmptyCellReuseIdentifier, for: indexPath) as! EmptyCollectionViewCell
+                return cell
+            }
         }
     }
     
@@ -255,56 +299,15 @@ extension WriteFeedView: UICollectionViewDelegate, UICollectionViewDataSource, U
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            pressedAddButton()
+            self.delegate?.openPhoto(completion: {(imageArr) in
+                guard let resultArr = imageArr else{ return }
+                self.resultArr = resultArr
+                
+                self.collectionViewScroll.reloadData()
+            })
         }else {
             
         }
     }
-    
-    func pressedAddButton() {
-        let imagePicker = ImagePickerController()
-           imagePicker.settings.selection.max = 5
-           imagePicker.settings.fetch.assets.supportedMediaTypes = [.image]
-        
-        let vc = WriteFeedController()
-        
-            vc.presentImagePicker(imagePicker, select: { (asset) in
-                print("Selected: \(asset)")
-            }, deselect: { (asset) in
-                print("Deselected: \(asset)")
-            }, cancel: { (assets) in
-                print("Canceled with selections: \(assets)")
-            }, finish: { (assets) in
-                print("Finished with selections: \(assets)")
-            }, completion: {
-                print("completion")
-            })
-    }
-    
-//    func convertAssetToImages() {
-//
-//            if selectedAssets.count != 0 {
-//
-//                for i in 0..<selectedAssets.count {
-//
-//                    let imageManager = PHImageManager.default()
-//                    let option = PHImageRequestOptions()
-//                    option.isSynchronous = true
-//                    var thumbnail = UIImage()
-//
-//                    imageManager.requestImage(for: selectedAssets[i],
-//                                              targetSize: CGSize(width: 200, height: 200),
-//                                              contentMode: .aspectFit,
-//                                              options: option) { (result, info) in
-//                        thumbnail = result!
-//                    }
-//
-//                    let data = thumbnail.jpegData(compressionQuality: 0.7)
-//                    let newImage = UIImage(data: data!)
-//
-////                    self.userSelectedImages.append(newImage! as UIImage)
-//                }
-//            }
-//        }
     
 }

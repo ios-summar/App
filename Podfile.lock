@@ -28,7 +28,12 @@ PODS:
   - KakaoSDKUser (2.11.3):
     - KakaoSDKAuth (= 2.11.3)
   - naveridlogin-sdk-ios (4.1.5)
+  - PryntTrimmerView (4.0.2)
   - SnapKit (5.6.0)
+  - SteviaLayout (4.7.3)
+  - YPImagePicker (5.2.1):
+    - PryntTrimmerView (= 4.0.2)
+    - SteviaLayout (= 4.7.3)
 
 DEPENDENCIES:
   - Alamofire
@@ -39,6 +44,7 @@ DEPENDENCIES:
   - KakaoSDKUser
   - naveridlogin-sdk-ios
   - SnapKit
+  - YPImagePicker
 
 SPEC REPOS:
   trunk:
@@ -53,7 +59,10 @@ SPEC REPOS:
     - KakaoSDKCommon
     - KakaoSDKUser
     - naveridlogin-sdk-ios
+    - PryntTrimmerView
     - SnapKit
+    - SteviaLayout
+    - YPImagePicker
 
 SPEC CHECKSUMS:
   Alamofire: 87bd8c952f9a4454320fce00d9cc3de57bcadaf5
@@ -67,8 +76,11 @@ SPEC CHECKSUMS:
   KakaoSDKCommon: b4235203f67a5b6ee2df75eaf9bbc863c6d92e09
   KakaoSDKUser: 9a42e9b74855ce876b071c841418aa6726534010
   naveridlogin-sdk-ios: 4351fe7162cd6b8b6dbb37bd7cc205304fa1d889
+  PryntTrimmerView: 6a43cc90df5d99addeabd33d4ba09b1365322130
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
+  SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
+  YPImagePicker: f36043210c10b0783034eb1947d6e06e31c461e4
 
-PODFILE CHECKSUM: 9b25cbc9c004ab227a1662ad9d3a7bdd2ef05b6b
+PODFILE CHECKSUM: 44c4726a2d441c532a62c8fb2af89da762aba97a
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.10.2

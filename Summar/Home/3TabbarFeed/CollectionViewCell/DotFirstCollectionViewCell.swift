@@ -8,12 +8,10 @@
 import UIKit
 
 class DotFirstCollectionViewCell: UICollectionViewCell {
-    lazy var view : UIImageView = {
-        let view = UIImageView()
+    
+    lazy var shapeLayer : CAShapeLayer = {
         let shapeLayer:CAShapeLayer = CAShapeLayer()
-        let frameSize = self.frame.size
-        let shapeRect = CGRect(x: 0, y: 0, width: 100, height: 100)
-        shapeLayer.bounds = shapeRect
+        shapeLayer.bounds = CGRect(x: 0, y: 0, width: 100, height: 100)
         shapeLayer.name = "DashBorder"
         shapeLayer.position = CGPoint(x: 50, y: 50)
         shapeLayer.fillColor = UIColor.clear.cgColor
@@ -21,10 +19,16 @@ class DotFirstCollectionViewCell: UICollectionViewCell {
         shapeLayer.lineWidth = 1.5
         shapeLayer.lineJoin = .round
         shapeLayer.lineDashPattern = [2,4]
-        shapeLayer.path = UIBezierPath(roundedRect: shapeRect, cornerRadius: 10).cgPath
-        
+        shapeLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 100, height: 100), cornerRadius: 10).cgPath
+        return shapeLayer
+    }()
+    
+    lazy var view : UIImageView = {
+        let view = UIImageView()
         view.layer.masksToBounds = false
-        view.layer.addSublayer(shapeLayer)
+        view.layer.addSublayer(self.shapeLayer)
+        view.clipsToBounds = true
+        view.layer.zPosition = 999
         return view
     }()
     
@@ -61,8 +65,9 @@ class DotFirstCollectionViewCell: UICollectionViewCell {
             addSubview($0)
         }
         
-        _ = [btn, label1, imageView].map {
+        _ = [label1, imageView].map {
             view.addSubview($0)
+//            view.sendSubviewToBack($0)
         }
         
         view.snp.makeConstraints{(make) in
@@ -70,10 +75,6 @@ class DotFirstCollectionViewCell: UICollectionViewCell {
             make.left.equalTo(25)
 //            make.right.equalTo(-25)
             make.width.height.equalTo(100)
-        }
-        
-        btn.snp.makeConstraints{(make) in
-            make.edges.equalToSuperview()
         }
         
         imageView.snp.makeConstraints{(make) in
@@ -89,9 +90,14 @@ class DotFirstCollectionViewCell: UICollectionViewCell {
         
     }
     
-//    @objc func addImg(){
-//        print(#file , #function)
-//    }
+    func addImg(_ img: UIImage){
+        view.image = img
+        
+        shapeLayer.removeFromSuperlayer()
+        _ = [label1, imageView].map {
+            $0.alpha = 0.0
+        }
+    }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)

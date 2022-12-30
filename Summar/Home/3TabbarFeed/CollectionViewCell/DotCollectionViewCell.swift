@@ -8,12 +8,10 @@
 import UIKit
 
 class DotCollectionViewCell: UICollectionViewCell {
-    lazy var view : UIImageView = {
-        let view = UIImageView()
+    
+    lazy var shapeLayer : CAShapeLayer = {
         let shapeLayer:CAShapeLayer = CAShapeLayer()
-        let frameSize = self.frame.size
-        let shapeRect = CGRect(x: 0, y: 0, width: 100, height: 100)
-        shapeLayer.bounds = shapeRect
+        shapeLayer.bounds = CGRect(x: 0, y: 0, width: 100, height: 100)
         shapeLayer.name = "DashBorder"
         shapeLayer.position = CGPoint(x: 50, y: 50)
         shapeLayer.fillColor = UIColor.clear.cgColor
@@ -21,10 +19,16 @@ class DotCollectionViewCell: UICollectionViewCell {
         shapeLayer.lineWidth = 1.5
         shapeLayer.lineJoin = .round
         shapeLayer.lineDashPattern = [2,4]
-        shapeLayer.path = UIBezierPath(roundedRect: shapeRect, cornerRadius: 10).cgPath
-        
+        shapeLayer.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 100, height: 100), cornerRadius: 10).cgPath
+        return shapeLayer
+    }()
+    
+    lazy var view : UIImageView = {
+        let view = UIImageView()
         view.layer.masksToBounds = false
-        view.layer.addSublayer(shapeLayer)
+        view.layer.addSublayer(self.shapeLayer)
+        view.clipsToBounds = true
+        view.layer.zPosition = 999
         return view
     }()
     
@@ -44,6 +48,7 @@ class DotCollectionViewCell: UICollectionViewCell {
         
         _ = [imageView].map {
             view.addSubview($0)
+//            view.sendSubviewToBack($0)
         }
         
         view.snp.makeConstraints{(make) in
@@ -57,6 +62,15 @@ class DotCollectionViewCell: UICollectionViewCell {
             make.centerX.equalToSuperview()
         }
         
+    }
+    
+    func addImg(_ img: UIImage){
+        view.image = img
+        
+        shapeLayer.removeFromSuperlayer()
+        _ = [imageView].map {
+            $0.alpha = 0.0
+        }
     }
     
     
