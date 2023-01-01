@@ -12,6 +12,7 @@ import Photos
 
 protocol ImagePickerDelegate : AnyObject {
     func openPhoto(completion: @escaping([UIImage]?) -> ())
+    func showImageFullScreen(_ imageArr: [UIImage])
 }
 
 class WriteFeedView : UIView, UITextViewDelegate {
@@ -306,7 +307,9 @@ extension WriteFeedView: UICollectionViewDelegate, UICollectionViewDataSource, U
                 self.collectionViewScroll.reloadData()
             })
         }else {
-            
+            if resultArr.count != 0 {
+                self.delegate?.showImageFullScreen(self.resultArr)
+            }
         }
     }
     

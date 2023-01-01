@@ -49,6 +49,14 @@ class WriteFeedController : UIViewController, WriteFeedDelegate, ImagePickerDele
         
     }
     
+    func showImageFullScreen(_ imageArr: [UIImage]) {
+        print("self.navigationController \(self.navigationController)")
+        print("imageArr => \(imageArr)")
+        let VC = FullScreenImageController.shared
+        VC.imageArr = imageArr
+        self.navigationController?.pushViewController(FullScreenImageController.shared, animated: true)
+    }
+    
     // MARK: - ImagePicker func
     func openPhoto(completion: @escaping([UIImage]?) -> ()) {
         var config = YPImagePickerConfiguration()

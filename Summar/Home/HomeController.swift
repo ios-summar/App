@@ -112,8 +112,9 @@ class HomeController : UITabBarController {
     }
     
     @objc func buttonHandler(){
-        let wrController = WriteFeedController.shared
-        wrController.modalPresentationStyle = .fullScreen
+        let wrController = UINavigationController(rootViewController:  WriteFeedController.shared)
+        wrController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+        wrController.isNavigationBarHidden = true
         self.present(wrController, animated: true, completion: nil)
     }
     
