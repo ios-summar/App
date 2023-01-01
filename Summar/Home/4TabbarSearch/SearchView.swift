@@ -139,7 +139,7 @@ class SearchView: UIView{
             isEmpty(false)
             
             //Network Call
-            viewModel.serachNickname(nickname)
+            viewModel.serachNickname(nickname, 0, 30)
         }
     }
     

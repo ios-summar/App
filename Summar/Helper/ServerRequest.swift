@@ -161,6 +161,47 @@ class ServerRequest: NSObject {
         }
     }
     
+    // MARK: - UITabBar 닉네임 검색
+    func searchNickname(_ url: String, completion: @escaping (SearchUserList?, Error?) -> ()) {
+        let url = serverURL() + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.request(url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "",
+                       method: .get,
+                       parameters: nil,
+                       encoding: URLEncoding.default,
+                       headers: ["Content-Type":"application/json; charset=utf-8", "Accept":"application/json",
+                                 "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    guard let result = response.data else {return}
+                    
+                    print("value => \(value)")
+                                    
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(SearchUserList.self, from: response.data!)
+
+                        completion(json, nil)
+
+                    } catch {
+                        print("error! \(error)")
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    
+                    print("statusCode => \(statusCode)")
+                    self.reloadToken(statusCode, #function)
+                }
+            }
+        }
+    }
+    
     // MARK: - AccessToken 재발급
     func requestAccessToken(_ url: String, completion: @escaping (AccessToken?, Error?) -> ()) {
         let url = serverURL() + url
