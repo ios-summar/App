@@ -16,6 +16,21 @@ protocol reCallDelegate : AnyObject {
     func recallFunc(_ function : String?)
 }
 
+// MARK: - Summar 서버 URL
+struct Server {
+    static var url: String {
+        let url = Bundle.main.url(forResource: "Network", withExtension: "plist")
+        let dictionary = NSDictionary(contentsOf: url!)
+#if DEBUG
+        var LocalURL = dictionary!["DebugURL"] as? String
+#elseif RELEASE
+        var LocalURL = dictionary!["ReleaseURL"] as? String
+#endif
+        
+        return LocalURL!
+    }
+}
+
 class ServerRequest: NSObject {
     static let shared = ServerRequest()
     weak var delegate : ServerDelegate?
@@ -55,7 +70,7 @@ class ServerRequest: NSObject {
     
     // MARK: - 로그인, 회원가입 func => 서버의 loginStatus 값으로 회원인지, 회원이 아닌지 확인후 화면 이동
     func login(_ url: String,_ requestDic: Dictionary<String, Any>){
-        let url = serverURL() + url
+        let url = Server.url + url
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "POST"
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
@@ -126,7 +141,7 @@ class ServerRequest: NSObject {
     
     // MARK: - 마이 써머리 https://github.com/arifinfrds/iOS-MVVM-Alamofire
     func requestMyInfo(_ url: String, completion: @escaping (UserInfo?, Error?) -> ()) {
-        let url = serverURL() + url
+        let url = Server.url + url
         if let token = UserDefaults.standard.string(forKey: "accessToken") {
             print("url => \(url)")
             print(token)
@@ -163,7 +178,7 @@ class ServerRequest: NSObject {
     
     // MARK: - UITabBar 닉네임 검색
     func searchNickname(_ url: String, completion: @escaping (SearchUserList?, Error?) -> ()) {
-        let url = serverURL() + url
+        let url = Server.url + url
         if let token = UserDefaults.standard.string(forKey: "accessToken") {
             print("url => \(url)")
             print(token)
@@ -204,7 +219,7 @@ class ServerRequest: NSObject {
     
     // MARK: - AccessToken 재발급
     func requestAccessToken(_ url: String, completion: @escaping (AccessToken?, Error?) -> ()) {
-        let url = serverURL() + url
+        let url = Server.url + url
         print("url => \(url)")
         
         if let value = UserDefaults.standard.dictionary(forKey: "UserInfo") {
@@ -246,7 +261,7 @@ class ServerRequest: NSObject {
     
     // MARK: - RefreshToken, AccessToken 재발급
     func requestRefreshToken(_ url: String, completion: @escaping (Token?, Error?) -> ()) {
-        let url = serverURL() + url
+        let url = Server.url + url
         print("url => \(url)")
 
         if let value = UserDefaults.standard.dictionary(forKey: "UserInfo") {

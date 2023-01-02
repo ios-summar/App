@@ -18,6 +18,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let instance = NaverThirdPartyLoginConnection.getSharedInstance()
     
     var mainVC : UIViewController?
+    
+//    let imageView : UIImageView = {
+//        let view = UIImageView()
+//        view.image = UIImage(systemName: "SplashImage")
+//        view.layer.borderWidth = 1
+//        view.backgroundColor = .systemPurple
+//        return view
+//    }()
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -26,6 +34,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.windowScene = windowScene
+        
+        imageView.frame = UIScreen.main.bounds
+        
+        window?.rootViewController?.view.addSubview(imageView)
+        window?.rootViewController?.view.bringSubviewToFront(imageView)
+        
+        
         
         // safeArea BackgroundColor가 Black이 되는것을 방지
         window?.safeAreaLayoutGuide.owningView?.backgroundColor = .white

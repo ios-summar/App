@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSCameraUsageDescription</key>
-	<string>이 내용은 info.plist에서 변경 가능합니다</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>이 내용은 info.plist에서 변경 가능</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
