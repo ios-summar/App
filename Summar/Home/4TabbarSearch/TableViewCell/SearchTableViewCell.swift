@@ -32,8 +32,9 @@ class SearchTableViewCell: UITableViewCell {
     let major : UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 13)
-        label.textColor = .black
+        label.textColor = .gray
         label.sizeToFit()
+        label.numberOfLines = 2
         return label
     }()
     let followLabel : UILabel = {
@@ -56,21 +57,28 @@ class SearchTableViewCell: UITableViewCell {
         profileImg.snp.makeConstraints { (make) in
             make.centerY.equalToSuperview()
             make.left.equalTo(20)
+            make.width.height.equalTo(55)
         }
         
         nickName.snp.makeConstraints { (make) in
-            make.bottom.equalTo(profileImg.snp.centerY).offset(-1)
+//            make.bottom.equalTo(profileImg.snp.centerY).offset(-1)
+            make.top.equalTo(9)
             make.left.equalTo(profileImg.snp.right).offset(10)
-        }
-        
-        major.snp.makeConstraints { (make) in
-            make.top.equalTo(profileImg.snp.centerY).offset(2)
-            make.left.equalTo(profileImg.snp.right).offset(10)
+            make.height.equalTo(20)
         }
         
         followLabel.snp.makeConstraints{(make) in
             make.centerY.equalToSuperview()
             make.right.equalTo(-20)
+            make.height.equalTo(20)
+            make.width.equalTo(100)
+        }
+        
+        major.snp.makeConstraints { (make) in
+            make.top.equalTo(nickName.snp.bottom).offset(2)
+            make.left.equalTo(profileImg.snp.right).offset(10)
+            make.right.equalTo(followLabel.snp.left).offset(-10)
+            make.bottom.equalTo(-5)
         }
     }
     

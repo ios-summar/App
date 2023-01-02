@@ -70,6 +70,7 @@ class Helper : UIView{
         paragraphStyle.lineSpacing = lineCF
         attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
         uiLabel.attributedText = attrString
+        uiLabel.textAlignment = .center
     }
 }
 

@@ -14,6 +14,7 @@ class SearchView: UIView{
     static let shared = SearchView()
     
     let cellReuseIdentifier = "SearchTableViewCell"
+    let helper = Helper()
     
     let textField : UITextField = {
         let textField = UITextField()
@@ -54,12 +55,15 @@ class SearchView: UIView{
         return imageView
     }()
     
-    let label : UILabel = {
+    lazy var label : UILabel = {
         let label = UILabel()
         label.text = "닉네임을 검색해 사용자를 찾아보세요"
         label.font = .systemFont(ofSize: 17)
+        label.numberOfLines = 0
+        label.textAlignment = .center
         label.textColor = UIColor.imageViewColor
         label.sizeToFit()
+        self.helper.lineSpacing(label, 10)
         return label
     }()
     
@@ -72,6 +76,8 @@ class SearchView: UIView{
         view.register(SearchTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         return view
     }()
+    
+    var empty : Bool? = nil
     
     
     override init(frame: CGRect) {
@@ -148,6 +154,27 @@ class SearchView: UIView{
             //Network Call
             let viewModel = SearchViewModel(nickname, 0, 30)
             viewModel.serachNickname()
+            
+            viewModel.didFinishFetch = {
+                self.empty = viewModel.empty
+                
+                if self.empty! { //검색결과 없음
+                    print("검색결과 없음")
+                    self.searchTableView.removeFromSuperview()
+                    
+                    self.label.text = "검색결과가 없습니다.\n닉네임을 정확하게 입력해주세요."
+                    self.searchImageView.image = UIImage(systemName: "person.fill.xmark")
+                }else {
+                    print("검색결과 있음")
+                    self.view.addSubview(self.searchTableView)
+                    
+                    self.searchTableView.snp.makeConstraints{(make) in
+                        make.top.equalTo(self.view.snp.top)
+                        make.left.right.bottom.equalToSuperview()
+                    }
+                }
+                
+            }
         }
     }
     
@@ -172,20 +199,26 @@ class SearchView: UIView{
                 make.centerX.equalToSuperview()
             }
             
+            label.text = "닉네임을 검색해 사용자를 찾아보세요"
+            label.textColor = UIColor.imageViewColor
+            searchImageView.image = UIImage(systemName: "person.fill.questionmark")
+            searchImageView.tintColor = UIColor.imageViewColor
+            
+            
             searchTableView.removeFromSuperview()
         }else{
             xMark.alpha = 1.0
-            _ = [searchImageView, label].map {
-                $0.removeFromSuperview()
-            }
+//            _ = [searchImageView, label].map {
+//                $0.removeFromSuperview()
+//            }
             
             //TEST
-            view.addSubview(searchTableView)
-            
-            searchTableView.snp.makeConstraints{(make) in
-                make.top.equalTo(view.snp.top)
-                make.left.right.bottom.equalToSuperview()
-            }
+//            view.addSubview(searchTableView)
+//
+//            searchTableView.snp.makeConstraints{(make) in
+//                make.top.equalTo(view.snp.top)
+//                make.left.right.bottom.equalToSuperview()
+//            }
         }
     }
     
@@ -196,8 +229,9 @@ class SearchView: UIView{
 
 
 extension SearchView: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 130
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 90
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -207,9 +241,10 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = searchTableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SearchTableViewCell
         cell.profileImg.image = UIImage(systemName: "person.fill")
-        cell.nickName.text = "욱승qfwqwfqgqwgqwgqw"
-        cell.major.text = "컴퓨터 / 통신aadwqdqwdqdqdqwd"
-        cell.followLabel.text = "팔로워 1,234qwgqqwdfqwfwq"
+        cell.nickName.text = "욱승qfwqwf"
+//        cell.major.text = "수학ㆍ물리ㆍ천문ㆍ지리"
+        cell.major.text = "수학ㆍ물리ㆍ천문ㆍ지리수학ㆍ물리ㆍ천문ㆍ지리수학ㆍ물리ㆍ천문ㆍ지리\n수학ㆍ물리ㆍ천문ㆍ지리수학ㆍ물리ㆍ천문ㆍ지리수학ㆍ물리ㆍ천문ㆍ지리"
+        cell.followLabel.text = "팔로워 1,234"
         return cell
     }
 }
