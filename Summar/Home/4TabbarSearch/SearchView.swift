@@ -12,7 +12,8 @@ import SnapKit
 
 class SearchView: UIView{
     static let shared = SearchView()
-    let viewModel = SearchViewModel.shared
+    
+    let cellReuseIdentifier = "SearchTableViewCell"
     
     let textField : UITextField = {
         let textField = UITextField()
@@ -65,6 +66,10 @@ class SearchView: UIView{
     lazy var searchTableView : UITableView = {
         let view = UITableView()
         view.backgroundColor = .white
+        //TEST
+        view.dataSource = self
+        view.delegate = self
+        view.register(SearchTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         return view
     }()
     
@@ -134,12 +139,15 @@ class SearchView: UIView{
     @objc func search(){
         if (textField.text?.isEmpty)! {
             isEmpty(true)
+            
+            
         }else {
             let nickname = textField.text!
             isEmpty(false)
             
             //Network Call
-            viewModel.serachNickname(nickname, 0, 30)
+            let viewModel = SearchViewModel(nickname, 0, 30)
+            viewModel.serachNickname()
         }
     }
     
@@ -163,17 +171,45 @@ class SearchView: UIView{
                 make.top.equalTo(searchImageView.snp.bottom).offset(30)
                 make.centerX.equalToSuperview()
             }
+            
+            searchTableView.removeFromSuperview()
         }else{
             xMark.alpha = 1.0
             _ = [searchImageView, label].map {
                 $0.removeFromSuperview()
             }
             
+            //TEST
+            view.addSubview(searchTableView)
             
+            searchTableView.snp.makeConstraints{(make) in
+                make.top.equalTo(view.snp.top)
+                make.left.right.bottom.equalToSuperview()
+            }
         }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+
+extension SearchView: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 130
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = searchTableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SearchTableViewCell
+        cell.profileImg.image = UIImage(systemName: "person.fill")
+        cell.nickName.text = "욱승qfwqwfqgqwgqwgqw"
+        cell.major.text = "컴퓨터 / 통신aadwqdqwdqdqdqwd"
+        cell.followLabel.text = "팔로워 1,234qwgqqwdfqwfwq"
+        return cell
     }
 }

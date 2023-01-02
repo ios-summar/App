@@ -82,6 +82,9 @@ extension UITextField {
 }
 
 extension UIColor {
+    //Launch Screen Color
+    static var launchScreenBackGroundColor = UIColor.init(red: 19/255, green: 120/255, blue: 224/255, alpha: 1)
+    
     //Main Color
     static var summarColor1 = UIColor.init(red: 31/255, green: 65/255, blue: 185/255, alpha: 1)
     static var summarColor2 = UIColor.init(red: 53/255, green: 97/255, blue: 254/255, alpha: 1)

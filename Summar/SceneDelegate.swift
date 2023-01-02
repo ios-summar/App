@@ -35,24 +35,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.windowScene = windowScene
         
-        imageView.frame = UIScreen.main.bounds
-        
-        window?.rootViewController?.view.addSubview(imageView)
-        window?.rootViewController?.view.bringSubviewToFront(imageView)
+//        imageView.frame = UIScreen.main.bounds
+//
+//        window?.rootViewController?.view.addSubview(imageView)
+//        window?.rootViewController?.view.bringSubviewToFront(imageView)
         
         
         
         // safeArea BackgroundColor가 Black이 되는것을 방지
         window?.safeAreaLayoutGuide.owningView?.backgroundColor = .white
         
-        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
-            mainVC = HomeController()
-        }else {
-            mainVC = SocialLoginController()
+//        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
+//            mainVC = HomeController()
+//        }else {
+        
+//            mainVC = SocialLoginController()
+//        }
 
-        }
-
-        let navigationController = UINavigationController(rootViewController: mainVC!)
+        let navigationController = UINavigationController(rootViewController: LaunchScreenController())
         navigationController.isNavigationBarHidden = true
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
@@ -66,7 +66,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }else { // 네이버 로그인 처리
                 instance?.receiveAccessToken(URLContexts.first?.url)
             }
-        }
+    }
+        
+        
         
         
 
