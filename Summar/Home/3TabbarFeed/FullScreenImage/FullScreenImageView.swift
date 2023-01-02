@@ -119,18 +119,18 @@ class FullScreenImageView : UIView, UIScrollViewDelegate{
         
         label2.snp.makeConstraints{(make) in
             make.centerX.equalToSuperview()
-            make.top.equalTo(20)
+            make.top.equalTo(10)
         }
         
         label1.snp.makeConstraints{(make) in
             make.centerX.equalToSuperview()
-            make.top.equalTo(label2.snp.bottom).offset(10)
+            make.top.equalTo(label2.snp.bottom).offset(15)
         }
         
         scrollView.snp.makeConstraints{(make) in
             make.left.equalToSuperview()
             make.width.equalTo(viewWidth)
-            make.top.equalTo(label1.snp.bottom)//.offset(20)
+            make.top.equalTo(label1.snp.bottom).offset(10)
             make.height.equalTo(600)
         }
 
