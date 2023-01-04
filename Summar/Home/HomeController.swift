@@ -68,7 +68,7 @@ class HomeController : UITabBarController {
             let navController = UINavigationController(rootViewController:  rootViewController)
             navController.tabBarItem.title = title
             navController.tabBarItem.image = image
-            navController.isNavigationBarHidden = true
+//            navController.isNavigationBarHidden = true
             return navController
         }else {
             return UIViewController()
@@ -114,7 +114,7 @@ class HomeController : UITabBarController {
     @objc func buttonHandler(){
         let wrController = UINavigationController(rootViewController:  WriteFeedController.shared)
         wrController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
-        wrController.isNavigationBarHidden = true
+//        wrController.isNavigationBarHidden = true
         self.present(wrController, animated: true, completion: nil)
     }
     

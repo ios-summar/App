@@ -45,6 +45,10 @@ class TitleViewHome: UIView{
         addSubview(title)
         addSubview(directBtn)
         addSubview(heartBtn)
+        _ = [title, directBtn, heartBtn].map {
+            addSubview($0)
+            $0.layer.borderWidth = 1
+        }
         
         title.snp.makeConstraints{(make) in
             make.topMargin.equalTo(10)
