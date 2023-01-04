@@ -12,6 +12,8 @@ struct SearchUserList: Codable {
     let lastPage: Bool?
     let totalPageCount: Int?
     let recordsPerPage: Int?
+    let currentPageNo: Int?
+    let totalRecordCount: Int?
     let content: [SearchUserInfo]?
 }
 
@@ -22,5 +24,6 @@ struct SearchUserInfo: Codable {
     let follower: Int?
     let following: Int?
     let introduce: String?
+    let profileImageUrl: String?
 }
 

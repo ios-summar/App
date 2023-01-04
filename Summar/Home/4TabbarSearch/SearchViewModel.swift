@@ -20,7 +20,7 @@ class SearchViewModel: reCallDelegate{
         self.size = size
     }
     
-    private var searchUserList : SearchUserList? {
+    var searchUserList : SearchUserList? {
         didSet {
             print("searchUserInfo => \(searchUserList)")
             print(#file , #function)
@@ -31,11 +31,20 @@ class SearchViewModel: reCallDelegate{
     }
     
     var empty: Bool?
-    var nicknameString: String?
-    var major2String: String?
-    var follow: String?
-    var introduceString: String?
-//    var profileImg: URL?
+//    var nicknameString: String?
+//    var major2String: String?
+//    var follow: String?
+//    var introduceString: String?
+    
+    var searchUserInfo : [SearchUserInfo]? = nil
+    
+    var currentPageNo: Int? = nil
+    var firstPage: Bool? = nil
+    var lastPage: Bool? = nil
+    var recordsPerPage: Int? = nil
+    var totalPageCount: Int? = nil
+    var totalRecordCount: Int? = nil
+    
     
     // MARK: - Closures for callback, since we are not using the ViewModel to the View.
     var showAlertClosure: (() -> ())?
@@ -44,14 +53,15 @@ class SearchViewModel: reCallDelegate{
     
     
     func recallFunc(_ function: String?) {
-        print("function => \(function)")
+        print("\(#file) function => \(function)")
+        self.searchNickname()
     }
     
     public init() {
         request.reCalldelegate = self
     }
     
-    func serachNickname(){
+    func searchNickname(){
         print("---------------")
         print(nickname)
         print(pageIndex)
@@ -81,24 +91,35 @@ class SearchViewModel: reCallDelegate{
             self.empty = true
         }else {
             self.empty = false
+            
+            
+//            if let currentPageNo = searchUserList.currentPageNo {
+//                self.currentPageNo = currentPageNo
+//            }
+//
+//            if let firstPage = searchUserList.firstPage {
+//                self.firstPage = firstPage
+//            }
+//
+//            if let lastPage = searchUserList.lastPage {
+//                self.lastPage = lastPage
+//            }
+//
+//            if let recordsPerPage = searchUserList.recordsPerPage {
+//                self.recordsPerPage = recordsPerPage
+//            }
+//
+//            if let totalPageCount = searchUserList.totalPageCount {
+//                self.totalPageCount = totalPageCount
+//            }
+//
+//            if let totalRecordCount = searchUserList.totalRecordCount {
+//                self.totalRecordCount = totalRecordCount
+//            }
+//
+//            if let searchUserInfo = searchUserList.content {
+//                self.searchUserInfo = searchUserInfo
+//            }
         }
-        
-//        if let nickname = userInfo.result.userNickname {
-//            self.nicknameString = nickname
-//        }
-//        if let major2 = userInfo.result.major2 {
-//            self.major2String = major2
-//        }
-//        if let follower = userInfo.result.follower {
-//            self.followerInt = follower
-//        }
-//        if let following = userInfo.result.following {
-//            self.followingInt = following
-//        }
-//        if let introduce = userInfo.result.introduce {
-//            self.introduceString = introduce
-//        }else {
-//            self.introduceString = "작성된 자기소개가 없습니다. 😥\n자기소개를 작성해 자신을 소개해보세요."
-//        }
     }
 }

@@ -15,6 +15,7 @@ class SearchView: UIView{
     
     let cellReuseIdentifier = "SearchTableViewCell"
     let helper = Helper()
+    var model : SearchUserList? = nil
     
     let textField : UITextField = {
         let textField = UITextField()
@@ -70,14 +71,20 @@ class SearchView: UIView{
     lazy var searchTableView : UITableView = {
         let view = UITableView()
         view.backgroundColor = .white
-        //TEST
-        view.dataSource = self
-        view.delegate = self
         view.register(SearchTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         return view
     }()
     
     var empty : Bool? = nil
+    var searchUserList : SearchUserList? = nil
+//    var searchUserInfo : [SearchUserInfo]? = nil
+//
+//    var currentPageNo: Int? = nil
+//    var firstPage: Bool? = nil
+//    var lastPage: Bool? = nil
+//    var recordsPerPage: Int? = nil
+//    var totalPageCount: Int? = nil
+//    var totalRecordCount: Int? = nil
     
     
     override init(frame: CGRect) {
@@ -145,15 +152,13 @@ class SearchView: UIView{
     @objc func search(){
         if (textField.text?.isEmpty)! {
             isEmpty(true)
-            
-            
         }else {
             let nickname = textField.text!
             isEmpty(false)
             
             //Network Call
             let viewModel = SearchViewModel(nickname, 0, 30)
-            viewModel.serachNickname()
+            viewModel.searchNickname()
             
             viewModel.didFinishFetch = {
                 self.empty = viewModel.empty
@@ -166,14 +171,19 @@ class SearchView: UIView{
                     self.searchImageView.image = UIImage(systemName: "person.fill.xmark")
                 }else {
                     print("검색결과 있음")
-                    self.view.addSubview(self.searchTableView)
                     
+                    self.model = viewModel.searchUserList
+                    
+                    self.searchTableView.dataSource = self
+                    self.searchTableView.delegate = self
+                    
+                    self.view.addSubview(self.searchTableView)
                     self.searchTableView.snp.makeConstraints{(make) in
                         make.top.equalTo(self.view.snp.top)
                         make.left.right.bottom.equalToSuperview()
                     }
+                    self.searchTableView.reloadData()
                 }
-                
             }
         }
     }
@@ -235,16 +245,42 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        if let totalRecordCount = model?.totalRecordCount, let recordsPerPage = model?.recordsPerPage, let currentPageNo = model?.currentPageNo {
+            if totalRecordCount < 30 {
+                return totalRecordCount
+            }else {
+                return recordsPerPage * currentPageNo
+            }
+        }else {
+            return 0
+        }
     }
-    
+            
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("model.content \(model?.content)")
+        
         let cell = searchTableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SearchTableViewCell
-        cell.profileImg.image = UIImage(systemName: "person.fill")
-        cell.nickName.text = "욱승qfwqwf"
-//        cell.major.text = "수학ㆍ물리ㆍ천문ㆍ지리"
-        cell.major.text = "수학ㆍ물리ㆍ천문ㆍ지리수학ㆍ물리ㆍ천문ㆍ지리수학ㆍ물리ㆍ천문ㆍ지리\n수학ㆍ물리ㆍ천문ㆍ지리수학ㆍ물리ㆍ천문ㆍ지리수학ㆍ물리ㆍ천문ㆍ지리"
-        cell.followLabel.text = "팔로워 1,234"
-        return cell
+        
+        if let searchUserInfo = model?.content {
+            
+            if searchUserInfo[indexPath.row].profileImageUrl != nil {
+                cell.profileImg.image = UIImage(systemName: "person")//profileImageUrl
+            }else {
+                cell.profileImg.image = UIImage(systemName: "person.fill")
+            }
+            
+            cell.nickName.text = searchUserInfo[indexPath.row].userNickname
+            
+            if searchUserInfo[indexPath.row].introduce != nil {
+                cell.major.text = searchUserInfo[indexPath.row].introduce
+            }else {
+                cell.major.text = searchUserInfo[indexPath.row].major2
+            }
+            
+            cell.followLabel.text = "팔로워 \(searchUserInfo[indexPath.row].follower!)"
+            return cell
+        }else {
+            return UITableViewCell()
+        }
     }
 }

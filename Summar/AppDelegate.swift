@@ -16,6 +16,7 @@ import GoogleSignIn
 import KakaoSDKAuth
 import KakaoSDKUser
 import KakaoSDKCommon
+import Firebase // Push https://developer-fury.tistory.com/53
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -26,6 +27,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManagerInit()
         KakaoLoginInit()
         NaverLoginInit()
+        
+        FirebaseApp.configure()
+        
+        Messaging.messaging().delegate = self
+        UNUserNotificationCenter.current().delegate = self
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { _, _ in }
+        application.registerForRemoteNotifications()
         
         if let userInfo = UserDefaults.standard.dictionary(forKey: "UserInfo") {
             print(#file , #function)
@@ -102,3 +112,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
+extension AppDelegate: MessagingDelegate, UNUserNotificationCenterDelegate {
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let deviceTokenString = deviceToken.map { String(format: "%02x", $0) }.joined()
+        print("[Log] deviceToken :", deviceTokenString)
+        
+        Messaging.messaging().apnsToken = deviceToken
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+      completionHandler([.alert, .badge, .sound])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+      completionHandler()
+    }
+    
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        guard let fcmToken = fcmToken else {return}
+        print("fcmToken => \(fcmToken)")
+        UserDefaults.standard.set(fcmToken, forKey: "deviceToken")
+        let dataDict: [String: String] = ["token": fcmToken]
+        
+        NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
+      }
+    
+}
