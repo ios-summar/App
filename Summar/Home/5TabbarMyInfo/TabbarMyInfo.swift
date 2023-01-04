@@ -9,7 +9,11 @@ import Foundation
 import UIKit
 import SnapKit
 
-class TabbarMyInfo : UIViewController {
+class TabbarMyInfo : UIViewController, PushDelegate {
+    func pushScreen(_ VC: UIViewController) {
+        self.navigationController?.pushViewController(VC, animated: true)
+    }
+    
     static let shared = TabbarMyInfo()
     
     let titleViewMyInfo = TitleViewMyInfo.shared
@@ -23,10 +27,13 @@ class TabbarMyInfo : UIViewController {
         return label
     }()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(titleViewMyInfo)
         self.view.addSubview(myInfoView)
+        
+        titleViewMyInfo.delegate = self
         
         // MARK: - 마이 써머리 상단 타이틀, 버튼 
         titleViewMyInfo.snp.makeConstraints{(make) in

@@ -47,7 +47,8 @@ class FullScreenImageController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.layer.borderWidth = 1
+//        self.view.layer.borderWidth = 1
+        self.view.backgroundColor = .white
         
         
         _ = [titleView, fullScreenImageView].map {

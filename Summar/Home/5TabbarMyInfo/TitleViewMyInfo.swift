@@ -8,9 +8,14 @@
 import Foundation
 import UIKit
 
+protocol PushDelegate : AnyObject {
+    func pushScreen(_ VC : UIViewController)
+}
 
 class TitleViewMyInfo: UIView{
     static let shared = TitleViewMyInfo()
+    
+    weak var delegate : PushDelegate?
     
     let title : UILabel = {
         let title = UILabel()
@@ -57,7 +62,7 @@ class TitleViewMyInfo: UIView{
         
         switch tagValue {
         case 1: // gear Event
-            print("gear")
+            self.delegate?.pushScreen(PreferencesController.shared)
         default:
             print("default")
         }
