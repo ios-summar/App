@@ -113,6 +113,7 @@ extension UIColor {
 
     //3TabbarFeed
     static var fontColor = UIColor.init(red: 140/255, green: 140/255, blue: 140/255, alpha: 1)
+    static var magnifyingGlassColor = UIColor.init(red: 51/255, green: 102/255, blue: 255/255, alpha: 1)
     //4TabbarSearch
     static var searchGray = UIColor.init(red: 229/255, green: 229/255, blue: 234/255, alpha: 1)
     static var imageViewColor = UIColor.init(red: 142/255, green: 142/255, blue: 147/255, alpha: 1)
@@ -208,5 +209,22 @@ extension UIApplication {
             return topViewController(base: presented)
         }
         return base
+    }
+}
+
+extension UINavigationItem {
+    //  UINavigationItem+Extensions.swift
+    func makeSFSymbolButton(_ target: Any?, action: Selector, uiImage: UIImage, tintColor : UIColor) -> UIBarButtonItem {
+        let button = UIButton(type: .system)
+        button.setImage(uiImage, for: .normal)
+        button.addTarget(target, action: action, for: .touchUpInside)
+        button.tintColor = tintColor
+            
+        let barButtonItem = UIBarButtonItem(customView: button)
+        barButtonItem.customView?.translatesAutoresizingMaskIntoConstraints = false
+        barButtonItem.customView?.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        barButtonItem.customView?.widthAnchor.constraint(equalToConstant: 50).isActive = true
+            
+        return barButtonItem
     }
 }

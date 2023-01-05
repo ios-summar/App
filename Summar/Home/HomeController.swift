@@ -42,11 +42,16 @@ class HomeController : UITabBarController {
         }
         
         UITabBar.appearance().barTintColor = UIColor.summarColor1
-        UITabBar.appearance().backgroundColor = UIColor.UIBarColor
+//        UITabBar.appearance().backgroundColor = UIColor.white
+        
+        let appearanceTabbar = UITabBarAppearance()
+        appearanceTabbar.configureWithOpaqueBackground()
+        appearanceTabbar.backgroundColor = UIColor.white
+        tabBar.standardAppearance = appearanceTabbar
         
         // tabBar Custom
-        tabBar.layer.cornerRadius = tabBar.frame.height * 0.41
-        tabBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+//        tabBar.layer.cornerRadius = tabBar.frame.height * 0.41
+//        tabBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         
         setupVCs()
         addMiddleButton()
@@ -68,7 +73,7 @@ class HomeController : UITabBarController {
             let navController = UINavigationController(rootViewController:  rootViewController)
             navController.tabBarItem.title = title
             navController.tabBarItem.image = image
-            navController.isNavigationBarHidden = true
+//            navController.isNavigationBarHidden = true
             return navController
         }else {
             return UIViewController()
@@ -114,7 +119,7 @@ class HomeController : UITabBarController {
     @objc func buttonHandler(){
         let wrController = UINavigationController(rootViewController:  WriteFeedController.shared)
         wrController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
-        wrController.isNavigationBarHidden = true
+//        wrController.isNavigationBarHidden = true
         self.present(wrController, animated: true, completion: nil)
     }
     

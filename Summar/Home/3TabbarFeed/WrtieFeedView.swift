@@ -133,15 +133,15 @@ class WriteFeedView : UIView, UITextViewDelegate {
         
         _ = [view1, view2, switch1, switch2, leftLabel, rightLabel, registerBtn, temporarySaveBtn].map {
             addSubview($0)
-            //            $0.layer.borderWidth = 1
+//            $0.layer.borderWidth = 1
         }
         self.view1.addSubview(collectionViewScroll)
         self.view2.addSubview(view2TextView)
         
         view1.snp.makeConstraints{(make) in
-            make.top.equalTo(30)
+            make.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(10)
             make.left.right.equalToSuperview()
-            make.height.equalTo(100)
+            make.height.equalTo(150)
         }
         
         collectionViewScroll.snp.makeConstraints{(make) in
@@ -149,7 +149,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
         }
         
         view2.snp.makeConstraints{(make) in
-            make.top.equalTo(view1.snp.bottom).offset(30)
+            make.top.equalTo(view1.snp.bottom).offset(10)
             make.centerX.equalToSuperview()
             make.width.height.equalTo(btnWidth)
         }

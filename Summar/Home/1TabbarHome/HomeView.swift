@@ -31,7 +31,7 @@ class HomeView: UIView{
         view.backgroundColor = .grayColor197
         return view
     }()
-        
+
     
     override init(frame: CGRect) {
         super.init(frame: frame)

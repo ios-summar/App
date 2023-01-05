@@ -11,7 +11,7 @@ class MyInfoViewModel: reCallDelegate{
     private var request = ServerRequest.shared
     
     func recallFunc(_ function: String?) {
-        print("function => \(function)")
+        print("\(#file) function => \(function)")
         getUserInfo()
     }
     

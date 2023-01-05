@@ -11,42 +11,42 @@ import BSImagePicker
 import Photos
 import YPImagePicker
 
-class WriteFeedController : UIViewController, WriteFeedDelegate, ImagePickerDelegate{
-    func closAction() {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
+class WriteFeedController : UIViewController, ImagePickerDelegate{
     static let shared = WriteFeedController()
     
     let wfView = WriteFeedView.shared
-    let titleViewFeed = TitleWriteFeed()
     
     var imageArr = [UIImage]()
-
+    
+    let titleLabel : UILabel = {
+        let title = UILabel()
+        title.text = "피드 작성"
+        title.font = .boldSystemFont(ofSize: 20)
+        title.textColor = UIColor.summarColor1
+        title.sizeToFit()
+        return title
+    }()
+    
     override func viewDidLoad() {
-        titleViewFeed.delegate = self
         wfView.delegate = self
-        self.view.addSubview(titleViewFeed)
         self.view.addSubview(wfView)
         
-        // MARK: - Feed 상단 타이틀, 버튼
-        titleViewFeed.snp.makeConstraints{(make) in
-            
-            make.topMargin.equalTo(self.view.safeAreaInsets.top).offset(10)
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.height.equalTo(60)
-        }
+        self.navigationItem.titleView = titleLabel
+        self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(closeAction), uiImage: UIImage(systemName: "xmark")!, tintColor: .black)
         
         // MARK: - Feed Body
         wfView.snp.makeConstraints{(make) in
 
-            make.topMargin.equalTo(self.titleViewFeed.snp.bottom)
+            make.top.equalTo(0)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.bottom.equalToSuperview()
         }
         
+    }
+    
+    @objc func closeAction() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     func showImageFullScreen(_ imageArr: [UIImage]) {
