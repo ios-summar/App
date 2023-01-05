@@ -90,6 +90,7 @@ class HomeTableViewCell: UITableViewCell {
         contentView.backgroundColor = .white
         
         
+        // table view margin
           contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
         print("!contentView.frame \(contentView.frame)")
     }

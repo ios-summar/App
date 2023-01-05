@@ -70,7 +70,6 @@ class Helper : UIView{
         paragraphStyle.lineSpacing = lineCF
         attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
         uiLabel.attributedText = attrString
-        uiLabel.textAlignment = .center
     }
 }
 
@@ -117,6 +116,7 @@ extension UIColor {
     //4TabbarSearch
     static var searchGray = UIColor.init(red: 229/255, green: 229/255, blue: 234/255, alpha: 1)
     static var imageViewColor = UIColor.init(red: 142/255, green: 142/255, blue: 147/255, alpha: 1)
+    static var fontGrayColor = UIColor(red: 158/255, green: 164/255, blue: 170/255, alpha: 1)
     
     //5TabbarMyInfo
     static var BackgroundColor = UIColor.init(red: 251/255, green: 251/255, blue: 253/255, alpha: 1)

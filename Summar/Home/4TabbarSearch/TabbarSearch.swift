@@ -30,13 +30,13 @@ class TabbarSearch : UIViewController{
     
     lazy var textField : UITextField = {
         let textField = UITextField()
-        textField.frame = CGRect(x: 0, y: 0, width: viewWidth - 115, height: 80)
+        textField.frame = CGRect(x: 0, y: 0, width: viewWidth - 130, height: 80)
 //        textField.borderStyle = .roundedRect
         textField.backgroundColor = UIColor.clear
         textField.textColor = .black
         textField.placeholder = "닉네임으로 검색"
-        textField.addLeftPadding()
-//        textField.addTarget(self, action: #selector(search), for: .editingChanged)
+//        textField.addLeftPadding()
+        textField.addTarget(self, action: #selector(search), for: .editingChanged)
         textField.attributedPlaceholder = NSAttributedString(string: "닉네임으로 검색", attributes: [NSAttributedString.Key.foregroundColor : UIColor.imageViewColor])
         return textField
     }()
@@ -60,11 +60,27 @@ class TabbarSearch : UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(searchView)
+        self.view.backgroundColor = UIColor.searchGray
         
         self.navigationItem.titleView = textField
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: view1)
-        self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(deleteAction), uiImage: UIImage(systemName: "xmark")!, tintColor: UIColor(red: 158/255, green: 164/255, blue: 170/255, alpha: 1))
+        self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(deleteAction), uiImage: UIImage(systemName: "xmark")!, tintColor: UIColor.fontGrayColor)
         self.navigationItem.leftBarButtonItem?.isEnabled = false
+        
+        // 네비게이션바 backgroundcolor
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .white
+
+//        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        
+        if #available(iOS 16.0, *) {
+            self.navigationItem.rightBarButtonItem?.isHidden = true
+        } else {
+            // Fallback on earlier versions
+        }
         
         view1.addSubview(magnifyingGlassBtn)
         
@@ -76,13 +92,37 @@ class TabbarSearch : UIViewController{
         }
         
         searchView.snp.makeConstraints{(make) in
-            make.topMargin.equalTo(self.view.safeAreaInsets.top).offset(10)
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
             make.left.right.bottom.equalToSuperview()
         }
     }
     
+    @objc func search() {
+        guard let text = textField.text else { return }
+        if text.isEmpty {
+            if #available(iOS 16.0, *) {
+                self.navigationItem.rightBarButtonItem?.isHidden = true
+            } else {
+                // Fallback on earlier versions
+            }
+        }else {
+            if #available(iOS 16.0, *) {
+                self.navigationItem.rightBarButtonItem?.isHidden = false
+            } else {
+                // Fallback on earlier versions
+            }
+        }
+        searchView.search(text)
+    }
+    
     @objc func deleteAction(){
+        if #available(iOS 16.0, *) {
+            self.navigationItem.rightBarButtonItem?.isHidden = true
+        } else {
+            // Fallback on earlier versions
+        }
         textField.text = ""
+        searchView.search("")
     }
 }
 
