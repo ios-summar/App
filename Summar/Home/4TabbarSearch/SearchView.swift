@@ -17,30 +17,30 @@ class SearchView: UIView{
     let helper = Helper()
     var model : SearchUserList? = nil
     
-    let textField : UITextField = {
-        let textField = UITextField()
-        textField.borderStyle = .roundedRect
-        textField.backgroundColor = UIColor.searchGray
-        textField.textColor = .black
-        textField.placeholder = "닉네임으로 검색"
-        textField.addLeftPadding()
-        textField.addTarget(self, action: #selector(search), for: .editingChanged)
-        textField.attributedPlaceholder = NSAttributedString(string: "닉네임으로 검색", attributes: [NSAttributedString.Key.foregroundColor : UIColor.imageViewColor])
-        return textField
-    }()
-    
-    let xMark : UIButton = {
-        let xMark = UIButton()
-        xMark.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
-        xMark.tintColor = .black
-        xMark.imageView?.contentMode = .scaleToFill
-        xMark.imageEdgeInsets = UIEdgeInsets(top: 32, left: 35, bottom: 33, right: 35)
-        xMark.addTarget(self, action: #selector(topBtnAction(_:)), for: .touchUpInside)
-        xMark.layer.borderWidth = 1
-        xMark.tag = 1
-        xMark.alpha = 0.0
-        return xMark
-    }()
+//    let textField : UITextField = {
+//        let textField = UITextField()
+//        textField.borderStyle = .roundedRect
+//        textField.backgroundColor = UIColor.searchGray
+//        textField.textColor = .black
+//        textField.placeholder = "닉네임으로 검색"
+//        textField.addLeftPadding()
+//        textField.addTarget(self, action: #selector(search), for: .editingChanged)
+//        textField.attributedPlaceholder = NSAttributedString(string: "닉네임으로 검색", attributes: [NSAttributedString.Key.foregroundColor : UIColor.imageViewColor])
+//        return textField
+//    }()
+//
+//    let xMark : UIButton = {
+//        let xMark = UIButton()
+//        xMark.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
+//        xMark.tintColor = .black
+//        xMark.imageView?.contentMode = .scaleToFill
+//        xMark.imageEdgeInsets = UIEdgeInsets(top: 32, left: 35, bottom: 33, right: 35)
+//        xMark.addTarget(self, action: #selector(topBtnAction(_:)), for: .touchUpInside)
+//        xMark.layer.borderWidth = 1
+//        xMark.tag = 1
+//        xMark.alpha = 0.0
+//        return xMark
+//    }()
     
     let view : UIView = {
         let view = UIView()
@@ -90,34 +90,15 @@ class SearchView: UIView{
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        _ = [textField, view].map {
-            addSubview($0)
-        }
+        addSubview(view)
         
         _ = [searchImageView, label].map {
             view.addSubview($0)
         }
         
-        textField.addSubview(xMark)
-        
-        textField.snp.makeConstraints{(make) in
-            make.left.equalTo(20)
-//            make.bottom.equalTo(-10)
-            make.top.equalTo(10)
-            make.right.equalTo(-20)
-            make.height.equalTo(40)
-        }
-        
-        xMark.snp.makeConstraints{(make) in
-            make.centerY.equalToSuperview()
-            make.right.equalTo(-10)
-            make.width.equalTo(40)
-            make.height.equalTo(40)
-        }
-        
         view.snp.makeConstraints{(make) in
-            make.top.equalTo(textField.snp.bottom).offset(20)
-            make.left.bottom.right.equalToSuperview()
+            make.top.equalTo(0)
+            make.left.bottom.right.equalTo(0)
         }
         
         searchImageView.snp.makeConstraints{(make) in
@@ -141,7 +122,7 @@ class SearchView: UIView{
         case 1: // Delete Action
             print("Delete Action")
             isEmpty(true)
-            textField.text = ""
+//            textField.text = ""
         case 2: // DirectMessage Event
             print("DirectMessage")
         default:
@@ -150,48 +131,48 @@ class SearchView: UIView{
     }
     
     @objc func search(){
-        if (textField.text?.isEmpty)! {
-            isEmpty(true)
-        }else {
-            let nickname = textField.text!
-            isEmpty(false)
-            
-            //Network Call
-            let viewModel = SearchViewModel(nickname, 0, 30)
-            viewModel.searchNickname()
-            
-            viewModel.didFinishFetch = {
-                self.empty = viewModel.empty
-                
-                if self.empty! { //검색결과 없음
-                    print("검색결과 없음")
-                    self.searchTableView.removeFromSuperview()
-                    
-                    self.label.text = "검색결과가 없습니다.\n닉네임을 정확하게 입력해주세요."
-                    self.searchImageView.image = UIImage(systemName: "person.fill.xmark")
-                }else {
-                    print("검색결과 있음")
-                    
-                    self.model = viewModel.searchUserList
-                    
-                    self.searchTableView.dataSource = self
-                    self.searchTableView.delegate = self
-                    
-                    self.view.addSubview(self.searchTableView)
-                    self.searchTableView.snp.makeConstraints{(make) in
-                        make.top.equalTo(self.view.snp.top)
-                        make.left.right.bottom.equalToSuperview()
-                    }
-                    self.searchTableView.reloadData()
-                }
-            }
-        }
+//        if (textField.text?.isEmpty)! {
+//            isEmpty(true)
+//        }else {
+//            let nickname = textField.text!
+//            isEmpty(false)
+//
+//            //Network Call
+//            let viewModel = SearchViewModel(nickname, 0, 30)
+//            viewModel.searchNickname()
+//
+//            viewModel.didFinishFetch = {
+//                self.empty = viewModel.empty
+//
+//                if self.empty! { //검색결과 없음
+//                    print("검색결과 없음")
+//                    self.searchTableView.removeFromSuperview()
+//
+//                    self.label.text = "검색결과가 없습니다.\n닉네임을 정확하게 입력해주세요."
+//                    self.searchImageView.image = UIImage(systemName: "person.fill.xmark")
+//                }else {
+//                    print("검색결과 있음")
+//
+//                    self.model = viewModel.searchUserList
+//
+//                    self.searchTableView.dataSource = self
+//                    self.searchTableView.delegate = self
+//
+//                    self.view.addSubview(self.searchTableView)
+//                    self.searchTableView.snp.makeConstraints{(make) in
+//                        make.top.equalTo(self.view.snp.top)
+//                        make.left.right.bottom.equalToSuperview()
+//                    }
+//                    self.searchTableView.reloadData()
+//                }
+//            }
+//        }
     }
     
     // MARK: - TextField Empty 유무로 UI SetUp
     func isEmpty(_ TF : Bool){
         if TF { // textField가 비어있지 않음
-            xMark.alpha = 0.0
+//            xMark.alpha = 0.0
             
             _ = [searchImageView, label].map {
                 view.addSubview($0)
@@ -217,7 +198,7 @@ class SearchView: UIView{
             
             searchTableView.removeFromSuperview()
         }else{
-            xMark.alpha = 1.0
+//            xMark.alpha = 1.0
 //            _ = [searchImageView, label].map {
 //                $0.removeFromSuperview()
 //            }

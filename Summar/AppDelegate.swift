@@ -28,6 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         KakaoLoginInit()
         NaverLoginInit()
         
+        UITabBar.appearance().barTintColor = UIColor.summarColor1
+        UITabBar.appearance().backgroundColor = UIColor.white
+        
         FirebaseApp.configure()
         
         Messaging.messaging().delegate = self

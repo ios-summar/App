@@ -12,6 +12,17 @@ import UIKit
 class TitleViewHome: UIView{
     static let shared = TitleViewHome()
     
+    let viewWidth : CGFloat = {
+        var btnWidth = UIScreen.main.bounds.width
+        return btnWidth
+    }()
+    
+    let view : UIView = {
+        let view = UIView()
+        view.layer.borderWidth = 1
+        return view
+    }()
+    
     let title : UIImageView = {
         let title = UIImageView()
         title.image = UIImage(named: "Title")
@@ -42,12 +53,21 @@ class TitleViewHome: UIView{
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        addSubview(view)
         addSubview(title)
         addSubview(directBtn)
         addSubview(heartBtn)
+        
         _ = [title, directBtn, heartBtn].map {
-            addSubview($0)
+            view.addSubview($0)
             $0.layer.borderWidth = 1
+        }
+        
+        view.snp.makeConstraints{(make) in
+            make.width.equalTo(viewWidth)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(80)
+            make.top.equalTo(0)
         }
         
         title.snp.makeConstraints{(make) in

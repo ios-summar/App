@@ -18,32 +18,6 @@ class PreferencesView: UIView{
     let cellReuseIdentifier = "PreferencesTableViewCell"
     let preferencesArray = ["로그아웃", "프로필 편집", "푸시 알림", "공지사항", "자주 묻는 질문"]
     
-    let view1 : UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        return view
-    }()
-    
-    let titleLabel : UILabel = {
-        let title = UILabel()
-        title.text = "환경 설정"
-        title.font = .boldSystemFont(ofSize: 20)
-        title.textColor = UIColor.summarColor1
-        title.sizeToFit()
-        return title
-    }()
-    
-    let arrowBackWard : UIButton = {
-        let arrowBackWard = UIButton()
-        arrowBackWard.setImage(UIImage(systemName: "arrow.backward"), for: .normal) // ios 14.0
-        arrowBackWard.tintColor = .black
-        arrowBackWard.imageView?.contentMode = .scaleToFill
-//        xmark.imageEdgeInsets = UIEdgeInsets(top: 32, left: 33, bottom: 33, right: 33)
-        arrowBackWard.addTarget(self, action: #selector(topBtnAction(_:)), for: .touchUpInside)
-        arrowBackWard.tag = 1
-        return arrowBackWard
-    }()
-    
     lazy var tableView : UITableView = {
         let view = UITableView()
         view.dataSource = self
@@ -56,39 +30,14 @@ class PreferencesView: UIView{
         super.init(frame: frame)
         print(#file , #function)
         
-        _ = [view1, tableView].map {
+        _ = [tableView].map {
             addSubview($0)
             $0.layer.borderWidth = 1
         }
         
-        _ = [titleLabel, arrowBackWard].map {
-            view1.addSubview($0)
-            $0.layer.borderWidth = 1
-        }
-        
-        view1.snp.makeConstraints{(make) in
-//            make.left.equalTo(20)
-//            make.top.equalTo(10)
-//            make.right.equalTo(-20)
-            make.top.equalTo(self.safeAreaLayoutGuide.snp.top)
-            make.left.right.equalToSuperview()
-            make.height.equalTo(50)
-        }
-        
-        titleLabel.snp.makeConstraints{(make) in
-            make.centerX.centerY.equalToSuperview()
-        }
-        
-        arrowBackWard.snp.makeConstraints{(make) in
-            make.centerY.equalTo(titleLabel.snp.centerY)
-            make.left.equalTo(20)
-            make.width.equalTo(30)
-            make.height.equalTo(30)
-        }
-        
         tableView.snp.makeConstraints{(make) in
             make.left.right.bottom.equalToSuperview()
-            make.top.equalTo(view1.snp.bottom)
+            make.top.equalTo(0)
         }
         
     }

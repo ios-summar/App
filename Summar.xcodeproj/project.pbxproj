@@ -19,7 +19,6 @@
 		041EEEA02954362D006263C7 /* WrtieFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041EEE9F2954362D006263C7 /* WrtieFeedView.swift */; };
 		04239D6E29553A12002ED10E /* AccessToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04239D6D29553A12002ED10E /* AccessToken.swift */; };
 		04239D7029553A74002ED10E /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04239D6F29553A74002ED10E /* Token.swift */; };
-		04668D81295BDE5100165E88 /* TitleWriteFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04668D80295BDE5100165E88 /* TitleWriteFeed.swift */; };
 		04668D83295C13BF00165E88 /* FeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04668D82295C13BF00165E88 /* FeedCollectionViewCell.swift */; };
 		04852F9028FE72AF00A3EED9 /* SocialLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04852F8F28FE72AF00A3EED9 /* SocialLoginController.swift */; };
 		04852F9228FE72E400A3EED9 /* SocialLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04852F9128FE72E400A3EED9 /* SocialLoginView.swift */; };
@@ -81,7 +80,6 @@
 		04239D6D29553A12002ED10E /* AccessToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessToken.swift; sourceTree = "<group>"; };
 		04239D6F29553A74002ED10E /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		043D982A28EFB673008C862F /* Summar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Summar.entitlements; sourceTree = "<group>"; };
-		04668D80295BDE5100165E88 /* TitleWriteFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleWriteFeed.swift; sourceTree = "<group>"; };
 		04668D82295C13BF00165E88 /* FeedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		04852F8F28FE72AF00A3EED9 /* SocialLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginController.swift; sourceTree = "<group>"; };
 		04852F9128FE72E400A3EED9 /* SocialLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginView.swift; sourceTree = "<group>"; };
@@ -378,7 +376,6 @@
 				A2ECB36829448E9F0005D88C /* TabbarFeed.swift */,
 				041EEE9D295435F6006263C7 /* WriteFeedController.swift */,
 				041EEE9F2954362D006263C7 /* WrtieFeedView.swift */,
-				04668D80295BDE5100165E88 /* TitleWriteFeed.swift */,
 			);
 			path = 3TabbarFeed;
 			sourceTree = "<group>";
@@ -529,7 +526,6 @@
 				A210F66F295B163400A517C5 /* SearchView.swift in Sources */,
 				A2A769A228FBF742003EE3CD /* StartController.swift in Sources */,
 				A28EC0DA28CA1BC000F5BF98 /* AppDelegate.swift in Sources */,
-				04668D81295BDE5100165E88 /* TitleWriteFeed.swift in Sources */,
 				041EEE982952E708006263C7 /* Feed.swift in Sources */,
 				041EEE9E295435F6006263C7 /* WriteFeedController.swift in Sources */,
 				040D79FA2918FA3F0018B6A0 /* KakaoLoginManager.swift in Sources */,
