@@ -21,11 +21,7 @@ struct Server {
     static var url: String {
         let url = Bundle.main.url(forResource: "Network", withExtension: "plist")
         let dictionary = NSDictionary(contentsOf: url!)
-#if DEBUG
-        var LocalURL = dictionary!["DebugURL"] as? String
-#elseif RELEASE
-        var LocalURL = dictionary!["ReleaseURL"] as? String
-#endif
+        let LocalURL = dictionary!["ReleaseURL"] as? String
         
         return LocalURL!
     }
@@ -38,21 +34,6 @@ class ServerRequest: NSObject {
     
     var param : Dictionary<String, Any> = Dictionary<String, Any>()
     var requestParam : Dictionary<String, String> = Dictionary<String, String>()
-    
-    // MARK: - Summar 서버 URL
-    let serverURL = { () -> String in
-        let url = Bundle.main.url(forResource: "Network", withExtension: "plist")
-        let dictionary = NSDictionary(contentsOf: url!)
-        
-        // 각 데이터 형에 맞도록 캐스팅 해줍니다.
-#if DEBUG
-        var LocalURL = dictionary!["DebugURL"] as? String
-#elseif RELEASE
-        var LocalURL = dictionary!["ReleaseURL"] as? String
-#endif
-        
-        return LocalURL!
-    }
     
     func requestGet(_ url: String) {
         let url = "http://13.209.114.45:8080/api/v1\(url)"
@@ -68,6 +49,36 @@ class ServerRequest: NSObject {
         }
     }
     
+    func nicknameCheck(requestUrl : String!, completion: @escaping (Bool?, Error?) -> ()) {
+        let url = Server.url + requestUrl
+        AF.request(url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "",
+                   method: .get,
+                   parameters: nil,
+                   encoding: JSONEncoding.default,
+                   headers: ["Content-Type":"application/json", "Accept":"application/json"])
+        .validate(statusCode: 200..<300)
+        .responseJSON { response in
+            switch response.result {
+            case .success(let value):
+                print("nicknameCheck return value \(value)")
+                guard let result = response.data else {return}
+                                
+                do {
+                    let decoder = JSONDecoder()
+                    let json = try decoder.decode(NicknameCheck.self, from: response.data!)
+                    completion(json.result?.result, nil)
+                    
+                } catch {
+                    print("error! \(error)")
+                    completion(nil, error)
+                }
+                
+            case .failure(let error):
+                print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+            }
+        }
+    }
+    
     // MARK: - 로그인, 회원가입 func => 서버의 loginStatus 값으로 회원인지, 회원이 아닌지 확인후 화면 이동
     func login(_ url: String,_ requestDic: Dictionary<String, Any>){
         let url = Server.url + url
@@ -78,6 +89,7 @@ class ServerRequest: NSObject {
         
         // POST 로 보낼 정보
         var params = requestDic
+        params["deviceToken"] = UserDefaults.standard.string(forKey: "deviceToken")
         
         print("/login params => \(params)")
         
@@ -98,7 +110,7 @@ class ServerRequest: NSObject {
                 var json = value as! Dictionary<String, Any>
                 
 //                print(json["accessToken"])
-//                print(json["loginStatus"])
+                print(json["loginStatus"])
 //                print(json["refreshToken"])
                 json["userEmail"] = params["userEmail"]
                 json["socialType"] = params["socialType"]

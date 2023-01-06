@@ -21,6 +21,8 @@ class SearchView: UIView{
     let view : UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
+//        view.layer.borderWidth = 1
+//        view.layer.borderColor = UIColor.red.cgColor
         return view
     }()
     
@@ -107,7 +109,7 @@ class SearchView: UIView{
         }
 
         searchImageView.snp.makeConstraints{(make) in
-            make.top.equalTo(50)
+            make.top.equalTo(self.view.snp.top).offset(50)
             make.width.equalTo(215)
             make.height.equalTo(195)
             make.centerX.equalToSuperview()

@@ -19,20 +19,6 @@ class AppleLoginManager : NSObject, ServerDelegate{
     let socialType = "APPLE"
     var requestDic : Dictionary<String, String> = Dictionary<String, String>()
     
-    let serverURL = { () -> String in
-        let url = Bundle.main.url(forResource: "Network", withExtension: "plist")
-        let dictionary = NSDictionary(contentsOf: url!)
-
-        // 각 데이터 형에 맞도록 캐스팅 해줍니다.
-        #if DEBUG
-        var LocalURL = dictionary!["DebugURL"] as? String
-        #elseif RELEASE
-        var LocalURL = dictionary!["ReleaseURL"] as? String
-        #endif
-        
-        return LocalURL!
-    }
-    
     override init() {
         super.init()
         request.delegate = self

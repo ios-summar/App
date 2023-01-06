@@ -20,21 +20,7 @@ class SignUp1View : UIView, UITextFieldDelegate {
     weak var delegate: SignUp1Delegate?
     
     let helper = Helper()
-//    let request = ServerRequest()
-    
-    let serverURL = { () -> String in
-        let url = Bundle.main.url(forResource: "Network", withExtension: "plist")
-        let dictionary = NSDictionary(contentsOf: url!)
-
-        // 각 데이터 형에 맞도록 캐스팅 해줍니다.
-        #if DEBUG
-        var LocalURL = dictionary!["DebugURL"] as? String
-        #elseif RELEASE
-        var LocalURL = dictionary!["ReleaseURL"] as? String
-        #endif
-        
-        return LocalURL!
-    }
+    let request = ServerRequest()
     
     var accessoryView: UIView = {
         return UIView(frame: CGRect(x: 0.0, y: 0.0, width: UIScreen.main.bounds.width, height: 72.0))
@@ -174,7 +160,16 @@ class SignUp1View : UIView, UITextFieldDelegate {
         if textField.text?.count ?? 0 >= 1 {
             if helper.checkNickNamePolicy(text: textField.text!) { // 한글, 영어, 숫자임
                 // GET방식으로 닉네임 중복체크
-                requestGETBOOL(requestUrl: "/user/nickname-check?nickname=\(textField.text!)")
+//                requestGETBOOL(requestUrl: "/user/nickname-check?userNickname=\(textField.text!)")
+                request.nicknameCheck(requestUrl: "/user/nickname-check?userNickname=\(textField.text!)") { TF, error in
+                    guard let TF = TF else { return }
+                    
+                    if TF {
+                        self.enableNickname(enable: false, content: "중복된 닉네임입니다.")
+                    }else{
+                        self.enableNickname(enable: true, content: "사용 가능한 닉네임입니다.")
+                    }
+                }
             }else { // 한글, 영어, 숫자가 아님.
                 enableNickname(enable: false, content: "닉네임은 한글, 영어, 숫자만 사용 가능합니다.")
             }
@@ -203,38 +198,6 @@ class SignUp1View : UIView, UITextFieldDelegate {
                 nickNameEnableLabel.text = ""
                 nickNameEnableLabel.textColor = .white
                 nickNameTextField.layer.borderColor = UIColor.white.cgColor
-            }
-        }
-    }
-    
-    func requestGETBOOL(requestUrl : String!){
-        let url = serverURL() + requestUrl
-        let encodedString = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-        var request = URLRequest(url: URL(string: encodedString)!)
-        request.httpMethod = "GET"
-        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        request.timeoutInterval = 10
-        
-        AF.request(request)
-            .validate(statusCode: 200..<300)
-            .responseJSON { response in
-            switch response.result {
-            case .success(let value):
-                let json = value as! Dictionary<String, Any>
-                let resultJson = json["result"] as! Dictionary<String, Any>
-                
-                let result = resultJson["result"]
-                
-                DispatchQueue.main.async {
-                    if result as! Int == 1{ // 중복
-                        self.enableNickname(enable: false, content: "중복된 닉네임입니다.")
-                    }else {
-                        self.enableNickname(enable: true, content: "사용 가능한 닉네임입니다.")
-                    }
-                }
-                
-            case .failure(let error):
-                print("🚫 Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
             }
         }
     }

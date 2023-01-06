@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Group 60.png",
+      "filename" : "sSearch.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "solid.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "solid 1.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

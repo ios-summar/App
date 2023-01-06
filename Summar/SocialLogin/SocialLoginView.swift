@@ -24,20 +24,6 @@ class SocialLoginView : UIView, SocialSuccessDelegate{
     let naverLoginManager = NaverLoginManager()
     let googleLoginManager = GoogleLoginManager()
     
-    let serverURL = { () -> String in
-        let url = Bundle.main.url(forResource: "Network", withExtension: "plist")
-        let dictionary = NSDictionary(contentsOf: url!)
-
-        // 각 데이터 형에 맞도록 캐스팅 해줍니다.
-        #if DEBUG
-        var LocalURL = dictionary!["DebugURL"] as? String
-        #elseif RELEASE
-        var LocalURL = dictionary!["ReleaseURL"] as? String
-        #endif
-        
-        return LocalURL!
-    }
-    
     let label1 : UILabel = {
         let label1 = UILabel()
         label1.text = "나만의 커리어를 위한\n써머리 만들기"
