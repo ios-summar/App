@@ -12,10 +12,6 @@ protocol ServerDelegate : AnyObject {
     func memberYN(_ TF: Bool,_ requestDic: Dictionary<String, Any>)
 }
 
-protocol reCallDelegate : AnyObject {
-    func recallFunc(_ function : String?)
-}
-
 // MARK: - Summar 서버 URL
 struct Server {
     static var url: String {
@@ -30,7 +26,6 @@ struct Server {
 class ServerRequest: NSObject {
     static let shared = ServerRequest()
     weak var delegate : ServerDelegate?
-    weak var reCalldelegate : reCallDelegate?
     
     var param : Dictionary<String, Any> = Dictionary<String, Any>()
     var requestParam : Dictionary<String, String> = Dictionary<String, String>()
@@ -152,7 +147,7 @@ class ServerRequest: NSObject {
     }
     
     // MARK: - 마이 써머리 https://github.com/arifinfrds/iOS-MVVM-Alamofire
-    func requestMyInfo(_ url: String, completion: @escaping (UserInfo?, Error?) -> ()) {
+    func requestMyInfo(_ url: String, completion: @escaping (UserInfo?, Error?, Int?) -> ()) {
         let url = Server.url + url
         if let token = UserDefaults.standard.string(forKey: "accessToken") {
             print("url => \(url)")
@@ -173,23 +168,24 @@ class ServerRequest: NSObject {
                         let decoder = JSONDecoder()
                         let json = try decoder.decode(UserInfo.self, from: response.data!)
                         
-                        completion(json, nil)
+                        completion(json, nil, nil)
                         
                     } catch {
                         print("error! \(error)")
+                        completion(nil, error, nil)
                     }
                 case .failure(let error):
                     print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
                     
                     var statusCode = response.response?.statusCode
-                    self.reloadToken(statusCode, #function)
+                    completion(nil, error, statusCode)
                 }
             }
         }
     }
     
     // MARK: - UITabBar 닉네임 검색
-    func searchNickname(_ url: String, completion: @escaping (SearchUserList?, Error?) -> ()) {
+    func searchNickname(_ url: String, completion: @escaping (SearchUserList?, Error?, Int?) -> ()) {
         let url = Server.url + url
         if let token = UserDefaults.standard.string(forKey: "accessToken") {
             print("url => \(url)")
@@ -212,18 +208,17 @@ class ServerRequest: NSObject {
                         let decoder = JSONDecoder()
                         let json = try decoder.decode(SearchUserList.self, from: response.data!)
 
-                        completion(json, nil)
+                        completion(json, nil, nil)
 
                     } catch {
                         print("error! \(error)")
+                        completion(nil, error, nil)
                     }
                 case .failure(let error):
                     print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
                     
                     var statusCode = response.response?.statusCode
-                    
-                    print("statusCode => \(statusCode)")
-                    self.reloadToken(statusCode, #function)
+                    completion(nil, error, statusCode)
                 }
             }
         }
@@ -315,7 +310,7 @@ class ServerRequest: NSObject {
     }
     
     // MARK: - AccessToken 혹은 RefreshToken 재요청
-    func reloadToken(_ statusCode: Int?,_ function : String?){
+    func reloadToken(_ statusCode: Int?){
         if let statusCode = statusCode {
             if statusCode == 500{
                 // 토큰 재요청
@@ -337,7 +332,6 @@ class ServerRequest: NSObject {
                                 let accessToken = bothToken.results.accessToken
                                 
                                 UserDefaults.standard.set(accessToken, forKey: "accessToken")
-                                self.reCalldelegate?.recallFunc(function)
                             }
                         })
                     }
@@ -346,7 +340,6 @@ class ServerRequest: NSObject {
                         let accessToken = accessToken.accessToken
                         
                         UserDefaults.standard.set(accessToken, forKey: "accessToken")
-                        self.reCalldelegate?.recallFunc(function)
                     }
                 })
                 

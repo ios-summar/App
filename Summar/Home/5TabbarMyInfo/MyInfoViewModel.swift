@@ -7,17 +7,8 @@
 
 import Foundation
 
-class MyInfoViewModel: reCallDelegate{
+class MyInfoViewModel{
     private var request = ServerRequest.shared
-    
-    func recallFunc(_ function: String?) {
-        print("\(#file) function => \(function)")
-        getUserInfo()
-    }
-    
-    public init() {
-        request.reCalldelegate = self
-    }
     
     // MARK: - Properties
     let myInfo = UserDefaults.standard.dictionary(forKey: "UserInfo")
@@ -59,8 +50,14 @@ class MyInfoViewModel: reCallDelegate{
         if let value = myInfo {
             print("myInfo => \(myInfo)")
             let userId = value["userEmail"] as! String
-            self.request.requestMyInfo("/user/user-info?userEmail=\(userId)", completion: { (userInfo, error) in
-                if let error = error {
+            self.request.requestMyInfo("/user/user-info?userEmail=\(userId)", completion: { (userInfo, error, status) in
+                //error만 있을경우 서버오류
+                //error,status != nil 경우 토큰 재발급
+                if let error = error, let status = status {
+                    print("getUserInfo() iflet error")
+                    self.request.reloadToken(status)
+                    self.getUserInfo()
+                }else if let error = error {
                     print(error)
                     self.error = error
                     self.isLoading = false

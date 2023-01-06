@@ -7,7 +7,7 @@
 
 import Foundation
 
-class SearchViewModel: reCallDelegate{
+class SearchViewModel{
     private var request = ServerRequest.shared
     
     var nickname: String? = nil
@@ -52,15 +52,6 @@ class SearchViewModel: reCallDelegate{
     var didFinishFetch: (() -> ())?
     
     
-    func recallFunc(_ function: String?) {
-        print("\(#file) function => \(function)")
-        self.searchNickname()
-    }
-    
-    public init() {
-        request.reCalldelegate = self
-    }
-    
     func searchNickname(){
         print("---------------")
         print(nickname)
@@ -71,8 +62,14 @@ class SearchViewModel: reCallDelegate{
         guard let pageIndex = pageIndex else {return}
         guard let size = size else {return}
         
-        self.request.searchNickname("/user/search-user-list?userNickname=\(nickname)&page=\(pageIndex)&size=\(size)", completion: { (searchUserList, error) in
-            if let error = error {
+        self.request.searchNickname("/user/search-user-list?userNickname=\(nickname)&page=\(pageIndex)&size=\(size)", completion: { (searchUserList, error, status) in
+            //error만 있을경우 서버오류
+            //error,status != nil 경우 토큰 재발급
+            if let error = error, let status = status {
+                print("getUserInfo() iflet error")
+                self.request.reloadToken(status)
+                self.searchNickname()
+            }else if let error = error {
                 print(error)
 //                self.error = error
 //                self.isLoading = false
