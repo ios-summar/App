@@ -21,6 +21,9 @@
 		04239D7029553A74002ED10E /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04239D6F29553A74002ED10E /* Token.swift */; };
 		045575782968084B009C0827 /* NicknameCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045575772968084B009C0827 /* NicknameCheck.swift */; };
 		04668D83295C13BF00165E88 /* FeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04668D82295C13BF00165E88 /* FeedCollectionViewCell.swift */; };
+		04804542296D2FAE00D02A30 /* UpdateMyInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04804541296D2FAE00D02A30 /* UpdateMyInfoViewController.swift */; };
+		04804544296D2FB900D02A30 /* UpdateMyInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04804543296D2FB900D02A30 /* UpdateMyInfoView.swift */; };
+		04804546296D5EB100D02A30 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04804545296D5EB100D02A30 /* Router.swift */; };
 		04852F9028FE72AF00A3EED9 /* SocialLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04852F8F28FE72AF00A3EED9 /* SocialLoginController.swift */; };
 		04852F9228FE72E400A3EED9 /* SocialLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04852F9128FE72E400A3EED9 /* SocialLoginView.swift */; };
 		048EAA7E296511CF004E4A08 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 048EAA7D296511CF004E4A08 /* GoogleService-Info.plist */; };
@@ -51,8 +54,6 @@
 		A28EC0E628CA1BC100F5BF98 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A28EC0E428CA1BC100F5BF98 /* LaunchScreen.storyboard */; };
 		A2933E72294F808500B84C5B /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2933E71294F808500B84C5B /* UserInfo.swift */; };
 		A2933E7429501B4800B84C5B /* MyInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2933E7329501B4800B84C5B /* MyInfoViewModel.swift */; };
-		A2A769A228FBF742003EE3CD /* StartController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A769A128FBF742003EE3CD /* StartController.swift */; };
-		A2A769A428FBF74F003EE3CD /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A769A328FBF74F003EE3CD /* StartView.swift */; };
 		A2ADEBA728D081050018A358 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ADEBA628D081050018A358 /* Helper.swift */; };
 		A2CAEDE129050A630053D6C9 /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2CAEDE029050A630053D6C9 /* SignUpController.swift */; };
 		A2CAEDE329050A6C0053D6C9 /* SignUp1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2CAEDE229050A6C0053D6C9 /* SignUp1View.swift */; };
@@ -79,6 +80,9 @@
 		043D982A28EFB673008C862F /* Summar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Summar.entitlements; sourceTree = "<group>"; };
 		045575772968084B009C0827 /* NicknameCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameCheck.swift; sourceTree = "<group>"; };
 		04668D82295C13BF00165E88 /* FeedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCollectionViewCell.swift; sourceTree = "<group>"; };
+		04804541296D2FAE00D02A30 /* UpdateMyInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateMyInfoViewController.swift; sourceTree = "<group>"; };
+		04804543296D2FB900D02A30 /* UpdateMyInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateMyInfoView.swift; sourceTree = "<group>"; };
+		04804545296D5EB100D02A30 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		04852F8F28FE72AF00A3EED9 /* SocialLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginController.swift; sourceTree = "<group>"; };
 		04852F9128FE72E400A3EED9 /* SocialLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginView.swift; sourceTree = "<group>"; };
 		048EAA7D296511CF004E4A08 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -112,8 +116,6 @@
 		A28EC0E728CA1BC100F5BF98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2933E71294F808500B84C5B /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		A2933E7329501B4800B84C5B /* MyInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyInfoViewModel.swift; sourceTree = "<group>"; };
-		A2A769A128FBF742003EE3CD /* StartController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartController.swift; sourceTree = "<group>"; };
-		A2A769A328FBF74F003EE3CD /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
 		A2ADEBA628D081050018A358 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		A2CAEDE029050A630053D6C9 /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		A2CAEDE229050A6C0053D6C9 /* SignUp1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp1View.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 			children = (
 				A28EC0E428CA1BC100F5BF98 /* LaunchScreen.storyboard */,
 				04040E962962734C00D3333C /* LaunchScreenController.swift */,
+				04804545296D5EB100D02A30 /* Router.swift */,
 			);
 			path = LaunchScreen;
 			sourceTree = "<group>";
@@ -163,6 +166,15 @@
 				A28EC0DB28CA1BC000F5BF98 /* SceneDelegate.swift */,
 			);
 			path = AppDelegate;
+			sourceTree = "<group>";
+		};
+		04804540296D2F9900D02A30 /* UpdateMyInfo */ = {
+			isa = PBXGroup;
+			children = (
+				04804541296D2FAE00D02A30 /* UpdateMyInfoViewController.swift */,
+				04804543296D2FB900D02A30 /* UpdateMyInfoView.swift */,
+			);
+			path = UpdateMyInfo;
 			sourceTree = "<group>";
 		};
 		04852F8C28FE729100A3EED9 /* SocialLogin */ = {
@@ -298,22 +310,12 @@
 				04FB1965291227CC00E9EE54 /* Home */,
 				A2CAEDDD29050A1C0053D6C9 /* SignUp */,
 				04852F8C28FE729100A3EED9 /* SocialLogin */,
-				A2A7699C28FBF60C003EE3CD /* Login */,
 				A2ADEBA528D080FF0018A358 /* Helper */,
 				A28EC0E228CA1BC100F5BF98 /* Assets.xcassets */,
 				A28EC0E728CA1BC100F5BF98 /* Info.plist */,
 				048EAA7D296511CF004E4A08 /* GoogleService-Info.plist */,
 			);
 			path = Summar;
-			sourceTree = "<group>";
-		};
-		A2A7699C28FBF60C003EE3CD /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				A2A769A128FBF742003EE3CD /* StartController.swift */,
-				A2A769A328FBF74F003EE3CD /* StartView.swift */,
-			);
-			path = Login;
 			sourceTree = "<group>";
 		};
 		A2ADEBA528D080FF0018A358 /* Helper */ = {
@@ -363,9 +365,9 @@
 			children = (
 				04D4B0E4295D574400AD5043 /* CollectionViewCell */,
 				A210F6702960246100A517C5 /* FullScreenImage */,
+				041EEE972952E708006263C7 /* Feed.swift */,
 				041EEE9D295435F6006263C7 /* WriteFeedController.swift */,
 				041EEE9F2954362D006263C7 /* WrtieFeedView.swift */,
-				041EEE972952E708006263C7 /* Feed.swift */,
 			);
 			path = 3TabbarFeed;
 			sourceTree = "<group>";
@@ -385,6 +387,7 @@
 		A2ECB36329448C9F0005D88C /* 5TabbarMyInfo */ = {
 			isa = PBXGroup;
 			children = (
+				04804540296D2F9900D02A30 /* UpdateMyInfo */,
 				048EAA80296548F2004E4A08 /* Preferences */,
 				A2ECB36C29448EC10005D88C /* MyInfoViewController.swift */,
 				04967FA5294C3BF300CAF5CF /* MyInfoView.swift */,
@@ -512,14 +515,15 @@
 			files = (
 				04D4B0F1295D83A600AD5043 /* SearchUserList.swift in Sources */,
 				041EEEA02954362D006263C7 /* WrtieFeedView.swift in Sources */,
+				04804546296D5EB100D02A30 /* Router.swift in Sources */,
 				A2933E7429501B4800B84C5B /* MyInfoViewModel.swift in Sources */,
 				04B864E529494D0600D814D9 /* HomeView.swift in Sources */,
 				A210F66F295B163400A517C5 /* SearchView.swift in Sources */,
-				A2A769A228FBF742003EE3CD /* StartController.swift in Sources */,
 				A28EC0DA28CA1BC000F5BF98 /* AppDelegate.swift in Sources */,
 				041EEE982952E708006263C7 /* Feed.swift in Sources */,
 				041EEE9E295435F6006263C7 /* WriteFeedController.swift in Sources */,
 				040D79FA2918FA3F0018B6A0 /* KakaoLoginManager.swift in Sources */,
+				04804542296D2FAE00D02A30 /* UpdateMyInfoViewController.swift in Sources */,
 				04FB196929122B5C00E9EE54 /* HomeController.swift in Sources */,
 				A210F6742960253600A517C5 /* FullScreenImageView.swift in Sources */,
 				04B864F1294AEAB400D814D9 /* HomeCollectionViewCell.swift in Sources */,
@@ -533,7 +537,6 @@
 				040D79FC2918FB2A0018B6A0 /* AppleLoginManager.swift in Sources */,
 				A2ECB36729448E870005D88C /* ClippingViewController.swift in Sources */,
 				A210F6722960247600A517C5 /* FullScreenImageViewController.swift in Sources */,
-				A2A769A428FBF74F003EE3CD /* StartView.swift in Sources */,
 				A28EC0DC28CA1BC000F5BF98 /* SceneDelegate.swift in Sources */,
 				048EAA872965570E004E4A08 /* PreferencesTableViewCell.swift in Sources */,
 				04CCEAFD2910A61D009DBE05 /* ServerRequest.swift in Sources */,
@@ -554,6 +557,7 @@
 				045575782968084B009C0827 /* NicknameCheck.swift in Sources */,
 				04852F9228FE72E400A3EED9 /* SocialLoginView.swift in Sources */,
 				04A69BD72907CFAE00EF7133 /* SignUp2View.swift in Sources */,
+				04804544296D2FB900D02A30 /* UpdateMyInfoView.swift in Sources */,
 				048EAA842965493D004E4A08 /* PreferencesView.swift in Sources */,
 				04D4B0E1295D24F800AD5043 /* EmptyCollectionViewCell.swift in Sources */,
 				041EEE9A2952F1C2006263C7 /* HomeTableViewCell.swift in Sources */,
@@ -716,7 +720,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.ios.Summar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -751,7 +755,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.ios.Summar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -8,10 +8,30 @@
 import Foundation
 import UIKit
 import SnapKit
+import Kingfisher
 
-class MyInfoViewController : UIViewController{
+class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate{
+    func pushScreen(_ VC: UIViewController) {
+        if VC == UpdateMyInfoViewController.shared {
+            UpdateMyInfoViewController.shared.userInfo = self.userInfo
+            self.navigationController?.pushViewController(UpdateMyInfoViewController.shared, animated: true)
+        }
+    }
+    
+    func parameter(_ userInfo: UserInfo?) {
+        print(#file , #function)
+        self.userInfo = userInfo
+    }
+    
     static let shared = MyInfoViewController()
     let myInfoView = MyInfoView.shared
+    
+    // MARK: - Properties
+    private var userInfo: UserInfo? {
+        didSet {
+//            print("MyInfoViewController userInfo =>\n\(userInfo)")
+        }
+    }
     
     let lbNavTitle : UILabel = {
         let title = UILabel()
@@ -27,10 +47,11 @@ class MyInfoViewController : UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(myInfoView)
-        
+        myInfoView.delegate = self
+        myInfoView.pushDelegate = self
         // MARK: - 마이 써머리 상단 타이틀, 버튼
         self.navigationItem.titleView = lbNavTitle
-        self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(pushScreen), uiImage: UIImage(systemName: "gearshape")!, tintColor: .black)
+        self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(pushViewScreen(_:)), uiImage: UIImage(systemName: "gearshape")!, tintColor: .black)
         
         self.navigationItem.rightBarButtonItem?.tintColor = .black
         
@@ -48,8 +69,13 @@ class MyInfoViewController : UIViewController{
         print(#file , #function)
     }
     
-    @objc func pushScreen() {
-        self.navigationController?.pushViewController(PreferencesController(), animated: true)
+    @objc func pushViewScreen(_ sender: Any) {
+        guard let userInfo = userInfo else {return}
+        
+        let VC = PreferencesController.shared
+        VC.userInfo = userInfo
+        
+        self.navigationController?.pushViewController(VC, animated: true)
     }
 }
 

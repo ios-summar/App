@@ -8,9 +8,6 @@
 import Foundation
 import Alamofire
 
-protocol ServerDelegate : AnyObject {
-    func memberYN(_ TF: Bool,_ requestDic: Dictionary<String, Any>)
-}
 
 // MARK: - Summar 서버 URL
 struct Server {
@@ -25,7 +22,6 @@ struct Server {
 
 class ServerRequest: NSObject {
     static let shared = ServerRequest()
-    weak var delegate : ServerDelegate?
     
     var param : Dictionary<String, Any> = Dictionary<String, Any>()
     var requestParam : Dictionary<String, String> = Dictionary<String, String>()
@@ -75,7 +71,7 @@ class ServerRequest: NSObject {
     }
     
     // MARK: - 로그인, 회원가입 func => 서버의 loginStatus 값으로 회원인지, 회원이 아닌지 확인후 화면 이동
-    func login(_ url: String,_ requestDic: Dictionary<String, Any>){
+    func login(_ url: String,_ requestDic: Dictionary<String, Any>, completion : @escaping(Bool? ,Dictionary<String, Any>) -> ()) {
         let url = Server.url + url
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "POST"
@@ -124,9 +120,9 @@ class ServerRequest: NSObject {
                     UserDefaults.standard.set(json["refreshToken"], forKey: "refreshToken")
                     
                     
-                    self.delegate?.memberYN(true, params)
+                    completion(true, params)
                 } else if loginStatus == "회원가입"{
-                    self.delegate?.memberYN(false, params)
+                    completion(false, params)
                 } else if loginStatus == "회원가입완료"{
                     print(#line ,type(of: params["userEmail"]))
                     
@@ -137,7 +133,7 @@ class ServerRequest: NSObject {
                     UserDefaults.standard.set(json["accessToken"], forKey: "accessToken")
                     UserDefaults.standard.set(json["refreshToken"], forKey: "refreshToken")
                     
-                    self.delegate?.memberYN(true, params)
+                    completion(true, params)
                 }
                 
             case .failure(let error):

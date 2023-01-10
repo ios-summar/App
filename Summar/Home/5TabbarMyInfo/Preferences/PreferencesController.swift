@@ -9,9 +9,19 @@ import Foundation
 import UIKit
 import SnapKit
 
-class PreferencesController: UIViewController{
+class PreferencesController: UIViewController, PushDelegate{
+    func pushScreen(_ VC: UIViewController) {
+        self.navigationController?.pushViewController(VC, animated: true)
+    }
+    
     static let shared = PreferencesController()
     let preferencesView = PreferencesView()
+    
+    var userInfo: UserInfo? {
+        didSet {
+            print("PreferencesController userInfo => \n\(userInfo)")
+        }
+    }
     
     let titleLabel : UILabel = {
         let title = UILabel()
@@ -37,6 +47,8 @@ class PreferencesController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(preferencesView)
+        preferencesView.userInfo = self.userInfo
+        preferencesView.pushDelegate = self
         self.view.backgroundColor = .white
         
         self.navigationItem.titleView = titleLabel
@@ -44,7 +56,8 @@ class PreferencesController: UIViewController{
         
         
         preferencesView.snp.makeConstraints{(make) in
-            make.top.left.right.bottom.equalTo(0)
+            make.left.right.bottom.equalTo(0)
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
         }
     }
     

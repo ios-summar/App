@@ -82,6 +82,9 @@ extension UITextField {
 }
 
 extension UIColor {
+    convenience init(r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat = 1.0) {
+        self.init(red: r / 255.0, green: g / 255.0, blue: b / 255.0, alpha: a)
+    }
     //Launch Screen Color
     static var launchScreenBackGroundColor = UIColor.init(red: 19/255, green: 120/255, blue: 224/255, alpha: 1)
     
@@ -121,6 +124,12 @@ extension UIColor {
     //5TabbarMyInfo
     static var BackgroundColor = UIColor.init(red: 251/255, green: 251/255, blue: 253/255, alpha: 1)
     static var followShadowColor = UIColor.init(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+    
+    //설정
+    static var PreferencesBackgroundColor = UIColor.init(red: 247/255, green: 248/255, blue: 249/255, alpha: 1)
+    static var Gray02 = UIColor.init(r: 232, g: 235, b: 237)
+    
+    static var updateColor = UIColor.init(r: 255, g: 121, b: 96)
 }
 
 extension String {
@@ -222,9 +231,25 @@ extension UINavigationItem {
             
         let barButtonItem = UIBarButtonItem(customView: button)
         barButtonItem.customView?.translatesAutoresizingMaskIntoConstraints = false
-        barButtonItem.customView?.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        barButtonItem.customView?.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        barButtonItem.customView?.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        barButtonItem.customView?.widthAnchor.constraint(equalToConstant: 40).isActive = true
             
         return barButtonItem
+    }
+}
+
+extension Int {
+    private static var commaFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
+    var commaRepresentation: String {
+        if self >= 10000 {
+            var foramtter : Int = self / 1000
+            return "\(CFloat(CGFloat(foramtter) / 10.0)) 만"
+        }else {
+            return Int.commaFormatter.string(from: NSNumber(value: self)) ?? ""
+        }
     }
 }

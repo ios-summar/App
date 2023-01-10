@@ -14,9 +14,9 @@ class MyInfoViewModel{
     let myInfo = UserDefaults.standard.dictionary(forKey: "UserInfo")
     
     
-    private var userInfo: UserInfo? {
+    var userInfo: UserInfo? {
         didSet {
-            print(#file , #function)
+            print("MyInfoViewModel userInfo =>\n")
             guard let p = userInfo else { return }
             self.setupText(with: p)
             self.didFinishFetch?()
@@ -34,10 +34,9 @@ class MyInfoViewModel{
     var major1String: String?
     var major2String: String?
     var socialTypeString: String?
-    var followerInt: Int?
-    var followingInt: Int?
+    var followerString: String?
+    var followingString: String?
     var introduceString: String?
-//    var profileImg: URL?
     
     
     // MARK: - Closures for callback, since we are not using the ViewModel to the View.
@@ -73,7 +72,6 @@ class MyInfoViewModel{
     
     // MARK: - UI Logic
     private func setupText(with userInfo: UserInfo) {
-        print(#file , #function)
         if let nickname = userInfo.result.userNickname {
             self.nicknameString = nickname
         }
@@ -81,10 +79,10 @@ class MyInfoViewModel{
             self.major2String = major2
         }
         if let follower = userInfo.result.follower {
-            self.followerInt = follower
+            self.followerString = follower.commaRepresentation
         }
         if let following = userInfo.result.following {
-            self.followingInt = following
+            self.followingString = following.commaRepresentation
         }
         if let introduce = userInfo.result.introduce {
             self.introduceString = introduce

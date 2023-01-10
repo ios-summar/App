@@ -59,7 +59,7 @@ class HomeController : UITabBarController {
           viewControllers = [
             createNavController(for: HomeViewController.shared, title: NSLocalizedString("홈", comment: ""), image: UIImage(named: "home")!, selectedImage: UIImage(named: "sHome")!),
             createNavController(for: ClippingViewController.shared, title: NSLocalizedString("스크랩보기", comment: ""), image: UIImage(named: "scrab")!, selectedImage: UIImage(named: "sScrab")!),
-            createNavController(for: WriteFeedController.shared, title: NSLocalizedString("피드작성", comment: ""), image: UIImage(named: "write")!, selectedImage: UIImage(named: "sWrite")!),
+            createNavController(for: WriteFeedController.shared, title: NSLocalizedString("", comment: ""), image: UIImage(named: "write")!, selectedImage: UIImage(named: "sWrite")!),
             createNavController(for: SearchViewController.shared, title: NSLocalizedString("검색", comment: ""), image: UIImage(named: "search")!, selectedImage: UIImage(named: "sSearch")!),
             createNavController(for: MyInfoViewController.shared, title: NSLocalizedString("마이 써머리", comment: ""), image: UIImage(named: "myInfo")!, selectedImage: UIImage(named: "sMyInfo")!)
           ]
@@ -70,6 +70,7 @@ class HomeController : UITabBarController {
         navController.tabBarItem.title = title
         navController.tabBarItem.image = image
         navController.tabBarItem.selectedImage = selectedImage
+        navController.interactivePopGestureRecognizer?.delegate = nil // 스와이프 제스처 enable true
         return navController
     }
     

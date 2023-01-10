@@ -109,7 +109,7 @@ class SignUp3View : UIView {
     @objc func nextAction(){
         print(#file , #function)
         let svc = HomeController.shared
-        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(svc, animated: false)
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(svc, animated: true)
     }
     
     required init?(coder: NSCoder) {

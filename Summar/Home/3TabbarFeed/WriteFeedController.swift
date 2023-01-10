@@ -54,6 +54,7 @@ class WriteFeedController : UIViewController, ImagePickerDelegate{
         print("imageArr => \(imageArr)")
         let VC = FullScreenImageViewController.shared
         VC.imageArr = imageArr
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil // 스와이프 제스처 enable true
         self.navigationController?.pushViewController(FullScreenImageViewController.shared, animated: true)
     }
     

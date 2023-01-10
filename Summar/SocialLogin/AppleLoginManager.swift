@@ -8,7 +8,7 @@
 import Foundation
 import AuthenticationServices
 
-class AppleLoginManager : NSObject, ServerDelegate{
+class AppleLoginManager : NSObject{
     weak var viewController: UIViewController?
     weak var delegate: SocialSuccessDelegate?
     
@@ -21,7 +21,6 @@ class AppleLoginManager : NSObject, ServerDelegate{
     
     override init() {
         super.init()
-        request.delegate = self
     }
     
     func setAppleLoginPresentationAnchorView(_ view: UIViewController) {
@@ -70,7 +69,10 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate, ASAuthorization
             self.requestDic["major2"] = ""
             self.requestDic["socialType"] = self.socialType
             
-            self.request.login("/user/login", self.requestDic) // 이후 memberYN으로 화면이동
+            self.request.login("/user/login", self.requestDic, completion: { (login, param) in
+                guard let login = login else {return}
+                self.memberYN(login, param)
+            })
         default:
             break
         }

@@ -9,7 +9,7 @@ import Foundation
 import NaverThirdPartyLogin
 import Alamofire
 
-class NaverLoginManager: NSObject, ServerDelegate {
+class NaverLoginManager: NSObject{
     
     weak var delegate: SocialSuccessDelegate?
     let request = ServerRequest.shared
@@ -23,7 +23,6 @@ class NaverLoginManager: NSObject, ServerDelegate {
         super.init()
         print("naver init()")
         naverLoginInstance?.requestDeleteToken()
-        request.delegate = self
     }
     
     func naverLogin() {
@@ -40,6 +39,8 @@ extension NaverLoginManager: NaverThirdPartyLoginConnectionDelegate {
     
     func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
         print(#function)
+        getNaverInfo()
+//        naverLoginInstance?.requestAccessTokenWithRefreshToken()
     }
     
     func oauth20ConnectionDidFinishDeleteToken() {
@@ -94,8 +95,10 @@ extension NaverLoginManager: NaverThirdPartyLoginConnectionDelegate {
             self.requestDic["major2"] = ""
             self.requestDic["socialType"] = self.socialType
             
-            self.request.login("/user/login", self.requestDic) // 이후 memberYN으로 화면이동
-            
+            self.request.login("/user/login", self.requestDic, completion: { (login, param) in
+                guard let login = login else {return}
+                self.memberYN(login, param)
+            })
             
             }
       }
@@ -104,8 +107,10 @@ extension NaverLoginManager: NaverThirdPartyLoginConnectionDelegate {
     func memberYN(_ TF: Bool,_ requestDic: Dictionary<String, Any>) {
         print(#file , #function)
         if TF { // 로그인 화면으로
+            print("로그인 화면으로")
             self.delegate?.pushIdentifier(HomeController.shared, requestDic)
         }else { // 회원가입 화면으로
+            print("회원가입 화면으로")
             self.delegate?.pushIdentifier(SignUpController.shared, requestDic)
         }
     }

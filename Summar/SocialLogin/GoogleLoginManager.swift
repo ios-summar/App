@@ -8,7 +8,7 @@
 import Foundation
 import GoogleSignIn
 
-class GoogleLoginManager: NSObject, ServerDelegate {
+class GoogleLoginManager: NSObject{
     
     weak var delegate : SocialSuccessDelegate?
     
@@ -20,7 +20,6 @@ class GoogleLoginManager: NSObject, ServerDelegate {
     
     override init() {
         super.init()
-        request.delegate = self
     }
     
     // MARK: - 구글 로그인
@@ -56,7 +55,9 @@ class GoogleLoginManager: NSObject, ServerDelegate {
                 self.requestDic["major2"] = ""
                 self.requestDic["socialType"] = self.socialType
                 
-                self.request.login("/user/login", self.requestDic) // 이후 memberYN으로 화면이동
+                self.request.login("/user/login", self.requestDic, completion: { (login, param) in
+                    
+                })
                 
             } else {
                 print("Error : User Data Not Found")

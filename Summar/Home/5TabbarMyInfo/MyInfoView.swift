@@ -8,18 +8,32 @@
 import Foundation
 import UIKit
 
+// MARK: - MyInfoView -> MyInfoViewController userInfo 인자전달
+protocol MyInfoViewDelegate : AnyObject {
+    func parameter(_ userInfo: UserInfo?)
+}
+
+protocol PushDelegate : AnyObject {
+    func pushScreen(_ VC: UIViewController)
+}
+
 class MyInfoView: UIView{
     static let shared = MyInfoView()
     let request = ServerRequest.shared
+    
+    weak var delegate : MyInfoViewDelegate?
+    weak var pushDelegate : PushDelegate?
     
     // MARK: - Injection
     let viewModel = MyInfoViewModel()
     
     // MARK: - Properties
-        private var userInfo: UserInfo? {
-            didSet {
-            }
+    private var userInfo: UserInfo? {
+        didSet {
+            print("MyInfoView userInfo =>\n\(userInfo)")
+            self.delegate?.parameter(userInfo)
         }
+    }
     
     var requestDic = Dictionary<String, Any>()
     
@@ -34,7 +48,7 @@ class MyInfoView: UIView{
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.followShadowColor.cgColor
         view.layer.cornerRadius = 27.5
-        view.image = UIImage(systemName: "person.fill")
+        view.image = UIImage(named: "NonProfile")
         view.tintColor = UIColor.grayColor205
         view.contentMode = .scaleAspectFit
         view.clipsToBounds = true
@@ -98,11 +112,12 @@ class MyInfoView: UIView{
         UILabel.textColor = .black
         return UILabel
     }()
-    let introductView : UIView = {
-        let view = UIView()
+    let introductView : UIButton = {
+        let view = UIButton()
         view.backgroundColor = .white
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.followShadowColor.cgColor
+        view.addTarget(self, action: #selector(btnAction(_:)), for: .touchUpInside)
         return view
     }()
     let introductLabel : UILabel = {
@@ -167,12 +182,14 @@ class MyInfoView: UIView{
         
         profileImg.snp.makeConstraints { (make) in
             make.top.equalTo(20)
+            make.left.equalToSuperview()
             make.width.height.equalTo(55)
         }
         
         nickName.snp.makeConstraints { (make) in
             make.bottom.equalTo(profileImg.snp.centerY).offset(-1)
             make.left.equalTo(profileImg.snp.right).offset(10)
+            make.right.equalTo(followerView.snp.left)
         }
         
         major.snp.makeConstraints { (make) in
@@ -248,17 +265,22 @@ class MyInfoView: UIView{
             viewModel.getUserInfo()
             
             viewModel.didFinishFetch = {
+                self.userInfo = self.viewModel.userInfo
+                
                 self.nickName.text = self.viewModel.nicknameString
                 self.major.text = self.viewModel.major2String
-                self.followerCount.text = String(self.viewModel.followerInt ?? 0)
-                self.followingCount.text = String(self.viewModel.followingInt ?? 0)
+                self.followerCount.text = self.viewModel.followerString
+                self.followingCount.text = self.viewModel.followingString
                 self.introductLabel.text = self.viewModel.introduceString
-//                self.headerImageView.sd_setImage(with: self.viewModel.photoUrl, completed: nil)
             }
         }else {
             print(#file , "\(#function) else")
         }
         
+    }
+    
+    @objc func btnAction(_ sender: Any){
+        self.pushDelegate?.pushScreen(UpdateMyInfoViewController.shared)
     }
     
     required init?(coder: NSCoder) {

@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 class SocialLoginController : UIViewController, SocialLoginDelegate {
-    
+    static let shared = SocialLoginController()
     let socialLoginView = SocialLoginView()
     
     override func viewDidLoad() {
@@ -30,6 +30,8 @@ class SocialLoginController : UIViewController, SocialLoginDelegate {
 
     // MARK: - DB에 회원 유무 확인후 화면 이동
     func pushScreen(_ VC: UIViewController, _ requestDic: Dictionary<String, Any>) {
+        print(#file , #function)
+        print(VC)
         if VC == SignUpController.shared {
             let svc = SignUpController.shared
             svc.requestDic = requestDic

@@ -14,7 +14,7 @@ protocol SocialSuccessDelegate : AnyObject {
     func pushIdentifier(_ VC: UIViewController,_ requestDic: Dictionary<String, Any>)
 }
 
-class KakaoLoginManager : NSObject, ServerDelegate {
+class KakaoLoginManager : NSObject{
     
     weak var delegate : SocialSuccessDelegate?
     
@@ -26,7 +26,6 @@ class KakaoLoginManager : NSObject, ServerDelegate {
     
     override init() {
         super.init()
-        request.delegate = self
     }
     
     // MARK: - 카카오 로그인
@@ -63,7 +62,10 @@ class KakaoLoginManager : NSObject, ServerDelegate {
                 self.requestDic["major2"] = ""
                 self.requestDic["socialType"] = self.socialType
                 
-                self.request.login("/user/login", self.requestDic) // 이후 memberYN으로 화면이동
+                self.request.login("/user/login", self.requestDic, completion: { (login, param) in
+                    guard let login = login else {return}
+                    self.memberYN(login, param)
+                })
             }else {
                 print(Error)
             }
@@ -72,7 +74,6 @@ class KakaoLoginManager : NSObject, ServerDelegate {
     
     // MARK: - 화면이동 Delegate
     func memberYN(_ TF: Bool,_ requestDic: Dictionary<String, Any>) {
-        print(#file , #function)
         if TF { // 로그인 화면으로
             self.delegate?.pushIdentifier(HomeController.shared, requestDic)
         }else { // 회원가입 화면으로

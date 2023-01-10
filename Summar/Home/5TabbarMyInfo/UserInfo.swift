@@ -15,16 +15,18 @@ struct Info: Codable {
     let follower: Int?
     let following: Int?
     let introduce: String?
+    let profileImageUrl: String?
     
     enum CodingKeys: String, CodingKey {
         case userEmail = "userEmail"
         case userNickname = "userNickname"
         case major1 = "major1"
         case major2 = "major2"
-        case socialType = "social_Type"
+        case socialType = "social_type"
         case follower = "follower"
         case following = "following"
         case introduce = "introduce"
+        case profileImageUrl = "profile_image_url"
     }
 }
 

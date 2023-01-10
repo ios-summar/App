@@ -213,7 +213,7 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
             if searchUserInfo[indexPath.row].profileImageUrl != nil {
                 cell.profileImg.image = UIImage(systemName: "person")//profileImageUrl
             }else {
-                cell.profileImg.image = UIImage(systemName: "person.fill")
+                cell.profileImg.image = UIImage(named: "NonProfile")
             }
             
             cell.nickName.text = searchUserInfo[indexPath.row].userNickname
@@ -225,7 +225,8 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
 //                
 //            }
             cell.major.text = searchUserInfo[indexPath.row].major2
-            cell.followLabel.text = "팔로잉 \(searchUserInfo[indexPath.row].following!) · 팔로워 \(searchUserInfo[indexPath.row].follower!)"
+            
+            cell.followLabel.text = "팔로워 \(searchUserInfo[indexPath.row].follower!.commaRepresentation) · 팔로잉 \(searchUserInfo[indexPath.row].following!.commaRepresentation)"
             return cell
         }else {
             return UITableViewCell()

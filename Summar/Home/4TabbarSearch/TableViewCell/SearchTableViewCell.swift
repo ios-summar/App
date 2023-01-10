@@ -21,7 +21,7 @@ class SearchTableViewCell: UITableViewCell {
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.followShadowColor.cgColor
         view.layer.cornerRadius = 20
-        view.image = UIImage(systemName: "person.fill")
+        view.image = UIImage(named: "NonProfile")
         view.tintColor = UIColor.grayColor205
         view.contentMode = .scaleAspectFit
         view.clipsToBounds = true

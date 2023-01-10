@@ -9,7 +9,9 @@ import Foundation
 import UIKit
 import SnapKit
 
-class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, ServerDelegate{
+class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate{
+    static let shared = SignUpController()
+    
     func nextBtn(_ nickName: String) {
         print("nickName => \(nickName)")
         requestDic["userNickname"] = nickName
@@ -25,8 +27,6 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, Ser
         
         self.arrowBackWard.removeFromSuperview()
     }
-    
-    static let shared = SignUpController()
     
     let helper : Helper = Helper()
     let request = ServerRequest.shared
@@ -63,9 +63,6 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, Ser
         
         signUp1View.delegate = self
         signUp2View.delegate = self
-        request.delegate = self
-
-//        helper.showAlertAction(vc: self, message: "회원정보가 없어\n회원가입 화면으로 이동합니다.")
 //
 //        layoutInit()
     }
@@ -122,7 +119,10 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate, Ser
         print("\(#line) requestDic => ", requestDic)
         
         //서버요청
-        self.request.login("/user/login", self.requestDic)
+        self.request.login("/user/login", self.requestDic, completion: { (login, param) in
+            guard let login = login else {return}
+            self.memberYN(login, param)
+        })
         // 회원가입 완료
     }
     
