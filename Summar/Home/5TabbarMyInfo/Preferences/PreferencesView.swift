@@ -162,7 +162,6 @@ class PreferencesView: UIView{
                 break
             case "NAVER":
                 print("NAVER")
-//                self.pushDelegate?.pushScreen(SocialLoginController.shared)
                 break
             case "GOOGLE":
                 print("GOOGLE")

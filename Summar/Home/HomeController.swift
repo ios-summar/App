@@ -54,6 +54,11 @@ class HomeController : UITabBarController {
         addMiddleButton()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        selectedIndex = 0 // 초기 진입
+    }
+    
     // MARK: - UIBar Create NavigtaionController
     func setupVCs() {
           viewControllers = [
