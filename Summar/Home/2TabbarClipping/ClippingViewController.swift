@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 import SnapKit
 
-class TabbarClippingViewController : UIViewController {
-    static let shared = TabbarClippingViewController()
+class ClippingViewController : UIViewController {
+    static let shared = ClippingViewController()
     
     let label : UILabel = {
         let label = UILabel()
