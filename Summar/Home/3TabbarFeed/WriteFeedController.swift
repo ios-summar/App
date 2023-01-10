@@ -52,9 +52,9 @@ class WriteFeedController : UIViewController, ImagePickerDelegate{
     func showImageFullScreen(_ imageArr: [UIImage]) {
         print("self.navigationController \(self.navigationController)")
         print("imageArr => \(imageArr)")
-        let VC = FullScreenImageController.shared
+        let VC = FullScreenImageViewController.shared
         VC.imageArr = imageArr
-        self.navigationController?.pushViewController(FullScreenImageController.shared, animated: true)
+        self.navigationController?.pushViewController(FullScreenImageViewController.shared, animated: true)
     }
     
     // MARK: - ImagePicker func

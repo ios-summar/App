@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 
 
-class FullScreenImageController: UIViewController {
-    static let shared = FullScreenImageController()
+class FullScreenImageViewController: UIViewController {
+    static let shared = FullScreenImageViewController()
     
     let fullScreenImageView = FullScreenImageView.shared
     

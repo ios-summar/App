@@ -21,16 +21,12 @@ class SearchView: UIView{
     let view : UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
-//        view.layer.borderWidth = 1
-//        view.layer.borderColor = UIColor.red.cgColor
         return view
     }()
     
     let labelView : UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white
-//        view.layer.borderWidth = 1
-//        view.layer.borderColor = UIColor.orange.cgColor
         return view
     }()
     
@@ -40,18 +36,6 @@ class SearchView: UIView{
         imageView.tintColor = UIColor.imageViewColor
         return imageView
     }()
-    
-//    lazy var label : UILabel = {
-//        let label = UILabel()
-//        label.text = "닉네임을 검색해 사용자를 찾아보세요"
-//        label.font = .systemFont(ofSize: 17)
-//        label.numberOfLines = 0
-//        label.textAlignment = .center
-//        label.textColor = UIColor.imageViewColor
-//        label.sizeToFit()
-//        self.helper.lineSpacing(label, 10)
-//        return label
-//    }()
     
     lazy var searchCountLabel : UILabel = {
         let label = UILabel()
@@ -83,15 +67,6 @@ class SearchView: UIView{
     
     var empty : Bool? = nil
     var searchUserList : SearchUserList? = nil
-//    var searchUserInfo : [SearchUserInfo]? = nil
-//
-//    var currentPageNo: Int? = nil
-//    var firstPage: Bool? = nil
-//    var lastPage: Bool? = nil
-//    var recordsPerPage: Int? = nil
-//    var totalPageCount: Int? = nil
-//    var totalRecordCount: Int? = nil
-    
     
     override init(frame: CGRect) {
         super.init(frame: frame)

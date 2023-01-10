@@ -24,10 +24,6 @@ class HomeController : UITabBarController {
         middleButton.tintColor = .white
         middleButton.layer.cornerRadius = 8
         
-//        middleButton.addTarget(self, action: #selector(self.middleButtonAction), for: .touchUpInside)
-//
-//        self.addSubview(middleButton)
-        
         return middleButton
     }()
     
@@ -61,25 +57,20 @@ class HomeController : UITabBarController {
     // MARK: - UIBar Create NavigtaionController
     func setupVCs() {
           viewControllers = [
-            createNavController(for: TabbarHomeController.shared, title: NSLocalizedString("홈", comment: ""), image: UIImage(named: "home")!, selectedImage: UIImage(named: "sHome")!),
-            createNavController(for: TabbarClipping.shared, title: NSLocalizedString("스크랩보기", comment: ""), image: UIImage(named: "scrab")!, selectedImage: UIImage(named: "sScrab")!),
-            createNavController(for: TabbarFeed.shared, title: NSLocalizedString("피드작성", comment: ""), image: UIImage(named: "write")!, selectedImage: UIImage(named: "sWrite")!),
-            createNavController(for: TabbarSearch.shared, title: NSLocalizedString("검색", comment: ""), image: UIImage(named: "search")!, selectedImage: UIImage(named: "sSearch")!),
-            createNavController(for: TabbarMyInfo.shared, title: NSLocalizedString("마이 써머리", comment: ""), image: UIImage(named: "myInfo")!, selectedImage: UIImage(named: "sMyInfo")!)
+            createNavController(for: HomeViewController.shared, title: NSLocalizedString("홈", comment: ""), image: UIImage(named: "home")!, selectedImage: UIImage(named: "sHome")!),
+            createNavController(for: TabbarClippingViewController.shared, title: NSLocalizedString("스크랩보기", comment: ""), image: UIImage(named: "scrab")!, selectedImage: UIImage(named: "sScrab")!),
+            createNavController(for: WriteFeedController.shared, title: NSLocalizedString("피드작성", comment: ""), image: UIImage(named: "write")!, selectedImage: UIImage(named: "sWrite")!),
+            createNavController(for: SearchViewController.shared, title: NSLocalizedString("검색", comment: ""), image: UIImage(named: "search")!, selectedImage: UIImage(named: "sSearch")!),
+            createNavController(for: MyInfoViewController.shared, title: NSLocalizedString("마이 써머리", comment: ""), image: UIImage(named: "myInfo")!, selectedImage: UIImage(named: "sMyInfo")!)
           ]
     }
     
     fileprivate func createNavController(for rootViewController: UIViewController, title: String?, image: UIImage, selectedImage: UIImage) -> UIViewController {
-        if rootViewController != TabbarFeed.shared {
-            let navController = UINavigationController(rootViewController:  rootViewController)
-            navController.tabBarItem.title = title
-            navController.tabBarItem.image = image
-            navController.tabBarItem.selectedImage = selectedImage
-//            navController.isNavigationBarHidden = true
-            return navController
-        }else {
-            return UIViewController()
-        }
+        let navController = UINavigationController(rootViewController:  rootViewController)
+        navController.tabBarItem.title = title
+        navController.tabBarItem.image = image
+        navController.tabBarItem.selectedImage = selectedImage
+        return navController
     }
     
     func addMiddleButton() {
@@ -101,13 +92,6 @@ class HomeController : UITabBarController {
         }
         
         middleButton.layer.cornerRadius = 15
-        
-        // shadow
-//        middleButton.layer.shadowColor = tColor?.cgColor
-//        middleButton.layer.shadowOffset = CGSize(width: 10, height: 10)
-//
-//        middleButton.layer.shadowOpacity = 1
-//        middleButton.layer.shadowRadius = 1
         
         // other
         middleButton.layer.masksToBounds = false

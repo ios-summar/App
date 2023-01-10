@@ -9,10 +9,8 @@ import Foundation
 import UIKit
 import SnapKit
 
-class TabbarHomeController : UIViewController {
-    static let shared = TabbarHomeController()
-    
-    let titleView = TitleViewHome.shared
+class HomeViewController : UIViewController {
+    static let shared = HomeViewController()
     let homeView = HomeView.shared
     
     let viewWidth : CGFloat = {
@@ -37,25 +35,9 @@ class TabbarHomeController : UIViewController {
         return directBtn
     }()
     
-    let heartBtn : UIBarButtonItem = {
-        let heartBtn = UIBarButtonItem()
-        heartBtn.image = UIImage(systemName: "heart")
-//        heartBtn.setImage(UIImage(systemName: "heart"), for: .normal)
-        heartBtn.tintColor = .black
-//        heartBtn.imageView?.contentMode = .scaleToFill
-//        heartBtn.imageEdgeInsets = UIEdgeInsets(top: 32, left: 35, bottom: 33, right: 35)
-//        heartBtn.addTarget(self, action: #selector(topBtnAction(_:)), for: .touchUpInside)
-        heartBtn.tag = 1
-        return heartBtn
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        self.view.addSubview(titleView)
         self.view.addSubview(homeView)
-//        titleView.backgroundColor = UIColor.BackgroundColor
-//        titleView.layer.borderWidth = 1
         
         let lbNavTitle = UIView (frame: CGRect(x: 0, y: 0, width: viewWidth, height: 40))
         lbNavTitle.layer.borderWidth = 1
@@ -64,17 +46,7 @@ class TabbarHomeController : UIViewController {
             lbNavTitle.addSubview($0)
         }
         
-//        lbNavTitle.textColor = UIColor.black
-//        lbNavTitle.numberOfLines = 0
-//        lbNavTitle.center = CGPoint(x: 0, y: 0)
-//        lbNavTitle.textAlignment = .left
-    //        lbNavTitle.font = UIFont(name: "나눔손글씨 암스테르담", size: 24)
-//        lbNavTitle.text = "기프티콘 저장"
-//        self.navigationItem.titleView = lbNavTitle
-        
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: lbNavTitle)
-//        self.navigationItem.backBarButtonItem =
-        self.navigationItem.rightBarButtonItem = heartBtn
         self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(topBtnAction(_:)), uiImage: UIImage(systemName: "heart")!, tintColor: .black)
         
         titleImageView.snp.makeConstraints{(make) in

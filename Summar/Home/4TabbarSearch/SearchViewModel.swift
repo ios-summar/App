@@ -31,11 +31,6 @@ class SearchViewModel{
     }
     
     var empty: Bool?
-//    var nicknameString: String?
-//    var major2String: String?
-//    var follow: String?
-//    var introduceString: String?
-    
     var searchUserInfo : [SearchUserInfo]? = nil
     
     var currentPageNo: Int? = nil
@@ -88,35 +83,6 @@ class SearchViewModel{
             self.empty = true
         }else {
             self.empty = false
-            
-            
-//            if let currentPageNo = searchUserList.currentPageNo {
-//                self.currentPageNo = currentPageNo
-//            }
-//
-//            if let firstPage = searchUserList.firstPage {
-//                self.firstPage = firstPage
-//            }
-//
-//            if let lastPage = searchUserList.lastPage {
-//                self.lastPage = lastPage
-//            }
-//
-//            if let recordsPerPage = searchUserList.recordsPerPage {
-//                self.recordsPerPage = recordsPerPage
-//            }
-//
-//            if let totalPageCount = searchUserList.totalPageCount {
-//                self.totalPageCount = totalPageCount
-//            }
-//
-//            if let totalRecordCount = searchUserList.totalRecordCount {
-//                self.totalRecordCount = totalRecordCount
-//            }
-//
-//            if let searchUserInfo = searchUserList.content {
-//                self.searchUserInfo = searchUserInfo
-//            }
         }
     }
 }

@@ -9,12 +9,12 @@ import Foundation
 import UIKit
 import SnapKit
 
-class TabbarSearch : UIViewController{
+class SearchViewController : UIViewController{
     func pushScreen(_ VC: UIViewController) {
         self.navigationController?.pushViewController(VC, animated: true)
     }
     
-    static let shared = TabbarSearch()
+    static let shared = SearchViewController()
     let searchView = SearchView.shared
     
     let viewWidth : CGFloat = {
