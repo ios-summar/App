@@ -47,7 +47,7 @@ class MyInfoView: UIView{
     let profileImg : UIImageView = {
         let view = UIImageView()
         view.layer.cornerRadius = 27.5
-        view.image = UIImage(named: "NonProfile")
+//        view.image = UIImage(named: "NonProfile")
         view.tintColor = UIColor.grayColor205
         view.contentMode = .scaleAspectFit
         view.clipsToBounds = true
