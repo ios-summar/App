@@ -113,18 +113,20 @@ class ServerRequest: NSObject {
                 
                 if loginStatus == "로그인"{
                     //UserDefault에 회원정보 저장
-                    print(#line ,type(of: params["userEmail"]))
+                    print("params => \(params)")
                     
                     UserDefaults.standard.set(json, forKey: "UserInfo")
                     UserDefaults.standard.set(json["accessToken"], forKey: "accessToken")
                     UserDefaults.standard.set(json["refreshToken"], forKey: "refreshToken")
                     
+                    UserDefaults.standard.synchronize()
                     
                     completion(true, params)
                 } else if loginStatus == "회원가입"{
                     completion(false, params)
                 } else if loginStatus == "회원가입완료"{
                     print(#line ,type(of: params["userEmail"]))
+                    print("params => \(params)")
                     
                     params["follower"] = 0
                     params["following"] = 0
@@ -132,6 +134,8 @@ class ServerRequest: NSObject {
                     UserDefaults.standard.set(params, forKey: "UserInfo")
                     UserDefaults.standard.set(json["accessToken"], forKey: "accessToken")
                     UserDefaults.standard.set(json["refreshToken"], forKey: "refreshToken")
+                    
+                    UserDefaults.standard.synchronize()
                     
                     completion(true, params)
                 }

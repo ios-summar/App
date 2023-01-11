@@ -261,7 +261,6 @@ class MyInfoView: UIView{
     
     func requestMyInfo(){
         if let value = UserInfo {
-            let userId = value["userEmail"] as! String
             viewModel.getUserInfo()
             
             viewModel.didFinishFetch = {

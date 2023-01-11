@@ -16,7 +16,6 @@ class SocialLoginController : UIViewController, SocialLoginDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(socialLoginView)
-        
         socialLoginView.delegate = self
         
         // layout

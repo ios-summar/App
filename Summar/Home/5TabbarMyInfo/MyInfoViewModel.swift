@@ -11,12 +11,12 @@ class MyInfoViewModel{
     private var request = ServerRequest.shared
     
     // MARK: - Properties
-    let myInfo = UserDefaults.standard.dictionary(forKey: "UserInfo")
+//    let myInfo = UserDefaults.standard.dictionary(forKey: "UserInfo")
     
     
     var userInfo: UserInfo? {
         didSet {
-            print("MyInfoViewModel userInfo =>\n")
+            print("MyInfoViewModel userInfo =>\n \(userInfo)")
             guard let p = userInfo else { return }
             self.setupText(with: p)
             self.didFinishFetch?()
@@ -46,8 +46,8 @@ class MyInfoViewModel{
     
     // MARK: - Network call
     func getUserInfo() {
-        if let value = myInfo {
-            print("myInfo => \(myInfo)")
+        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo") {
+            print("myInfo => \(value)")
             let userId = value["userEmail"] as! String
             self.request.requestMyInfo("/user/user-info?userEmail=\(userId)", completion: { (userInfo, error, status) in
                 //error만 있을경우 서버오류

@@ -9,7 +9,14 @@ import Foundation
 import UIKit
 import SnapKit
 
-class PreferencesController: UIViewController, PushDelegate{
+class PreferencesController: UIViewController, PushDelegate, PopDelegate{
+    weak var delegate : PopDelegate?
+    
+    func popScreen() {
+        self.navigationController?.popViewController(animated: true)
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(SocialLoginController.shared, animated: true)
+    }
+    
     func pushScreen(_ VC: UIViewController) {
         self.navigationController?.pushViewController(VC, animated: true)
     }
@@ -46,19 +53,23 @@ class PreferencesController: UIViewController, PushDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(preferencesView)
-        preferencesView.userInfo = self.userInfo
         preferencesView.pushDelegate = self
+        preferencesView.popDelegate = self
         self.view.backgroundColor = .white
         
         self.navigationItem.titleView = titleLabel
         self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(topBtnAction(_:)), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
         
+        self.view.addSubview(preferencesView)
         
         preferencesView.snp.makeConstraints{(make) in
             make.left.right.bottom.equalTo(0)
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        preferencesView.userInfo = self.userInfo
     }
     
     
