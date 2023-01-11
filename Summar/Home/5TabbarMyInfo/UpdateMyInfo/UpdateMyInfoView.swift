@@ -70,6 +70,8 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
                         )
                     }
                 }
+            }else {
+                self.profileImageView.image = UIImage(named: "NonProfile")
             }
             
             if let nickname = userInfo?.result.userNickname {
