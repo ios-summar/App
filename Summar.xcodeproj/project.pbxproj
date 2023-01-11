@@ -44,6 +44,8 @@
 		04D4B0EF295D82C700AD5043 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D4B0EE295D82C700AD5043 /* SearchViewModel.swift */; };
 		04D4B0F1295D83A600AD5043 /* SearchUserList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D4B0F0295D83A600AD5043 /* SearchUserList.swift */; };
 		04FB196929122B5C00E9EE54 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FB196829122B5C00E9EE54 /* HomeController.swift */; };
+		5EB4F5F1296E94FF0061D64D /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB4F5F0296E94FF0061D64D /* PaddingLabel.swift */; };
+		5EB4F5F3296EAFFF0061D64D /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB4F5F2296EAFFF0061D64D /* LogHelper.swift */; };
 		A210F66F295B163400A517C5 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A210F66E295B163400A517C5 /* SearchView.swift */; };
 		A210F6722960247600A517C5 /* FullScreenImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A210F6712960247600A517C5 /* FullScreenImageViewController.swift */; };
 		A210F6742960253600A517C5 /* FullScreenImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A210F6732960253600A517C5 /* FullScreenImageView.swift */; };
@@ -105,6 +107,8 @@
 		04FB196829122B5C00E9EE54 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		303DADE10EF52728E330A60B /* Pods-Summar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Summar.release.xcconfig"; path = "Target Support Files/Pods-Summar/Pods-Summar.release.xcconfig"; sourceTree = "<group>"; };
 		3800AD8F463DBF30031A0542 /* Pods-Summar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Summar.debug.xcconfig"; path = "Target Support Files/Pods-Summar/Pods-Summar.debug.xcconfig"; sourceTree = "<group>"; };
+		5EB4F5F0296E94FF0061D64D /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
+		5EB4F5F2296EAFFF0061D64D /* LogHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogHelper.swift; sourceTree = "<group>"; };
 		78718D3F4167E30CC9B3737B /* Pods_Summar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Summar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A210F66E295B163400A517C5 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		A210F6712960247600A517C5 /* FullScreenImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewController.swift; sourceTree = "<group>"; };
@@ -323,7 +327,9 @@
 			children = (
 				041EEE962952E6F4006263C7 /* ServerModel */,
 				A2ADEBA628D081050018A358 /* Helper.swift */,
+				5EB4F5F0296E94FF0061D64D /* PaddingLabel.swift */,
 				04CCEAFC2910A61D009DBE05 /* ServerRequest.swift */,
+				5EB4F5F2296EAFFF0061D64D /* LogHelper.swift */,
 				04CCEAFE2910A6EC009DBE05 /* Network.plist */,
 			);
 			path = Helper;
@@ -515,6 +521,7 @@
 			files = (
 				04D4B0F1295D83A600AD5043 /* SearchUserList.swift in Sources */,
 				041EEEA02954362D006263C7 /* WrtieFeedView.swift in Sources */,
+				5EB4F5F3296EAFFF0061D64D /* LogHelper.swift in Sources */,
 				04804546296D5EB100D02A30 /* Router.swift in Sources */,
 				A2933E7429501B4800B84C5B /* MyInfoViewModel.swift in Sources */,
 				04B864E529494D0600D814D9 /* HomeView.swift in Sources */,
@@ -558,6 +565,7 @@
 				04852F9228FE72E400A3EED9 /* SocialLoginView.swift in Sources */,
 				04A69BD72907CFAE00EF7133 /* SignUp2View.swift in Sources */,
 				04804544296D2FB900D02A30 /* UpdateMyInfoView.swift in Sources */,
+				5EB4F5F1296E94FF0061D64D /* PaddingLabel.swift in Sources */,
 				048EAA842965493D004E4A08 /* PreferencesView.swift in Sources */,
 				04D4B0E1295D24F800AD5043 /* EmptyCollectionViewCell.swift in Sources */,
 				041EEE9A2952F1C2006263C7 /* HomeTableViewCell.swift in Sources */,

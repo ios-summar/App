@@ -78,7 +78,6 @@ class SearchViewModel{
     
     // MARK: - UI Logic 프로필이미지, 닉네임, 전공, 팔로워
     private func setupText(with searchUserList: SearchUserList) {
-        print(#file , #function)
         if searchUserList.totalPageCount == 0 {
             self.empty = true
         }else {

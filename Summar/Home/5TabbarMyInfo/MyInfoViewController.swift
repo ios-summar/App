@@ -22,6 +22,7 @@ class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate,
     func pushScreen(_ VC: UIViewController) {
         if VC == UpdateMyInfoViewController.shared {
             UpdateMyInfoViewController.shared.userInfo = self.userInfo
+            print("MyInfoViewController => UpdateMyInfo userInfo\n \(userInfo)")
             self.navigationController?.pushViewController(UpdateMyInfoViewController.shared, animated: true)
         }
     }

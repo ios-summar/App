@@ -20,6 +20,28 @@ class PreferencesView: UIView{
         didSet {
             print("PreferencesView userInfo=>\n \(userInfo)")
             
+            if let profile = userInfo?.result.profileImageUrl {
+                //url에 정확한 이미지 url 주소를 넣는다.
+                let url = URL(string: profile)
+                //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
+                //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
+                DispatchQueue.global().async {
+                    let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
+                    DispatchQueue.main.async {
+    //                    cell.imageView.image = UIImage(data: data!)
+                        self.profileImg.kf.indicatorType = .activity
+                        self.profileImg.kf.setImage(
+                          with: url,
+                          placeholder: nil,
+                          options: [.transition(.fade(1.2))],
+                          completionHandler: nil
+                        )
+                    }
+                }
+            }else {
+                profileImg.image = UIImage(named: "NonProfile")
+            }
+            
             nickName.text = userInfo?.result.userNickname
             major.text = userInfo?.result.major2
         }
@@ -47,7 +69,7 @@ class PreferencesView: UIView{
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.followShadowColor.cgColor
         view.layer.cornerRadius = 27.5
-        view.image = UIImage(named: "NonProfile")
+//        view.image = UIImage(named: "NonProfile")
         view.tintColor = UIColor.grayColor205
         view.contentMode = .scaleAspectFit
         view.clipsToBounds = true

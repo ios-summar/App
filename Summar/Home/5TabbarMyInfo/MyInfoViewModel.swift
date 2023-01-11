@@ -37,6 +37,7 @@ class MyInfoViewModel{
     var followerString: String?
     var followingString: String?
     var introduceString: String?
+    var profileImgURLString: String?
     
     
     // MARK: - Closures for callback, since we are not using the ViewModel to the View.
@@ -74,6 +75,9 @@ class MyInfoViewModel{
     private func setupText(with userInfo: UserInfo) {
         if let nickname = userInfo.result.userNickname {
             self.nicknameString = nickname
+        }
+        if let profileImgURL = userInfo.result.profileImageUrl {
+            self.profileImgURLString = profileImgURL
         }
         if let major2 = userInfo.result.major2 {
             self.major2String = major2

@@ -26,7 +26,7 @@ struct Info: Codable {
         case follower = "follower"
         case following = "following"
         case introduce = "introduce"
-        case profileImageUrl = "profile_image_url"
+        case profileImageUrl = "profileImageUrl"
     }
 }
 
