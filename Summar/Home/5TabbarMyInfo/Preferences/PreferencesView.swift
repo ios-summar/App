@@ -189,6 +189,10 @@ class PreferencesView: UIView{
 //            print(userInfo)
             let loginType = String(describing: socialType)
             
+            _ = ["UserInfo", "accessToken", "refreshToken"].map {
+                UserDefaults.standard.removeObject(forKey: $0)
+            }
+            
             switch loginType {
             case "KAKAO":
                 print("KAKAO")
@@ -205,10 +209,7 @@ class PreferencesView: UIView{
             default:
                 print("default")
             }
-            
-            _ = ["UserInfo", "accessToken", "refreshToken"].map {
-                UserDefaults.standard.removeObject(forKey: $0)
-            }
+
             
             self.popDelegate?.popScreen()
         }

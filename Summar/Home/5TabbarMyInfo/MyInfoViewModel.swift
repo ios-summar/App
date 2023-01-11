@@ -73,6 +73,8 @@ class MyInfoViewModel{
     
     // MARK: - UI Logic
     private func setupText(with userInfo: UserInfo) {
+        log("")
+        print("userInfo", userInfo)
         if let nickname = userInfo.result.userNickname {
             self.nicknameString = nickname
         }

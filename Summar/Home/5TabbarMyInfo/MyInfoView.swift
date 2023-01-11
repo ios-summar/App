@@ -37,7 +37,7 @@ class MyInfoView: UIView{
     
     var requestDic = Dictionary<String, Any>()
     
-    let UserInfo = UserDefaults.standard.dictionary(forKey: "UserInfo")
+//    let UserInfo = UserDefaults.standard.dictionary(forKey: "UserInfo")
     
     let scrollView = UIScrollView()
     let contentView = UIView()
@@ -157,6 +157,8 @@ class MyInfoView: UIView{
         
         profileview.addSubview(socialBadge)
         profileview.addSubview(profileImg)
+        
+        self.profileview.bringSubviewToFront(self.socialBadge)
         
         followingView.addSubview(followingCount)
         followingView.addSubview(followingLabel)
@@ -280,8 +282,9 @@ class MyInfoView: UIView{
     }
     
     func requestMyInfo(){
-        if let value = UserInfo {
+        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo") {
             let socialType = value["socialType"] as? String
+            print("socialType", socialType)
             
             switch socialType {
             case "KAKAO":
@@ -302,6 +305,7 @@ class MyInfoView: UIView{
                 self.userInfo = self.viewModel.userInfo
                 
                 if let profile = self.viewModel.profileImgURLString {
+                    print("self.viewModel.profileImgURLString", self.viewModel.profileImgURLString)
                     //url에 정확한 이미지 url 주소를 넣는다.
                     let url = URL(string: profile)
                     //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
