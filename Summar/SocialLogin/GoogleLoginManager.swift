@@ -56,7 +56,8 @@ class GoogleLoginManager: NSObject{
                 self.requestDic["socialType"] = self.socialType
                 
                 self.request.login("/user/login", self.requestDic, completion: { (login, param) in
-                    
+                    guard let login = login else {return}
+                    self.memberYN(login, param)
                 })
                 
             } else {

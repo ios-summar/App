@@ -10,7 +10,15 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate{
+class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate, PopDelegate{
+    var window = UIWindow(frame: UIScreen.main.bounds)
+    
+    func popScreen() {
+        print(#file , #function)
+    }
+    
+    let VC = PreferencesController.shared
+    
     func pushScreen(_ VC: UIViewController) {
         if VC == UpdateMyInfoViewController.shared {
             UpdateMyInfoViewController.shared.userInfo = self.userInfo
@@ -49,6 +57,7 @@ class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate{
         self.view.addSubview(myInfoView)
         myInfoView.delegate = self
         myInfoView.pushDelegate = self
+        VC.delegate = self
         // MARK: - 마이 써머리 상단 타이틀, 버튼
         self.navigationItem.titleView = lbNavTitle
         self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(pushViewScreen(_:)), uiImage: UIImage(systemName: "gearshape")!, tintColor: .black)
@@ -72,7 +81,6 @@ class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate{
     @objc func pushViewScreen(_ sender: Any) {
         guard let userInfo = userInfo else {return}
         
-        let VC = PreferencesController.shared
         VC.userInfo = userInfo
         
         self.navigationController?.pushViewController(VC, animated: true)

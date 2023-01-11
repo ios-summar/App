@@ -14,6 +14,7 @@ protocol PopDelegate : AnyObject {
 
 class PreferencesView: UIView{
     weak var pushDelegate : PushDelegate?
+    weak var popDelegate : PopDelegate?
     
     var userInfo : UserInfo? {
         didSet {
@@ -149,10 +150,9 @@ class PreferencesView: UIView{
     @objc func logoutAction() {
         if let userInfo = UserDefaults.standard.dictionary(forKey: "UserInfo") {
             guard let socialType = userInfo["socialType"] else{ return }
-            print(userInfo)
+//            print(userInfo)
             let loginType = String(describing: socialType)
             
-            UserDefaults.standard.removeObject(forKey: "UserInfo")
             switch loginType {
             case "KAKAO":
                 print("KAKAO")
@@ -169,10 +169,12 @@ class PreferencesView: UIView{
             default:
                 print("default")
             }
-           
-            let navigationController = UINavigationController(rootViewController: Router())
-            navigationController.isNavigationBarHidden = true
-            window?.rootViewController = navigationController
+            
+            _ = ["UserInfo", "accessToken", "refreshToken"].map {
+                UserDefaults.standard.removeObject(forKey: $0)
+            }
+            
+            self.popDelegate?.popScreen()
         }
     }
     

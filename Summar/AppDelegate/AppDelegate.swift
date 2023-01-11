@@ -40,13 +40,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { _, _ in }
         application.registerForRemoteNotifications()
         
-        if let userInfo = UserDefaults.standard.dictionary(forKey: "UserInfo") {
-            print(#file , #function)
-            print(userInfo)
-        }else {
-            print("UserInfo is nil")
-        }
-        
 //        let appleIDProvider = ASAuthorizationAppleIDProvider()
 //            appleIDProvider.getCredentialState(forUserID: /* 로그인에 사용한 User Identifier */) { (credentialState, error) in
 //                switch credentialState {

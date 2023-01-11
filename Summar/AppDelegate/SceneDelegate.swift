@@ -80,9 +80,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func changeRootVC(_ vc:UIViewController, animated: Bool) {
         guard let window = self.window else { return }
-        window.rootViewController = vc // 전환
+        window.safeAreaLayoutGuide.owningView?.backgroundColor = .white
         
-        UIView.transition(with: window, duration: 0.2, options: [.transitionCrossDissolve], animations: nil, completion: nil)
+        if vc == HomeController.shared {
+            window.rootViewController = vc // 전환
+            
+            UIView.transition(with: window, duration: 0.2, options: [.transitionCrossDissolve], animations: nil, completion: nil)
+        }else if vc == SocialLoginController.shared {
+            
+            let navigationController = UINavigationController(rootViewController: SocialLoginController.shared)
+            navigationController.isNavigationBarHidden = true
+            window.rootViewController = navigationController
+            UIView.transition(with: window, duration: 0.2, options: [.transitionCrossDissolve], animations: nil, completion: nil)
+//            window.makeKeyAndVisible()
+        }
       }
 
     func sceneDidDisconnect(_ scene: UIScene) {

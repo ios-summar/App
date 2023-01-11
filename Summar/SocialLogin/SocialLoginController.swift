@@ -16,7 +16,6 @@ class SocialLoginController : UIViewController, SocialLoginDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(socialLoginView)
-        
         socialLoginView.delegate = self
         
         // layout
@@ -32,6 +31,8 @@ class SocialLoginController : UIViewController, SocialLoginDelegate {
     func pushScreen(_ VC: UIViewController, _ requestDic: Dictionary<String, Any>) {
         print(#file , #function)
         print(VC)
+        
+        print("self.navigationController \(self.navigationController)")
         if VC == SignUpController.shared {
             let svc = SignUpController.shared
             svc.requestDic = requestDic
