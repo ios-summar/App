@@ -43,13 +43,19 @@ class MyInfoView: UIView{
     let contentView = UIView()
     
     let view1 = UIView()
-    lazy var profileImg : UIImageView = {
+    let profileview = UIView()
+    let profileImg : UIImageView = {
         let view = UIImageView()
-        view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.followShadowColor.cgColor
         view.layer.cornerRadius = 27.5
-//        view.image = UIImage(named: "NonProfile")
+        view.image = UIImage(named: "NonProfile")
         view.tintColor = UIColor.grayColor205
+        view.contentMode = .scaleAspectFit
+        view.clipsToBounds = true
+        return view
+    }()
+    let socialBadge : UIImageView = {
+        let view = UIImageView()
+        view.layer.cornerRadius = 8
         view.contentMode = .scaleAspectFit
         view.clipsToBounds = true
         return view
@@ -141,12 +147,16 @@ class MyInfoView: UIView{
         
         _ = [view1, view2, view3].map { self.contentView.addSubview($0)}
         scrollView.addSubview(contentView)
-        view1.addSubview(profileImg)
+        view1.addSubview(profileview)
+        
         view1.addSubview(nickName)
         view1.addSubview(major)
         view1.addSubview(followerView)
         view1.addSubview(followingView)
         view1.addSubview(introductView)
+        
+        profileview.addSubview(socialBadge)
+        profileview.addSubview(profileImg)
         
         followingView.addSubview(followingCount)
         followingView.addSubview(followingLabel)
@@ -180,10 +190,20 @@ class MyInfoView: UIView{
             make.height.equalTo(300)
         }
         
-        profileImg.snp.makeConstraints { (make) in
+        profileview.snp.makeConstraints { (make) in
             make.top.equalTo(20)
             make.left.equalToSuperview()
             make.width.height.equalTo(55)
+        }
+        
+        profileImg.snp.makeConstraints { (make) in
+            make.left.top.equalToSuperview()
+            make.width.height.equalTo(55)
+        }
+        
+        socialBadge.snp.makeConstraints { (make) in
+            make.width.height.equalTo(16)
+            make.right.top.equalToSuperview()
         }
         
         nickName.snp.makeConstraints { (make) in
@@ -261,6 +281,21 @@ class MyInfoView: UIView{
     
     func requestMyInfo(){
         if let value = UserInfo {
+            let socialType = value["socialType"] as? String
+            
+            switch socialType {
+            case "KAKAO":
+                socialBadge.image = UIImage(named: "kakao")
+            case "APPLE":
+                socialBadge.image = UIImage(named: "apple")
+            case "NAVER":
+                socialBadge.image = UIImage(named: "naver")
+            case "GOOGLE":
+                socialBadge.image = UIImage(named: "google")
+            default:
+                print("default")
+            }
+            
             viewModel.getUserInfo()
             
             viewModel.didFinishFetch = {

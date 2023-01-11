@@ -201,8 +201,8 @@ class SocialLoginView : UIView, SocialSuccessDelegate{
         kakaoImageView.snp.makeConstraints{(make) in
             make.centerY.equalTo(kakaoFrame)
             make.leftMargin.equalTo(kakaoFrame.snp.left).offset(26)
-            make.height.equalTo(19.71)
-            make.width.equalTo(20)
+            make.height.equalTo(30)
+            make.width.equalTo(30)
         }
         
         appleFrame.snp.makeConstraints{(make) in
@@ -219,9 +219,9 @@ class SocialLoginView : UIView, SocialSuccessDelegate{
         
         appleImageView.snp.makeConstraints{(make) in
             make.centerY.equalTo(appleFrame)
-            make.leftMargin.equalTo(appleFrame.snp.left).offset(27)
-            make.height.equalTo(20)
-            make.width.equalTo(17)
+            make.leftMargin.equalTo(appleFrame.snp.left).offset(26)
+            make.height.equalTo(30)
+            make.width.equalTo(30)
         }
         
         naverFrame.snp.makeConstraints{(make) in
@@ -238,9 +238,9 @@ class SocialLoginView : UIView, SocialSuccessDelegate{
         
         naverImageView.snp.makeConstraints{(make) in
             make.centerY.equalTo(naverFrame)
-            make.leftMargin.equalTo(naverFrame.snp.left).offset(27)
-            make.height.equalTo(16)
-            make.width.equalTo(16)
+            make.leftMargin.equalTo(naverFrame.snp.left).offset(26)
+            make.height.equalTo(30)
+            make.width.equalTo(30)
         }
         
         googleFrame.snp.makeConstraints{(make) in
@@ -257,9 +257,9 @@ class SocialLoginView : UIView, SocialSuccessDelegate{
         
         googleImageView.snp.makeConstraints{(make) in
             make.centerY.equalTo(googleFrame)
-            make.leftMargin.equalTo(googleFrame.snp.left).offset(25)
-            make.height.equalTo(20)
-            make.width.equalTo(20)
+            make.leftMargin.equalTo(googleFrame.snp.left).offset(26)
+            make.height.equalTo(30)
+            make.width.equalTo(30)
         }
     }
     

@@ -48,7 +48,9 @@ class PreferencesView: UIView{
     }
     
     let cellReuseIdentifier = "PreferencesTableViewCell"
-    let preferencesArray = ["프로필 편집", "푸시 알림", "공지사항", "자주 묻는 질문", "버전 정보"]
+    
+    var preferencesArray : [String] = []
+    var preferencesImgArray : [UIImage] = []
     
     
     var version: String? {
@@ -123,6 +125,8 @@ class PreferencesView: UIView{
         super.init(frame: frame)
         backgroundColor = UIColor.PreferencesBackgroundColor
         
+        arrayInit() //설정 배열 Init
+        
         _ = [profileView ,tableView].map {
             addSubview($0)
         }
@@ -169,6 +173,16 @@ class PreferencesView: UIView{
         
     }
     
+    func arrayInit(){
+        _ = ["프로필 편집", "푸시 알림", "공지사항", "자주 묻는 질문", "버전 정보"].map {
+            preferencesArray.append($0)
+        }
+        
+        _ = ["solid", "alarm", "notice", "FAQ", "info"].map {
+            preferencesImgArray.append(UIImage(named: $0)!)
+        }
+    }
+    
     @objc func logoutAction() {
         if let userInfo = UserDefaults.standard.dictionary(forKey: "UserInfo") {
             guard let socialType = userInfo["socialType"] else{ return }
@@ -213,6 +227,7 @@ extension PreferencesView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! PreferencesTableViewCell
+        cell.preferencesImg.image = preferencesImgArray[indexPath.row]
         cell.label.text = preferencesArray[indexPath.row]
         
         // 버전정보

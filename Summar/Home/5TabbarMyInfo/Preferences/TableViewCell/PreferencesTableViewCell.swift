@@ -50,6 +50,7 @@ class PreferencesTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
 
         _ = [preferencesImg, label, versionLabel, updateLabel, rectangleStroke].map {
             addSubview($0)
