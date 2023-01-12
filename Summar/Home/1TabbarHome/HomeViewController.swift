@@ -8,10 +8,12 @@
 import Foundation
 import UIKit
 import SnapKit
+import JJFloatingActionButton
 
 class HomeViewController : UIViewController {
     static let shared = HomeViewController()
     let homeView = HomeView.shared
+    let actionButton = JJFloatingActionButton()
     
     let viewWidth : CGFloat = {
         var btnWidth = UIScreen.main.bounds.width
@@ -61,6 +63,43 @@ class HomeViewController : UIViewController {
             make.top.equalTo(0)
         }
         
+        floatingBtn()
+    }
+    
+    func floatingBtn(){
+        actionButton.addItem(title: "피드 작성하기", image: UIImage(systemName: "plus")?.withRenderingMode(.alwaysTemplate)) { item in
+            print("피드 작성하기")
+            
+            let wrController = UINavigationController(rootViewController:  WriteFeedController.shared)
+            wrController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+            self.present(wrController, animated: true, completion: nil)
+        }
+
+        
+        self.view.addSubview(actionButton)
+        
+        actionButton.snp.makeConstraints{(make) in
+            make.width.height.equalTo(56)
+            make.bottom.right.equalTo(-16)
+        }
+        
+        actionButton.buttonColor = .systemBlue
+        actionButton.translatesAutoresizingMaskIntoConstraints = false
+        actionButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
+        actionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16).isActive = true
+        
+        actionButton.configureDefaultItem { item in
+//            item.titleLabel.font = .boldSystemFont(ofSize: UIFont.systemFontSize)
+//            item.titleLabel.textColor = .white
+            item.buttonColor = .white
+            item.buttonImageColor = .systemBlue
+
+            item.layer.shadowColor = UIColor.black.cgColor
+            item.layer.shadowOffset = CGSize(width: 0, height: 1)
+            item.layer.shadowOpacity = Float(0.4)
+            item.layer.shadowRadius = CGFloat(2)
+        }
+
     }
     
     @objc func topBtnAction(_ sender: Any){

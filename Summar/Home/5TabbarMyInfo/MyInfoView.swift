@@ -220,7 +220,8 @@ class MyInfoView: UIView{
         }
         
         followerView.snp.makeConstraints { (make) in
-            make.width.height.equalTo(profileImg.snp.width)
+            make.height.equalTo(profileImg.snp.width)
+            make.width.equalTo(60)
             make.right.equalTo(followingView.snp.left).offset(-20)
             make.centerY.equalTo(profileImg.snp.centerY)
         }
@@ -239,7 +240,8 @@ class MyInfoView: UIView{
         }
         
         followingView.snp.makeConstraints { (make) in
-            make.width.height.equalTo(profileImg.snp.width)
+            make.height.equalTo(profileImg.snp.width)
+            make.width.equalTo(60)
             make.right.equalToSuperview()
             make.centerY.equalTo(profileImg.snp.centerY)
         }

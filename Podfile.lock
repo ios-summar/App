@@ -62,6 +62,7 @@ PODS:
     - GTMSessionFetcher/Core (< 3.0, >= 1.5)
   - GTMSessionFetcher/Core (2.0.0)
   - IQKeyboardManagerSwift (6.5.10)
+  - JJFloatingActionButton (2.5.0)
   - KakaoSDKAuth (2.11.3):
     - KakaoSDKCommon (= 2.11.3)
   - KakaoSDKCommon (2.11.3):
@@ -94,6 +95,7 @@ DEPENDENCIES:
   - Firebase/Messaging
   - GoogleSignIn
   - IQKeyboardManagerSwift
+  - JJFloatingActionButton
   - KakaoSDKAuth
   - KakaoSDKUser
   - Kingfisher
@@ -117,6 +119,7 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - IQKeyboardManagerSwift
+    - JJFloatingActionButton
     - KakaoSDKAuth
     - KakaoSDKCommon
     - KakaoSDKUser
@@ -144,6 +147,7 @@ SPEC CHECKSUMS:
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 681175626052e03fdde7952f7e9c7a9785719506
   IQKeyboardManagerSwift: 52962c76ab33532f15ad9f3ff4e5715eda5335bb
+  JJFloatingActionButton: fdc3aefb0f28f04d0f988fa25d5fac97028a9ea7
   KakaoSDKAuth: a64dde90516e18fdfc35b83bbad2677c3675c329
   KakaoSDKCommon: b4235203f67a5b6ee2df75eaf9bbc863c6d92e09
   KakaoSDKUser: 9a42e9b74855ce876b071c841418aa6726534010
@@ -156,6 +160,6 @@ SPEC CHECKSUMS:
   SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
   YPImagePicker: f36043210c10b0783034eb1947d6e06e31c461e4
 
-PODFILE CHECKSUM: 488b80ecdb68871d5b6f129b090fdaa828c3ea0d
+PODFILE CHECKSUM: 2474805bd030374bd1157202acb74428f4b0ac63
 
 COCOAPODS: 1.11.3

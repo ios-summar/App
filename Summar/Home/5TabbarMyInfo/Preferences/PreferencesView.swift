@@ -127,6 +127,7 @@ class PreferencesView: UIView{
         view.register(PreferencesTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         view.separatorStyle = .none
         view.isScrollEnabled = false
+        view.backgroundColor = .white
         return view
     }()
     

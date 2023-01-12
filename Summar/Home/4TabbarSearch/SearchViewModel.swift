@@ -22,7 +22,7 @@ class SearchViewModel{
     
     var searchUserList : SearchUserList? {
         didSet {
-            print("searchUserInfo => \(searchUserList)")
+//            print("searchUserInfo => \(searchUserList)")
             print(#file , #function)
             guard let p = searchUserList else { return }
             self.setupText(with: p)

@@ -17,6 +17,7 @@ target 'Summar' do
    pod 'YPImagePicker' # 이미지 픽커
    pod 'Kingfisher' # 이미지 라이브러리
    pod 'Firebase/Messaging' # 푸시 알림
+   pod 'JJFloatingActionButton' # 플로팅 버튼
    
    
 end

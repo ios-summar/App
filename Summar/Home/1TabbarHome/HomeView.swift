@@ -21,7 +21,11 @@ class HomeView: UIView{
     let Feed3 = Feed()
     let Feed4 = Feed()
     
-    let scrollView = UIScrollView()
+    let scrollView : UIScrollView = {
+        let view = UIScrollView()
+        view.showsVerticalScrollIndicator = false
+        return view
+    }()
     let contentView = UIView()
     
     let view3 = UIView()

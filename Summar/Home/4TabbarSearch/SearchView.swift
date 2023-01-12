@@ -17,8 +17,8 @@ class SearchView: UIView{
     let helper = Helper()
     var model : SearchUserList? = nil {
         didSet {
-            smLog("model.count")
-            print(model?.content?.count)
+            //            smLog("model.count")
+            //            print(model?.content?.count)
         }
     }
     
@@ -70,6 +70,9 @@ class SearchView: UIView{
         return view
     }()
     
+    var nickname : String = ""
+    var displayCount : Int = 0
+    
     var empty : Bool? = nil
     var searchUserList : SearchUserList? = nil
     
@@ -79,15 +82,15 @@ class SearchView: UIView{
         addSubview(view)
         _ = [searchImageView].map {
             view.addSubview($0)
-//            view.layer.borderWidth = 1
-//            $0.layer.borderWidth = 1
+            //            view.layer.borderWidth = 1
+            //            $0.layer.borderWidth = 1
         }
-
+        
         view.snp.makeConstraints{(make) in
             make.top.equalTo(0)
             make.left.bottom.right.equalTo(0)
         }
-
+        
         searchImageView.snp.makeConstraints{(make) in
             make.top.equalTo(self.view.snp.top).offset(50)
             make.width.equalTo(215)
@@ -100,6 +103,7 @@ class SearchView: UIView{
         if (nickname.isEmpty) {
             isEmpty(true, nil)
         }else {
+            self.nickname = nickname
             isEmpty(false, nickname)
         }
     }
@@ -125,15 +129,15 @@ class SearchView: UIView{
             //Network Call
             let viewModel = SearchViewModel(nickname, 0, 30)
             viewModel.searchNickname()
-
+            
             viewModel.didFinishFetch = {
                 self.empty = viewModel.empty
-
+                
                 if self.empty! { //검색결과 없음
                     print("검색결과 없음")
                     self.searchTableView.removeFromSuperview()
                     self.labelView.removeFromSuperview()
-
+                    
                     self.searchImageView.snp.updateConstraints{(make) in
                         make.width.equalTo(231)
                     }
@@ -167,11 +171,11 @@ class SearchView: UIView{
                         make.left.equalTo(self.searchDescriptionLabel.snp.right).offset(5)
                     }
                     
-
+                    
                     // 테이블 set
                     self.searchTableView.dataSource = self
                     self.searchTableView.delegate = self
-
+                    
                     self.view.addSubview(self.searchTableView)
                     self.searchTableView.snp.makeConstraints{(make) in
                         make.top.equalTo(self.labelView.snp.bottom).offset(2)
@@ -197,24 +201,66 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let totalRecordCount = model?.totalRecordCount, let recordsPerPage = model?.recordsPerPage, let currentPageNo = model?.currentPageNo {
-            if totalRecordCount < 30 {
+        if let totalRecordCount = model?.totalRecordCount, let recordsPerPage = model?.recordsPerPage, let currentPageNo = model?.currentPageNo, let totalPageCount = model?.totalPageCount {
+            if totalRecordCount < 30 { // 30개 미만일때는 총 건수만 return
                 return totalRecordCount
-            }else {
-                return recordsPerPage * currentPageNo
+            }else { // 30개 이상일때
+                if currentPageNo != totalPageCount { // 총건수를 30으로 나눴을때 현재페이지 != 마지막페이지
+                    displayCount = 30 * currentPageNo
+                    return displayCount // 30개씩 * 현재페이지 ex) 120건 노출시 30.. 60.. 90.. 120...
+                }else { // 총건수를 30으로 나눴을때 현재페이지 == 마지막페이지
+                    displayCount = (30 * currentPageNo) + (totalRecordCount % 30)
+                    return displayCount // (30개씩 * 현재페이지) + 나머지(총 건수 % 30건)
+                }
             }
         }else {
             return 0
         }
     }
-            
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        print("indexPath.row => ", indexPath.row)
+        print("displayCount =>", displayCount)
+        print("displayCount == (indexPath.row - 1) ", displayCount == (indexPath.row + 1))
+        print("indexPath.row >= 29", indexPath.row >= 29)
+        print("")
+        
+        if let totalRecordCount = model?.totalRecordCount, let recordsPerPage = model?.recordsPerPage, let currentPageNo = model?.currentPageNo, let totalPageCount = model?.totalPageCount {
+            if indexPath.row >= 29 && displayCount == (indexPath.row + 1) {
+                if currentPageNo != totalPageCount { // 총건수를 30으로 나눴을때 현재페이지 != 마지막페이지
+                    //                return recordsPerPage * currentPageNo // 30개씩 * 현재페이지 ex) 120건 노출시 30.. 60.. 90.. 120...
+                    
+                    let viewModel = SearchViewModel(nickname, currentPageNo, 30 * currentPageNo)
+                    viewModel.searchNickname()
+                    
+                    viewModel.didFinishFetch = {
+                        self.model = viewModel.searchUserList
+                        print("model.content!! =>/n \(self.model?.content?.count)")
+                        self.searchTableView.reloadData()
+                    }
+                }else { // 총건수를 30으로 나눴을때 현재페이지 == 마지막페이지
+                    //                return (30 * currentPageNo) + (totalRecordCount % 30) // (30개씩 * 현재페이지) + 나머지(총 건수 % 30건)
+                    
+                    let viewModel = SearchViewModel(nickname, currentPageNo, (30 * currentPageNo) + (totalRecordCount % 30))
+                    viewModel.searchNickname()
+                    
+                    viewModel.didFinishFetch = {
+                        self.model = viewModel.searchUserList
+                        print("model.content@@ =>/n \(self.model?.content?.count)")
+                        self.searchTableView.reloadData()
+                    }
+                }
+            }
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("model.content \(model?.content)")
+//        print("model.content \(model)")
         
         let cell = searchTableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SearchTableViewCell
         
         if let searchUserInfo = model?.content {
-            
+            print("searchUserInfo.count => \(searchUserInfo.count)")
             if searchUserInfo[indexPath.row].profileImageUrl != nil {
                 let url = URL(string: searchUserInfo[indexPath.row].profileImageUrl!)
                 //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
@@ -222,13 +268,13 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
                 DispatchQueue.global().async {
                     let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
                     DispatchQueue.main.async {
-    //                    cell.imageView.image = UIImage(data: data!)
+                        //                    cell.imageView.image = UIImage(data: data!)
                         cell.profileImg.kf.indicatorType = .activity
                         cell.profileImg.kf.setImage(
-                          with: url,
-                          placeholder: nil,
-                          options: [.transition(.fade(1.2))],
-                          completionHandler: nil
+                            with: url,
+                            placeholder: nil,
+                            options: [.transition(.fade(1.2))],
+                            completionHandler: nil
                         )
                     }
                 }
@@ -238,12 +284,12 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
             
             cell.nickName.text = searchUserInfo[indexPath.row].userNickname
             
-//            if searchUserInfo[indexPath.row].introduce != nil {
-                cell.introduceLabel.text = "프론트 백앤드 클라우스 스토리지 등 다양한 분야의 개발 경험을 보유하고 있습니다."
-//                cell.major.text = searchUserInfo[indexPath.row].introduce
-//            }else {
-//                
-//            }
+            //            if searchUserInfo[indexPath.row].introduce != nil {
+            cell.introduceLabel.text = "프론트 백앤드 클라우스 스토리지 등 다양한 분야의 개발 경험을 보유하고 있습니다."
+            //                cell.major.text = searchUserInfo[indexPath.row].introduce
+            //            }else {
+            //
+            //            }
             cell.major.text = searchUserInfo[indexPath.row].major2
             
             cell.followLabel.text = "팔로워 \(searchUserInfo[indexPath.row].follower!.commaRepresentation) · 팔로잉 \(searchUserInfo[indexPath.row].following!.commaRepresentation)"
