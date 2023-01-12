@@ -1,13 +1,13 @@
 //
-//  TabbarMyInfoViewModel.swift
+//  PreferencesViewModel.swift
 //  Summar
 //
-//  Created by ukBook on 2022/12/19.
+//  Created by plsystems on 2023/01/12.
 //
 
 import Foundation
 
-class MyInfoViewModel{
+class PreferencesViewModel{
     private var request = ServerRequest.shared
     
     // MARK: - Properties
@@ -16,7 +16,7 @@ class MyInfoViewModel{
     
     var userInfo: UserInfo? {
         didSet {
-            print("MyInfoViewModel userInfo =>\n \(userInfo)")
+            print("PreferencesViewModel userInfo =>\n \(userInfo)")
             guard let p = userInfo else { return }
             self.setupText(with: p)
             self.didFinishFetch?()
@@ -83,17 +83,6 @@ class MyInfoViewModel{
         }
         if let major2 = userInfo.result.major2 {
             self.major2String = major2
-        }
-        if let follower = userInfo.result.follower {
-            self.followerString = follower.commaRepresentation
-        }
-        if let following = userInfo.result.following {
-            self.followingString = following.commaRepresentation
-        }
-        if let introduce = userInfo.result.introduce {
-            self.introduceString = introduce
-        }else {
-            self.introduceString = "작성된 자기소개가 없습니다. 😥\n자기소개를 작성해 자신을 소개해보세요."
         }
     }
     

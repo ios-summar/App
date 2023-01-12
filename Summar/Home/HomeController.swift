@@ -56,7 +56,7 @@ class HomeController : UITabBarController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        selectedIndex = 0 // 초기 진입
+//        selectedIndex = 0 // 초기 진입
     }
     
     // MARK: - UIBar Create NavigtaionController

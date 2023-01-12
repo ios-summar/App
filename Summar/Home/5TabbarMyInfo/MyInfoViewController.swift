@@ -74,16 +74,19 @@ class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate,
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+//    override func viewDidAppear(_ animated: Bool) {
+//        myInfoView.requestMyInfo()
+//        print(#file , #function)
+//    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         myInfoView.requestMyInfo()
-        print(#file , #function)
     }
     
     @objc func pushViewScreen(_ sender: Any) {
-        guard let userInfo = userInfo else {return}
-        
-        VC.userInfo = userInfo
-        
+//        guard let userInfo = userInfo else {return}
+//
+//        VC.userInfo = userInfo
         self.navigationController?.pushViewController(VC, animated: true)
     }
 }

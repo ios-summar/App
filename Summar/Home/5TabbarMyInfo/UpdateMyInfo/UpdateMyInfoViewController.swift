@@ -12,14 +12,16 @@ import YPImagePicker
 class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
     func openPhoto(completion: @escaping (UIImage?) -> ()) {
         var config = YPImagePickerConfiguration()
-//        config.library.maxNumberOfItems = 10 // 최대 선택 가능한 사진 개수 제한
-        config.library.minNumberOfItems = 1
+        config.library.defaultMultipleSelection = false
         config.library.mediaType = .photo // 미디어타입(사진, 사진/동영상, 동영상)
+        config.library.onlySquare = true
+        config.library.preselectedItems = nil
+        
         config.usesFrontCamera = false
         config.showsPhotoFilters = false
         config.showsVideoTrimmer = false
         config.screens = [.library]
-        config.library.onlySquare = true
+        config.showsCrop = .circle
 //        config.library.skipSelectionsGallery = false
         
         let picker = YPImagePicker(configuration: config)
@@ -75,6 +77,7 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
         // MARK: - 상단 타이틀, 버튼
         self.navigationItem.titleView = lbNavTitle
         self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(popScreen), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
+        self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(myInfoUpdate), uiImage: UIImage(systemName: "checkmark")!, tintColor: .black)
         self.navigationItem.rightBarButtonItem?.tintColor = .black
     }
     
@@ -91,5 +94,9 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
     
     @objc func popScreen(){
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func myInfoUpdate(){
+        smLog("")
     }
 }

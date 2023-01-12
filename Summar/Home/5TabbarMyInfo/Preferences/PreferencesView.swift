@@ -15,6 +15,9 @@ protocol PopDelegate : AnyObject {
 class PreferencesView: UIView{
     weak var pushDelegate : PushDelegate?
     weak var popDelegate : PopDelegate?
+    weak var myInfoDelegate : MyInfoViewDelegate?
+    
+    let viewModel = PreferencesViewModel()
     
     var userInfo : UserInfo? {
         didSet {
@@ -60,19 +63,25 @@ class PreferencesView: UIView{
         return version
     }
     
-    let profileView : UIView = {
+    let view : UIView = {
         let view = UIView()
         view.backgroundColor = .white
         return view
     }()
     
+    let profileview = UIView()
     let profileImg : UIImageView = {
         let view = UIImageView()
-        view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.followShadowColor.cgColor
         view.layer.cornerRadius = 27.5
 //        view.image = UIImage(named: "NonProfile")
         view.tintColor = UIColor.grayColor205
+        view.contentMode = .scaleAspectFit
+        view.clipsToBounds = true
+        return view
+    }()
+    let socialBadge : UIImageView = {
+        let view = UIImageView()
+        view.layer.cornerRadius = 8
         view.contentMode = .scaleAspectFit
         view.clipsToBounds = true
         return view
@@ -127,24 +136,38 @@ class PreferencesView: UIView{
         
         arrayInit() //설정 배열 Init
         
-        _ = [profileView ,tableView].map {
+        _ = [view ,tableView].map {
             addSubview($0)
         }
         
-        _ = [profileImg, nickName, major, logutBtn].map {
-            profileView.addSubview($0)
+        _ = [profileview, nickName, major, logutBtn].map {
+            view.addSubview($0)
         }
         
-        profileView.snp.makeConstraints{(make) in
+        _ = [profileImg, socialBadge].map {
+            profileview.addSubview($0)
+        }
+        
+        view.snp.makeConstraints{(make) in
             make.left.right.equalToSuperview()
             make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(2)
             make.height.equalTo(82)
         }
         
-        profileImg.snp.makeConstraints { (make) in
-            make.centerY.equalToSuperview()
-            make.left.equalTo(profileView).offset(20)
+        profileview.snp.makeConstraints { (make) in
+            make.top.equalTo(20)
+            make.left.equalTo(20)
             make.width.height.equalTo(55)
+        }
+        
+        profileImg.snp.makeConstraints { (make) in
+            make.left.top.equalToSuperview()
+            make.width.height.equalTo(55)
+        }
+        
+        socialBadge.snp.makeConstraints { (make) in
+            make.width.height.equalTo(16)
+            make.right.top.equalToSuperview()
         }
         
         nickName.snp.makeConstraints { (make) in
@@ -159,16 +182,69 @@ class PreferencesView: UIView{
         
         logutBtn.snp.makeConstraints { (make) in
             make.centerY.equalTo(profileImg.snp.centerY)
-            make.right.equalTo(profileView.snp.right).offset(-20)
+            make.right.equalTo(view.snp.right).offset(-20)
             make.width.equalTo(65)
             make.height.equalTo(30)
         }
         
-        
-        
         tableView.snp.makeConstraints{(make) in
             make.left.right.bottom.equalToSuperview()
-            make.top.equalTo(profileView.snp.bottom).offset(16)
+            make.top.equalTo(view.snp.bottom).offset(16)
+        }
+        
+        requestMyInfo()
+    }
+    
+    func requestMyInfo(){
+        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo") {
+            let socialType = value["socialType"] as? String
+            print("socialType", socialType)
+            
+            switch socialType {
+            case "KAKAO":
+                socialBadge.image = UIImage(named: "kakao")
+            case "APPLE":
+                socialBadge.image = UIImage(named: "apple")
+            case "NAVER":
+                socialBadge.image = UIImage(named: "naver")
+            case "GOOGLE":
+                socialBadge.image = UIImage(named: "google")
+            default:
+                print("default")
+            }
+            
+            viewModel.getUserInfo()
+            
+            viewModel.didFinishFetch = {
+                self.userInfo = self.viewModel.userInfo
+                if let profile = self.userInfo?.result.profileImageUrl {
+//                if let profile = self.viewModel.profileImgURLString {
+                    //url에 정확한 이미지 url 주소를 넣는다.
+                    let url = URL(string: profile)
+                    //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
+                    //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
+                    DispatchQueue.global().async {
+                        let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
+                        DispatchQueue.main.async {
+        //                    cell.imageView.image = UIImage(data: data!)
+                            self.profileImg.kf.indicatorType = .activity
+                            self.profileImg.kf.setImage(
+                              with: url,
+                              placeholder: nil,
+                              options: [.transition(.fade(1.2))],
+                              completionHandler: nil
+                            )
+                        }
+                    }
+                }else {
+                    self.profileImg.image = UIImage(named: "NonProfile")
+                }
+                
+                self.nickName.text = self.viewModel.nicknameString
+                self.major.text = self.viewModel.major2String
+            }
+        }else {
+            print(#file , "\(#function) else")
         }
         
     }
@@ -246,6 +322,7 @@ extension PreferencesView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
+            self.myInfoDelegate?.parameter(userInfo)
             self.pushDelegate?.pushScreen(UpdateMyInfoViewController.shared)
             break
         case 1:

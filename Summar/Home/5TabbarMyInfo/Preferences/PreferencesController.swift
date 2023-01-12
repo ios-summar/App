@@ -9,16 +9,24 @@ import Foundation
 import UIKit
 import SnapKit
 
-class PreferencesController: UIViewController, PushDelegate, PopDelegate{
+class PreferencesController: UIViewController, PushDelegate, PopDelegate, MyInfoViewDelegate{
+    func parameter(_ userInfo: UserInfo?) {
+        self.userInfo = userInfo
+    }
+    
     weak var delegate : PopDelegate?
     
     func popScreen() {
-        self.navigationController?.popViewController(animated: true)
+//        self.navigationController?.popViewController(animated: true)
         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(SocialLoginController.shared, animated: true)
     }
     
     func pushScreen(_ VC: UIViewController) {
-        self.navigationController?.pushViewController(VC, animated: true)
+        if VC == UpdateMyInfoViewController.shared {
+            UpdateMyInfoViewController.shared.userInfo = self.userInfo
+            self.navigationController?.pushViewController(VC, animated: true)
+        }
+        
     }
     
     static let shared = PreferencesController()
@@ -55,6 +63,7 @@ class PreferencesController: UIViewController, PushDelegate, PopDelegate{
         super.viewDidLoad()
         preferencesView.pushDelegate = self
         preferencesView.popDelegate = self
+        preferencesView.myInfoDelegate = self
         self.view.backgroundColor = .white
         
         self.navigationItem.titleView = titleLabel
@@ -69,7 +78,7 @@ class PreferencesController: UIViewController, PushDelegate, PopDelegate{
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        preferencesView.userInfo = self.userInfo
+        preferencesView.requestMyInfo()
     }
     
     

@@ -8,7 +8,7 @@
 import Foundation
 
 
-internal func log(_ description: String,
+internal func smLog(_ description: String,
            fileName: String = #file,
            lineNumber: Int = #line,
            functionName: String = #function) {
