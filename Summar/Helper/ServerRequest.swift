@@ -224,6 +224,46 @@ class ServerRequest: NSObject {
         }
     }
     
+    // MARK: - 회원정보수정
+//    func updateUserInfo(_ url: String, completion: @escaping (String?, Error?, Int?) -> ()) {
+//        let url = Server.url + url
+//        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+//            print("url => \(url)")
+//            print(token)
+//            AF.request(url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "",
+//                       method: .get,
+//                       parameters: nil,
+//                       encoding: URLEncoding.default,
+//                       headers: ["Content-Type":"application/json; charset=utf-8", "Accept":"application/json",
+//                                 "Authorization":"Bearer \(token)"])
+//            .validate(statusCode: 200..<300)
+//            .responseJSON { response in
+//                switch response.result {
+//                case .success(let value):
+//                    guard let result = response.data else {return}
+//                    
+//                    print("value => \(value)")
+//                                    
+//                    do {
+//                        let decoder = JSONDecoder()
+//                        let json = try decoder.decode(SearchUserList.self, from: response.data!)
+//
+//                        completion(json, nil, nil)
+//
+//                    } catch {
+//                        print("error! \(error)")
+//                        completion(nil, error, nil)
+//                    }
+//                case .failure(let error):
+//                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+//                    
+//                    var statusCode = response.response?.statusCode
+//                    completion(nil, error, statusCode)
+//                }
+//            }
+//        }
+//    }
+    
     // MARK: - AccessToken 재발급
     func requestAccessToken(_ url: String, completion: @escaping (AccessToken?, Error?) -> ()) {
         let url = Server.url + url

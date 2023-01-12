@@ -45,6 +45,7 @@
 		04D4B0F1295D83A600AD5043 /* SearchUserList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D4B0F0295D83A600AD5043 /* SearchUserList.swift */; };
 		04FB196929122B5C00E9EE54 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FB196829122B5C00E9EE54 /* HomeController.swift */; };
 		2B5C562E6CBEBB8E11548D9E /* Pods_Summar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6C870EAD7B74B07013D36DF /* Pods_Summar.framework */; };
+		5E4491B4296FF33D0048042D /* UpdateMyInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4491B3296FF33D0048042D /* UpdateMyInfoViewModel.swift */; };
 		5EB4F5F1296E94FF0061D64D /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB4F5F0296E94FF0061D64D /* PaddingLabel.swift */; };
 		5EB4F5F3296EAFFF0061D64D /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB4F5F2296EAFFF0061D64D /* LogHelper.swift */; };
 		5EB4F5F7296F898F0061D64D /* PreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB4F5F6296F898F0061D64D /* PreferencesViewModel.swift */; };
@@ -107,6 +108,7 @@
 		04D4B0F0295D83A600AD5043 /* SearchUserList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserList.swift; sourceTree = "<group>"; };
 		04FB196829122B5C00E9EE54 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		260C6A549CBD9152D4874D79 /* Pods-Summar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Summar.release.xcconfig"; path = "Target Support Files/Pods-Summar/Pods-Summar.release.xcconfig"; sourceTree = "<group>"; };
+		5E4491B3296FF33D0048042D /* UpdateMyInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateMyInfoViewModel.swift; sourceTree = "<group>"; };
 		5EB4F5F0296E94FF0061D64D /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		5EB4F5F2296EAFFF0061D64D /* LogHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogHelper.swift; sourceTree = "<group>"; };
 		5EB4F5F6296F898F0061D64D /* PreferencesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				04804541296D2FAE00D02A30 /* UpdateMyInfoViewController.swift */,
+				5E4491B3296FF33D0048042D /* UpdateMyInfoViewModel.swift */,
 				04804543296D2FB900D02A30 /* UpdateMyInfoView.swift */,
 			);
 			path = UpdateMyInfo;
@@ -561,6 +564,7 @@
 				04D4B0E6295D6C9F00AD5043 /* DotFirstCollectionViewCell.swift in Sources */,
 				04904BDC290A5D96004ED5ED /* SignUp3View.swift in Sources */,
 				048EAA822965490C004E4A08 /* PreferencesController.swift in Sources */,
+				5E4491B4296FF33D0048042D /* UpdateMyInfoViewModel.swift in Sources */,
 				04967FA6294C3BF300CAF5CF /* MyInfoView.swift in Sources */,
 				04852F9028FE72AF00A3EED9 /* SocialLoginController.swift in Sources */,
 				A2ECB36529448CD10005D88C /* HomeViewController.swift in Sources */,

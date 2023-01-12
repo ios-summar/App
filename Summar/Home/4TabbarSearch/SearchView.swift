@@ -15,7 +15,12 @@ class SearchView: UIView{
     
     let cellReuseIdentifier = "SearchTableViewCell"
     let helper = Helper()
-    var model : SearchUserList? = nil
+    var model : SearchUserList? = nil {
+        didSet {
+            smLog("model.count")
+            print(model?.content?.count)
+        }
+    }
     
     
     let view : UIView = {

@@ -34,6 +34,10 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
     
     var majorDetailIndex : Int = 0
     
+    var nicknameValid : Bool = false
+    var nicknameValidReason : String? = nil
+    var majorValid : Bool = false
+    
     let textViewPlaceHolder = "자기소개는 2,000자 이내로 입력 가능합니다."
     
     let majorPickerView : UIPickerView = {
@@ -60,13 +64,13 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
                 DispatchQueue.global().async {
                     let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
                     DispatchQueue.main.async {
-    //                    cell.imageView.image = UIImage(data: data!)
+                        //                    cell.imageView.image = UIImage(data: data!)
                         self.profileImageView.kf.indicatorType = .activity
                         self.profileImageView.kf.setImage(
-                          with: url,
-                          placeholder: nil,
-                          options: [.transition(.fade(1.2))],
-                          completionHandler: nil
+                            with: url,
+                            placeholder: nil,
+                            options: [.transition(.fade(1.2))],
+                            completionHandler: nil
                         )
                     }
                 }
@@ -90,13 +94,15 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
             if let introduce = userInfo?.result.introduce {
                 view2TextView.text = introduce
             }
+            
+            enableNickname(false)
         }
     }
     
     lazy var profileImageView : UIImageView = {
         let view = UIImageView()
         view.layer.borderWidth = 1
-        view.layer.cornerRadius = 30
+        view.layer.cornerRadius = 40
         view.clipsToBounds = true
         
         
@@ -120,6 +126,7 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
         nickNameTextField.font = .systemFont(ofSize: 15)
         nickNameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         nickNameTextField.textColor = .black
+        nickNameTextField.tag = 1
         return nickNameTextField
     }()
     
@@ -129,6 +136,7 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
         btn.setTitle("중복확인", for: .normal)
         btn.isEnabled = false
         btn.backgroundColor = .grayColor205
+        btn.addTarget(self, action: #selector(TESTFUNC), for: .touchUpInside)
         return btn
     }()
     
@@ -263,50 +271,69 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
             textField.deleteBackward()
         }
         
-//        if textField.text?.count ?? 0 >= 1 {
-//            if helper.checkNickNamePolicy(text: textField.text!) { // 한글, 영어, 숫자임
-//                // GET방식으로 닉네임 중복체크
-////                requestGETBOOL(requestUrl: "/user/nickname-check?userNickname=\(textField.text!)")
-//                request.nicknameCheck(requestUrl: "/user/nickname-check?userNickname=\(textField.text!)") { TF, error in
-//                    guard let TF = TF else { return }
-//
-//                    if TF {
-//                        self.enableNickname(enable: false, content: "중복된 닉네임입니다.")
-//                    }else{
-//                        self.enableNickname(enable: true, content: "사용 가능한 닉네임입니다.")
-//                    }
-//                }
-//            }else { // 한글, 영어, 숫자가 아님.
-//                enableNickname(enable: false, content: "닉네임은 한글, 영어, 숫자만 사용 가능합니다.")
-//            }
-//        }else {
-//            if textField.text?.count ?? 0 == 0 {
-//                enableNickname(enable: false, content: nil)
-//            }else {
-//                enableNickname(enable: false, content: "닉네임을 두글자 이상 입력해주세요.")
-//            }
-//        }
+        if textField.tag == 1 {
+            if let nickName = textField.text {
+                
+                if nickName == userInfo?.result.userNickname || nickName.isEmpty{ // 기존 닉네임하고 동일
+                    smLog("기존 닉네임하고 동일 || 길이 0")
+                    enableNickname(false)
+                    nicknameValidReason = nil
+                    nicknameValid = false
+                }else if nickName.count < 2 {
+                    smLog("닉네임 글자수 미달")
+                    enableNickname(true)
+                    nicknameValidReason = "닉네임을 두글자 이상 입력해주세요."
+                    nicknameValid = false
+                }else {
+                    enableNickname(true)
+                    if !helper.checkNickNamePolicy(text: nickName) {
+                        smLog("정규식 fail")
+                        nicknameValidReason = "닉네임은 한글, 영어, 숫자만 사용 가능합니다."
+                        nicknameValid = false
+                    }else {
+                        request.nicknameCheck(requestUrl: "/user/nickname-check?userNickname=\(nickName)") { TF, error in
+                            guard let TF = TF else { return }
+                            if TF { // 중복
+                                self.nicknameValidReason = "중복된 닉네임입니다."
+                                smLog("false")
+                            }else{ // 중복X
+                                self.nicknameValidReason = nil
+                                smLog("true")
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     
-//    func enableNickname(enable: Bool, content: String?){
-//        if enable {
-//            self.sendBtnEnable(true)
-//            nickNameEnableLabel.text = content
-//            nickNameEnableLabel.textColor = .systemGreen
-//            nickNameTextField.layer.borderColor = UIColor.systemGreen.cgColor
-//        }else {
-//            self.sendBtnEnable(false)
-//            if content != nil {
-//                nickNameEnableLabel.text = content
-//                nickNameEnableLabel.textColor = .systemRed
-//                nickNameTextField.layer.borderColor = UIColor.systemRed.cgColor
-//            }else {
-//                nickNameEnableLabel.text = ""
-//                nickNameEnableLabel.textColor = .white
-//                nickNameTextField.layer.borderColor = UIColor.white.cgColor
-//            }
-//        }
-//    }
+    func enableNickname(_ enable: Bool){
+        if enable {
+            nicknameCheckBtn.backgroundColor = .systemBlue
+            nicknameCheckBtn.isEnabled = true
+        }else {
+            nicknameCheckBtn.backgroundColor = .gray
+            nicknameCheckBtn.isEnabled = false
+        }
+    }
+    
+    // MARK: - 중복확인 Action
+    @objc func duplicateNickname(){
+        // 중복확인 성공
+        guard let reason = nicknameValidReason else {
+            helper.showAlert(vc: self, message: "사용 가능한 닉네임입니다.")
+            nicknameValid = true
+            return
+        }
+        
+        // 중복확인 실패
+        helper.showAlert(vc: self, message: reason)
+        nicknameValid = false
+    }
+    
+    @objc func TESTFUNC(){
+        
+    }
     
     func pickerViewInit() {
         majorPickerView.delegate = self
@@ -343,7 +370,7 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
         
         majorTextField.inputView = majorDetailPickerView // 피커뷰 추가
         majorTextField.inputAccessoryView = pickerToolbar1 // 피커뷰 툴바 추가
-//
+        //
     }
     
     // 피커뷰 > 확인 클릭
@@ -356,50 +383,50 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
     // 피커뷰 > 취소 클릭
     @objc func onPickCancel() {
         editMajor.resignFirstResponder() // 피커뷰를 내림 (텍스트필드가 responder 상태를 읽음)
-//        selectMajor1 = ""
+        //        selectMajor1 = ""
     }
     
     @objc func onPickDone1() {
         majorTextField.text = selectMajor2
         majorTextField.resignFirstResponder()
-//        selectMajor2 = ""
+        //        selectMajor2 = ""
         
-//        if editMajor.text?.isEmpty ?? true || majorTextField.text?.isEmpty ?? true{
-//            self.sendBtnEnable(false)
-//        }else {
-//            self.sendBtnEnable(true)
-//        }
+        //        if editMajor.text?.isEmpty ?? true || majorTextField.text?.isEmpty ?? true{
+        //            self.sendBtnEnable(false)
+        //        }else {
+        //            self.sendBtnEnable(true)
+        //        }
     }
     
     // 피커뷰 > 취소 클릭
     @objc func onPickCancel1() {
         majorTextField.resignFirstResponder() // 피커뷰를 내림 (텍스트필드가 responder 상태를 읽음)
-//        selectMajor2 = ""
+        //        selectMajor2 = ""
     }
     
     @objc func editingDidBegin(_ sender: Any){
         switch (sender as? UITextField)?.tag {
-            case 0:
-                editMajor.layer.borderWidth = 1
-                editMajor.layer.borderColor = UIColor.systemBlue.cgColor
-            case 1:
-                majorTextField.layer.borderWidth = 1
-                majorTextField.layer.borderColor = UIColor.systemBlue.cgColor
-            default:
-                print("default")
+        case 0:
+            editMajor.layer.borderWidth = 1
+            editMajor.layer.borderColor = UIColor.systemBlue.cgColor
+        case 1:
+            majorTextField.layer.borderWidth = 1
+            majorTextField.layer.borderColor = UIColor.systemBlue.cgColor
+        default:
+            print("default")
         }
     }
     
     @objc func editingDidEnd(_ sender: Any){
         switch (sender as? UITextField)?.tag {
-            case 0:
-                editMajor.layer.borderWidth = 1
-                editMajor.layer.borderColor = UIColor.white.cgColor
-            case 1:
-                majorTextField.layer.borderWidth = 1
-                majorTextField.layer.borderColor = UIColor.white.cgColor
-            default:
-                print("default")
+        case 0:
+            editMajor.layer.borderWidth = 1
+            editMajor.layer.borderColor = UIColor.white.cgColor
+        case 1:
+            majorTextField.layer.borderWidth = 1
+            majorTextField.layer.borderColor = UIColor.white.cgColor
+        default:
+            print("default")
         }
     }
     
@@ -424,97 +451,97 @@ extension UpdateMyInfoView : UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         switch pickerView.tag {
-            case 0:
-                return pickerData.count
-            case 1:
-                return majorDetailIndex
-            default:
-                return 0
+        case 0:
+            return pickerData.count
+        case 1:
+            return majorDetailIndex
+        default:
+            return 0
         }
     }
     
     // 피커뷰에 보여줄 값 전달
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch pickerView.tag {
-            case 0:
-                return pickerData[row]
+        case 0:
+            return pickerData[row]
             
-            case 1:
-                switch selectMajor1 {
-                    case "인문계열":
-                        return majorName1[row]
-                    case "사회계열":
-                        return majorName2[row]
-                    case "교육계열":
-                        return majorName3[row]
-                    case "공학계열":
-                        return majorName4[row]
-                    case "자연계열":
-                        return majorName5[row]
-                    case "의약계열":
-                        return majorName6[row]
-                    case "예체능계열":
-                        return majorName7[row]
-                    default:
-                        print("default")
-                    return "0"
-                }
-            
+        case 1:
+            switch selectMajor1 {
+            case "인문계열":
+                return majorName1[row]
+            case "사회계열":
+                return majorName2[row]
+            case "교육계열":
+                return majorName3[row]
+            case "공학계열":
+                return majorName4[row]
+            case "자연계열":
+                return majorName5[row]
+            case "의약계열":
+                return majorName6[row]
+            case "예체능계열":
+                return majorName7[row]
             default:
+                print("default")
                 return "0"
+            }
+            
+        default:
+            return "0"
         }
     }
     
     // 피커뷰에서 선택시 호출
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         switch pickerView.tag {
-            case 0:
+        case 0:
             selectMajor1 = pickerData[row]
             
-                switch row {
-                    case 0 :
-                        majorDetailIndex = 0
-                    case 1:
-                        majorDetailIndex = majorName1.count
-                    case 2:
-                        majorDetailIndex = majorName2.count
-                    case 3:
-                        majorDetailIndex = majorName3.count
-                    case 4:
-                        majorDetailIndex = majorName4.count
-                    case 5:
-                        majorDetailIndex = majorName5.count
-                    case 6:
-                        majorDetailIndex = majorName6.count
-                    case 7:
-                        majorDetailIndex = majorName7.count
-                    default:
-                        print("default")
-                }
+            switch row {
+            case 0 :
+                majorDetailIndex = 0
+            case 1:
+                majorDetailIndex = majorName1.count
+            case 2:
+                majorDetailIndex = majorName2.count
+            case 3:
+                majorDetailIndex = majorName3.count
+            case 4:
+                majorDetailIndex = majorName4.count
+            case 5:
+                majorDetailIndex = majorName5.count
+            case 6:
+                majorDetailIndex = majorName6.count
+            case 7:
+                majorDetailIndex = majorName7.count
+            default:
+                print("default")
+            }
             
             majorDetailPickerView.delegate = self
             majorDetailPickerView.dataSource = self
-            case 1:
-                switch selectMajor1 {
-                    case "인문계열":
-                        selectMajor2 = majorName1[row]
-                    case "사회계열":
-                        selectMajor2 = majorName2[row]
-                    case "교육계열":
-                        selectMajor2 = majorName3[row]
-                    case "공학계열":
-                        selectMajor2 = majorName4[row]
-                    case "자연계열":
-                        selectMajor2 = majorName5[row]
-                    case "의약계열":
-                        selectMajor2 = majorName6[row]
-                    case "예체능계열":
-                        selectMajor2 = majorName7[row]
-                    default:
-                        print("default")
-                }
+        case 1:
+            switch selectMajor1 {
+            case "인문계열":
+                selectMajor2 = majorName1[row]
+            case "사회계열":
+                selectMajor2 = majorName2[row]
+            case "교육계열":
+                selectMajor2 = majorName3[row]
+            case "공학계열":
+                selectMajor2 = majorName4[row]
+            case "자연계열":
+                selectMajor2 = majorName5[row]
+            case "의약계열":
+                selectMajor2 = majorName6[row]
+            case "예체능계열":
+                selectMajor2 = majorName7[row]
             default:
                 print("default")
+            }
+        default:
+            print("default")
         }
     }
 }

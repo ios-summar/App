@@ -77,7 +77,8 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
         // MARK: - 상단 타이틀, 버튼
         self.navigationItem.titleView = lbNavTitle
         self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(popScreen), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
-        self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(myInfoUpdate), uiImage: UIImage(systemName: "checkmark")!, tintColor: .black)
+        self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(myInfoUpdate), uiImage: UIImage(systemName: "checkmark")!, tintColor: .summarColor1)
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
         self.navigationItem.rightBarButtonItem?.tintColor = .black
     }
     
@@ -98,5 +99,14 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
     
     @objc func myInfoUpdate(){
         smLog("")
+        
+        
+        guard let nicknameValid = updateMyInfoView.nicknameValidReason else {
+            
+            if !updateMyInfoView.majorTextField.text!.isEmpty && !updateMyInfoView.editMajor.text!.isEmpty {
+                print("회원정보 완료")
+            }
+            return
+        }
     }
 }
