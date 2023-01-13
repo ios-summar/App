@@ -71,8 +71,9 @@ class SearchView: UIView{
     
     lazy var searchTableView : UITableView = {
         let view = UITableView()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.searchGray
         view.register(SearchTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+        view.separatorStyle = .none
         return view
     }()
     
@@ -205,7 +206,7 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 136
+        return 160
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -289,6 +290,12 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
             return cell
         }else {
             return UITableViewCell()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let searchUserInfo = model?.content {
+            print(searchUserInfo[indexPath.row])
         }
     }
 }
