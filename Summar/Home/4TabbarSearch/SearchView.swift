@@ -71,7 +71,7 @@ class SearchView: UIView{
     
     lazy var searchTableView : UITableView = {
         let view = UITableView()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.searchGray
         view.register(SearchTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         return view
     }()

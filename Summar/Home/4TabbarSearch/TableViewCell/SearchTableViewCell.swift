@@ -115,5 +115,20 @@ class SearchTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        print(#file , #function)
+        
+        print("!contentView.frame \(contentView.frame)")
+        print("!contentView \(contentView)")
+        
+//        contentView.backgroundColor = .white
+        
+        
+        // table view margin
+          contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
+        print("!contentView.frame \(contentView.frame)")
+    }
 
 }
