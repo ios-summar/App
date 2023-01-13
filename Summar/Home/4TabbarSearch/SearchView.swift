@@ -22,6 +22,12 @@ class SearchView: UIView{
         }
     }
     
+    var searchUserInfoList : [SearchUserInfo]? {
+        didSet {
+            print("searchUserList.count \(searchUserInfoList?.count)")
+        }
+    }
+    
     
     let view : UIView = {
         let view = UIView()
@@ -72,9 +78,9 @@ class SearchView: UIView{
     
     var nickname : String = ""
     var displayCount : Int = 0
+    var pageIndex : Int = 1
     
     var empty : Bool? = nil
-    var searchUserList : SearchUserList? = nil
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -141,10 +147,13 @@ class SearchView: UIView{
                     self.searchImageView.snp.updateConstraints{(make) in
                         make.width.equalTo(231)
                     }
-                    self.view.backgroundColor = .white
                     self.searchImageView.image = UIImage(named: "NoSearch")
                 }else {
                     print("검색결과 있음")
+                    // 재검색을 위한 초기화
+                    self.displayCount = 0
+                    self.pageIndex = 1
+                    
                     self.view.backgroundColor = UIColor.searchGray
                     
                     self.model = viewModel.searchUserList
@@ -170,7 +179,6 @@ class SearchView: UIView{
                         make.centerY.equalToSuperview()
                         make.left.equalTo(self.searchDescriptionLabel.snp.right).offset(5)
                     }
-                    
                     
                     // 테이블 set
                     self.searchTableView.dataSource = self
@@ -206,10 +214,10 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
                 return totalRecordCount
             }else { // 30개 이상일때
                 if currentPageNo != totalPageCount { // 총건수를 30으로 나눴을때 현재페이지 != 마지막페이지
-                    displayCount = 30 * currentPageNo
+                    displayCount = 30 * pageIndex
                     return displayCount // 30개씩 * 현재페이지 ex) 120건 노출시 30.. 60.. 90.. 120...
                 }else { // 총건수를 30으로 나눴을때 현재페이지 == 마지막페이지
-                    displayCount = (30 * currentPageNo) + (totalRecordCount % 30)
+                    displayCount = (30 * (pageIndex - 1)) + (totalRecordCount % 30)
                     return displayCount // (30개씩 * 현재페이지) + 나머지(총 건수 % 30건)
                 }
             }
@@ -219,37 +227,22 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        print("indexPath.row => ", indexPath.row)
-        print("displayCount =>", displayCount)
-        print("displayCount == (indexPath.row - 1) ", displayCount == (indexPath.row + 1))
-        print("indexPath.row >= 29", indexPath.row >= 29)
+        print("indexPath.row => ", indexPath.row + 1)
+        print("displayCount => ", displayCount)
+        print("pageIndex => ", pageIndex)
         print("")
         
         if let totalRecordCount = model?.totalRecordCount, let recordsPerPage = model?.recordsPerPage, let currentPageNo = model?.currentPageNo, let totalPageCount = model?.totalPageCount {
-            if indexPath.row >= 29 && displayCount == (indexPath.row + 1) {
-                if currentPageNo != totalPageCount { // 총건수를 30으로 나눴을때 현재페이지 != 마지막페이지
-                    //                return recordsPerPage * currentPageNo // 30개씩 * 현재페이지 ex) 120건 노출시 30.. 60.. 90.. 120...
-                    
-                    let viewModel = SearchViewModel(nickname, currentPageNo, 30 * currentPageNo)
-                    viewModel.searchNickname()
-                    
-                    viewModel.didFinishFetch = {
-                        self.model = viewModel.searchUserList
-                        print("model.content!! =>/n \(self.model?.content?.count)")
-                        self.searchTableView.reloadData()
-                    }
-                }else { // 총건수를 30으로 나눴을때 현재페이지 == 마지막페이지
-                    //                return (30 * currentPageNo) + (totalRecordCount % 30) // (30개씩 * 현재페이지) + 나머지(총 건수 % 30건)
-                    
-                    let viewModel = SearchViewModel(nickname, currentPageNo, (30 * currentPageNo) + (totalRecordCount % 30))
-                    viewModel.searchNickname()
-                    
-                    viewModel.didFinishFetch = {
-                        self.model = viewModel.searchUserList
-                        print("model.content@@ =>/n \(self.model?.content?.count)")
-                        self.searchTableView.reloadData()
-                    }
+            if pageIndex * 30 == indexPath.row + 1 {
+                self.pageIndex += 1
+                let viewModel = SearchViewModel(nickname, 0, (30 * pageIndex))
+                viewModel.searchNickname()
+
+                viewModel.didFinishFetch = {
+                    self.model = viewModel.searchUserList
+                    self.searchTableView.reloadData()
                 }
+                
             }
         }
     }

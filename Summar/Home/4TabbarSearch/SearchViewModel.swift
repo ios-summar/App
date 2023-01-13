@@ -18,6 +18,8 @@ class SearchViewModel{
         self.nickname = nickname
         self.pageIndex = pageIndex
         self.size = size
+        
+        print("nickname : \(nickname), pageIndex : \(pageIndex), size : \(size) ")
     }
     
     var searchUserList : SearchUserList? {

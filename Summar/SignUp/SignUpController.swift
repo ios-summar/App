@@ -83,6 +83,8 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate{
         self.signUp1View.removeFromSuperview()
         self.signUp2View.removeFromSuperview()
         self.signUp3View.removeFromSuperview()
+        
+        self.progressBar.progress = 0.3
     }
     
     // MARK: - 레이아웃 init
