@@ -86,13 +86,13 @@ class PushSettingView: UIView {
         
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints{
-            $0.bottom.equalTo(uiSwitch.snp.centerY).offset(-5)
+            $0.bottom.equalTo(uiSwitch.snp.centerY).offset(-2)
             $0.left.equalTo(20)
         }
         
         view.addSubview(conentLabel)
         conentLabel.snp.makeConstraints{
-            $0.top.equalTo(uiSwitch.snp.centerY).offset(5)
+            $0.top.equalTo(uiSwitch.snp.centerY).offset(2)
             $0.left.equalTo(20)
         }
     }
