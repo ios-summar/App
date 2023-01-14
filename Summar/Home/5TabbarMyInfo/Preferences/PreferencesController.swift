@@ -25,6 +25,8 @@ class PreferencesController: UIViewController, PushDelegate, PopDelegate, MyInfo
         if VC == UpdateMyInfoViewController.shared {
             UpdateMyInfoViewController.shared.userInfo = self.userInfo
             self.navigationController?.pushViewController(VC, animated: true)
+        }else if VC == PushSettingViewController.shared {
+            self.navigationController?.pushViewController(PushSettingViewController.shared, animated: true)
         }
         
     }

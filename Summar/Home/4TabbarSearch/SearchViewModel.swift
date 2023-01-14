@@ -63,7 +63,7 @@ class SearchViewModel{
             //error만 있을경우 서버오류
             //error,status != nil 경우 토큰 재발급
             if let error = error, let status = status {
-                print("getUserInfo() iflet error")
+                print("searchNickname() iflet error")
                 self.request.reloadToken(status)
                 self.searchNickname()
             }else if let error = error {

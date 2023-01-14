@@ -19,11 +19,11 @@ class NaverLoginManager: NSObject{
     let socialType = "NAVER"
     var requestDic : Dictionary<String, String> = Dictionary<String, String>()
     
-    override init() {
-        super.init()
-        print("naver init()")
-        naverLoginInstance?.requestDeleteToken()
-    }
+//    override init() {
+//        super.init()
+//        print("naver init()")
+//        naverLoginInstance?.requestDeleteToken()
+//    }
     
     func naverLogin() {
         naverLoginInstance?.delegate = self

@@ -251,7 +251,7 @@ class PreferencesView: UIView{
     }
     
     func arrayInit(){
-        _ = ["프로필 편집", "푸시 알림", "공지사항", "자주 묻는 질문", "버전 정보"].map {
+        _ = ["프로필 편집", "알림설정", "공지사항", "자주 묻는 질문", "버전 정보"].map {
             preferencesArray.append($0)
         }
         
@@ -328,7 +328,8 @@ extension PreferencesView: UITableViewDelegate, UITableViewDataSource {
             break
         case 1:
             print("1")
-//            self.pushDelegate?.pushScreen(<#T##UIViewController#>)
+            self.myInfoDelegate?.parameter(userInfo)
+            self.pushDelegate?.pushScreen(PushSettingViewController.shared)
             break
         case 2:
             print("2")
