@@ -304,6 +304,46 @@ class ServerRequest: NSObject {
         }
     }
     
+//    /api/v1/setting?status=notice => 공지사항 관련 정보
+//    /api/v1/setting?status=question=> 자주 묻는 질문 관련정보
+    
+    // MARK: - 환경설정, 공지사항 DB Select /setting?status=notice
+    func notice(_ url: String, completion: @escaping (Notice?, Error?, Int?) -> ()) {
+        let url = Server.url + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.request(url,
+                       method: .get,
+                       parameters: param,
+                       encoding: URLEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json",
+                                 "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    guard let result = response.data else {return}
+                                    
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(Notice.self, from: result)
+                        
+                        completion(json, nil, nil)
+                    } catch {
+                        print("error! \(error)")
+                        completion(nil, error, nil)
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    completion(nil, error, statusCode)
+                }
+            }
+        }
+    }
+    
     // MARK: - 회원정보수정
 //    func updateUserInfo(_ url: String, completion: @escaping (String?, Error?, Int?) -> ()) {
 //        let url = Server.url + url

@@ -24,9 +24,11 @@ class PreferencesController: UIViewController, PushDelegate, PopDelegate, MyInfo
     func pushScreen(_ VC: UIViewController) {
         if VC == UpdateMyInfoViewController.shared {
             UpdateMyInfoViewController.shared.userInfo = self.userInfo
-            self.navigationController?.pushViewController(VC, animated: true)
+            self.navigationController?.pushViewController(UpdateMyInfoViewController.shared, animated: true)
         }else if VC == PushSettingViewController.shared {
             self.navigationController?.pushViewController(PushSettingViewController.shared, animated: true)
+        }else if VC == NoticeController.shared {
+            self.navigationController?.pushViewController(NoticeController.shared, animated: true)
         }
         
     }
@@ -54,8 +56,6 @@ class PreferencesController: UIViewController, PushDelegate, PopDelegate, MyInfo
         arrowBackWard.setImage(UIImage(systemName: "arrow.backward"), for: .normal) // ios 14.0
         arrowBackWard.tintColor = .black
         arrowBackWard.imageView?.contentMode = .scaleToFill
-//        xmark.imageEdgeInsets = UIEdgeInsets(top: 32, left: 33, bottom: 33, right: 33)
-//        arrowBackWard.addTarget(self, action: #selector(topBtnAction(_:)), for: .touchUpInside)
         arrowBackWard.tag = 1
         return arrowBackWard
     }()
@@ -66,13 +66,12 @@ class PreferencesController: UIViewController, PushDelegate, PopDelegate, MyInfo
         preferencesView.pushDelegate = self
         preferencesView.popDelegate = self
         preferencesView.myInfoDelegate = self
-        self.view.backgroundColor = .white
         
+        self.view.backgroundColor = .white
         self.navigationItem.titleView = titleLabel
         self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(topBtnAction(_:)), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
         
         self.view.addSubview(preferencesView)
-        
         preferencesView.snp.makeConstraints{(make) in
             make.left.right.bottom.equalTo(0)
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)

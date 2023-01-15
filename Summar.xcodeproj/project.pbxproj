@@ -66,6 +66,12 @@
 		A2D27B7929728FC2002CF652 /* PushSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D27B7829728FC2002CF652 /* PushSettingViewModel.swift */; };
 		A2D27B7B2972930B002CF652 /* PushInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D27B7A2972930B002CF652 /* PushInfo.swift */; };
 		A2D27B7D29729B30002CF652 /* PushInfoChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D27B7C29729B30002CF652 /* PushInfoChange.swift */; };
+		A2D27B802972F7EF002CF652 /* NoticeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D27B7F2972F7EF002CF652 /* NoticeController.swift */; };
+		A2D27B822972FD7E002CF652 /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D27B812972FD7E002CF652 /* NoticeView.swift */; };
+		A2D27B8429741024002CF652 /* NoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D27B8329741024002CF652 /* NoticeViewModel.swift */; };
+		A2D27B862974144D002CF652 /* Notice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D27B852974144D002CF652 /* Notice.swift */; };
+		A2D27B8929741D37002CF652 /* NoticeContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D27B8829741D37002CF652 /* NoticeContentTableViewCell.swift */; };
+		A2D27B8B2974298D002CF652 /* NoticeTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D27B8A2974298D002CF652 /* NoticeTitleTableViewCell.swift */; };
 		A2ECB35C2940C5940005D88C /* SignUp3Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ECB35B2940C5940005D88C /* SignUp3Controller.swift */; };
 		A2ECB36529448CD10005D88C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ECB36429448CD10005D88C /* HomeViewController.swift */; };
 		A2ECB36729448E870005D88C /* ClippingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ECB36629448E870005D88C /* ClippingViewController.swift */; };
@@ -137,6 +143,12 @@
 		A2D27B7829728FC2002CF652 /* PushSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushSettingViewModel.swift; sourceTree = "<group>"; };
 		A2D27B7A2972930B002CF652 /* PushInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushInfo.swift; sourceTree = "<group>"; };
 		A2D27B7C29729B30002CF652 /* PushInfoChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushInfoChange.swift; sourceTree = "<group>"; };
+		A2D27B7F2972F7EF002CF652 /* NoticeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeController.swift; sourceTree = "<group>"; };
+		A2D27B812972FD7E002CF652 /* NoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
+		A2D27B8329741024002CF652 /* NoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewModel.swift; sourceTree = "<group>"; };
+		A2D27B852974144D002CF652 /* Notice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notice.swift; sourceTree = "<group>"; };
+		A2D27B8829741D37002CF652 /* NoticeContentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeContentTableViewCell.swift; sourceTree = "<group>"; };
+		A2D27B8A2974298D002CF652 /* NoticeTitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeTitleTableViewCell.swift; sourceTree = "<group>"; };
 		A2ECB35B2940C5940005D88C /* SignUp3Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp3Controller.swift; sourceTree = "<group>"; };
 		A2ECB36429448CD10005D88C /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		A2ECB36629448E870005D88C /* ClippingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClippingViewController.swift; sourceTree = "<group>"; };
@@ -214,6 +226,8 @@
 			children = (
 				04804540296D2F9900D02A30 /* 1UpdateMyInfo */,
 				A2D27B702971C934002CF652 /* 2PushSetting */,
+				A2D27B7E2972F7D9002CF652 /* 3Notice */,
+				A2D27B8C29743A78002CF652 /* 4FAQ */,
 				048EAA85296556EC004E4A08 /* TableViewCell */,
 				048EAA812965490C004E4A08 /* PreferencesController.swift */,
 				5EB4F5F6296F898F0061D64D /* PreferencesViewModel.swift */,
@@ -367,6 +381,34 @@
 				A2D27B7C29729B30002CF652 /* PushInfoChange.swift */,
 			);
 			path = 2PushSetting;
+			sourceTree = "<group>";
+		};
+		A2D27B7E2972F7D9002CF652 /* 3Notice */ = {
+			isa = PBXGroup;
+			children = (
+				A2D27B8729741D32002CF652 /* TableViewCell */,
+				A2D27B7F2972F7EF002CF652 /* NoticeController.swift */,
+				A2D27B812972FD7E002CF652 /* NoticeView.swift */,
+				A2D27B8329741024002CF652 /* NoticeViewModel.swift */,
+				A2D27B852974144D002CF652 /* Notice.swift */,
+			);
+			path = 3Notice;
+			sourceTree = "<group>";
+		};
+		A2D27B8729741D32002CF652 /* TableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				A2D27B8829741D37002CF652 /* NoticeContentTableViewCell.swift */,
+				A2D27B8A2974298D002CF652 /* NoticeTitleTableViewCell.swift */,
+			);
+			path = TableViewCell;
+			sourceTree = "<group>";
+		};
+		A2D27B8C29743A78002CF652 /* 4FAQ */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = 4FAQ;
 			sourceTree = "<group>";
 		};
 		A2ECB35E29448C2E0005D88C /* 1TabbarHome */ = {
@@ -551,6 +593,7 @@
 				5EB4F5F7296F898F0061D64D /* PreferencesViewModel.swift in Sources */,
 				04D4B0F1295D83A600AD5043 /* SearchUserList.swift in Sources */,
 				041EEEA02954362D006263C7 /* WrtieFeedView.swift in Sources */,
+				A2D27B862974144D002CF652 /* Notice.swift in Sources */,
 				5EB4F5F3296EAFFF0061D64D /* LogHelper.swift in Sources */,
 				04804546296D5EB100D02A30 /* Router.swift in Sources */,
 				A2933E7429501B4800B84C5B /* MyInfoViewModel.swift in Sources */,
@@ -563,6 +606,7 @@
 				04804542296D2FAE00D02A30 /* UpdateMyInfoViewController.swift in Sources */,
 				04FB196929122B5C00E9EE54 /* HomeController.swift in Sources */,
 				A210F6742960253600A517C5 /* FullScreenImageView.swift in Sources */,
+				A2D27B802972F7EF002CF652 /* NoticeController.swift in Sources */,
 				04B864F1294AEAB400D814D9 /* HomeCollectionViewCell.swift in Sources */,
 				040D7A002918FB530018B6A0 /* GoogleLoginManager.swift in Sources */,
 				04D4B0E3295D571E00AD5043 /* DotCollectionViewCell.swift in Sources */,
@@ -571,6 +615,7 @@
 				A2933E72294F808500B84C5B /* UserInfo.swift in Sources */,
 				041EEE9C2954101B006263C7 /* BannerTableViewCell.swift in Sources */,
 				A2ADEBA728D081050018A358 /* Helper.swift in Sources */,
+				A2D27B8929741D37002CF652 /* NoticeContentTableViewCell.swift in Sources */,
 				040D79FC2918FB2A0018B6A0 /* AppleLoginManager.swift in Sources */,
 				A2ECB36729448E870005D88C /* ClippingViewController.swift in Sources */,
 				A2D27B722971C963002CF652 /* PushSettingViewController.swift in Sources */,
@@ -595,15 +640,18 @@
 				A2D27B7D29729B30002CF652 /* PushInfoChange.swift in Sources */,
 				04852F9028FE72AF00A3EED9 /* SocialLoginController.swift in Sources */,
 				A2ECB36529448CD10005D88C /* HomeViewController.swift in Sources */,
+				A2D27B822972FD7E002CF652 /* NoticeView.swift in Sources */,
 				A2ECB35C2940C5940005D88C /* SignUp3Controller.swift in Sources */,
 				045575782968084B009C0827 /* NicknameCheck.swift in Sources */,
 				04852F9228FE72E400A3EED9 /* SocialLoginView.swift in Sources */,
+				A2D27B8429741024002CF652 /* NoticeViewModel.swift in Sources */,
 				04A69BD72907CFAE00EF7133 /* SignUp2View.swift in Sources */,
 				04804544296D2FB900D02A30 /* UpdateMyInfoView.swift in Sources */,
 				5EB4F5F1296E94FF0061D64D /* PaddingLabel.swift in Sources */,
 				048EAA842965493D004E4A08 /* PreferencesView.swift in Sources */,
 				04D4B0E1295D24F800AD5043 /* EmptyCollectionViewCell.swift in Sources */,
 				A2D27B7B2972930B002CF652 /* PushInfo.swift in Sources */,
+				A2D27B8B2974298D002CF652 /* NoticeTitleTableViewCell.swift in Sources */,
 				041EEE9A2952F1C2006263C7 /* HomeTableViewCell.swift in Sources */,
 				A2ECB36D29448EC10005D88C /* MyInfoViewController.swift in Sources */,
 				04239D6E29553A12002ED10E /* AccessToken.swift in Sources */,
