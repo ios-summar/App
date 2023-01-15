@@ -16,7 +16,8 @@ class PreferencesView: UIView{
     weak var pushDelegate : PushDelegate?
     weak var popDelegate : PopDelegate?
     weak var myInfoDelegate : MyInfoViewDelegate?
-    
+
+    let helper = Helper()
     let viewModel = PreferencesViewModel()
     
     var userInfo : UserInfo? {
@@ -251,7 +252,7 @@ class PreferencesView: UIView{
     }
     
     func arrayInit(){
-        _ = ["프로필 편집", "푸시 알림", "공지사항", "자주 묻는 질문", "버전 정보"].map {
+        _ = ["프로필 편집", "알림설정", "공지사항", "자주 묻는 질문", "버전 정보"].map {
             preferencesArray.append($0)
         }
         
@@ -328,18 +329,20 @@ extension PreferencesView: UITableViewDelegate, UITableViewDataSource {
             break
         case 1:
             print("1")
-//            self.pushDelegate?.pushScreen(<#T##UIViewController#>)
+            self.myInfoDelegate?.parameter(userInfo)
+            self.pushDelegate?.pushScreen(PushSettingViewController.shared)
             break
         case 2:
             print("2")
-//            self.pushDelegate?.pushScreen(<#T##UIViewController#>)
+            self.pushDelegate?.pushScreen(NoticeController.shared)
             break
         case 3:
             print("3")
-//            self.pushDelegate?.pushScreen(<#T##UIViewController#>)
+            self.pushDelegate?.pushScreen(FAQController.shared)
             break
         case 4:
             print("4")
+            helper.showAlert(vc: self, message: "준비중")
 //            self.pushDelegate?.pushScreen(<#T##UIViewController#>)
             break
         default:

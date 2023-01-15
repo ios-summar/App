@@ -63,8 +63,12 @@ class SearchTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        addSubview(view)
-        addSubview(profileImg)
+        //기본 설정
+        backgroundColor = UIColor.searchGray
+        selectionStyle = .none
+        
+        contentView.addSubview(view)
+        contentView.addSubview(profileImg)
         _ = [nickName, major, followLabel, introduceLabel].map {
             view.addSubview($0)
 //            $0.layer.borderWidth = 1
@@ -118,17 +122,9 @@ class SearchTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        print(#file , #function)
-        
-        print("!contentView.frame \(contentView.frame)")
-        print("!contentView \(contentView)")
-        
-//        contentView.backgroundColor = .white
-        
-        
-        // table view margin
-          contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
-        print("!contentView.frame \(contentView.frame)")
+
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0))
+        contentView.backgroundColor = .white
     }
 
 }

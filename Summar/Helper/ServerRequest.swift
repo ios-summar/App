@@ -56,7 +56,7 @@ class ServerRequest: NSObject {
                                 
                 do {
                     let decoder = JSONDecoder()
-                    let json = try decoder.decode(NicknameCheck.self, from: response.data!)
+                    let json = try decoder.decode(NicknameCheck.self, from: result)
                     completion(json.result?.result, nil)
                     
                 } catch {
@@ -166,7 +166,7 @@ class ServerRequest: NSObject {
                                     
                     do {
                         let decoder = JSONDecoder()
-                        let json = try decoder.decode(UserInfo.self, from: response.data!)
+                        let json = try decoder.decode(UserInfo.self, from: result)
                         
                         completion(json, nil, nil)
                         
@@ -206,10 +206,130 @@ class ServerRequest: NSObject {
                                     
                     do {
                         let decoder = JSONDecoder()
-                        let json = try decoder.decode(SearchUserList.self, from: response.data!)
+                        let json = try decoder.decode(SearchUserList.self, from: result)
 
                         completion(json, nil, nil)
 
+                    } catch {
+                        print("error! \(error)")
+                        completion(nil, error, nil)
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    completion(nil, error, statusCode)
+                }
+            }
+        }
+    }
+    
+    // MARK: - 환경설정, 푸시알림 DB SELECT
+    func getPushYN(_ url: String, completion: @escaping (PushInfo?, Error?, Int?) -> ()) {
+        let url = Server.url + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.request(url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "",
+                       method: .get,
+                       parameters: nil,
+                       encoding: URLEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json",
+                                 "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    smLog("")
+                    print(value)
+                    guard let result = response.data else {return}
+                                    
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(PushInfo.self, from: result)
+                        
+                        completion(json, nil, nil)
+                        
+                    } catch {
+                        print("error! \(error)")
+                        completion(nil, error, nil)
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    completion(nil, error, statusCode)
+                }
+            }
+        }
+    }
+    
+    // MARK: - 환경설정, 푸시알림 DB Update
+    func changePushYN(_ url: String,_ param: Dictionary<String, Any>, completion: @escaping (String?, Error?, Int?) -> ()) {
+        let url = Server.url + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.request(url,
+                       method: .post,
+                       parameters: param,
+                       encoding: JSONEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json",
+                                 "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    smLog("")
+                    print(value)
+                    guard let result = response.data else {return}
+                                    
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(PushInfoChange.self, from: result)
+                        
+                        completion(json.status, nil, nil)
+                        
+                    } catch {
+                        print("error! \(error)")
+                        completion(nil, error, nil)
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    completion(nil, error, statusCode)
+                }
+            }
+        }
+    }
+    
+//    /api/v1/setting?status=notice => 공지사항 관련 정보
+//    /api/v1/setting?status=question=> 자주 묻는 질문 관련정보
+    
+    // MARK: - 환경설정, 공지사항 DB Select /setting?status=notice
+    func notice(_ url: String, completion: @escaping (Notice?, Error?, Int?) -> ()) {
+        let url = Server.url + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.request(url,
+                       method: .get,
+                       parameters: param,
+                       encoding: URLEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json",
+                                 "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    guard let result = response.data else {return}
+                                    
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(Notice.self, from: result)
+                        
+                        completion(json, nil, nil)
                     } catch {
                         print("error! \(error)")
                         completion(nil, error, nil)

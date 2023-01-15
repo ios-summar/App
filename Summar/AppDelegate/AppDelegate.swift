@@ -27,18 +27,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManagerInit()
         KakaoLoginInit()
         NaverLoginInit()
+        PushInit()
         
-        UITabBar.appearance().barTintColor = UIColor.summarColor1
+//        UITabBar.appearance().barTintColor = UIColor.summarColor1
         UITabBar.appearance().backgroundColor = UIColor.white
-        
-        FirebaseApp.configure()
-        
-        Messaging.messaging().delegate = self
-        UNUserNotificationCenter.current().delegate = self
-        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-        
-        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { _, _ in }
-        application.registerForRemoteNotifications()
         
 //        let appleIDProvider = ASAuthorizationAppleIDProvider()
 //            appleIDProvider.getCredentialState(forUserID: /* 로그인에 사용한 User Identifier */) { (credentialState, error) in
@@ -78,6 +70,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
+    func PushInit() {
+        FirebaseApp.configure()
+        
+        Messaging.messaging().delegate = self
+        UNUserNotificationCenter.current().delegate = self
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { _, _ in }
+    }
+    
     func IQKeyboardManagerInit() {
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.enableAutoToolbar = false
@@ -92,15 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let instance = NaverThirdPartyLoginConnection.getSharedInstance()
         instance?.isNaverAppOauthEnable = true //네이버앱 로그인 설정
         instance?.isInAppOauthEnable = true //사파리 로그인 설정
-        
         instance?.isOnlyPortraitSupportedInIphone() //인증 화면을 iPhone의 세로 모드에서만 사용하기
-
-//        instance?.serviceUrlScheme = "summar" //URL Scheme
-//        instance?.consumerKey = "eEUszVbCE9CSk90JQ5ip" //클라이언트 아이디
-//        instance?.consumerSecret = "Yn878F60Qu" //시크릿 아이디
-//        instance?.appName = "써머" //앱이름
-        
-        
         instance?.serviceUrlScheme = "summar" //URL Scheme
         instance?.consumerKey = "vhRSDiuXtzI9d8oPXZL6" //클라이언트 아이디
         instance?.consumerSecret = "Jop9G0kyP8" //시크릿 아이디
