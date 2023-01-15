@@ -29,8 +29,9 @@ class PreferencesController: UIViewController, PushDelegate, PopDelegate, MyInfo
             self.navigationController?.pushViewController(PushSettingViewController.shared, animated: true)
         }else if VC == NoticeController.shared {
             self.navigationController?.pushViewController(NoticeController.shared, animated: true)
+        }else if VC == FAQController.shared {
+            self.navigationController?.pushViewController(FAQController.shared, animated: true)
         }
-        
     }
     
     static let shared = PreferencesController()

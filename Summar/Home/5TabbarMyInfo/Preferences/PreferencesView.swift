@@ -337,7 +337,7 @@ extension PreferencesView: UITableViewDelegate, UITableViewDataSource {
             break
         case 3:
             print("3")
-//            self.pushDelegate?.pushScreen(<#T##UIViewController#>)
+            self.pushDelegate?.pushScreen(FAQController.shared)
             break
         case 4:
             print("4")
