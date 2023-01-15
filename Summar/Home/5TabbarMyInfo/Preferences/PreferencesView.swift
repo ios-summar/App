@@ -16,7 +16,8 @@ class PreferencesView: UIView{
     weak var pushDelegate : PushDelegate?
     weak var popDelegate : PopDelegate?
     weak var myInfoDelegate : MyInfoViewDelegate?
-    
+
+    let helper = Helper()
     let viewModel = PreferencesViewModel()
     
     var userInfo : UserInfo? {
@@ -341,6 +342,7 @@ extension PreferencesView: UITableViewDelegate, UITableViewDataSource {
             break
         case 4:
             print("4")
+            helper.showAlert(vc: self, message: "준비중")
 //            self.pushDelegate?.pushScreen(<#T##UIViewController#>)
             break
         default:
