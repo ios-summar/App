@@ -332,6 +332,13 @@ class MyInfoView: UIView{
                 self.major.text = self.viewModel.major2String
                 self.followerCount.text = self.viewModel.followerString
                 self.followingCount.text = self.viewModel.followingString
+                
+                if self.viewModel.introduceString == "작성된 자기소개가 없습니다. 😥\n자기소개를 작성해 자신을 소개해보세요." {
+                    self.introductLabel.textColor = .systemPink
+                }else {
+                    self.introductLabel.textColor = .black
+                }
+                
                 self.introductLabel.text = self.viewModel.introduceString
             }
         }else {

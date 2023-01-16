@@ -1,3 +1,4 @@
+
 //
 //  NoticeViewModel.swift
 //  Summar
@@ -35,9 +36,11 @@ class NoticeViewModel {
             //error만 있을경우 서버오류
             //error,status != nil 경우 토큰 재발급
             if let error = error, let status = status {
-                print("getNotice() if let error")
-                self.request.reloadToken(status)
-                self.getNotice()
+                if status == 500 {
+                    print("토큰 재발급")
+                    self.request.reloadToken(status)
+                    self.getNotice()
+                }
             }else if let error = error {
                 print(error)
                 self.error = error

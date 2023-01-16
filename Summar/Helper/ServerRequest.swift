@@ -286,7 +286,7 @@ class ServerRequest: NSObject {
                                     
                     do {
                         let decoder = JSONDecoder()
-                        let json = try decoder.decode(PushInfoChange.self, from: result)
+                        let json = try decoder.decode(ServerResult.self, from: result)
                         
                         completion(json.status, nil, nil)
                         
@@ -345,44 +345,54 @@ class ServerRequest: NSObject {
     }
     
     // MARK: - 회원정보수정
-//    func updateUserInfo(_ url: String, completion: @escaping (String?, Error?, Int?) -> ()) {
-//        let url = Server.url + url
-//        if let token = UserDefaults.standard.string(forKey: "accessToken") {
-//            print("url => \(url)")
-//            print(token)
-//            AF.request(url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "",
-//                       method: .get,
-//                       parameters: nil,
-//                       encoding: URLEncoding.default,
-//                       headers: ["Content-Type":"application/json; charset=utf-8", "Accept":"application/json",
-//                                 "Authorization":"Bearer \(token)"])
-//            .validate(statusCode: 200..<300)
-//            .responseJSON { response in
-//                switch response.result {
-//                case .success(let value):
-//                    guard let result = response.data else {return}
-//                    
-//                    print("value => \(value)")
-//                                    
-//                    do {
-//                        let decoder = JSONDecoder()
-//                        let json = try decoder.decode(SearchUserList.self, from: response.data!)
-//
-//                        completion(json, nil, nil)
-//
-//                    } catch {
-//                        print("error! \(error)")
-//                        completion(nil, error, nil)
-//                    }
-//                case .failure(let error):
-//                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
-//                    
-//                    var statusCode = response.response?.statusCode
-//                    completion(nil, error, statusCode)
-//                }
-//            }
-//        }
-//    }
+    func updateUserInfo(_ url: String ,_ param: Dictionary<String, Any> ,completion: @escaping (ServerResult?, Error?, Int?) -> ()) {
+        let photo = param["profileImageUrl"] as! UIImage
+        let url = Server.url + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.upload(multipartFormData: { (multipart) in
+                if let imageData = photo.jpegData(compressionQuality: 1) {
+                    multipart.append((imageData), withName: "file", fileName: "\(param["profileImageUrl"]).png", mimeType: "image/png")
+                    //이미지 데이터를 put할 데이터에 덧붙임
+                }
+                
+                for (key, value) in param {
+                  multipart.append("\(value)".data(using: .utf8, allowLossyConversion: false)!, withName: "\(key)")
+                  //이미지 데이터 외에 같이 전달할 데이터
+              }
+                print("multipart => \(multipart)")
+            }, to: url,
+           method: .put,
+//           encoding: JSONEncoding.default,
+           headers: ["Content-Type":"application/json; multipart/form-data", "Accept":"application/json",
+                     "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    guard let result = response.data else {return}
+                    print("value => \(value)")
+                                    
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(ServerResult.self, from: response.data!)
+
+                        completion(json, nil, nil)
+
+                    } catch {
+                        print("error! \(error)")
+                        completion(nil, error, nil)
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    completion(nil, error, statusCode)
+                }
+            }
+        }
+    }
     
     // MARK: - AccessToken 재발급
     func requestAccessToken(_ url: String, completion: @escaping (AccessToken?, Error?) -> ()) {

@@ -50,9 +50,11 @@ class PushSettingViewModel {
                 //error만 있을경우 서버오류
                 //error,status != nil 경우 토큰 재발급
                 if let error = error, let status = status {
-                    print("getPushYN() if let error")
-                    self.request.reloadToken(status)
-                    self.getPushYN()
+                    if status == 500 {
+                        print("토큰 재발급")
+                        self.request.reloadToken(status)
+                        self.getPushYN()
+                    }
                 }else if let error = error {
                     print(error)
                     self.error = error

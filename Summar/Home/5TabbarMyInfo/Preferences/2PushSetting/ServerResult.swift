@@ -1,5 +1,5 @@
 //
-//  PushInfoChange.swift
+//  ServerResult.swift
 //  Summar
 //
 //  Created by ukBook on 2023/01/14.

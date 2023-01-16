@@ -10,6 +10,10 @@ import UIKit
 import YPImagePicker
 
 class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
+    let viewModel = UpdateMyInfoViewModel()
+    
+    var param : Dictionary<String, Any> = [:]
+    
     func openPhoto(completion: @escaping (UIImage?) -> ()) {
         var config = YPImagePickerConfiguration()
         config.library.defaultMultipleSelection = false
@@ -77,8 +81,8 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
         // MARK: - 상단 타이틀, 버튼
         self.navigationItem.titleView = lbNavTitle
         self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(popScreen), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
-        self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(myInfoUpdate), uiImage: UIImage(systemName: "checkmark")!, tintColor: .summarColor1)
-        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(updateProfile))
+//        self.navigationItem.rightBarButtonItem?.isEnabled = false
         self.navigationItem.rightBarButtonItem?.tintColor = .black
     }
     
@@ -97,16 +101,32 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
         self.navigationController?.popViewController(animated: true)
     }
     
-    @objc func myInfoUpdate(){
+    //TEST
+    @objc func updateProfile(){
         smLog("")
         
+        let profileImage = updateMyInfoView.profileImageView.image
+        let userNickname = updateMyInfoView.nickNameTextField.text
+        let major1 = updateMyInfoView.editMajor.text
+        let major2 = updateMyInfoView.majorTextField.text
+        let introduce = updateMyInfoView.view2TextView.text
         
-        guard let nicknameValid = updateMyInfoView.nicknameValidReason else {
+        guard let value = UserDefaults.standard.dictionary(forKey: "UserInfo") else{ return }
             
-            if !updateMyInfoView.majorTextField.text!.isEmpty && !updateMyInfoView.editMajor.text!.isEmpty {
-                print("회원정보 완료")
-            }
-            return
+        param["userNickName"] = value["userNickname"] as? String
+        param["updateUserNickname"] = userNickname
+        param["major1"] = major1
+        param["major2"] = major2
+        param["profileImageUrl"] = profileImage
+
+        if introduce == "자기소개는 2,000자 이내로 입력 가능합니다." {
+            param["introduce"] = ""
+        }else {
+            param["introduce"] = introduce
         }
+        
+        print("!! ",param)
+        
+        viewModel.updateUserInfo(param)
     }
 }

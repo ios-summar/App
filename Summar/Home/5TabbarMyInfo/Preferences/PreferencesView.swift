@@ -314,8 +314,8 @@ extension PreferencesView: UITableViewDelegate, UITableViewDataSource {
             cell.versionLabel.text = version
 //            cell.rectangleStroke.alpha = 0.0
             //버전 체크후
-            cell.updateLabel.alpha = 1.0 //업데이트 필요 1.0  / 필요없음 0.0
-            cell.rectangleStroke.alpha = 1.0 // 업데이트 필요 1.0 / 필요없음 0.0
+            cell.updateLabel.alpha = 0.0 //업데이트 필요 1.0  / 필요없음 0.0
+            cell.rectangleStroke.alpha = 0.0 // 업데이트 필요 1.0 / 필요없음 0.0
         }
         
         return cell
@@ -323,27 +323,26 @@ extension PreferencesView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
-        case 0:
+        case 0: // 프로필 편집
             self.myInfoDelegate?.parameter(userInfo)
             self.pushDelegate?.pushScreen(UpdateMyInfoViewController.shared)
             break
-        case 1:
+        case 1: // 알림설정
             print("1")
             self.myInfoDelegate?.parameter(userInfo)
             self.pushDelegate?.pushScreen(PushSettingViewController.shared)
             break
-        case 2:
+        case 2: // 공지사항
             print("2")
             self.pushDelegate?.pushScreen(NoticeController.shared)
             break
-        case 3:
+        case 3: // 자주 묻는 질문
             print("3")
             self.pushDelegate?.pushScreen(FAQController.shared)
             break
-        case 4:
+        case 4: // 버전 정보
             print("4")
-            helper.showAlert(vc: self, message: "준비중")
-//            self.pushDelegate?.pushScreen(<#T##UIViewController#>)
+//            helper.showAlert(vc: self, message: "준비중")
             break
         default:
             print("default")
