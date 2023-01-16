@@ -10,13 +10,11 @@ import Foundation
 class UpdateMyInfoViewModel{
     private var request = ServerRequest.shared
     
-    //    var userInfo: UserInfo? {
-    //        didSet {
-    //            print("PreferencesViewModel userInfo =>\n \(userInfo)")
-    //            guard let p = userInfo else { return }
-    //            self.didFinishFetch?()
-    //        }
-    //    }
+    var serverResult: ServerResult? {
+        didSet {
+            self.didFinishFetch?()
+        }
+    }
     var param: Dictionary<String, Any>?
     var error: Error? {
         didSet { self.showAlertClosure?() }
@@ -55,7 +53,7 @@ class UpdateMyInfoViewModel{
             }
             self.error = nil
             self.isLoading = false
-            //                self.userInfo = userInfo
+            self.serverResult = result
             
         })
     }

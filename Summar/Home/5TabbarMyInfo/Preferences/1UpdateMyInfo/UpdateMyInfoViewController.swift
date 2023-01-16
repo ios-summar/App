@@ -117,7 +117,15 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
         param["updateUserNickname"] = userNickname
         param["major1"] = major1
         param["major2"] = major2
-        param["profileImageUrl"] = profileImage
+        
+        
+        if profileImage == UIImage(named: "NonProfile") {
+            smLog("")
+            param["profileImageUrl"] = ""
+        }else {
+            smLog("")
+            param["profileImageUrl"] = profileImage
+        }
 
         if introduce == "자기소개는 2,000자 이내로 입력 가능합니다." {
             param["introduce"] = ""
@@ -128,5 +136,9 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
         print("!! ",param)
         
         viewModel.updateUserInfo(param)
+        
+        viewModel.didFinishFetch = {
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 }

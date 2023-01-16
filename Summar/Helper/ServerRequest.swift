@@ -365,7 +365,7 @@ class ServerRequest: NSObject {
            method: .put,
            headers: ["Content-Type":"multipart/form-data", "Accept":"application/json",
                      "Authorization":"Bearer \(token)"])
-//            .validate(statusCode: 200..<300)
+            .validate(statusCode: 200..<300)
             .responseJSON { response in
                 switch response.result {
                 case .success(let value):

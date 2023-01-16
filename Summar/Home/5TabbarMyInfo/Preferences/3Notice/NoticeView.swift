@@ -53,6 +53,7 @@ class NoticeView: UIView {
         tableView.layer.borderColor = UIColor.searchGray.cgColor
         tableView.separatorStyle = .none
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.backgroundColor = .white
         return tableView
     }()
     
