@@ -113,7 +113,7 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
         
         guard let value = UserDefaults.standard.dictionary(forKey: "UserInfo") else{ return }
             
-        param["userNickName"] = value["userNickname"] as? String
+        param["userNickname"] = value["userNickname"] as? String
         param["updateUserNickname"] = userNickname
         param["major1"] = major1
         param["major2"] = major2

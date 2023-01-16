@@ -353,7 +353,7 @@ class ServerRequest: NSObject {
             print(token)
             AF.upload(multipartFormData: { (multipart) in
                 if let imageData = photo.jpegData(compressionQuality: 1) {
-                    multipart.append((imageData), withName: "file", fileName: "\(param["profileImageUrl"]).png", mimeType: "image/png")
+                    multipart.append((imageData), withName: "file", fileName: "\(param["profileImageUrl"]).jpg", mimeType: "image/jpeg")
                     //이미지 데이터를 put할 데이터에 덧붙임
                 }
                 
@@ -361,13 +361,11 @@ class ServerRequest: NSObject {
                   multipart.append("\(value)".data(using: .utf8, allowLossyConversion: false)!, withName: "\(key)")
                   //이미지 데이터 외에 같이 전달할 데이터
               }
-                print("multipart => \(multipart)")
             }, to: url,
            method: .put,
-//           encoding: JSONEncoding.default,
-           headers: ["Content-Type":"application/json; multipart/form-data", "Accept":"application/json",
+           headers: ["Content-Type":"multipart/form-data", "Accept":"application/json",
                      "Authorization":"Bearer \(token)"])
-            .validate(statusCode: 200..<300)
+//            .validate(statusCode: 200..<300)
             .responseJSON { response in
                 switch response.result {
                 case .success(let value):
