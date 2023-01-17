@@ -132,6 +132,25 @@ class PreferencesView: UIView{
         return view
     }()
     
+    let withDrawBtn : UIButton = {
+        let btn = UIButton()
+        btn.setTitle("탈퇴하기", for: .normal)
+        btn.setTitleColor(UIColor.fontGrayColor, for: .normal)
+        btn.titleLabel?.font = .systemFont(ofSize: 12)
+        btn.addTarget(self, action: #selector(withDraw), for: .touchUpInside)
+        btn.setUnderline()
+        return btn
+    }()
+    
+    let withDrawLabel : UILabel = {
+        let label = UILabel()
+        label.text = "개인정보, SUMMAR에 저장된 콘텐츠와 설정이 모두 삭제됩니다."
+        label.textColor = UIColor.fontGrayColor
+        label.font = .systemFont(ofSize: 12)
+        label.sizeToFit()
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor.PreferencesBackgroundColor
@@ -190,9 +209,23 @@ class PreferencesView: UIView{
         }
         
         tableView.snp.makeConstraints{(make) in
-            make.left.right.bottom.equalToSuperview()
+            make.left.right.equalToSuperview()
             make.top.equalTo(view.snp.bottom).offset(16)
+            make.height.equalTo(220)
         }
+        
+        addSubview(withDrawLabel)
+        withDrawLabel.snp.makeConstraints{(make) in
+            make.left.equalTo(20)
+            make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-20)
+        }
+        
+        addSubview(withDrawBtn)
+        withDrawBtn.snp.makeConstraints{(make) in
+            make.left.equalTo(20)
+            make.bottom.equalTo(withDrawLabel.snp.top).offset(-3)
+        }
+        
         
         requestMyInfo()
     }
@@ -290,6 +323,21 @@ class PreferencesView: UIView{
 
             
             self.popDelegate?.popScreen()
+        }
+    }
+    
+    @objc func withDraw() {
+        helper.showAlert2(vc: self, message: "지금 탈퇴하면 SUMMAR에 저장된 콘텐츠와 설정이 삭제됩니다. 탈퇴하시겠습니까?", completTitle: "탈퇴") { result in
+            if result {
+                print("회원탈퇴 로직 준비중")
+                
+                if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
+                    print("UserInfo => ", value)
+                    print("UserInfo userSeq => ", value["userSeq"])
+                }else {
+                    print("userInfo nil")
+                }
+            }
         }
     }
     

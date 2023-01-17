@@ -99,7 +99,6 @@ class ServerRequest: NSObject {
                 print(value)
                 
                 var json = value as! Dictionary<String, Any>
-                
 //                print(json["accessToken"])
                 print(json["loginStatus"])
 //                print(json["refreshToken"])
@@ -130,7 +129,7 @@ class ServerRequest: NSObject {
                     
                     params["follower"] = 0
                     params["following"] = 0
-                    
+                    params["userSeq"] = json["userSeq"]
                     UserDefaults.standard.set(params, forKey: "UserInfo")
                     UserDefaults.standard.set(json["accessToken"], forKey: "accessToken")
                     UserDefaults.standard.set(json["refreshToken"], forKey: "refreshToken")
@@ -346,15 +345,17 @@ class ServerRequest: NSObject {
     
     // MARK: - 회원정보수정
     func updateUserInfo(_ url: String ,_ param: Dictionary<String, Any> ,completion: @escaping (ServerResult?, Error?, Int?) -> ()) {
-        let photo = param["profileImageUrl"] as! UIImage
+        let photo = param["profileImageUrl"] as? UIImage
         let url = Server.url + url
         if let token = UserDefaults.standard.string(forKey: "accessToken") {
             print("url => \(url)")
             print(token)
             AF.upload(multipartFormData: { (multipart) in
-                if let imageData = photo.jpegData(compressionQuality: 1) {
-                    multipart.append((imageData), withName: "file", fileName: "\(param["profileImageUrl"]).jpg", mimeType: "image/jpeg")
-                    //이미지 데이터를 put할 데이터에 덧붙임
+                if let photo = photo {
+                    if let imageData = photo.jpegData(compressionQuality: 1) {
+                        multipart.append((imageData), withName: "file", fileName: "\(param["profileImageUrl"]).jpg", mimeType: "image/jpeg")
+                        //이미지 데이터를 put할 데이터에 덧붙임
+                    }
                 }
                 
                 for (key, value) in param {

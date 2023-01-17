@@ -32,12 +32,6 @@ class HomeController : UITabBarController {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.BackgroundColor
         
-        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
-            print("UserInfo => ", value)
-        }else {
-            print("userInfo nil")
-        }
-        
         UITabBar.appearance().barTintColor = UIColor.summarColor1
 //        UITabBar.appearance().backgroundColor = UIColor.white
         
@@ -57,7 +51,12 @@ class HomeController : UITabBarController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        selectedIndex = 0 // 초기 진입
+        
+        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
+            print("UserInfo => ", value)
+        }else {
+            print("userInfo nil")
+        }
     }
     
     // MARK: - UIBar Create NavigtaionController

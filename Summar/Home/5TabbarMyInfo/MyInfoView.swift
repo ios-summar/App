@@ -347,6 +347,10 @@ class MyInfoView: UIView{
         
     }
     
+    func requestMyFeed(_ userSeq: Int?){
+        smLog("userSeq \(userSeq)")
+    }
+    
     @objc func btnAction(_ sender: Any){
         self.pushDelegate?.pushScreen(UpdateMyInfoViewController.shared)
     }

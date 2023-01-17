@@ -73,6 +73,34 @@ class MyInfoViewModel{
         }
     }
     
+    // MARK: - Network call
+    func getUserFeed() {
+        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo") {
+            print("myInfo => \(value)")
+            let userId = value["userEmail"] as! String
+            self.request.requestMyInfo("/user/user-info?userEmail=\(userId)", completion: { (userInfo, error, status) in
+                //error만 있을경우 서버오류
+                //error,status != nil 경우 토큰 재발급
+                if let error = error, let status = status {
+                    if status == 500 {
+                        print("토큰 재발급")
+                        self.request.reloadToken(status)
+                        self.getUserInfo()
+                    }
+                }else if let error = error {
+                    print(error)
+                    self.error = error
+                    self.isLoading = false
+                    return
+                }
+                self.error = nil
+                self.isLoading = false
+                self.userInfo = userInfo
+                
+            })
+        }
+    }
+    
     // MARK: - UI Logic
     private func setupText(with userInfo: UserInfo) {
         smLog("")

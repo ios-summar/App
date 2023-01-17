@@ -106,12 +106,12 @@ class FullScreenImageView : UIView, UIScrollViewDelegate{
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(view1)
-//        view1.layer.borderWidth = 1
+        view1.layer.borderWidth = 1
 //        view1.layer.borderColor = UIColor.red.cgColor
         
         _ = [label1, scrollView, pageControl, label2].map {
             view1.addSubview($0)
-//            $0.layer.borderWidth = 1
+            $0.layer.borderWidth = 1
         }
         
         

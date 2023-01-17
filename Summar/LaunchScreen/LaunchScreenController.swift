@@ -54,16 +54,12 @@ class LaunchScreenController: UIViewController {
             make.top.equalTo(imageView.snp.bottom).offset(10)
         }
         
-        UIView.animate(withDuration: 0.5, animations: {
-            self.imageView.alpha = 1.0
-        })
-        
         UIView.animate(withDuration: 1.5, animations: {
+            self.imageView.alpha = 1.0
             self.label.alpha = 1.0
         })
         
-        DispatchQueue.main.asyncAfter(deadline: .now() /* + 2.0 */){
-            
+        DispatchQueue.main.asyncAfter(deadline: .now()){ //+ 2.0){ //TEST
             if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(HomeController.shared, animated: true)
             }else {

@@ -20,7 +20,22 @@ class Helper : UIView{
         vc?.window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
     
-    func showAlertAction(vc: UIViewController?, preferredStyle: UIAlertController.Style = .alert, title: String = "", message: String = "", completeTitle: String = "확인", _ completeHandler:(() -> Void)? = nil){
+    func showAlert2(vc: UIView?, preferredStyle: UIAlertController.Style = .alert, title: String = "알림", message: String = "", completTitle: String = "확인", cancleTitle: String = "취소", completion: @escaping (Bool) -> ()) {
+        guard let currentVc = vc else {
+            return
+        }
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
+        let completAction = UIAlertAction(title: completTitle, style: .default) { action in
+            completion(true)
+        }
+        alert.addAction(UIAlertAction(title: cancleTitle, style: .cancel, handler: nil))
+        
+        alert.addAction(completAction)
+        vc?.window?.rootViewController?.present(alert, animated: true, completion: nil)
+    }
+    
+    func showAlertAction(vc: UIViewController?, preferredStyle: UIAlertController.Style = .alert, title: String = "알림", message: String = "", completeTitle: String = "확인", _ completeHandler:(() -> Void)? = nil){
                 
                 guard let currentVc = vc else {
                     completeHandler?()
@@ -231,6 +246,22 @@ extension String {
     }
 }
 
+extension Int {
+    private static var commaFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
+    var commaRepresentation: String {
+        if self >= 10000 {
+            var foramtter : Int = self / 1000
+            return "\(CFloat(CGFloat(foramtter) / 10.0)) 만"
+        }else {
+            return Int.commaFormatter.string(from: NSNumber(value: self)) ?? ""
+        }
+    }
+}
+
 extension UIApplication {
     class func topViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
         if let nav = base as? UINavigationController {
@@ -265,18 +296,35 @@ extension UINavigationItem {
     }
 }
 
-extension Int {
-    private static var commaFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        return formatter
-    }()
-    var commaRepresentation: String {
-        if self >= 10000 {
-            var foramtter : Int = self / 1000
-            return "\(CFloat(CGFloat(foramtter) / 10.0)) 만"
-        }else {
-            return Int.commaFormatter.string(from: NSNumber(value: self)) ?? ""
+extension UIButton {
+    func setUnderline() {
+        guard let title = title(for: .normal) else { return }
+        let attributedString = NSMutableAttributedString(string: title)
+        attributedString.addAttribute(.underlineStyle,
+                                      value: NSUnderlineStyle.single.rawValue,
+                                      range: NSRange(location: 0, length: title.count)
+        )
+        setAttributedTitle(attributedString, for: .normal)
+    }
+}
+
+extension UIScrollView {
+    func updateContentSize() {
+        let unionCalculatedTotalRect = recursiveUnionInDepthFor(view: self)
+        
+        // 계산된 크기로 컨텐츠 사이즈 설정
+        self.contentSize = CGSize(width: self.frame.width, height: unionCalculatedTotalRect.height+50)
+    }
+    
+    private func recursiveUnionInDepthFor(view: UIView) -> CGRect {
+        var totalRect: CGRect = .zero
+        
+        // 모든 자식 View의 컨트롤의 크기를 재귀적으로 호출하며 최종 영역의 크기를 설정
+        for subView in view.subviews {
+            totalRect = totalRect.union(recursiveUnionInDepthFor(view: subView))
         }
+        
+        // 최종 계산 영역의 크기를 반환
+        return totalRect.union(view.frame)
     }
 }

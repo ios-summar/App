@@ -65,6 +65,7 @@ class SignUp2View : UIView{
     
     let editMajor : UITextField = {
         let editMajor = UITextField()
+        editMajor.tintColor = .textFieldColor
         editMajor.translatesAutoresizingMaskIntoConstraints = false
         editMajor.layer.borderWidth = 1
         editMajor.layer.borderColor = UIColor.white.cgColor
@@ -83,6 +84,7 @@ class SignUp2View : UIView{
     
     let majorTextField : UITextField = {
         let majorTextField = UITextField()
+        majorTextField.tintColor = .textFieldColor
         majorTextField.translatesAutoresizingMaskIntoConstraints = false
         majorTextField.layer.borderWidth = 1
         majorTextField.layer.borderColor = UIColor.white.cgColor

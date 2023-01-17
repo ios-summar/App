@@ -80,7 +80,14 @@ class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate,
 //    }
     
     override func viewWillAppear(_ animated: Bool) {
-        myInfoView.requestMyInfo()
+        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
+//            print("UserInfo => ", value)
+            print("UserInfo userSeq => ", value["userSeq"])
+            myInfoView.requestMyInfo()
+            myInfoView.requestMyFeed(value["userSeq"] as? Int ?? nil)
+        }else {
+            print("userInfo nil")
+        }
     }
     
     @objc func pushViewScreen(_ sender: Any) {

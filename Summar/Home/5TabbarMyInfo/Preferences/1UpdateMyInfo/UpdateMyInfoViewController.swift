@@ -3,7 +3,7 @@
 //  Summar
 //
 //  Created by mac on 2023/01/10.
-//
+// https://cloverlaun.tistory.com/64 << safearea backgroundColor change
 
 import Foundation
 import UIKit
@@ -11,6 +11,7 @@ import YPImagePicker
 
 class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
     let viewModel = UpdateMyInfoViewModel()
+    let helper = Helper()
     
     var param : Dictionary<String, Any> = [:]
     
@@ -67,7 +68,7 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
     let lbNavTitle : UILabel = {
         let title = UILabel()
         title.frame = CGRect(x: 0, y: 0, width: 150, height: 40)
-        title.text = "회원정보수정"
+        title.text = "프로필 편집"
         title.font = .boldSystemFont(ofSize: 20)
         title.textColor = UIColor.summarColor1
         title.sizeToFit()
@@ -79,6 +80,7 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
         super.viewDidLoad()
         updateMyInfoView.delegate = self
         // MARK: - 상단 타이틀, 버튼
+        self.navigationController?.navigationBar.backgroundColor = .white
         self.navigationItem.titleView = lbNavTitle
         self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(popScreen), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(updateProfile))
@@ -101,9 +103,10 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
         self.navigationController?.popViewController(animated: true)
     }
     
-    //TEST
     @objc func updateProfile(){
         smLog("")
+        
+        LoadingIndicator.showLoading()
         
         let profileImage = updateMyInfoView.profileImageView.image
         let userNickname = updateMyInfoView.nickNameTextField.text
@@ -111,34 +114,42 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
         let major2 = updateMyInfoView.majorTextField.text
         let introduce = updateMyInfoView.view2TextView.text
         
-        guard let value = UserDefaults.standard.dictionary(forKey: "UserInfo") else{ return }
+        if !updateMyInfoView.nicknameValid {
+            helper.showAlertAction(vc: self, message: "닉네임 중복 확인 후 프로필 편집이 가능합니다.")
+        }else if major1!.isEmpty && major2!.isEmpty {
+            helper.showAlertAction(vc: self, message: "전공을 선택 후 프로필 편집이 가능합니다.")
+        }else { // 정규식 이상 없음
+            param["userNickname"] = userInfo?.result.userNickname
+            param["updateUserNickname"] = userNickname
+            param["major1"] = major1
+            param["major2"] = major2
             
-        param["userNickname"] = value["userNickname"] as? String
-        param["updateUserNickname"] = userNickname
-        param["major1"] = major1
-        param["major2"] = major2
-        
-        
-        if profileImage == UIImage(named: "NonProfile") {
-            smLog("")
-            param["profileImageUrl"] = ""
-        }else {
-            smLog("")
-            param["profileImageUrl"] = profileImage
-        }
+            if profileImage == UIImage(named: "NonProfile") {
+                smLog("")
+                param["profileImageUrl"] = ""
+            }else {
+                smLog("")
+                param["profileImageUrl"] = profileImage
+            }
 
-        if introduce == "자기소개는 2,000자 이내로 입력 가능합니다." {
-            param["introduce"] = ""
-        }else {
-            param["introduce"] = introduce
-        }
-        
-        print("!! ",param)
-        
-        viewModel.updateUserInfo(param)
-        
-        viewModel.didFinishFetch = {
-            self.navigationController?.popViewController(animated: true)
+            if introduce == "나에 대해 소개해 주세요" {
+                param["introduce"] = ""
+            }else {
+                param["introduce"] = introduce
+            }
+            
+            print("!! ",param)
+            
+            viewModel.updateUserInfo(param)
+            
+            viewModel.didFinishFetch = {
+                self.navigationController?.popViewController(animated: true)
+                self.helper.showAlertAction(vc: self, message: "프로필 편집을 완료했습니다.")
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                LoadingIndicator.hideLoading()
+            }
         }
     }
 }

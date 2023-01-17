@@ -18,6 +18,7 @@ struct SearchUserList: Codable {
 }
 
 struct SearchUserInfo: Codable {
+    let userSeq : Int?
     let userNickname: String?
     let major1: String?
     let major2: String?

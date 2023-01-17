@@ -12,7 +12,7 @@ protocol ImageUpdatePickerDelegate : AnyObject {
     func openPhoto(completion: @escaping(UIImage?) -> ())
 }
 
-class UpdateMyInfoView: UIView, UITextViewDelegate {
+class UpdateMyInfoView: UIView, UITextViewDelegate, UITextFieldDelegate {
     
     weak var delegate : ImageUpdatePickerDelegate?
     
@@ -34,11 +34,12 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
     
     var majorDetailIndex : Int = 0
     
-    var nicknameValid : Bool = false
-    var nicknameValidReason : String? = nil
+    var nicknameValid : Bool = true
     var majorValid : Bool = false
+    var nicknameValidReason : String? = nil
     
-    let textViewPlaceHolder = "자기소개는 2,000자 이내로 입력 가능합니다."
+    
+    let textViewPlaceHolder = "나에 대해 소개해 주세요"
     
     let majorPickerView : UIPickerView = {
         let majorPickerView = UIPickerView()
@@ -85,26 +86,57 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
             if let major1 = userInfo?.result.major1 {
                 selectMajor1 = major1
                 editMajor.text = major1
+                
+                majorDetailIndex = pickerData.firstIndex(of: major1)!
+                
+                switch majorDetailIndex {
+                case 1:
+                    majorDetailIndex = majorName1.count
+                case 2:
+                    majorDetailIndex = majorName2.count
+                case 3:
+                    majorDetailIndex = majorName3.count
+                case 4:
+                    majorDetailIndex = majorName4.count
+                case 5:
+                    majorDetailIndex = majorName5.count
+                case 6:
+                    majorDetailIndex = majorName6.count
+                case 7:
+                    majorDetailIndex = majorName7.count
+                default:
+                    print("default")
+                }
+                
+                majorPickerView.delegate = self
+                majorPickerView.dataSource = self
             }
             
             if let major2 = userInfo?.result.major2 {
+                selectMajor2 = major2
                 majorTextField.text = major2
+                
+                majorDetailPickerView.delegate = self
+                majorDetailPickerView.dataSource = self
             }
             
             if let introduce = userInfo?.result.introduce {
+                view2TextView.textColor = .black
                 view2TextView.text = introduce
+            }else {
+                view2TextView.text = textViewPlaceHolder
+                view2TextView.textColor = .lightGray
             }
-            
-            enableNickname(false)
         }
     }
     
+    let profileview = UIView()
     lazy var profileImageView : UIImageView = {
         let view = UIImageView()
         view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.Gray02.cgColor
         view.layer.cornerRadius = 40
         view.clipsToBounds = true
-        
         
         let change = UITapGestureRecognizer(target: self, action: #selector(changeProfile))
         view.isUserInteractionEnabled = true
@@ -117,8 +149,8 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
         let nickNameTextField = UITextField()
         nickNameTextField.translatesAutoresizingMaskIntoConstraints = false
         nickNameTextField.layer.borderWidth = 1
-        nickNameTextField.layer.borderColor = UIColor.white.cgColor
-        nickNameTextField.backgroundColor = UIColor.textFieldColor
+        nickNameTextField.layer.borderColor = UIColor.Gray02.cgColor
+        nickNameTextField.backgroundColor = UIColor.white
         nickNameTextField.layer.cornerRadius = 4
         nickNameTextField.placeholder = "영문 또는 한글 2~8자"
         nickNameTextField.attributedPlaceholder = NSAttributedString(string: "영문 또는 한글 2~8자", attributes: [NSAttributedString.Key.foregroundColor : UIColor.grayColor205])
@@ -126,26 +158,48 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
         nickNameTextField.font = .systemFont(ofSize: 15)
         nickNameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         nickNameTextField.textColor = .black
-        nickNameTextField.tag = 1
+        nickNameTextField.tag = 2
+        nickNameTextField.addTarget(self, action: #selector(editingDidBegin(_:)), for: .editingDidBegin)
+        nickNameTextField.addTarget(self, action: #selector(editingDidEnd(_:)), for: .editingDidEnd)
         return nickNameTextField
+    }()
+    
+    let nicknameLabel : UILabel = {
+        let label = UILabel()
+        label.text = "마이 닉네임"
+        label.textColor = .black
+        label.font = .boldSystemFont(ofSize: 15)
+        label.sizeToFit()
+        return label
     }()
     
     let nicknameCheckBtn : UIButton = {
         let btn = UIButton()
-        btn.layer.borderWidth = 1
+        btn.layer.cornerRadius = 4
         btn.setTitle("중복확인", for: .normal)
-        btn.isEnabled = false
-        btn.backgroundColor = .grayColor205
-        btn.addTarget(self, action: #selector(TESTFUNC), for: .touchUpInside)
+        btn.backgroundColor = UIColor.magnifyingGlassColor
+        btn.addTarget(self, action: #selector(nicknameCheckAction), for: .touchUpInside)
+        btn.alpha = 0.7
         return btn
     }()
     
-    let editMajor : UITextField = {
+    
+    let majorLabel : UILabel = {
+        let label = UILabel()
+        label.text = "전공"
+        label.textColor = .black
+        label.font = .boldSystemFont(ofSize: 15)
+        label.sizeToFit()
+        return label
+    }()
+    
+    lazy var editMajor : UITextField = {
         let editMajor = UITextField()
+        editMajor.tintColor = .white
         editMajor.translatesAutoresizingMaskIntoConstraints = false
         editMajor.layer.borderWidth = 1
-        editMajor.layer.borderColor = UIColor.white.cgColor
-        editMajor.backgroundColor = UIColor.textFieldColor
+        editMajor.layer.borderColor = UIColor.Gray02.cgColor
+        editMajor.backgroundColor = UIColor.white
         editMajor.layer.cornerRadius = 4
         editMajor.placeholder = "전공 계열선택"
         editMajor.attributedPlaceholder = NSAttributedString(string: "전공 계열선택", attributes: [NSAttributedString.Key.foregroundColor : UIColor.grayColor205])
@@ -155,15 +209,24 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
         editMajor.addTarget(self, action: #selector(editingDidBegin(_:)), for: .editingDidBegin)
         editMajor.addTarget(self, action: #selector(editingDidEnd(_:)), for: .editingDidEnd)
         editMajor.tag = 0
+        editMajor.delegate = self
         return editMajor
+    }()
+    
+    let downImageView1 : UIImageView = {
+        let label = UIImageView()
+        label.image = UIImage(named: "Down")
+        label.tintColor = .black
+        return label
     }()
     
     let majorTextField : UITextField = {
         let majorTextField = UITextField()
+        majorTextField.tintColor = .white
         majorTextField.translatesAutoresizingMaskIntoConstraints = false
         majorTextField.layer.borderWidth = 1
-        majorTextField.layer.borderColor = UIColor.white.cgColor
-        majorTextField.backgroundColor = UIColor.textFieldColor
+        majorTextField.layer.borderColor = UIColor.Gray02.cgColor
+        majorTextField.backgroundColor = UIColor.white
         majorTextField.layer.cornerRadius = 4
         majorTextField.placeholder = "전공 학과선택"
         majorTextField.attributedPlaceholder = NSAttributedString(string: "전공 학과선택", attributes: [NSAttributedString.Key.foregroundColor : UIColor.grayColor205])
@@ -176,20 +239,56 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
         return majorTextField
     }()
     
+    let downImageView2 : UIImageView = {
+        let label = UIImageView()
+        label.image = UIImage(named: "Down")
+        label.tintColor = .black
+        return label
+    }()
+    
+    let introduceLabel : UILabel = {
+        let label = UILabel()
+        label.text = "프로필 메시지"
+        label.textColor = .black
+        label.font = .boldSystemFont(ofSize: 15)
+        label.sizeToFit()
+        return label
+    }()
+    
     let view2 : UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.textFieldColor
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.Gray02.cgColor
+        view.backgroundColor = UIColor.white
+        view.layer.cornerRadius = 4
         return view
     }()
     
     lazy var view2TextView : UITextView = {
         let textView = UITextView()
-        textView.backgroundColor = UIColor.textFieldColor
-        textView.font = .systemFont(ofSize: 18)
+        textView.backgroundColor = UIColor.white
+        textView.font = .systemFont(ofSize: 15)
         textView.text = textViewPlaceHolder
         textView.textColor = .lightGray
         textView.delegate = self
         return textView
+    }()
+    
+    let profileGearView : UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "Ellipse 41")
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.Gray02.cgColor
+        view.layer.cornerRadius = 14
+        view.clipsToBounds = true
+        return view
+    }()
+    
+    let profileGear : UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "setting")
+        view.clipsToBounds = true
+        return view
     }()
     
     override init(frame: CGRect) {
@@ -199,47 +298,100 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
         
         pickerViewInit()
         
-        _ = [profileImageView, nickNameTextField, nicknameCheckBtn, editMajor, majorTextField, view2].map{
+        _ = [profileview, nickNameTextField, nicknameCheckBtn, editMajor, majorTextField, view2, nicknameLabel, majorLabel, introduceLabel].map{
             addSubview($0)
         }
         view2.addSubview(view2TextView)
         
-        profileImageView.snp.makeConstraints{(make) in
+        // 프로필 이미지
+        profileview.snp.makeConstraints{(make) in
             make.centerX.equalToSuperview()
             make.top.equalTo(30)
             make.width.height.equalTo(80)
         }
         
+        profileview.addSubview(profileImageView)
+        profileImageView.snp.makeConstraints{(make) in
+            make.left.right.bottom.top.equalToSuperview()
+        }
+        
+        profileview.addSubview(profileGearView)
+        profileGearView.snp.makeConstraints {(make) in
+            make.right.bottom.equalToSuperview()
+            make.width.height.equalTo(28)
+        }
+        
+        profileGearView.addSubview(profileGear)
+        profileGear.snp.makeConstraints {(make) in
+            make.centerX.centerY.equalToSuperview()
+            make.width.height.equalTo(18)
+        }
+        //
+        
+        // 닉네임
+        nicknameLabel.snp.makeConstraints{(make) in
+            make.top.equalTo(profileImageView.snp.bottom).offset(20)
+            make.left.equalTo(20)
+        }
+        
         nickNameTextField.snp.makeConstraints{(make) in
             make.left.equalTo(20)
             make.centerY.equalTo(nicknameCheckBtn.snp.centerY)
-            make.right.equalTo(nicknameCheckBtn.snp.left)
-            make.height.equalTo(60)
+            make.right.equalTo(nicknameCheckBtn.snp.left).offset(-10)
+            make.height.equalTo(46)
         }
         
         nicknameCheckBtn.snp.makeConstraints{(make) in
-            make.top.equalTo(profileImageView.snp.bottom).offset(20)
+            make.top.equalTo(nicknameLabel.snp.bottom).offset(7)
             make.right.equalTo(-20)
-            make.height.equalTo(60)
+            make.height.equalTo(46)
             make.width.equalTo(80)
+        }
+        //
+        
+        // 전공
+        majorLabel.snp.makeConstraints{(make) in
+            make.left.equalTo(20)
+            make.top.equalTo(nickNameTextField.snp.bottom).offset(20)
         }
         
         editMajor.snp.makeConstraints{(make) in
             make.left.equalTo(20)
             make.right.equalTo(-20)
-            make.height.equalTo(50)
-            make.top.equalTo(nickNameTextField.snp.bottom).offset(20)
+            make.height.equalTo(46)
+            make.top.equalTo(majorLabel.snp.bottom).offset(7)
+        }
+        
+        editMajor.addSubview(downImageView1)
+        downImageView1.snp.makeConstraints{(make) in
+            make.centerY.equalToSuperview()
+            make.right.equalTo(-20)
+            make.width.height.equalTo(24)
         }
         
         majorTextField.snp.makeConstraints{(make) in
             make.left.equalTo(20)
             make.right.equalTo(-20)
-            make.height.equalTo(50)
-            make.top.equalTo(editMajor.snp.bottom).offset(10)
+            make.height.equalTo(46)
+            make.top.equalTo(editMajor.snp.bottom).offset(5)
+        }
+        
+        majorTextField.addSubview(downImageView2)
+        downImageView2.snp.makeConstraints{(make) in
+            make.centerY.equalToSuperview()
+            make.right.equalTo(-20)
+            make.width.height.equalTo(24)
+        }
+        //
+        
+        // 프로필 메시지
+        introduceLabel.snp.makeConstraints{(make) in
+            make.left.equalTo(20)
+            make.top.equalTo(majorTextField.snp.bottom).offset(20)
         }
         
         view2.snp.makeConstraints{(make) in
-            make.top.equalTo(majorTextField.snp.bottom).offset(10)
+            make.top.equalTo(introduceLabel.snp.bottom).offset(7)
             make.left.equalTo(20)
             make.right.bottom.equalTo(-20)
         }
@@ -248,7 +400,7 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
             make.top.left.equalTo(20)
             make.right.bottom.equalTo(-20)
         }
-        
+        //
     }
     
     // MARK: - PlaceHolder 작업
@@ -271,21 +423,22 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
             textField.deleteBackward()
         }
         
-        if textField.tag == 1 {
+        if textField.tag == 2 {
             if let nickName = textField.text {
+                nicknameValid = false
                 
-                if nickName == userInfo?.result.userNickname || nickName.isEmpty{ // 기존 닉네임하고 동일
-                    smLog("기존 닉네임하고 동일 || 길이 0")
-                    enableNickname(false)
+                if nickName.isEmpty { // 닉네임 빈값
                     nicknameValidReason = nil
                     nicknameValid = false
+                }else if nickName == userInfo?.result.userNickname { // 기존 닉네임하고 동일
+                    smLog("기존 닉네임하고 동일")
+                    nicknameValidReason = "사용 가능한 닉네임입니다."
+                    nicknameValid = true
                 }else if nickName.count < 2 {
                     smLog("닉네임 글자수 미달")
-                    enableNickname(true)
                     nicknameValidReason = "닉네임을 두글자 이상 입력해주세요."
                     nicknameValid = false
                 }else {
-                    enableNickname(true)
                     if !helper.checkNickNamePolicy(text: nickName) {
                         smLog("정규식 fail")
                         nicknameValidReason = "닉네임은 한글, 영어, 숫자만 사용 가능합니다."
@@ -295,6 +448,7 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
                             guard let TF = TF else { return }
                             if TF { // 중복
                                 self.nicknameValidReason = "중복된 닉네임입니다."
+                                self.nicknameValid = false
                                 smLog("false")
                             }else{ // 중복X
                                 self.nicknameValidReason = nil
@@ -304,16 +458,6 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
                     }
                 }
             }
-        }
-    }
-    
-    func enableNickname(_ enable: Bool){
-        if enable {
-            nicknameCheckBtn.backgroundColor = .systemBlue
-            nicknameCheckBtn.isEnabled = true
-        }else {
-            nicknameCheckBtn.backgroundColor = .gray
-            nicknameCheckBtn.isEnabled = false
         }
     }
     
@@ -331,13 +475,16 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
         nicknameValid = false
     }
     
-    @objc func TESTFUNC(){
-        
+    @objc func nicknameCheckAction(){
+        guard let nicknameValidReason = nicknameValidReason else {
+            nicknameValid = true
+            helper.showAlert(vc: self, message: "사용 가능한 닉네임입니다.")
+            return
+        }
+        helper.showAlert(vc: self, message: nicknameValidReason)
     }
     
     func pickerViewInit() {
-        majorPickerView.delegate = self
-        majorPickerView.dataSource = self
         // 피커뷰 툴바추가
         let pickerToolbar : UIToolbar = UIToolbar()
         pickerToolbar.barStyle = .default
@@ -412,6 +559,9 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
         case 1:
             majorTextField.layer.borderWidth = 1
             majorTextField.layer.borderColor = UIColor.systemBlue.cgColor
+        case 2:
+            nickNameTextField.layer.borderWidth = 1
+            nickNameTextField.layer.borderColor = UIColor.systemBlue.cgColor
         default:
             print("default")
         }
@@ -421,10 +571,13 @@ class UpdateMyInfoView: UIView, UITextViewDelegate {
         switch (sender as? UITextField)?.tag {
         case 0:
             editMajor.layer.borderWidth = 1
-            editMajor.layer.borderColor = UIColor.white.cgColor
+            editMajor.layer.borderColor = UIColor.Gray02.cgColor
         case 1:
             majorTextField.layer.borderWidth = 1
-            majorTextField.layer.borderColor = UIColor.white.cgColor
+            majorTextField.layer.borderColor = UIColor.Gray02.cgColor
+        case 2:
+            nickNameTextField.layer.borderWidth = 1
+            nickNameTextField.layer.borderColor = UIColor.Gray02.cgColor
         default:
             print("default")
         }
@@ -519,8 +672,6 @@ extension UpdateMyInfoView : UIPickerViewDelegate, UIPickerViewDataSource {
                 print("default")
             }
             
-            majorDetailPickerView.delegate = self
-            majorDetailPickerView.dataSource = self
         case 1:
             switch selectMajor1 {
             case "인문계열":
