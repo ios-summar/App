@@ -59,7 +59,7 @@ class LaunchScreenController: UIViewController {
             self.label.alpha = 1.0
         })
         
-        DispatchQueue.main.asyncAfter(deadline: .now()){ //+ 2.0){ //TEST
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){ //TEST
             if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(HomeController.shared, animated: true)
             }else {

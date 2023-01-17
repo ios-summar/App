@@ -78,14 +78,8 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateMyInfoView.delegate = self
-        // MARK: - 상단 타이틀, 버튼
-        self.navigationController?.navigationBar.backgroundColor = .white
-        self.navigationItem.titleView = lbNavTitle
-        self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(popScreen), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(updateProfile))
-//        self.navigationItem.rightBarButtonItem?.isEnabled = false
-        self.navigationItem.rightBarButtonItem?.tintColor = .black
+        configureDelegate()
+        configureUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -97,6 +91,27 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
             make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
             make.left.right.equalToSuperview()
         }
+    }
+    
+    func configureDelegate() {
+        updateMyInfoView.delegate = self
+    }
+    
+    func configureUI() {
+        // MARK: - fillSafeArea, SafeArea BackGroundColor Set
+        fillSafeArea(position: .top, color: .white)
+        fillSafeArea(position: .left, color: .white)
+        fillSafeArea(position: .right, color: .white)
+        fillSafeArea(position: .bottom, color: .white)
+        
+        // MARK: - NavigationBar
+        self.navigationItem.titleView = lbNavTitle
+        self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(popScreen), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(updateProfile))
+//        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        self.navigationItem.rightBarButtonItem?.tintColor = .black
+        
+        // MARK: - addView
     }
     
     @objc func popScreen(){

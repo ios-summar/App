@@ -85,7 +85,8 @@ class WriteFeedView : UIView, UITextViewDelegate {
         let label = UILabel()
         label.textColor = UIColor.fontColor
         label.text = "댓글기능 켜기"
-        label.font = .systemFont(ofSize: 17)
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: 15)
         return label
     }()
     
@@ -93,7 +94,8 @@ class WriteFeedView : UIView, UITextViewDelegate {
         let label = UILabel()
         label.textColor = UIColor.fontColor
         label.text = "피드 비공개하기"
-        label.font = .systemFont(ofSize: 17)
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: 15)
         return label
     }()
     
@@ -103,6 +105,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
         button.layer.cornerRadius = 10
         button.backgroundColor = .summarColor2
         button.setTitle("등록", for: .normal)
+        button.addTarget(self, action: #selector(insertFeed), for: .touchUpInside)
         return button
     }()
     
@@ -151,7 +154,8 @@ class WriteFeedView : UIView, UITextViewDelegate {
         view2.snp.makeConstraints{(make) in
             make.top.equalTo(view1.snp.bottom).offset(10)
             make.centerX.equalToSuperview()
-            make.width.height.equalTo(btnWidth)
+            make.width.equalTo(btnWidth)
+            make.bottom.equalTo(leftLabel.snp.top).offset(-20)
         }
         
         view2TextView.snp.makeConstraints{(make) in
@@ -160,7 +164,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
         }
         
         leftLabel.snp.makeConstraints{(make) in
-            make.top.equalTo(view2.snp.bottom).offset(30)
+            make.bottom.equalTo(registerBtn.snp.top).offset(-20)
             make.right.equalTo(self.safeAreaLayoutGuide.snp.centerX).offset(-10)
             make.height.equalTo(switch1.snp.height)
         }
@@ -173,6 +177,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
         rightLabel.snp.makeConstraints{(make) in
             make.centerY.equalTo(leftLabel)
             make.left.equalTo(switch2.snp.right).offset(20)
+            make.right.equalTo(-20)
             make.height.equalTo(switch1.snp.height)
         }
         
@@ -214,6 +219,10 @@ class WriteFeedView : UIView, UITextViewDelegate {
             textView.text = textViewPlaceHolder
             textView.textColor = .lightGray
         }
+    }
+    
+    @objc func insertFeed() {
+        smLog("")
     }
     
     required init?(coder: NSCoder) {

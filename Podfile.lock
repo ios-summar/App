@@ -83,6 +83,7 @@ PODS:
   - naveridlogin-sdk-ios (4.1.5)
   - PromisesObjC (2.1.1)
   - PryntTrimmerView (4.0.2)
+  - SafeAreaBrush (1.0.4)
   - SnapKit (5.6.0)
   - SteviaLayout (4.7.3)
   - YPImagePicker (5.2.1):
@@ -100,6 +101,7 @@ DEPENDENCIES:
   - KakaoSDKUser
   - Kingfisher
   - naveridlogin-sdk-ios
+  - SafeAreaBrush
   - SnapKit
   - YPImagePicker
 
@@ -128,6 +130,7 @@ SPEC REPOS:
     - naveridlogin-sdk-ios
     - PromisesObjC
     - PryntTrimmerView
+    - SafeAreaBrush
     - SnapKit
     - SteviaLayout
     - YPImagePicker
@@ -156,10 +159,11 @@ SPEC CHECKSUMS:
   naveridlogin-sdk-ios: 4351fe7162cd6b8b6dbb37bd7cc205304fa1d889
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   PryntTrimmerView: 6a43cc90df5d99addeabd33d4ba09b1365322130
+  SafeAreaBrush: 282315ce500e436c04b2c26b46e8ac0ad4288bbd
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
   YPImagePicker: f36043210c10b0783034eb1947d6e06e31c461e4
 
-PODFILE CHECKSUM: 2474805bd030374bd1157202acb74428f4b0ac63
+PODFILE CHECKSUM: bd63487d42b239acd3f0f7d255457675b8ff18d3
 
 COCOAPODS: 1.11.3

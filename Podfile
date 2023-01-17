@@ -18,6 +18,6 @@ target 'Summar' do
    pod 'Kingfisher' # 이미지 라이브러리
    pod 'Firebase/Messaging' # 푸시 알림
    pod 'JJFloatingActionButton' # 플로팅 버튼
-   
+   pod 'SafeAreaBrush' # safeAreaColor
    
 end

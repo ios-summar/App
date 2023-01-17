@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SafeAreaBrush
 
 class PushSettingViewController: UIViewController {
     static let shared = PushSettingViewController()
@@ -25,10 +26,21 @@ class PushSettingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // MARK: - 상단 타이틀, 버튼
+        configureUI()
+    }
+    
+    func configureUI() {
+        // MARK: - fillSafeArea, SafeArea BackGroundColor Set
+        fillSafeArea(position: .top, color: .white)
+        fillSafeArea(position: .left, color: .white)
+        fillSafeArea(position: .right, color: .white)
+        fillSafeArea(position: .bottom, color: .white)
+        
+        // MARK: - NavigationBar
         self.navigationItem.titleView = lbNavTitle
         self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(popScreen), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
         
+        // MARK: - addView
         self.view.addSubview(pushSettingView)
         pushSettingView.snp.makeConstraints {
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
