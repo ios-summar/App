@@ -27,10 +27,11 @@ class HomeView: UIView{
         view.backgroundColor = .grayColor197
         
         // 테이블뷰 왼쪽 마진 없애기
-        view.separatorStyle = .singleLine
-        view.cellLayoutMarginsFollowReadableWidth = false
-        view.separatorInset.left = 0
-        view.separatorColor = .gray
+        view.separatorStyle = .none
+//        view.separatorStyle = .singleLine
+//        view.cellLayoutMarginsFollowReadableWidth = false
+//        view.separatorInset.left = 0
+//        view.separatorColor = .gray
         //
         
         view.estimatedRowHeight = 85.0
@@ -70,8 +71,6 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
         
         tableView.delegate = self
         tableView.dataSource = self
-        
-        tableView.separatorStyle = .none
 //        view3TableView.sectionFooterHeight = 20
     }
     
