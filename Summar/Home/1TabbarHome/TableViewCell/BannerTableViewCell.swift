@@ -39,17 +39,17 @@ class BannerTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(view1)
+        contentView.addSubview(collectionView)
         selectionStyle = .none
         backgroundColor = .white
         
-        self.view1.addSubview(collectionView)
-        view1.snp.makeConstraints{(make) in
-            make.top.left.bottom.right.equalToSuperview()
+//        self.view1.addSubview(collectionView)
+//        view1.snp.makeConstraints{(make) in
+//            make.top.left.bottom.right.equalToSuperview()
 //            make.top.bottom.equalToSuperview()
 //            make.left.equalTo(30)
 //            make.right.equalTo(-30)
-        }
+//        }
         
         collectionView.snp.makeConstraints{(make) in
             make.top.left.bottom.right.equalToSuperview()
@@ -74,7 +74,7 @@ class BannerTableViewCell: UITableViewCell {
 //        contentView.layer.borderWidth = 3
         
         
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0))
     }
 
 }

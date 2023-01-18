@@ -33,6 +33,8 @@ class HomeView: UIView{
         view.separatorColor = .gray
         //
         
+        view.estimatedRowHeight = 85.0
+        view.rowHeight = UITableView.automaticDimension
         return view
     }()
 
@@ -59,9 +61,9 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
     // MARK: - 피드
     func testFeed(){
         arr.append(Feed1)
-        arr.append(Feed2)
-        arr.append(Feed3)
-        arr.append(Feed4)
+//        arr.append(Feed2)
+//        arr.append(Feed3)
+//        arr.append(Feed4)
         
         tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: tableCellReuseIdentifier)
         tableView.register(BannerTableViewCell.self, forCellReuseIdentifier: bannerCellReuseIdentifier)
@@ -73,13 +75,13 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
 //        view3TableView.sectionFooterHeight = 20
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row != 0 {
-            return 440
-        }else {
-            return 100
-        }
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        if indexPath.row != 0 {
+//            return 440
+//        }else {
+//            return 100
+//        }
+//    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return arr.count + 1

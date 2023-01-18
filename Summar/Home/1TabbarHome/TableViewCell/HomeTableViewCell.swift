@@ -158,9 +158,9 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
         }
         pageControl.snp.makeConstraints { (make) in
             
-            make.top.equalTo(scrollView.snp.bottom)
+            make.top.equalTo(scrollView.snp.bottom).offset(10)
             make.left.right.equalToSuperview()
-            make.height.equalTo(30)
+            make.bottom.equalTo(-20)
         }
         
         initImageArr(testPhotos)
