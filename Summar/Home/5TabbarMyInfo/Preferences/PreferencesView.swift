@@ -89,7 +89,6 @@ class PreferencesView: UIView{
     }()
     let nickName : UILabel = {
         let label = UILabel()
-        label.text = "이희주"
         label.font = .boldSystemFont(ofSize: 16)
         label.textColor = .black
         label.sizeToFit()
@@ -97,7 +96,6 @@ class PreferencesView: UIView{
     }()
     let major : UILabel = {
         let label = UILabel()
-        label.text = "컴퓨터정보공학과"
         label.font = .systemFont(ofSize: 13)
         label.textColor = .black
         label.sizeToFit()
@@ -329,11 +327,15 @@ class PreferencesView: UIView{
     @objc func withDraw() {
         helper.showAlert2(vc: self, message: "지금 탈퇴하면 SUMMAR에 저장된 콘텐츠와 설정이 삭제됩니다. 탈퇴하시겠습니까?", completTitle: "탈퇴") { result in
             if result {
-                print("회원탈퇴 로직 준비중")
-                
                 if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
-                    print("UserInfo => ", value)
-                    print("UserInfo userSeq => ", value["userSeq"])
+                    let userSeq = value["userSeq"] as! Int
+                    self.viewModel.withDraw(userSeq)
+                    
+                    self.viewModel.didFinishWithDraw = {
+                        self.helper.showAlertActionNormal(vc: self, message: "탈퇴완료", completion: { bool in
+                            self.popDelegate?.popScreen()
+                        })
+                    }
                 }else {
                     print("userInfo nil")
                 }

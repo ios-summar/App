@@ -25,8 +25,6 @@ class NoticeContentTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         backgroundColor = .white
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.searchGray.cgColor
 
         addSubview(view)
         view.snp.makeConstraints {

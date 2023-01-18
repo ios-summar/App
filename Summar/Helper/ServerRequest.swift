@@ -145,7 +145,7 @@ class ServerRequest: NSObject {
         }
     }
     
-    // MARK: - 마이 써머리 https://github.com/arifinfrds/iOS-MVVM-Alamofire
+    // MARK: - 마이 써머리 유저 프로필 https://github.com/arifinfrds/iOS-MVVM-Alamofire
     func requestMyInfo(_ url: String, completion: @escaping (UserInfo?, Error?, Int?) -> ()) {
         let url = Server.url + url
         if let token = UserDefaults.standard.string(forKey: "accessToken") {
@@ -166,6 +166,83 @@ class ServerRequest: NSObject {
                     do {
                         let decoder = JSONDecoder()
                         let json = try decoder.decode(UserInfo.self, from: result)
+                        
+                        completion(json, nil, nil)
+                        
+                    } catch {
+                        print("error! \(error)")
+                        completion(nil, error, nil)
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    completion(nil, error, statusCode)
+                }
+            }
+        }
+    }
+    
+    // MARK: - 마이 써머리 유저 피드
+    func requestMyFeed(_ url: String, completion: @escaping (UserInfo?, Error?, Int?) -> ()) {
+        let url = Server.url + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.request(url,
+                       method: .get,
+                       parameters: nil,
+                       encoding: URLEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json",
+                                 "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    smLog("\(value)")
+                    guard let result = response.data else {return}
+                                    
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(UserInfo.self, from: result)
+                        
+                        completion(json, nil, nil)
+                        
+                    } catch {
+                        print("error! \(error)")
+                        completion(nil, error, nil)
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    completion(nil, error, statusCode)
+                }
+            }
+        }
+    }
+    
+    // MARK: - 회원탈퇴
+    func requestWithDraw(_ url: String, completion: @escaping (ServerResult?, Error?, Int?) -> ()) {
+        let url = Server.url + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.request(url,
+                       method: .delete,
+                       parameters: nil,
+                       encoding: URLEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json",
+                                 "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    guard let result = response.data else {return}
+                                    
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(ServerResult.self, from: result)
                         
                         completion(json, nil, nil)
                         

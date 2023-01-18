@@ -74,11 +74,11 @@ class MyInfoViewModel{
     }
     
     // MARK: - Network call
-    func getUserFeed() {
+    func getUserFeed(_ userSeq: Int) {
         if let value = UserDefaults.standard.dictionary(forKey: "UserInfo") {
             print("myInfo => \(value)")
             let userId = value["userEmail"] as! String
-            self.request.requestMyInfo("/user/user-info?userEmail=\(userId)", completion: { (userInfo, error, status) in
+            self.request.requestMyFeed("/feed/\(userSeq)", completion: { (userInfo, error, status) in
                 //error만 있을경우 서버오류
                 //error,status != nil 경우 토큰 재발급
                 if let error = error, let status = status {

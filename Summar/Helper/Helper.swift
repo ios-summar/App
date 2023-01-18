@@ -35,6 +35,19 @@ class Helper : UIView{
         vc?.window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
     
+    func showAlertActionNormal(vc: UIView?, preferredStyle: UIAlertController.Style = .alert, title: String = "알림", message: String = "", completTitle: String = "확인", completion: @escaping (Bool) -> ()) {
+        guard let currentVc = vc else {
+            return
+        }
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
+        let completAction = UIAlertAction(title: completTitle, style: .default) { action in
+            completion(true)
+        }
+        alert.addAction(completAction)
+        vc?.window?.rootViewController?.present(alert, animated: true, completion: nil)
+    }
+    
     func showAlertAction(vc: UIViewController?, preferredStyle: UIAlertController.Style = .alert, title: String = "알림", message: String = "", completeTitle: String = "확인", _ completeHandler:(() -> Void)? = nil){
                 
                 guard let currentVc = vc else {

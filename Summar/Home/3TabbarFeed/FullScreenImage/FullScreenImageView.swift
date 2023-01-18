@@ -111,7 +111,7 @@ class FullScreenImageView : UIView, UIScrollViewDelegate{
         
         _ = [label1, scrollView, pageControl, label2].map {
             view1.addSubview($0)
-            $0.layer.borderWidth = 1
+//            $0.layer.borderWidth = 1
         }
         
         

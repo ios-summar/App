@@ -43,7 +43,13 @@ class FAQView: UIView {
         let tableView = UITableView()
         tableView.layer.borderWidth = 1
         tableView.layer.borderColor = UIColor.searchGray.cgColor
-        tableView.separatorStyle = .none
+        
+        // 테이블뷰 왼쪽 마진 없애기
+        tableView.separatorStyle = .singleLine
+        tableView.cellLayoutMarginsFollowReadableWidth = false
+        tableView.separatorInset.left = 0
+        tableView.separatorColor = .gray
+        
         tableView.rowHeight = UITableView.automaticDimension
         tableView.backgroundColor = .white
         return tableView

@@ -11,7 +11,7 @@ class PreferencesViewModel{
     private var request = ServerRequest.shared
     
     // MARK: - Properties
-//    let myInfo = UserDefaults.standard.dictionary(forKey: "UserInfo")
+    //    let myInfo = UserDefaults.standard.dictionary(forKey: "UserInfo")
     
     
     var userInfo: UserInfo? {
@@ -44,6 +44,7 @@ class PreferencesViewModel{
     var showAlertClosure: (() -> ())?
     var updateLoadingStatus: (() -> ())?
     var didFinishFetch: (() -> ())?
+    var didFinishWithDraw: (() -> ())?
     
     // MARK: - Network call
     func getUserInfo() {
@@ -71,6 +72,28 @@ class PreferencesViewModel{
                 
             })
         }
+    }
+    
+    func withDraw(_ userSeq: Int) {
+        self.request.requestWithDraw("/user/leave?userSeq=\(userSeq)", completion: { (userInfo, error, status) in
+            //error만 있을경우 서버오류
+            //error,status != nil 경우 토큰 재발급
+            if let error = error, let status = status {
+                if status == 500 {
+                    print("토큰 재발급")
+                    self.request.reloadToken(status)
+                    self.withDraw(userSeq)
+                }
+            }else if let error = error {
+                print(error)
+                self.error = error
+                self.isLoading = false
+                return
+            }
+            self.error = nil
+            self.isLoading = false
+            self.didFinishWithDraw?()
+        })
     }
     
     // MARK: - UI Logic
