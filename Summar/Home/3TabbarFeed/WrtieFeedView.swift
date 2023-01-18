@@ -17,6 +17,7 @@ protocol ImagePickerDelegate : AnyObject {
 
 class WriteFeedView : UIView, UITextViewDelegate {
     static let shared = WriteFeedView()
+    let helper = Helper()
     
     weak var delegate : ImagePickerDelegate?
     
@@ -115,6 +116,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
         button.layer.cornerRadius = 10
         button.backgroundColor = UIColor.init(red: 243/255, green: 243/255, blue: 243/255, alpha: 1)
         button.setTitle("임시저장", for: .normal)
+        button.addTarget(self, action: #selector(tempSave), for: .touchUpInside)
         return button
     }()
     
@@ -222,7 +224,35 @@ class WriteFeedView : UIView, UITextViewDelegate {
     }
     
     @objc func insertFeed() {
-        smLog("")
+        if resultArr.count == 0 || (view2TextView.text == "피드 내용은 2,000자 이내로 입력 가능합니다." || view2TextView.text == "") {
+            helper.showAlert(vc: self, message: "이미지 추가 혹은 피드내용을 채우고 피드 등록이 가능합니다")
+        }else {
+            registerFeed("insertFeed")
+        }
+        
+    }
+    
+    @objc func tempSave() {
+        if resultArr.count == 0 && (view2TextView.text == "피드 내용은 2,000자 이내로 입력 가능합니다." || view2TextView.text == "") {
+            helper.showAlert(vc: self, message: "이미지 추가 혹은 피드내용을 채우고 임시저장이 가능합니다.")
+        }else {
+            
+            registerFeed("tempSave")
+        }
+    }
+    
+    func registerFeed(_ index: String) {
+        if index == "insertFeed" {
+            smLog("피드 등록 가능")
+        }else {
+            smLog("피드 임시저장 가능")
+        }
+        
+        var requestBody = Dictionary<String, Any>()
+        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
+            guard let userSeq = value["userSeq"] else {return}
+            requestBody["userSeq"] = userSeq
+        }
     }
     
     required init?(coder: NSCoder) {
