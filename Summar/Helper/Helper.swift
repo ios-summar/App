@@ -98,6 +98,7 @@ class Helper : UIView{
         paragraphStyle.lineSpacing = lineCF
         attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
         uiLabel.attributedText = attrString
+        uiLabel.lineBreakMode = .byTruncatingTail
     }
     
     // MARK: - 앱버전 체크 https://kirinit.tistory.com/10
@@ -165,7 +166,7 @@ extension UIColor {
     static var UIBarColor = UIColor.init(red: 240/255, green: 242/255, blue: 246/255, alpha: 1)
     
     //1TabbarHome
-    
+    static var homeContentsColor = UIColor.init(r: 79, g: 79, b: 79)
     //2TabbarClipping
 
     //3TabbarFeed

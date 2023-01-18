@@ -294,11 +294,11 @@
 			isa = PBXGroup;
 			children = (
 				04FB196829122B5C00E9EE54 /* HomeController.swift */,
-				A2ECB36329448C9F0005D88C /* 5TabbarMyInfo */,
-				A2ECB36229448C8F0005D88C /* 4TabbarSearch */,
-				A2ECB36129448C650005D88C /* 3TabbarFeed */,
-				A2ECB36029448C3E0005D88C /* 2TabbarClipping */,
 				A2ECB35E29448C2E0005D88C /* 1TabbarHome */,
+				A2ECB36029448C3E0005D88C /* 2TabbarClipping */,
+				A2ECB36129448C650005D88C /* 3TabbarFeed */,
+				A2ECB36229448C8F0005D88C /* 4TabbarSearch */,
+				A2ECB36329448C9F0005D88C /* 5TabbarMyInfo */,
 			);
 			path = Home;
 			sourceTree = "<group>";

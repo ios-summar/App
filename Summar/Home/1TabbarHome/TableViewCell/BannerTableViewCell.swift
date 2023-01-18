@@ -40,6 +40,7 @@ class BannerTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(view1)
+        selectionStyle = .none
         backgroundColor = .white
         
         self.view1.addSubview(collectionView)
@@ -69,17 +70,11 @@ class BannerTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        print(#file , #function)
-        
-        print("!contentView.frame \(contentView.frame)")
-        print("!contentView \(contentView)")
-        
         contentView.backgroundColor = .clear
-        contentView.layer.borderWidth = 3
+//        contentView.layer.borderWidth = 3
         
         
         contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
-        print("!contentView.frame \(contentView.frame)")
     }
 
 }

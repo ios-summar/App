@@ -42,7 +42,7 @@ class FullScreenImageView : UIView, UIScrollViewDelegate{
         // 페이지 표시 색상을 밝은 회색 설정
         pageControl.pageIndicatorTintColor = UIColor.lightGray
         // 현재 페이지 표시 색상을 검정색으로 설정
-        pageControl.currentPageIndicatorTintColor = UIColor.black
+        pageControl.currentPageIndicatorTintColor = UIColor.summarColor2
         
         pageControl.isUserInteractionEnabled = false
         

@@ -21,51 +21,28 @@ class HomeView: UIView{
     let Feed3 = Feed()
     let Feed4 = Feed()
     
-    let scrollView : UIScrollView = {
-        let view = UIScrollView()
-        view.showsVerticalScrollIndicator = false
-        return view
-    }()
-    let contentView = UIView()
-    
-    let view3 = UIView()
-    let view3TableView : UITableView = {
+    let tableView : UITableView = {
         let view = UITableView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .grayColor197
+        
+        // 테이블뷰 왼쪽 마진 없애기
+        view.separatorStyle = .singleLine
+        view.cellLayoutMarginsFollowReadableWidth = false
+        view.separatorInset.left = 0
+        view.separatorColor = .gray
+        //
+        
         return view
     }()
 
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        _ = [view3].map { self.contentView.addSubview($0)}
-        
-        addSubview(scrollView) // 메인뷰에
-        self.scrollView.addSubview(contentView)
-        
-        self.view3.addSubview(view3TableView)
-        view3.backgroundColor = .grayColor197
-        
-        scrollView.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview() // 스크롤뷰가 표현될 영역
-        }
-        
-        contentView.snp.makeConstraints { (make) in
-            make.width.equalToSuperview()
-            make.centerX.top.bottom.equalToSuperview()
-        }
-        
-        view3.snp.makeConstraints { (make) in
-
-            make.top.equalTo(0)
-            make.leading.trailing.equalTo(0)
-            make.height.equalTo(800)
-            make.bottom.equalToSuperview() // 이것이 중요함
-        }
-
-        view3TableView.snp.makeConstraints { (make) in
-            make.top.left.bottom.right.edges.equalToSuperview()
+        addSubview(tableView)
+        tableView.snp.makeConstraints { (make) in
+            make.left.bottom.right.equalToSuperview()
+            make.top.equalTo(self.safeAreaLayoutGuide.snp.top)
         }
         
         //홈화면 이미지 슬라이더
@@ -83,22 +60,22 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
     func testFeed(){
         arr.append(Feed1)
         arr.append(Feed2)
-//        arr.append(Feed3)
-//        arr.append(Feed4)
+        arr.append(Feed3)
+        arr.append(Feed4)
         
-        view3TableView.register(HomeTableViewCell.self, forCellReuseIdentifier: tableCellReuseIdentifier)
-        view3TableView.register(BannerTableViewCell.self, forCellReuseIdentifier: bannerCellReuseIdentifier)
+        tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: tableCellReuseIdentifier)
+        tableView.register(BannerTableViewCell.self, forCellReuseIdentifier: bannerCellReuseIdentifier)
         
-        view3TableView.delegate = self
-        view3TableView.dataSource = self
+        tableView.delegate = self
+        tableView.dataSource = self
         
-        view3TableView.separatorStyle = .none
-        view3TableView.sectionFooterHeight = 20
+        tableView.separatorStyle = .none
+//        view3TableView.sectionFooterHeight = 20
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row != 0 {
-            return 240
+            return 440
         }else {
             return 100
         }
@@ -110,16 +87,16 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row != 0 {
-            let cell = view3TableView.dequeueReusableCell(withIdentifier: tableCellReuseIdentifier, for: indexPath) as! HomeTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: tableCellReuseIdentifier, for: indexPath) as! HomeTableViewCell
             cell.backgroundColor = .grayColor197
             
             cell.nickName.text = "욱승"
             cell.major.text = "컴퓨터 / 통신"
-            cell.introductLabel.text = "introductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabelintroductLabel"
-            helper.lineSpacing(cell.introductLabel, 10)
+            cell.contentsLabel.text = "베니테이블 온보딩 웰컴키트를 제작하면서 실용성과 소속감이 느껴지는 메세지를 전달하기 위해 많은 고민을 했습니다. 성공적인 아침을 열어나가기 위한 베니테이블 모닝루틴 라이프. 베니테이블 온보딩 웰컴키트를 제작하면서 실용성과 "
+            helper.lineSpacing(cell.contentsLabel, 10)
             return cell
         }else {
-            let cell = view3TableView.dequeueReusableCell(withIdentifier: bannerCellReuseIdentifier, for: indexPath) as! BannerTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: bannerCellReuseIdentifier, for: indexPath) as! BannerTableViewCell
             cell.backgroundColor = .grayColor197
             cell.selectionStyle = .none
             

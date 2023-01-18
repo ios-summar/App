@@ -16,7 +16,9 @@ class HomeCollectionViewCell: UICollectionViewCell {
         addSubview(imgProudctPhoto)
         
         imgProudctPhoto.snp.makeConstraints{(make) in
-            make.top.bottom.leading.trailing.equalToSuperview()
+            make.top.bottom.equalToSuperview()
+            make.left.equalTo(20)
+            make.right.equalTo(-20)
         }
     }
     
