@@ -67,6 +67,7 @@ class SearchTableViewCell: UITableViewCell {
         backgroundColor = UIColor.searchGray
         selectionStyle = .none
         
+//        view.layer.borderWidth = 1
         contentView.addSubview(view)
         contentView.addSubview(profileImg)
         _ = [nickName, major, followLabel, introduceLabel].map {
@@ -84,6 +85,7 @@ class SearchTableViewCell: UITableViewCell {
             make.top.equalTo(15)
             make.left.equalTo(profileImg.snp.right).offset(10)
             make.right.equalTo(-20)
+            make.height.equalTo(120)
             make.bottom.equalTo(-15)
         }
         
@@ -108,6 +110,19 @@ class SearchTableViewCell: UITableViewCell {
             make.right.equalToSuperview()
             make.left.equalToSuperview()
         }
+    }
+    
+    func revmoeIntroduceLabel() {
+        introduceLabel.removeFromSuperview()
+        view.snp.removeConstraints()
+        view.snp.makeConstraints{(make) in
+            make.top.equalTo(15)
+            make.left.equalTo(profileImg.snp.right).offset(10)
+            make.right.equalTo(-20)
+            make.height.equalTo(80)
+            make.bottom.equalTo(-15)
+        }
+        
     }
     
     required init?(coder: NSCoder) {

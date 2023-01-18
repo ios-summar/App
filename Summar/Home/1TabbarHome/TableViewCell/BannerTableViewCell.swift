@@ -50,9 +50,13 @@ class BannerTableViewCell: UITableViewCell {
 //            make.left.equalTo(30)
 //            make.right.equalTo(-30)
 //        }
-        
+        collectionView.layer.borderWidth = 1
         collectionView.snp.makeConstraints{(make) in
             make.top.left.bottom.right.equalToSuperview()
+            make.top.equalTo(5)
+            make.width.equalTo(100)
+            make.height.equalTo(80)
+            make.bottom.equalTo(-5)
         }
         
         imgSlider()

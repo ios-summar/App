@@ -74,6 +74,9 @@ class SearchView: UIView{
         view.backgroundColor = UIColor.searchGray
         view.register(SearchTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         view.separatorStyle = .none
+        
+        view.rowHeight = UITableView.automaticDimension
+        view.estimatedRowHeight = 160
         return view
     }()
     
@@ -205,9 +208,9 @@ class SearchView: UIView{
 extension SearchView: UITableViewDelegate, UITableViewDataSource {
     
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 160
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 160
+//    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let totalRecordCount = model?.totalRecordCount, let recordsPerPage = model?.recordsPerPage, let currentPageNo = model?.currentPageNo, let totalPageCount = model?.totalPageCount {
@@ -281,7 +284,8 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
             if searchUserInfo[indexPath.row].introduce != nil {
                 cell.introduceLabel.text = searchUserInfo[indexPath.row].introduce
             }else {
-                cell.introduceLabel.text = ""
+//                cell.introduceLabel.text = ""
+                cell.revmoeIntroduceLabel()
             }
             
             cell.major.text = searchUserInfo[indexPath.row].major2
