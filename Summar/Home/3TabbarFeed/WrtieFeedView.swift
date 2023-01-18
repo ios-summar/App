@@ -18,8 +18,10 @@ protocol ImagePickerDelegate : AnyObject {
 class WriteFeedView : UIView, UITextViewDelegate {
     static let shared = WriteFeedView()
     let helper = Helper()
+    let viewModel = WriteFeedViewModel()
     
     weak var delegate : ImagePickerDelegate?
+    weak var popDelegate : PopDelegate?
     
     var resultArr = [UIImage]()
     
@@ -87,7 +89,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
         label.textColor = UIColor.fontColor
         label.text = "댓글기능 켜기"
         label.textAlignment = .left
-        label.font = .systemFont(ofSize: 15)
+        label.font = .systemFont(ofSize: 14)
         return label
     }()
     
@@ -96,7 +98,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
         label.textColor = UIColor.fontColor
         label.text = "피드 비공개하기"
         label.textAlignment = .left
-        label.font = .systemFont(ofSize: 15)
+        label.font = .systemFont(ofSize: 14)
         return label
     }()
     
@@ -242,16 +244,27 @@ class WriteFeedView : UIView, UITextViewDelegate {
     }
     
     func registerFeed(_ index: String) {
-        if index == "insertFeed" {
-            smLog("피드 등록 가능")
-        }else {
-            smLog("피드 임시저장 가능")
-        }
-        
         var requestBody = Dictionary<String, Any>()
         if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
             guard let userSeq = value["userSeq"] else {return}
             requestBody["userSeq"] = userSeq
+            requestBody["contents"] = view2TextView.text
+            requestBody["commentYn"] = switch1.isOn
+            requestBody["secretYn"] = switch2.isOn
+        }
+        
+        if index == "insertFeed" {
+            requestBody["tempSaveYn"] = false
+        }else {
+            requestBody["tempSaveYn"] = true
+        }
+        
+        LoadingIndicator.showLoading()
+        
+        viewModel.insertFeed(requestBody, resultArr)
+        viewModel.didFinishFetch = {
+            self.popDelegate?.popScreen()
+            LoadingIndicator.hideLoading()
         }
     }
     

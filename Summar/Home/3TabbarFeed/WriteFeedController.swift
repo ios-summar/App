@@ -11,7 +11,11 @@ import BSImagePicker
 import Photos
 import YPImagePicker
 
-class WriteFeedController : UIViewController, ImagePickerDelegate{
+class WriteFeedController : UIViewController, ImagePickerDelegate, PopDelegate{
+    func popScreen() {
+        closeAction()
+    }
+    
     static let shared = WriteFeedController()
     
     let wfView = WriteFeedView.shared
@@ -29,6 +33,7 @@ class WriteFeedController : UIViewController, ImagePickerDelegate{
     
     override func viewDidLoad() {
         wfView.delegate = self
+        wfView.popDelegate = self
         self.view.addSubview(wfView)
         
         self.navigationItem.titleView = titleLabel
@@ -50,8 +55,6 @@ class WriteFeedController : UIViewController, ImagePickerDelegate{
     }
     
     func showImageFullScreen(_ imageArr: [UIImage]) {
-        print("self.navigationController \(self.navigationController)")
-        print("imageArr => \(imageArr)")
         let VC = FullScreenImageViewController.shared
         VC.imageArr = imageArr
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil // 스와이프 제스처 enable true

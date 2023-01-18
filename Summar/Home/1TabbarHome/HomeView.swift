@@ -11,8 +11,15 @@ import UIKit
 class HomeView: UIView{
     static let shared = HomeView()
     let helper = Helper.shared
+    let viewModel = HomeViewModel()
     private let tableCellReuseIdentifier = "tableCell"
     private let bannerCellReuseIdentifier = "bannerCell"
+    
+    var feedSelectResponse : FeedSelectResponse? {
+        didSet {
+            smLog("\n \(self.feedSelectResponse) \n")
+        }
+    }
     
     var arr: Array<Feed> = []
     
@@ -50,6 +57,13 @@ class HomeView: UIView{
         
         //홈화면 이미지 슬라이더
         testFeed()
+    }
+    
+    func selectFeed() {
+        viewModel.selectFeed()
+        viewModel.didFinishFetch = {
+            self.feedSelectResponse = self.viewModel.feedSelectResponse
+        }
     }
 
     

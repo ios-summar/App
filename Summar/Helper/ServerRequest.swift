@@ -470,6 +470,92 @@ class ServerRequest: NSObject {
         }
     }
     
+    // MARK: - 피드등록
+    func insertFeed(_ url: String, _ param : Dictionary<String, Any>, _ imageArr: [UIImage], completion: @escaping (FeedInsertResponse?, Error?, Int?) -> ()) {
+                
+        let url = Server.url + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.upload(multipartFormData: { (multipart) in
+                for x in 0 ... imageArr.count - 1 {
+                    if let imageData = imageArr[x].jpegData(compressionQuality: 1) {
+                        multipart.append(imageData, withName: "images", fileName: "\(param["profileImageUrl"]).jpg", mimeType: "image/jpeg")
+                        //이미지 데이터를 put할 데이터에 덧붙임
+                    }
+                }
+                
+                for (key, value) in param {
+                  multipart.append("\(value)".data(using: .utf8, allowLossyConversion: false)!, withName: "\(key)")
+                  //이미지 데이터 외에 같이 전달할 데이터
+              }
+            }, to: url,
+           method: .post,
+           headers: ["Content-Type":"multipart/form-data", "Accept":"application/json",
+                     "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    print(value)
+                    guard let result = response.data else {return}
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(FeedInsertResponse.self, from: response.data!)
+
+                        completion(json, nil, nil)
+
+                    } catch {
+                        print("error! \(error)")
+                        completion(nil, error, nil)
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    completion(nil, error, statusCode)
+                }
+            }
+        }
+    }
+    
+    // MARK: - 피드조회
+    func selectFeed(_ url: String, completion: @escaping (FeedSelectResponse?, Error?, Int?) -> ()) {
+        let url = Server.url + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.request(url,
+                       method: .get,
+                       parameters: param,
+                       encoding: URLEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json",
+                                 "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    guard let result = response.data else {return}
+                                    
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(FeedSelectResponse.self, from: result)
+                        
+                        completion(json, nil, nil)
+                    } catch {
+                        print("error! \(error)")
+                        completion(nil, error, nil)
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    completion(nil, error, statusCode)
+                }
+            }
+        }
+    }
+    
     // MARK: - AccessToken 재발급
     func requestAccessToken(_ url: String, completion: @escaping (AccessToken?, Error?) -> ()) {
         let url = Server.url + url

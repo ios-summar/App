@@ -14,6 +14,7 @@ class HomeViewController : UIViewController {
     static let shared = HomeViewController()
     let homeView = HomeView.shared
     let actionButton = JJFloatingActionButton()
+    let viewModel = HomeViewModel()
     
     let viewWidth : CGFloat = {
         var btnWidth = UIScreen.main.bounds.width
@@ -66,9 +67,12 @@ class HomeViewController : UIViewController {
         floatingBtn()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        homeView.selectFeed()
+    }
+    
     func floatingBtn(){
         actionButton.addItem(title: "피드 작성하기", image: UIImage(systemName: "plus")?.withRenderingMode(.alwaysTemplate)) { item in
-            print("피드 작성하기")
             
             let wrController = UINavigationController(rootViewController:  WriteFeedController.shared)
             wrController.navigationBar.isTranslucent = false
@@ -105,7 +109,7 @@ class HomeViewController : UIViewController {
     }
     
     @objc func topBtnAction(_ sender: Any){
-        print(#file , #function)
+        smLog("")
     }
 }
 

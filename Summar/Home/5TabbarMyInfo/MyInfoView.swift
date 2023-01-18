@@ -350,7 +350,7 @@ class MyInfoView: UIView{
     func requestMyFeed(_ userSeq: Int?){
         guard let userSeq = userSeq else { return }
         smLog("userSeq \(userSeq)")
-        viewModel.getUserFeed(userSeq)
+//        viewModel.getUserFeed(userSeq)
     }
     
     @objc func btnAction(_ sender: Any){

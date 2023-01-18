@@ -147,7 +147,6 @@ class FullScreenImageView : UIView, UIScrollViewDelegate{
     }
     
     func initImageArr(imageArr : [UIImage]){
-        print("imageArr \(imageArr)")
         self.imageArr = imageArr
         pageControl.numberOfPages = self.imageArr.count
         
@@ -161,8 +160,6 @@ class FullScreenImageView : UIView, UIScrollViewDelegate{
             let xPosition = viewWidth * CGFloat(i)
             
             imageview.frame = CGRect(x: xPosition, y: 0, width: viewWidth, height: 600)
-            print(imageview)
-            
             scrollView.contentSize.width = viewWidth * CGFloat(1+i)
             
             scrollView.addSubview(imageview)

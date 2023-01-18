@@ -23,7 +23,6 @@
 		04668D83295C13BF00165E88 /* FeedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04668D82295C13BF00165E88 /* FeedCollectionViewCell.swift */; };
 		04804542296D2FAE00D02A30 /* UpdateMyInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04804541296D2FAE00D02A30 /* UpdateMyInfoViewController.swift */; };
 		04804544296D2FB900D02A30 /* UpdateMyInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04804543296D2FB900D02A30 /* UpdateMyInfoView.swift */; };
-		04804546296D5EB100D02A30 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04804545296D5EB100D02A30 /* Router.swift */; };
 		04852F9028FE72AF00A3EED9 /* SocialLoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04852F8F28FE72AF00A3EED9 /* SocialLoginController.swift */; };
 		04852F9228FE72E400A3EED9 /* SocialLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04852F9128FE72E400A3EED9 /* SocialLoginView.swift */; };
 		048EAA7E296511CF004E4A08 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 048EAA7D296511CF004E4A08 /* GoogleService-Info.plist */; };
@@ -53,6 +52,10 @@
 		A210F66F295B163400A517C5 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A210F66E295B163400A517C5 /* SearchView.swift */; };
 		A210F6722960247600A517C5 /* FullScreenImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A210F6712960247600A517C5 /* FullScreenImageViewController.swift */; };
 		A210F6742960253600A517C5 /* FullScreenImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A210F6732960253600A517C5 /* FullScreenImageView.swift */; };
+		A2378EEB29781DFF0025A676 /* WriteFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2378EEA29781DFF0025A676 /* WriteFeedViewModel.swift */; };
+		A2527D43297828CE0031350B /* FeedInsertResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2527D42297828CE0031350B /* FeedInsertResponse.swift */; };
+		A2527D4529782C750031350B /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2527D4429782C750031350B /* HomeViewModel.swift */; };
+		A2527D4729782DBF0031350B /* FeedSelectResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2527D4629782DBF0031350B /* FeedSelectResponse.swift */; };
 		A28EC0DA28CA1BC000F5BF98 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28EC0D928CA1BC000F5BF98 /* AppDelegate.swift */; };
 		A28EC0DC28CA1BC000F5BF98 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28EC0DB28CA1BC000F5BF98 /* SceneDelegate.swift */; };
 		A28EC0E328CA1BC100F5BF98 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A28EC0E228CA1BC100F5BF98 /* Assets.xcassets */; };
@@ -102,7 +105,6 @@
 		04668D82295C13BF00165E88 /* FeedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCollectionViewCell.swift; sourceTree = "<group>"; };
 		04804541296D2FAE00D02A30 /* UpdateMyInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateMyInfoViewController.swift; sourceTree = "<group>"; };
 		04804543296D2FB900D02A30 /* UpdateMyInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateMyInfoView.swift; sourceTree = "<group>"; };
-		04804545296D5EB100D02A30 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		04852F8F28FE72AF00A3EED9 /* SocialLoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginController.swift; sourceTree = "<group>"; };
 		04852F9128FE72E400A3EED9 /* SocialLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginView.swift; sourceTree = "<group>"; };
 		048EAA7D296511CF004E4A08 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -132,6 +134,10 @@
 		A210F66E295B163400A517C5 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		A210F6712960247600A517C5 /* FullScreenImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewController.swift; sourceTree = "<group>"; };
 		A210F6732960253600A517C5 /* FullScreenImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageView.swift; sourceTree = "<group>"; };
+		A2378EEA29781DFF0025A676 /* WriteFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteFeedViewModel.swift; sourceTree = "<group>"; };
+		A2527D42297828CE0031350B /* FeedInsertResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedInsertResponse.swift; sourceTree = "<group>"; };
+		A2527D4429782C750031350B /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		A2527D4629782DBF0031350B /* FeedSelectResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSelectResponse.swift; sourceTree = "<group>"; };
 		A28EC0D628CA1BC000F5BF98 /* Summar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Summar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A28EC0D928CA1BC000F5BF98 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A28EC0DB28CA1BC000F5BF98 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -184,7 +190,6 @@
 			children = (
 				A28EC0E428CA1BC100F5BF98 /* LaunchScreen.storyboard */,
 				04040E962962734C00D3333C /* LaunchScreenController.swift */,
-				04804545296D5EB100D02A30 /* Router.swift */,
 			);
 			path = LaunchScreen;
 			sourceTree = "<group>";
@@ -449,6 +454,8 @@
 				04D4B0EC295D803D00AD5043 /* TableViewCell */,
 				A2ECB36429448CD10005D88C /* HomeViewController.swift */,
 				04B864E429494D0600D814D9 /* HomeView.swift */,
+				A2527D4429782C750031350B /* HomeViewModel.swift */,
+				A2527D4629782DBF0031350B /* FeedSelectResponse.swift */,
 			);
 			path = 1TabbarHome;
 			sourceTree = "<group>";
@@ -469,6 +476,8 @@
 				041EEE972952E708006263C7 /* Feed.swift */,
 				041EEE9D295435F6006263C7 /* WriteFeedController.swift */,
 				041EEE9F2954362D006263C7 /* WrtieFeedView.swift */,
+				A2378EEA29781DFF0025A676 /* WriteFeedViewModel.swift */,
+				A2527D42297828CE0031350B /* FeedInsertResponse.swift */,
 			);
 			path = 3TabbarFeed;
 			sourceTree = "<group>";
@@ -618,7 +627,7 @@
 				041EEEA02954362D006263C7 /* WrtieFeedView.swift in Sources */,
 				A2D27B862974144D002CF652 /* Notice.swift in Sources */,
 				5EB4F5F3296EAFFF0061D64D /* LogHelper.swift in Sources */,
-				04804546296D5EB100D02A30 /* Router.swift in Sources */,
+				A2527D4529782C750031350B /* HomeViewModel.swift in Sources */,
 				A2933E7429501B4800B84C5B /* MyInfoViewModel.swift in Sources */,
 				04B864E529494D0600D814D9 /* HomeView.swift in Sources */,
 				A2E960DD29743BAF007E3B3B /* FAQController.swift in Sources */,
@@ -644,7 +653,9 @@
 				A2ECB36729448E870005D88C /* ClippingViewController.swift in Sources */,
 				A2D27B722971C963002CF652 /* PushSettingViewController.swift in Sources */,
 				A210F6722960247600A517C5 /* FullScreenImageViewController.swift in Sources */,
+				A2378EEB29781DFF0025A676 /* WriteFeedViewModel.swift in Sources */,
 				A28EC0DC28CA1BC000F5BF98 /* SceneDelegate.swift in Sources */,
+				A2527D4729782DBF0031350B /* FeedSelectResponse.swift in Sources */,
 				048EAA872965570E004E4A08 /* PreferencesTableViewCell.swift in Sources */,
 				04CCEAFD2910A61D009DBE05 /* ServerRequest.swift in Sources */,
 				04668D83295C13BF00165E88 /* FeedCollectionViewCell.swift in Sources */,
@@ -671,6 +682,7 @@
 				A2E960DF29743BE5007E3B3B /* FAQView.swift in Sources */,
 				045575782968084B009C0827 /* NicknameCheck.swift in Sources */,
 				04852F9228FE72E400A3EED9 /* SocialLoginView.swift in Sources */,
+				A2527D43297828CE0031350B /* FeedInsertResponse.swift in Sources */,
 				A2D27B8429741024002CF652 /* NoticeViewModel.swift in Sources */,
 				04A69BD72907CFAE00EF7133 /* SignUp2View.swift in Sources */,
 				04804544296D2FB900D02A30 /* UpdateMyInfoView.swift in Sources */,
