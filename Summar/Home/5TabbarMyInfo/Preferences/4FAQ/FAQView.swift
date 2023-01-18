@@ -93,6 +93,7 @@ extension FAQView: UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell1", for: indexPath)
                     as? FAQTitleTableViewCell else { return UITableViewCell() }
             cell.tableLabel.text = tableViewData[indexPath.section].title
+            cell.upDownImageView.image = UIImage(named: "Down")
             cell.view.backgroundColor = .white
             return cell
             

@@ -393,7 +393,8 @@ class UpdateMyInfoView: UIView, UITextViewDelegate, UITextFieldDelegate {
         view2.snp.makeConstraints{(make) in
             make.top.equalTo(introduceLabel.snp.bottom).offset(7)
             make.left.equalTo(20)
-            make.right.bottom.equalTo(-20)
+            make.right.equalTo(-20)
+            make.height.equalTo(150)
         }
         
         view2TextView.snp.makeConstraints{(make) in

@@ -71,6 +71,8 @@ class HomeViewController : UIViewController {
             print("피드 작성하기")
             
             let wrController = UINavigationController(rootViewController:  WriteFeedController.shared)
+            wrController.navigationBar.isTranslucent = false
+            wrController.navigationBar.backgroundColor = .white
             wrController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
             self.present(wrController, animated: true, completion: nil)
         }

@@ -36,27 +36,18 @@ class LaunchScreenController: UIViewController {
         self.view.addSubview(imageView)
         self.view.addSubview(label)
         
-        _ = [imageView, label].map {
+        _ = [imageView].map {
             self.view.addSubview($0)
         }
         
         imageView.snp.makeConstraints{(make) in
-            make.centerX.equalToSuperview()
-            make.height.equalTo(40)
-            make.width.equalTo(200)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.centerY).offset(-30)
-        }
-        
-        label.snp.makeConstraints{(make) in
-            make.centerX.equalToSuperview()
-            make.left.equalTo(20)
-            make.right.equalTo(-20)
-            make.top.equalTo(imageView.snp.bottom).offset(10)
+            make.centerX.centerY.equalToSuperview()
+            make.height.equalTo(75)
+            make.width.equalTo(240)
         }
         
         UIView.animate(withDuration: 1.5, animations: {
             self.imageView.alpha = 1.0
-            self.label.alpha = 1.0
         })
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){ //TEST

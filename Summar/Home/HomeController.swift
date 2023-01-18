@@ -31,6 +31,10 @@ class HomeController : UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.BackgroundColor
+        fillSafeArea(position: .top, color: .white)
+        fillSafeArea(position: .left, color: .white)
+        fillSafeArea(position: .right, color: .white)
+        fillSafeArea(position: .bottom, color: .white)
         
         UITabBar.appearance().barTintColor = UIColor.summarColor1
 //        UITabBar.appearance().backgroundColor = UIColor.white
@@ -72,6 +76,8 @@ class HomeController : UITabBarController {
     
     fileprivate func createNavController(for rootViewController: UIViewController, title: String?, image: UIImage, selectedImage: UIImage) -> UIViewController {
         let navController = UINavigationController(rootViewController:  rootViewController)
+        navController.navigationBar.isTranslucent = false
+        navController.navigationBar.backgroundColor = .white
         navController.tabBarItem.title = title
         navController.tabBarItem.image = image
         navController.tabBarItem.selectedImage = selectedImage

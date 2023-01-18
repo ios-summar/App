@@ -17,6 +17,7 @@ import KakaoSDKAuth
 import KakaoSDKUser
 import KakaoSDKCommon
 import Firebase // Push https://developer-fury.tistory.com/53
+import AlamofireNetworkActivityIndicator // https://swiftpackageindex.com/Alamofire/AlamofireNetworkActivityIndicator
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -28,6 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         KakaoLoginInit()
         NaverLoginInit()
         PushInit()
+        AlamofireIndicator()
         
 //        UITabBar.appearance().barTintColor = UIColor.summarColor1
         UITabBar.appearance().backgroundColor = UIColor.white
@@ -68,6 +70,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         NaverThirdPartyLoginConnection.getSharedInstance()?.application(app, open: url, options: options)
         return true
+    }
+    
+    func AlamofireIndicator() {
+        NetworkActivityIndicatorManager.shared.isEnabled = true
     }
     
     func PushInit() {

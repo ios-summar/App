@@ -59,6 +59,7 @@ class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate,
         myInfoView.delegate = self
         myInfoView.pushDelegate = self
         VC.delegate = self
+        
         // MARK: - 마이 써머리 상단 타이틀, 버튼
         self.navigationItem.titleView = lbNavTitle
         self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(pushViewScreen(_:)), uiImage: UIImage(systemName: "gearshape")!, tintColor: .black)
@@ -67,17 +68,13 @@ class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate,
         
         myInfoView.snp.makeConstraints{(make) in
 
-            make.topMargin.equalTo(0)
+            make.topMargin.equalTo(self.view.safeAreaLayoutGuide.snp.top)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.bottom.equalToSuperview()
         }
     }
     
-//    override func viewDidAppear(_ animated: Bool) {
-//        myInfoView.requestMyInfo()
-//        print(#file , #function)
-//    }
     
     override func viewWillAppear(_ animated: Bool) {
         if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
@@ -85,6 +82,7 @@ class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate,
             print("UserInfo userSeq => ", value["userSeq"])
             myInfoView.requestMyInfo()
             myInfoView.requestMyFeed(value["userSeq"] as? Int ?? nil)
+            LoadingIndicator.hideLoading()
         }else {
             print("userInfo nil")
         }

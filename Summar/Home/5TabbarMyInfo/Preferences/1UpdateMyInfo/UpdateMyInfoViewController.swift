@@ -121,8 +121,6 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
     @objc func updateProfile(){
         smLog("")
         
-        LoadingIndicator.showLoading()
-        
         let profileImage = updateMyInfoView.profileImageView.image
         let userNickname = updateMyInfoView.nickNameTextField.text
         let major1 = updateMyInfoView.editMajor.text
@@ -134,6 +132,8 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
         }else if major1!.isEmpty && major2!.isEmpty {
             helper.showAlertAction(vc: self, message: "전공을 선택 후 프로필 편집이 가능합니다.")
         }else { // 정규식 이상 없음
+            LoadingIndicator.showLoading()
+            
             param["userNickname"] = userInfo?.result.userNickname
             param["updateUserNickname"] = userNickname
             param["major1"] = major1
@@ -158,13 +158,10 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
             viewModel.updateUserInfo(param)
             
             viewModel.didFinishFetch = {
-                self.navigationController?.popViewController(animated: true)
                 self.helper.showAlertAction(vc: self, message: "프로필 편집을 완료했습니다.")
+                self.navigationController?.popViewController(animated: true)
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                LoadingIndicator.hideLoading()
-            }
         }
     }
 }

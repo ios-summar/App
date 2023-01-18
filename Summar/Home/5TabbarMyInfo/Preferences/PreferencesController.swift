@@ -69,6 +69,7 @@ class PreferencesController: UIViewController, PushDelegate, PopDelegate, MyInfo
         preferencesView.myInfoDelegate = self
         
         self.view.backgroundColor = .white
+        self.navigationController?.navigationBar.backgroundColor = .white
         self.navigationItem.titleView = titleLabel
         self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(topBtnAction(_:)), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
         
@@ -81,6 +82,7 @@ class PreferencesController: UIViewController, PushDelegate, PopDelegate, MyInfo
     
     override func viewWillAppear(_ animated: Bool) {
         preferencesView.requestMyInfo()
+        LoadingIndicator.hideLoading()
     }
     
     

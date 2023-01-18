@@ -102,6 +102,7 @@ extension NoticeView: UITableViewDelegate, UITableViewDataSource {
                     as? NoticeTitleTableViewCell else { return UITableViewCell() }
             cell.tableLabel.text = tableViewData[indexPath.section].title
             cell.dateLabel.text = tableViewData[indexPath.section].date
+            cell.upDownImageView.image = UIImage(named: "Down")
             cell.view.backgroundColor = .white
             return cell
             

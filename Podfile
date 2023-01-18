@@ -8,6 +8,7 @@ target 'Summar' do
   # Pods for Summar
    pod 'SnapKit' # UI AutoLayout 라이브러리
    pod 'Alamofire' # 네트워크 라이브러리
+   pod 'AlamofireNetworkActivityIndicator' # 네트워크 지연 라이브러리
    pod 'IQKeyboardManagerSwift'
    pod 'naveridlogin-sdk-ios' # 네이버 로그인
    pod 'GoogleSignIn'  # 구글로그인

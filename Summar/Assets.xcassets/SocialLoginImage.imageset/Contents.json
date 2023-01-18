@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "SocialLoginImage.png",
+      "filename" : "Group 161.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "Group 161-2.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "Group 161-3.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

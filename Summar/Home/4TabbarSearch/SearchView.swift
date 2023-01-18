@@ -278,12 +278,12 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
             
             cell.nickName.text = searchUserInfo[indexPath.row].userNickname
             
-            //            if searchUserInfo[indexPath.row].introduce != nil {
-            cell.introduceLabel.text = "프론트 백앤드 클라우스 스토리지 등 다양한 분야의 개발 경험을 보유하고 있습니다."
-            //                cell.major.text = searchUserInfo[indexPath.row].introduce
-            //            }else {
-            //
-            //            }
+            if searchUserInfo[indexPath.row].introduce != nil {
+                cell.introduceLabel.text = searchUserInfo[indexPath.row].introduce
+            }else {
+                cell.introduceLabel.text = ""
+            }
+            
             cell.major.text = searchUserInfo[indexPath.row].major2
             
             cell.followLabel.text = "팔로워 \(searchUserInfo[indexPath.row].follower!.commaRepresentation) · 팔로잉 \(searchUserInfo[indexPath.row].following!.commaRepresentation)"
