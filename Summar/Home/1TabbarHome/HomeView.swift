@@ -11,22 +11,26 @@ import UIKit
 class HomeView: UIView{
     static let shared = HomeView()
     let helper = Helper.shared
-    let viewModel = HomeViewModel()
     private let tableCellReuseIdentifier = "tableCell"
     private let bannerCellReuseIdentifier = "bannerCell"
     
-    var feedSelectResponse : FeedSelectResponse? {
+    var displayCount : Int = 0
+    var pageIndex : Int = 1
+    
+    var model : FeedSelectResponse? {
         didSet {
-            smLog("\n \(self.feedSelectResponse) \n")
+            smLog("\n \(self.model) \n")
+            
+            tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: tableCellReuseIdentifier)
+            tableView.register(BannerTableViewCell.self, forCellReuseIdentifier: bannerCellReuseIdentifier)
+            
+            tableView.delegate = self
+            tableView.dataSource = self
+            
+            tableView.reloadData()
         }
     }
     
-    var arr: Array<Feed> = []
-    
-    let Feed1 = Feed()
-    let Feed2 = Feed()
-    let Feed3 = Feed()
-    let Feed4 = Feed()
     
     let tableView : UITableView = {
         let view = UITableView()
@@ -54,15 +58,13 @@ class HomeView: UIView{
             make.left.bottom.right.equalToSuperview()
             make.top.equalTo(self.safeAreaLayoutGuide.snp.top)
         }
-        
-        //홈화면 이미지 슬라이더
-        testFeed()
     }
     
     func selectFeed() {
+        let viewModel = HomeViewModel(0, 30)
         viewModel.selectFeed()
         viewModel.didFinishFetch = {
-            self.feedSelectResponse = self.viewModel.feedSelectResponse
+            self.model = viewModel.feedSelectResponse
         }
     }
 
@@ -73,31 +75,23 @@ class HomeView: UIView{
 }
 
 extension HomeView: UITableViewDelegate, UITableViewDataSource{
-    // MARK: - 피드
-    func testFeed(){
-        arr.append(Feed1)
-//        arr.append(Feed2)
-//        arr.append(Feed3)
-//        arr.append(Feed4)
-        
-        tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: tableCellReuseIdentifier)
-        tableView.register(BannerTableViewCell.self, forCellReuseIdentifier: bannerCellReuseIdentifier)
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-//        view3TableView.sectionFooterHeight = 20
-    }
-    
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        if indexPath.row != 0 {
-//            return 440
-//        }else {
-//            return 100
-//        }
-//    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arr.count + 1
+        if let totalRecordCount = model?.totalRecordCount, let recordsPerPage = model?.recordsPerPage, let currentPageNo = model?.currentPageNo, let totalPageCount = model?.totalPageCount {
+            if totalRecordCount < 30 { // 30개 미만일때는 총 건수만 return
+                return totalRecordCount + 1 // "+1" 은 위에 홈 배너를 위함
+            }else { // 30개 이상일때
+                if currentPageNo != totalPageCount { // 총건수를 30으로 나눴을때 현재페이지 != 마지막페이지
+                    displayCount = 30 * pageIndex
+                    return displayCount + 1 // "+1" 은 위에 홈 배너를 위함 / 30개씩 * 현재페이지 ex) 120건 노출시 30.. 60.. 90.. 120...
+                }else { // 총건수를 30으로 나눴을때 현재페이지 == 마지막페이지
+                    displayCount = (30 * (pageIndex - 1)) + (totalRecordCount % 30)
+                    return displayCount + 1 // "+1" 은 위에 홈 배너를 위함 / (30개씩 * 현재페이지) + 나머지(총 건수 % 30건)
+                }
+            }
+        }else {
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -105,10 +99,17 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
             let cell = tableView.dequeueReusableCell(withIdentifier: tableCellReuseIdentifier, for: indexPath) as! HomeTableViewCell
             cell.backgroundColor = .grayColor197
             
-            cell.nickName.text = "욱승"
-            cell.major.text = "컴퓨터 / 통신"
-            cell.contentsLabel.text = "베니테이블 온보딩 웰컴키트를 제작하면서 실용성과 소속감이 느껴지는 메세지를 전달하기 위해 많은 고민을 했습니다. 성공적인 아침을 열어나가기 위한 베니테이블 모닝루틴 라이프. 베니테이블 온보딩 웰컴키트를 제작하면서 실용성과 "
+            if let model = model?.content {
+                setProfileImage(cell.profileImg, model[indexPath.row - 1].user?.profileImageUrl)
+                cell.nickName.text = model[indexPath.row - 1].user?.userNickname
+                cell.major.text = model[indexPath.row - 1].user?.major2
+                cell.contentsLabel.text = model[indexPath.row - 1].contents
+                cell.contentsLabel.sizeToFit()
+                cell.feedImages = model[indexPath.row - 1].feedImages
+            }
+            
             helper.lineSpacing(cell.contentsLabel, 10)
+            
             return cell
         }else {
             let cell = tableView.dequeueReusableCell(withIdentifier: bannerCellReuseIdentifier, for: indexPath) as! BannerTableViewCell
@@ -118,4 +119,24 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
             return cell
         }
     }
+    
+    func setProfileImage(_ imageView: UIImageView,_ urlString: String?) {
+        guard let urlString = urlString else {return}
+        let url = URL(string: urlString)
+        //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
+        //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
+        DispatchQueue.global().async {
+            let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
+            DispatchQueue.main.async {
+                imageView.kf.indicatorType = .activity
+                imageView.kf.setImage(
+                  with: url,
+                  placeholder: nil,
+                  options: [.transition(.fade(1.2))],
+                  completionHandler: nil
+                )
+            }
+        }
+    }
+    
 }

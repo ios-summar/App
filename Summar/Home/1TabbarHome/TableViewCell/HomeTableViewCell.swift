@@ -10,6 +10,23 @@ import UIKit
 class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
     let helper = Helper()
     
+    var imageArr = [String]()
+    var feedImages : [FeedImages]? {
+            didSet {
+                guard let image = feedImages else {return}
+                
+                for i in 0 ..< image.count {
+                    imageArr.append(image[i].imageUrl!)
+                }
+                
+                initImageArr(imageArr) { finish in
+                    if finish {
+                        self.imageArr = []
+                    }
+                }
+            }
+        }
+    
     let imageViewWidth : CGFloat = {
         let width = UIScreen.main.bounds.width
         return width - 40
@@ -18,17 +35,6 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
     lazy var imageViewHeight : CGFloat = {
         return self.imageViewWidth * 0.5415
     }()
-    
-    var testPhotos : [UIImage] = [
-        UIImage(systemName: "doc")!,
-        UIImage(systemName: "doc.fill")!,
-        UIImage(systemName: "doc.circle")!,
-        UIImage(systemName: "square.and.arrow.up")!,
-        UIImage(systemName: "square.and.arrow.up.circle")!,
-        UIImage(systemName: "square.and.arrow.up.circle.fill")!,
-        UIImage(systemName: "square.and.arrow.up.trianglebadge.exclamationmark")!,
-        UIImage(systemName: "square.and.arrow.down")!
-    ]
     
     let profileImg : UIImageView = {
         let view = UIImageView()
@@ -55,13 +61,14 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
         label.sizeToFit()
         return label
     }()
-    let contentsLabel : UILabel = {
+    lazy var contentsLabel : UILabel = {
         let UILabel = UILabel()
         UILabel.font = .systemFont(ofSize: 14)
         UILabel.textColor = UIColor.homeContentsColor
         UILabel.textAlignment = .left
         UILabel.numberOfLines = 3
         UILabel.lineBreakMode = .byTruncatingTail
+        UILabel.sizeToFit()
         return UILabel
     }()
     lazy var pageControl: UIPageControl = {
@@ -121,7 +128,7 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
         
         profileImg.snp.makeConstraints { (make) in
             
-            make.top.equalTo(10)
+            make.top.equalTo(20)
             make.left.equalTo(20)
             make.width.height.equalTo(40)
         }
@@ -140,19 +147,12 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
             make.top.equalTo(profileImg.snp.bottom).offset(20)
             make.left.equalTo(20)
             make.right.equalTo(-20)
-            make.height.equalTo(100)
+//            make.height.equalTo(100)
         }
         scrollView.snp.makeConstraints { (make) in
             
             make.centerX.equalToSuperview()
-            make.top.equalTo(contentsLabel.snp.bottom).offset(10)
-            make.width.equalTo(imageViewWidth)
-            make.height.equalTo(imageViewHeight)
-        }
-        scrollView.snp.makeConstraints { (make) in
-            
-            make.centerX.equalToSuperview()
-            make.top.equalTo(contentsLabel.snp.bottom).offset(10)
+            make.top.equalTo(contentsLabel.snp.bottom).offset(30)
             make.width.equalTo(imageViewWidth)
             make.height.equalTo(imageViewHeight)
         }
@@ -162,41 +162,57 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
             make.left.right.equalToSuperview()
             make.bottom.equalTo(-20)
         }
-        
-        initImageArr(testPhotos)
     }
     
-    func initImageArr(_ imageArr : [UIImage]){
-        pageControl.numberOfPages = imageArr.count
-        
-        for i in 0..<imageArr.count{
-            let imageview = UIImageView()
-            imageview.image = imageArr[i]
-            imageview.contentMode = .scaleAspectFit
-            imageview.clipsToBounds = true
-            let xPosition = imageViewWidth * CGFloat(i)
+    func initImageArr(_ imageArr : [String], completion : @escaping(Bool) -> ()){
+            pageControl.numberOfPages = imageArr.count
             
-            imageview.frame = CGRect(x: xPosition, y: 0, width: imageViewWidth, height: imageViewHeight)
-            scrollView.contentSize.width = imageViewWidth * CGFloat(1+i)
-            
-            scrollView.addSubview(imageview)
-        }
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let currentPage = round(scrollView.contentOffset.x / imageViewWidth)
-        pageControl.currentPage = Int(CGFloat(currentPage))
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        contentView.backgroundColor = .white
-        // table view margin
-          contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0))
-    }
+            for i in 0..<imageArr.count{
+                let url = URL(string: imageArr[i])
+                //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
+                //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
+                DispatchQueue.global().async {
+                    let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
+                    DispatchQueue.main.async {
+                        let imageview = UIImageView()
+                        
+                        imageview.kf.indicatorType = .activity
+                        imageview.kf.setImage(
+                            with: url,
+                            placeholder: nil,
+                            options: [.transition(.fade(1.2))],
+                            completionHandler: nil
+                        )
+                        
+                        imageview.contentMode = .scaleAspectFit
+                        imageview.clipsToBounds = true
+                        let xPosition = self.imageViewWidth * CGFloat(i)
+                        
+                        imageview.frame = CGRect(x: xPosition, y: 0, width: self.imageViewWidth, height: self.imageViewHeight)
+                        self.scrollView.contentSize.width = self.imageViewWidth * CGFloat(1+i)
+                        
+                        self.scrollView.addSubview(imageview)
 
-}
+                    }
+                }
+            }
+            completion(true)
+        }
+        
+        func scrollViewDidScroll(_ scrollView: UIScrollView) {
+            let currentPage = round(scrollView.contentOffset.x / imageViewWidth)
+            pageControl.currentPage = Int(CGFloat(currentPage))
+        }
+        
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            contentView.backgroundColor = .white
+            // table view margin
+//              contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0))
+        }
+
+    }

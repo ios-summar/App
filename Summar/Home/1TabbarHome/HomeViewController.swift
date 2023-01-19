@@ -14,7 +14,6 @@ class HomeViewController : UIViewController {
     static let shared = HomeViewController()
     let homeView = HomeView.shared
     let actionButton = JJFloatingActionButton()
-    let viewModel = HomeViewModel()
     
     let viewWidth : CGFloat = {
         var btnWidth = UIScreen.main.bounds.width

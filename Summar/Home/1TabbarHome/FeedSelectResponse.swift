@@ -19,7 +19,7 @@ struct FeedSelectResponse: Codable {
 
 struct FeedInfo: Codable {
     let feedSeq : Int?
-    let userSeq : Int?
+    let user : Info?
     let contents : String?
     let feedImages : [FeedImages]
 }

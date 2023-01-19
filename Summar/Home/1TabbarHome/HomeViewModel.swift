@@ -17,6 +17,16 @@ class HomeViewModel {
         }
     }
     
+    var pageIndex: Int? = nil
+    var size: Int? = nil
+    
+    init(_ pageIndex: Int?, _ size: Int?){
+        self.pageIndex = pageIndex
+        self.size = size
+        
+        print("pageIndex : \(pageIndex), size : \(size) ")
+    }
+    
     // MARK: - Closures for callback, since we are not using the ViewModel to the View.
     var showAlertClosure: (() -> ())?
     var updateLoadingStatus: (() -> ())?
@@ -24,7 +34,7 @@ class HomeViewModel {
     
     
     func selectFeed(){
-        self.request.selectFeed("/feed", completion: { (feedSelectResponse, error, status) in
+        self.request.selectFeed("/feed?page=\(pageIndex)&size=\(size)", completion: { (feedSelectResponse, error, status) in
             //error만 있을경우 서버오류
             //error,status != nil 경우 토큰 재발급
             if let error = error, let status = status {
