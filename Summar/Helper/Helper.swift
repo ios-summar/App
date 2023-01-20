@@ -180,6 +180,10 @@ extension UIColor {
     //5TabbarMyInfo
     static var BackgroundColor = UIColor.init(red: 251/255, green: 251/255, blue: 253/255, alpha: 1)
     static var followShadowColor = UIColor.init(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
+
+    //프로필 편집
+    static var RedSeven = UIColor.init(r: 183, g: 21, b: 35)
+    static var GreenOne = UIColor.init(r: 58, g: 228, b: 96)
     
     //설정
     static var Gray01 = UIColor.init(red: 247/255, green: 248/255, blue: 249/255, alpha: 1)
@@ -301,6 +305,20 @@ extension UINavigationItem {
     func makeSFSymbolButton(_ target: Any?, action: Selector, uiImage: UIImage, tintColor : UIColor) -> UIBarButtonItem {
         let button = UIButton(type: .system)
         button.setImage(uiImage, for: .normal)
+        button.addTarget(target, action: action, for: .touchUpInside)
+        button.tintColor = tintColor
+            
+        let barButtonItem = UIBarButtonItem(customView: button)
+        barButtonItem.customView?.translatesAutoresizingMaskIntoConstraints = false
+        barButtonItem.customView?.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        barButtonItem.customView?.widthAnchor.constraint(equalToConstant: 40).isActive = true
+            
+        return barButtonItem
+    }
+    
+    func makeSFSymbolButtonLabel(_ target: Any?, action: Selector, title: String, tintColor : UIColor) -> UIBarButtonItem {
+        let button = UIButton(type: .system)
+        button.setTitle(title, for: .normal)
         button.addTarget(target, action: action, for: .touchUpInside)
         button.tintColor = tintColor
             

@@ -238,7 +238,6 @@ class WriteFeedView : UIView, UITextViewDelegate {
         if resultArr.count == 0 && (view2TextView.text == "피드 내용은 2,000자 이내로 입력 가능합니다." || view2TextView.text == "") {
             helper.showAlert(vc: self, message: "이미지 추가 혹은 피드내용을 채우고 임시저장이 가능합니다.")
         }else {
-            
             registerFeed("tempSave")
         }
     }

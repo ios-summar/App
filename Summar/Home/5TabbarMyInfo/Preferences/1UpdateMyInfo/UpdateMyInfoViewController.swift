@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import YPImagePicker
 
-class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
+class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate, UpdateNavigationBar{
     let viewModel = UpdateMyInfoViewModel()
     let helper = Helper()
     
@@ -95,6 +95,7 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
     
     func configureDelegate() {
         updateMyInfoView.delegate = self
+        updateMyInfoView.delegateUpdate = self
     }
     
     func configureUI() {
@@ -107,11 +108,30 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
         // MARK: - NavigationBar
         self.navigationItem.titleView = lbNavTitle
         self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(popScreen), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(updateProfile))
-//        self.navigationItem.rightBarButtonItem?.isEnabled = false
-        self.navigationItem.rightBarButtonItem?.tintColor = .black
+        self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButtonLabel(self, action: #selector(updateProfile), title: "완료", tintColor: UIColor.magnifyingGlassColor)
+        self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([
+                    NSAttributedString.Key.font: FontManager.getFont(Font.SemiBold.rawValue).medium15Font,
+                    NSAttributedString.Key.foregroundColor: UIColor.magnifyingGlassColor],
+                for: .normal)
         
         // MARK: - addView
+    }
+    
+    func updateNavigationBar() {
+        smLog("")
+        guard let userNickname = updateMyInfoView.nickNameTextField.text else {return}
+        guard let major1 = updateMyInfoView.editMajor.text else {return}
+        guard let major2 = updateMyInfoView.majorTextField.text else {return}
+        
+        smLog("\(updateMyInfoView.nicknameValid)")
+        smLog("\(major1.isEmpty)")
+        smLog("\(major2.isEmpty)")
+        
+        if updateMyInfoView.nicknameValid && !major1.isEmpty && !major2.isEmpty {
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
+        }else {
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
+        }
     }
     
     @objc func popScreen(){
@@ -126,42 +146,35 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate {
         let major1 = updateMyInfoView.editMajor.text
         let major2 = updateMyInfoView.majorTextField.text
         let introduce = updateMyInfoView.view2TextView.text
+        LoadingIndicator.showLoading()
         
-        if !updateMyInfoView.nicknameValid {
-            helper.showAlertAction(vc: self, message: "닉네임 중복 확인 후 프로필 편집이 가능합니다.")
-        }else if major1!.isEmpty && major2!.isEmpty {
-            helper.showAlertAction(vc: self, message: "전공을 선택 후 프로필 편집이 가능합니다.")
-        }else { // 정규식 이상 없음
-            LoadingIndicator.showLoading()
-            
-            param["userNickname"] = userInfo?.result.userNickname
-            param["updateUserNickname"] = userNickname
-            param["major1"] = major1
-            param["major2"] = major2
-            
-            if profileImage == UIImage(named: "NonProfile") {
-                smLog("")
-                param["profileImageUrl"] = ""
-            }else {
-                smLog("")
-                param["profileImageUrl"] = profileImage
-            }
-
-            if introduce == "나에 대해 소개해 주세요" {
-                param["introduce"] = ""
-            }else {
-                param["introduce"] = introduce
-            }
-            
-            print("!! ",param)
-            
-            viewModel.updateUserInfo(param)
-            
-            viewModel.didFinishFetch = {
-                self.helper.showAlertAction(vc: self, message: "프로필 편집을 완료했습니다.")
-                self.navigationController?.popViewController(animated: true)
-            }
-            
+        param["userNickname"] = userInfo?.result.userNickname
+        param["updateUserNickname"] = userNickname
+        param["major1"] = major1
+        param["major2"] = major2
+        
+        if profileImage == UIImage(named: "NonProfile") {
+            smLog("")
+            param["profileImageUrl"] = ""
+        }else {
+            smLog("")
+            param["profileImageUrl"] = profileImage
         }
+        
+        if introduce == "나에 대해 소개해 주세요" {
+            param["introduce"] = ""
+        }else {
+            param["introduce"] = introduce
+        }
+        
+        print("!! ",param)
+        
+        viewModel.updateUserInfo(param)
+        
+        viewModel.didFinishFetch = {
+            self.helper.showAlertAction(vc: self, message: "프로필 편집을 완료했습니다.")
+            self.navigationController?.popViewController(animated: true)
+        }
+            
     }
 }
