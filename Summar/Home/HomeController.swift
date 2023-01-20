@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import JJFloatingActionButton
 
 class HomeController : UITabBarController {
     static let shared = HomeController()

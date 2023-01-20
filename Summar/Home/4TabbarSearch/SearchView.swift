@@ -50,7 +50,7 @@ class SearchView: UIView{
     
     lazy var searchCountLabel : UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
+        label.font = FontManager.getFont(Font.Bold.rawValue).smallFont
         label.numberOfLines = 1
         label.textAlignment = .left
         label.textColor = UIColor.magnifyingGlassColor
@@ -60,8 +60,8 @@ class SearchView: UIView{
     
     lazy var searchDescriptionLabel : UILabel = {
         let label = UILabel()
-        label.text = "검색결과"
-        label.font = .systemFont(ofSize: 14)
+        label.text = "검색 결과"
+        label.font = FontManager.getFont(Font.SemiBold.rawValue).smallFont
         label.numberOfLines = 1
         label.textAlignment = .left
         label.textColor = UIColor.black

@@ -35,7 +35,7 @@ class HomeView: UIView{
     let tableView : UITableView = {
         let view = UITableView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .grayColor197
+        view.backgroundColor = .white
         
         // 테이블뷰 왼쪽 마진 없애기
         view.separatorStyle = .none
@@ -76,6 +76,14 @@ class HomeView: UIView{
 
 extension HomeView: UITableViewDelegate, UITableViewDataSource{
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return 115
+        }else {
+            return UITableView.automaticDimension
+        }
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let totalRecordCount = model?.totalRecordCount, let recordsPerPage = model?.recordsPerPage, let currentPageNo = model?.currentPageNo, let totalPageCount = model?.totalPageCount {
             if totalRecordCount < 30 { // 30개 미만일때는 총 건수만 return
@@ -97,23 +105,23 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row != 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: tableCellReuseIdentifier, for: indexPath) as! HomeTableViewCell
-            cell.backgroundColor = .grayColor197
+            
             
             if let model = model?.content {
                 setProfileImage(cell.profileImg, model[indexPath.row - 1].user?.profileImageUrl)
                 cell.nickName.text = model[indexPath.row - 1].user?.userNickname
                 cell.major.text = model[indexPath.row - 1].user?.major2
                 cell.contentsLabel.text = model[indexPath.row - 1].contents
-                cell.contentsLabel.sizeToFit()
                 cell.feedImages = model[indexPath.row - 1].feedImages
+                
+                helper.lineSpacing(cell.contentsLabel, 5)
             }
             
-            helper.lineSpacing(cell.contentsLabel, 10)
+            
             
             return cell
         }else {
             let cell = tableView.dequeueReusableCell(withIdentifier: bannerCellReuseIdentifier, for: indexPath) as! BannerTableViewCell
-            cell.backgroundColor = .grayColor197
             cell.selectionStyle = .none
             
             return cell

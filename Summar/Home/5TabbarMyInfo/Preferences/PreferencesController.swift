@@ -45,9 +45,9 @@ class PreferencesController: UIViewController, PushDelegate, PopDelegate, MyInfo
     
     let titleLabel : UILabel = {
         let title = UILabel()
-        title.text = "환경 설정"
-        title.font = .boldSystemFont(ofSize: 20)
-        title.textColor = UIColor.summarColor1
+        title.text = "설정"
+        title.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        title.textColor = UIColor.black
         title.sizeToFit()
         return title
     }()

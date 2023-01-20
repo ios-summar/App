@@ -25,14 +25,15 @@ class WriteFeedController : UIViewController, ImagePickerDelegate, PopDelegate{
     let titleLabel : UILabel = {
         let title = UILabel()
         title.text = "피드 작성"
-        title.font = .boldSystemFont(ofSize: 20)
-        title.textColor = UIColor.summarColor1
+        title.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        title.textColor = UIColor.black
         title.sizeToFit()
         return title
     }()
     
     override func viewDidLoad() {
         wfView.delegate = self
+        
         wfView.popDelegate = self
         self.view.addSubview(wfView)
         

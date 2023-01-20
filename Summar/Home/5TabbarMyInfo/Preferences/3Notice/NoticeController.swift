@@ -16,8 +16,8 @@ class NoticeController: UIViewController {
     let titleLabel : UILabel = {
         let title = UILabel()
         title.text = "공지사항"
-        title.font = .boldSystemFont(ofSize: 20)
-        title.textColor = UIColor.summarColor1
+        title.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        title.textColor = UIColor.black
         title.sizeToFit()
         return title
     }()

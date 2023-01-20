@@ -11,6 +11,15 @@ class BannerTableViewCell: UITableViewCell {
     
     private let cellReuseIdentifier = "collectionCell"
     
+    let viewWidth : CGFloat = {
+        let width = UIScreen.main.bounds.width
+        return width - 20
+    }()
+    
+    lazy var viewHeight : CGFloat = {
+        return self.viewWidth / 3
+    }()
+    
     // 이미지 슬라이더
     let view1 = UIView()
     let collectionView : UICollectionView = {
@@ -22,6 +31,25 @@ class BannerTableViewCell: UITableViewCell {
         cv.isScrollEnabled = false
         cv.layer.cornerRadius = 7
         return cv
+    }()
+    
+    lazy var pageControl: UIPageControl = {
+        // Create a UIPageControl.
+        let pageControl = UIPageControl()
+        // Set the number of pages to page control.
+//        pageControl.numberOfPages = self.arrProductPhotos.count
+        
+        // Set the current page.
+        pageControl.currentPage = 0
+        
+        // 페이지 표시 색상을 밝은 회색 설정
+        pageControl.pageIndicatorTintColor = UIColor.lightGray
+        // 현재 페이지 표시 색상을 검정색으로 설정
+        pageControl.currentPageIndicatorTintColor = UIColor.white
+        
+        pageControl.isUserInteractionEnabled = false
+        
+        return pageControl
     }()
     
     var arrProductPhotos = [
@@ -39,26 +67,26 @@ class BannerTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(collectionView)
+//        contentView.addSubview(collectionView)
         selectionStyle = .none
-        backgroundColor = .white
+        backgroundColor = .Gray01
         
-//        self.view1.addSubview(collectionView)
-//        view1.snp.makeConstraints{(make) in
-//            make.top.left.bottom.right.equalToSuperview()
-//            make.top.bottom.equalToSuperview()
-//            make.left.equalTo(30)
-//            make.right.equalTo(-30)
-//        }
-        collectionView.layer.borderWidth = 1
-        collectionView.snp.makeConstraints{(make) in
-            make.top.left.bottom.right.equalToSuperview()
-            make.top.equalTo(5)
-            make.width.equalTo(100)
-            make.height.equalTo(80)
-            make.bottom.equalTo(-5)
+        contentView.addSubview(view1)
+        view1.layer.borderWidth = 1
+        view1.backgroundColor = .white
+        view1.snp.makeConstraints{(make) in
+            make.top.left.right.bottom.equalToSuperview()
         }
         
+        self.view1.addSubview(collectionView)
+        collectionView.layer.borderWidth = 1
+        collectionView.layer.borderColor = UIColor.red.cgColor
+        collectionView.snp.makeConstraints{(make) in
+            make.top.bottom.equalToSuperview()
+            make.width.equalTo(viewWidth)
+            make.height.equalTo(115)
+            make.centerX.equalToSuperview()
+        }
         imgSlider()
     }
     
@@ -76,9 +104,7 @@ class BannerTableViewCell: UITableViewCell {
         super.layoutSubviews()
         contentView.backgroundColor = .clear
 //        contentView.layer.borderWidth = 3
-        
-        
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0))
+//        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0))
     }
 
 }
@@ -114,7 +140,7 @@ extension BannerTableViewCell : UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func startTimer(){
-        timer = Timer.scheduledTimer(timeInterval: 2.5, target: self, selector: #selector(moveToNextIndex), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 3.5, target: self, selector: #selector(moveToNextIndex), userInfo: nil, repeats: true)
     }
         
     @objc func moveToNextIndex(){
@@ -123,7 +149,7 @@ extension BannerTableViewCell : UICollectionViewDelegate, UICollectionViewDataSo
         }else {
             currentCelIndex += 1
         }
-        
+        pageControl.currentPage = currentCelIndex
         collectionView.scrollToItem(at: IndexPath(item: currentCelIndex, section: 0), at: .centeredHorizontally, animated: true)
     }
 }

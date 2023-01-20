@@ -36,6 +36,8 @@ class LaunchScreenController: UIViewController {
         self.view.addSubview(imageView)
         self.view.addSubview(label)
         
+        Record().fontCheck()
+        
         _ = [imageView].map {
             self.view.addSubview($0)
         }

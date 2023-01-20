@@ -7,6 +7,7 @@ struct UserInfo: Codable {
 }
 
 struct Info: Codable {
+    let userSeq : Int?
     let userEmail: String?
     let userNickname: String?
     let major1: String?
@@ -18,6 +19,7 @@ struct Info: Codable {
     let profileImageUrl: String?
     
     enum CodingKeys: String, CodingKey {
+        case userSeq = "userSeq"
         case userEmail = "userEmail"
         case userNickname = "userNickname"
         case major1 = "major1"

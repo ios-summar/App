@@ -182,10 +182,13 @@ extension UIColor {
     static var followShadowColor = UIColor.init(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
     
     //설정
-    static var PreferencesBackgroundColor = UIColor.init(red: 247/255, green: 248/255, blue: 249/255, alpha: 1)
+    static var Gray01 = UIColor.init(red: 247/255, green: 248/255, blue: 249/255, alpha: 1)
     static var Gray02 = UIColor.init(r: 232, g: 235, b: 237)
     
     static var updateColor = UIColor.init(r: 255, g: 121, b: 96)
+    
+    //Text Color
+    static var textColor115 = UIColor.init(r: 115, g: 120, b: 127)
 }
 
 extension String {

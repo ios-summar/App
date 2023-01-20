@@ -85,7 +85,7 @@ class HomeViewController : UIViewController {
         
         actionButton.snp.makeConstraints{(make) in
             make.width.height.equalTo(56)
-            make.bottom.right.equalTo(-16)
+            make.bottom.right.equalTo(self.view.safeAreaLayoutGuide).offset(-16)
         }
         
         actionButton.buttonColor = .systemBlue

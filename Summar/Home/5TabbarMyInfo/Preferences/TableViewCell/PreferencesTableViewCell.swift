@@ -20,14 +20,14 @@ class PreferencesTableViewCell: UITableViewCell {
     let label : UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = .boldSystemFont(ofSize: 16)
+        label.font = FontManager.getFont(Font.SemiBold.rawValue).medium15Font
         return label
     }()
     
     lazy var versionLabel : UILabel = {
         let label = UILabel()
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
-        label.font = .systemFont(ofSize: 11)
+        label.font = FontManager.getFont(Font.SemiBold.rawValue).small11Font
         return label
     }()
     
@@ -35,7 +35,7 @@ class PreferencesTableViewCell: UITableViewCell {
         let label = UILabel()
         label.text = "업데이트를 진행해 주세요"
         label.textColor = UIColor.updateColor
-        label.font = .systemFont(ofSize: 11)
+        label.font = FontManager.getFont(Font.SemiBold.rawValue).small11Font
         label.alpha = 0.0
         return label
     }()

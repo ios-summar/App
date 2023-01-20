@@ -16,7 +16,7 @@ class FAQTitleTableViewCell: UITableViewCell {
     let tableLabel : UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = .boldSystemFont(ofSize: 15)
+        label.font = FontManager.getFont(Font.SemiBold.rawValue).medium15Font
         label.numberOfLines = 0
         label.lineBreakMode = .byClipping
         label.sizeToFit()

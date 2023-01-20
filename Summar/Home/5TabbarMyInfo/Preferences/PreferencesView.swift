@@ -89,15 +89,15 @@ class PreferencesView: UIView{
     }()
     let nickName : UILabel = {
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 16)
+        label.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
         label.textColor = .black
         label.sizeToFit()
         return label
     }()
     let major : UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 13)
-        label.textColor = .black
+        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.textColor = UIColor.init(r: 115, g: 120, b: 127)
         label.sizeToFit()
         return label
     }()
@@ -151,7 +151,7 @@ class PreferencesView: UIView{
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.PreferencesBackgroundColor
+        backgroundColor = UIColor.Gray01
         
         arrayInit() //설정 배열 Init
         

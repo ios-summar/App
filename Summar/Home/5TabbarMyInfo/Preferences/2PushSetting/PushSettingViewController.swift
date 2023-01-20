@@ -17,8 +17,8 @@ class PushSettingViewController: UIViewController {
         let title = UILabel()
         title.frame = CGRect(x: 0, y: 0, width: 150, height: 40)
         title.text = "알림설정"
-        title.font = .boldSystemFont(ofSize: 20)
-        title.textColor = UIColor.summarColor1
+        title.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        title.textColor = UIColor.black
         title.sizeToFit()
         return title
     }()

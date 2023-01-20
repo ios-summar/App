@@ -46,8 +46,8 @@ class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate,
         let title = UILabel()
         title.frame = CGRect(x: 0, y: 0, width: 150, height: 40)
         title.text = "마이 써머리"
-        title.font = .boldSystemFont(ofSize: 20)
-        title.textColor = UIColor.summarColor1
+        title.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        title.textColor = UIColor.black
         title.sizeToFit()
         return title
     }()

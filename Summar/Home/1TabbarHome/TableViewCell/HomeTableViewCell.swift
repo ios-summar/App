@@ -9,6 +9,7 @@ import UIKit
 
 class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
     let helper = Helper()
+    let fontManger = FontManager()
     
     var imageArr = [String]()
     var feedImages : [FeedImages]? {
@@ -49,24 +50,24 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
     }()
     let nickName : UILabel = {
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 14)
+        label.font = FontManager.getFont(Font.Bold.rawValue).medium15Font
         label.textColor = .black
         label.sizeToFit()
         return label
     }()
     let major : UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 12)
-        label.textColor = .black
+        label.font = FontManager.getFont(Font.SemiBold.rawValue).smallFont
+        label.textColor = UIColor.init(r: 115, g: 120, b: 127)
         label.sizeToFit()
         return label
     }()
-    lazy var contentsLabel : UILabel = {
+    let contentsLabel : UILabel = {
         let UILabel = UILabel()
-        UILabel.font = .systemFont(ofSize: 14)
+        UILabel.font = FontManager.getFont(Font.Regular.rawValue).medium15Font
         UILabel.textColor = UIColor.homeContentsColor
         UILabel.textAlignment = .left
-        UILabel.numberOfLines = 3
+        UILabel.numberOfLines = 4
         UILabel.lineBreakMode = .byTruncatingTail
         UILabel.sizeToFit()
         return UILabel
@@ -83,7 +84,7 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
         // 페이지 표시 색상을 밝은 회색 설정
         pageControl.pageIndicatorTintColor = UIColor.lightGray
         // 현재 페이지 표시 색상을 검정색으로 설정
-        pageControl.currentPageIndicatorTintColor = UIColor.summarColor2
+        pageControl.currentPageIndicatorTintColor = UIColor.white
         
         pageControl.isUserInteractionEnabled = false
         
@@ -106,6 +107,8 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
         
         scrollView.isScrollEnabled = true
         
+        scrollView.layer.cornerRadius = 6
+        
         // Specify the screen size of the scroll.
 //        scrollView.contentSize = CGSize(width: CGFloat(pageSize) * self.view.frame.maxX, height: 0)
         
@@ -115,6 +118,7 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
+        backgroundColor = .Gray01
         
         contentView.addSubview(profileImg)
         contentView.addSubview(nickName)
@@ -123,8 +127,7 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
         contentView.addSubview(scrollView)
         contentView.addSubview(pageControl)
         
-//        scrollView.layer.borderWidth = 1
-//        pageControl.layer.borderWidth = 1
+        scrollView.layer.borderWidth = 1
         
         profileImg.snp.makeConstraints { (make) in
             
@@ -135,32 +138,31 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
         nickName.snp.makeConstraints { (make) in
             
             make.bottom.equalTo(profileImg.snp.centerY).offset(-1)
-            make.left.equalTo(profileImg.snp.right).offset(10)
+            make.left.equalTo(profileImg.snp.right).offset(12)
         }
         major.snp.makeConstraints { (make) in
             
             make.top.equalTo(profileImg.snp.centerY).offset(2)
-            make.left.equalTo(profileImg.snp.right).offset(10)
+            make.left.equalTo(profileImg.snp.right).offset(12)
         }
         contentsLabel.snp.makeConstraints { (make) in
             
             make.top.equalTo(profileImg.snp.bottom).offset(20)
             make.left.equalTo(20)
             make.right.equalTo(-20)
-//            make.height.equalTo(100)
         }
         scrollView.snp.makeConstraints { (make) in
             
             make.centerX.equalToSuperview()
-            make.top.equalTo(contentsLabel.snp.bottom).offset(30)
+            make.top.equalTo(contentsLabel.snp.bottom).offset(16)
             make.width.equalTo(imageViewWidth)
             make.height.equalTo(imageViewHeight)
+            make.bottom.equalTo(-15)
         }
         pageControl.snp.makeConstraints { (make) in
             
-            make.top.equalTo(scrollView.snp.bottom).offset(10)
+            make.top.equalTo(scrollView.snp.bottom).offset(-22)
             make.left.right.equalToSuperview()
-            make.bottom.equalTo(-20)
         }
     }
     
@@ -192,7 +194,6 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
                         self.scrollView.contentSize.width = self.imageViewWidth * CGFloat(1+i)
                         
                         self.scrollView.addSubview(imageview)
-
                     }
                 }
             }
@@ -212,7 +213,7 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
             super.layoutSubviews()
             contentView.backgroundColor = .white
             // table view margin
-//              contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0))
+              contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0))
         }
 
     }

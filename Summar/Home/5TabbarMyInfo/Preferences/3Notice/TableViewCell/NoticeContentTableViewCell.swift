@@ -14,9 +14,8 @@ class NoticeContentTableViewCell: UITableViewCell {
 
     let tableLabel : UILabel = {
         let label = UILabel()
-        label.text = "123"
-        label.textColor = .black
-        label.font = .systemFont(ofSize: 15)
+        label.textColor = UIColor.textColor115
+        label.font = FontManager.getFont(Font.Regular.rawValue).medium15Font
         label.numberOfLines = 0
         return label
     }()

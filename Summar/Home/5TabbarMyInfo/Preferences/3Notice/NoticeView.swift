@@ -118,7 +118,7 @@ extension NoticeView: UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell2", for: indexPath)
                     as? NoticeContentTableViewCell else { return UITableViewCell() }
             cell.tableLabel.text = tableViewData[indexPath.section].sectionData
-            cell.view.backgroundColor = UIColor.PreferencesBackgroundColor
+            cell.view.backgroundColor = UIColor.Gray01
             return cell
         }
     }

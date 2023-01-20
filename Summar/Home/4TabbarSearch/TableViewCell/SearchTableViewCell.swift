@@ -29,33 +29,32 @@ class SearchTableViewCell: UITableViewCell {
     }()
     let nickName : UILabel = {
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 16)
+        label.font = FontManager.getFont(Font.Bold.rawValue).medium15Font
         label.textColor = .black
         label.sizeToFit()
         return label
     }()
     let major : UILabel = {
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 13)
-        label.textColor = UIColor.init(red: 115/255, green: 120/255, blue: 127/255, alpha: 1)
+        label.font = FontManager.getFont(Font.SemiBold.rawValue).smallFont
+        label.textColor = UIColor.textColor115
         label.sizeToFit()
         label.numberOfLines = 2
         return label
     }()
     let introduceLabel : UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 13)
-        label.textColor = UIColor.init(red: 115/255, green: 120/255, blue: 127/255, alpha: 1)
+        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.textColor = UIColor.fontGrayColor
         label.sizeToFit()
         label.numberOfLines = 2
         return label
     }()
     let followLabel : UILabel = {
         let UILabel = UILabel()
-        UILabel.font = .systemFont(ofSize: 13)
+        UILabel.font = FontManager.getFont(Font.Regular.rawValue).small11Font
         UILabel.textAlignment = .center
         UILabel.textColor = UIColor.fontGrayColor
-//        UILabel.text = "팔로워 200"
         UILabel.sizeToFit()
         return UILabel
     }()
