@@ -13,6 +13,7 @@ import Photos
 protocol ImagePickerDelegate : AnyObject {
     func openPhoto(completion: @escaping([UIImage]?) -> ())
     func showImageFullScreen(_ imageArr: [UIImage])
+    func showAlert(_ message: String)
 }
 
 class WriteFeedView : UIView, UITextViewDelegate {
@@ -134,10 +135,25 @@ class WriteFeedView : UIView, UITextViewDelegate {
         UIImage(systemName: "square.and.arrow.down")
     ]
     
+    override func draw(_ rect: CGRect) {
+        configureUI()
+        resultArr = []
+        collectionViewScroll.reloadData()
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
-        
+        configureUI()
+        configureDelegate()
+    }
+    
+    func configureDelegate() {
+        collectionViewScroll.delegate = self
+        collectionViewScroll.dataSource = self
+    }
+    
+    func configureUI() {
         _ = [view1, view2, switch1, switch2, leftLabel, rightLabel, registerBtn, temporarySaveBtn].map {
             addSubview($0)
 //            $0.layer.borderWidth = 1
@@ -204,10 +220,6 @@ class WriteFeedView : UIView, UITextViewDelegate {
             make.left.equalTo(20)
             make.height.equalTo(60)
         }
-        
-        
-        collectionViewScroll.delegate = self
-        collectionViewScroll.dataSource = self
     }
     
     // MARK: - PlaceHolder 작업
@@ -227,7 +239,8 @@ class WriteFeedView : UIView, UITextViewDelegate {
     
     @objc func insertFeed() {
         if resultArr.count == 0 || (view2TextView.text == "피드 내용은 2,000자 이내로 입력 가능합니다." || view2TextView.text == "") {
-            helper.showAlert(vc: self, message: "이미지 추가 혹은 피드내용을 채우고 피드 등록이 가능합니다")
+//            helper.showAlert(vc: self, message: "이미지 추가 혹은 피드내용을 채우고 피드 등록이 가능합니다")
+            self.delegate?.showAlert("이미지 추가 혹은 피드 내용을 채우고 피드 등록이 가능합니다.")
         }else {
             registerFeed("insertFeed")
         }
@@ -236,7 +249,8 @@ class WriteFeedView : UIView, UITextViewDelegate {
     
     @objc func tempSave() {
         if resultArr.count == 0 && (view2TextView.text == "피드 내용은 2,000자 이내로 입력 가능합니다." || view2TextView.text == "") {
-            helper.showAlert(vc: self, message: "이미지 추가 혹은 피드내용을 채우고 임시저장이 가능합니다.")
+//            helper.showAlert(vc: self, message: "이미지 추가 혹은 피드내용을 채우고 임시저장이 가능합니다.")
+            self.delegate?.showAlert("이미지 추가 혹은 피드 내용을 채우고 임시저장이 가능합니다.")
         }else {
             registerFeed("tempSave")
         }

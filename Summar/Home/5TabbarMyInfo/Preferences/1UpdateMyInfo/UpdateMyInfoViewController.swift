@@ -140,6 +140,7 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate, U
     
     @objc func updateProfile(){
         smLog("")
+        var userInfoUserDefaults = UserDefaults.standard.dictionary(forKey: "UserInfo")
         
         let profileImage = updateMyInfoView.profileImageView.image
         let userNickname = updateMyInfoView.nickNameTextField.text
@@ -152,6 +153,7 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate, U
         param["updateUserNickname"] = userNickname
         param["major1"] = major1
         param["major2"] = major2
+        
         
         if profileImage == UIImage(named: "NonProfile") {
             smLog("")
@@ -172,6 +174,11 @@ class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate, U
         viewModel.updateUserInfo(param)
         
         viewModel.didFinishFetch = {
+            userInfoUserDefaults!["userNickname"] = userNickname
+            userInfoUserDefaults!["major1"] = major1
+            userInfoUserDefaults!["major2"] = major2
+            UserDefaults.standard.set(userInfoUserDefaults!, forKey: "UserInfo")
+            
             self.helper.showAlertAction(vc: self, message: "프로필 편집을 완료했습니다.")
             self.navigationController?.popViewController(animated: true)
         }

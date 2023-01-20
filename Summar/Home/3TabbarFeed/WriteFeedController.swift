@@ -16,9 +16,10 @@ class WriteFeedController : UIViewController, ImagePickerDelegate, PopDelegate{
         closeAction()
     }
     
+    let helper = Helper()
     static let shared = WriteFeedController()
     
-    let wfView = WriteFeedView.shared
+    let wfView = WriteFeedView()
     
     var imageArr = [UIImage]()
     
@@ -35,20 +36,26 @@ class WriteFeedController : UIViewController, ImagePickerDelegate, PopDelegate{
         wfView.delegate = self
         
         wfView.popDelegate = self
-        self.view.addSubview(wfView)
-        
         self.navigationItem.titleView = titleLabel
         self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(closeAction), uiImage: UIImage(systemName: "xmark")!, tintColor: .black)
-        
-        // MARK: - Feed Body
-        wfView.snp.makeConstraints{(make) in
 
+        // MARK: - Feed Body
+        self.view.addSubview(wfView)
+        wfView.snp.makeConstraints{(make) in
             make.top.equalTo(0)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.bottom.equalToSuperview()
         }
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        wfView.setNeedsDisplay()
+    }
+    
+    func showAlert(_ message : String) {
+        helper.showAlertAction(vc: self, message: message)
     }
     
     @objc func closeAction() {
