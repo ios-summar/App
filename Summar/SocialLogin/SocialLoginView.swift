@@ -48,7 +48,7 @@ class SocialLoginView : UIView, SocialSuccessDelegate{
         let kakaoLabel = UILabel()
         kakaoLabel.text = "카카오톡으로 시작하기"
         kakaoLabel.textColor = .black
-        kakaoLabel.font = .boldSystemFont(ofSize: 17.5)
+        kakaoLabel.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
         return kakaoLabel
     }()
     
@@ -71,7 +71,7 @@ class SocialLoginView : UIView, SocialSuccessDelegate{
         let appleLabel = UILabel()
         appleLabel.text = "애플계정으로 시작하기"
         appleLabel.textColor = .white
-        appleLabel.font = .boldSystemFont(ofSize: 17.5)
+        appleLabel.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
         return appleLabel
     }()
     
@@ -94,7 +94,7 @@ class SocialLoginView : UIView, SocialSuccessDelegate{
         let naverLabel = UILabel()
         naverLabel.text = "네이버로 시작하기"
         naverLabel.textColor = .white
-        naverLabel.font = .boldSystemFont(ofSize: 17.5)
+        naverLabel.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
         return naverLabel
     }()
     
@@ -117,7 +117,7 @@ class SocialLoginView : UIView, SocialSuccessDelegate{
         let googleLabel = UILabel()
         googleLabel.text = "구글로 시작하기"
         googleLabel.textColor = .white
-        googleLabel.font = .boldSystemFont(ofSize: 17.5)
+        googleLabel.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
         return googleLabel
     }()
     

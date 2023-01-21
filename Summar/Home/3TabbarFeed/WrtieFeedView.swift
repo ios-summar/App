@@ -65,7 +65,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
     lazy var view2TextView : UITextView = {
         let textView = UITextView()
         textView.backgroundColor = UIColor.textFieldColor
-        textView.font = .systemFont(ofSize: 18)
+        textView.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
         textView.text = textViewPlaceHolder
         textView.textColor = .lightGray
         textView.delegate = self
@@ -90,7 +90,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
         label.textColor = UIColor.fontColor
         label.text = "댓글기능 켜기"
         label.textAlignment = .left
-        label.font = .systemFont(ofSize: 14)
+        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
         return label
     }()
     
@@ -99,7 +99,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
         label.textColor = UIColor.fontColor
         label.text = "피드 비공개하기"
         label.textAlignment = .left
-        label.font = .systemFont(ofSize: 14)
+        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
         return label
     }()
     
@@ -136,9 +136,7 @@ class WriteFeedView : UIView, UITextViewDelegate {
     ]
     
     override func draw(_ rect: CGRect) {
-        configureUI()
-        resultArr = []
-        collectionViewScroll.reloadData()
+        
     }
     
     override init(frame: CGRect) {

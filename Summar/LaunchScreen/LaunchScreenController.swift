@@ -19,24 +19,11 @@ class LaunchScreenController: UIViewController {
         return view
     }()
     
-    let label : UILabel = {
-        let label = UILabel()
-        label.text = "나만의 커리어를 위한 포트폴리오 제작 플랫폼"
-        label.textColor = .white
-        label.font = .boldSystemFont(ofSize: 17)
-        label.textAlignment = .center
-        label.alpha = 0.0
-        return label
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.launchScreenBackGroundColor
         self.view.addSubview(imageView)
-        self.view.addSubview(label)
-        
-        Record().fontCheck()
         
         _ = [imageView].map {
             self.view.addSubview($0)

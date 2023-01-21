@@ -94,8 +94,6 @@ class HomeViewController : UIViewController {
         actionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16).isActive = true
         
         actionButton.configureDefaultItem { item in
-//            item.titleLabel.font = .boldSystemFont(ofSize: UIFont.systemFontSize)
-//            item.titleLabel.textColor = .white
             item.buttonColor = .white
             item.buttonImageColor = .systemBlue
 

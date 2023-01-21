@@ -83,8 +83,7 @@ class FullScreenImageView : UIView, UIScrollViewDelegate{
     
     lazy var label1 : UILabel = {
         let label = UILabel()
-//        label.text = "1/\(self.arrProductPhotos.count)"
-        label.font = .systemFont(ofSize: 18)
+        label.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
         label.textColor = .black
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -95,7 +94,7 @@ class FullScreenImageView : UIView, UIScrollViewDelegate{
     let label2 : UILabel = {
         let label = UILabel()
         label.text = "대표 이미지"
-        label.font = .boldSystemFont(ofSize: 18)
+        label.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
         label.textColor = .systemBlue
         label.numberOfLines = 0
         label.textAlignment = .center

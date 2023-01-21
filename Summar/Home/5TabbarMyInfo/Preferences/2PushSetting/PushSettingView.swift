@@ -28,7 +28,7 @@ class PushSettingView: UIView {
         let label = UILabel()
         label.text = "푸시알림"
         label.textColor = .black
-        label.font = .boldSystemFont(ofSize: 15)
+        label.font = FontManager.getFont(Font.Bold.rawValue).medium15Font
         label.sizeToFit()
         return label
     }()
@@ -36,7 +36,7 @@ class PushSettingView: UIView {
     let titleLabel : UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = .boldSystemFont(ofSize: 16)
+        label.font = FontManager.getFont(Font.Bold.rawValue).laergeFont
         label.text = "일반 알림"
         label.sizeToFit()
         return label
@@ -45,7 +45,7 @@ class PushSettingView: UIView {
     let conentLabel : UILabel = {
         let label = UILabel()
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
-        label.font = .systemFont(ofSize: 13)
+        label.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
         label.text = "좋아요, 댓글, 팔로우 등 알림"
         label.sizeToFit()
         return label

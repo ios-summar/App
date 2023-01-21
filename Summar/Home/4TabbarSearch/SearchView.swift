@@ -263,7 +263,6 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
                 //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
                 //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
                 DispatchQueue.global().async {
-                    let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
                     DispatchQueue.main.async {
                         //                    cell.imageView.image = UIImage(data: data!)
                         cell.profileImg.kf.indicatorType = .activity

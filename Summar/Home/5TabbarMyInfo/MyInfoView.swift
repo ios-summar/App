@@ -62,14 +62,14 @@ class MyInfoView: UIView{
     }()
     let nickName : UILabel = {
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 16)
+        label.font = FontManager.getFont(Font.Bold.rawValue).laergeFont
         label.textColor = .black
         label.sizeToFit()
         return label
     }()
     let major : UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 13)
+        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
         label.textColor = .black
         label.sizeToFit()
         return label
@@ -83,14 +83,14 @@ class MyInfoView: UIView{
     }()
     let followerCount : UILabel = {
         let UILabel = UILabel()
-        UILabel.font = .boldSystemFont(ofSize: 16)
+        UILabel.font = FontManager.getFont(Font.Bold.rawValue).laergeFont
         UILabel.textAlignment = .center
         UILabel.textColor = .black
         return UILabel
     }()
     let followerLabel : UILabel = {
         let UILabel = UILabel()
-        UILabel.font = .systemFont(ofSize: 15)
+        UILabel.font = FontManager.getFont(Font.Regular.rawValue).medium15Font
         UILabel.text = "팔로워"
         UILabel.textAlignment = .center
         UILabel.textColor = .black
@@ -105,14 +105,14 @@ class MyInfoView: UIView{
     }()
     let followingCount : UILabel = {
         let UILabel = UILabel()
-        UILabel.font = .boldSystemFont(ofSize: 16)
+        UILabel.font = FontManager.getFont(Font.Bold.rawValue).laergeFont
         UILabel.textAlignment = .center
         UILabel.textColor = .black
         return UILabel
     }()
     let followingLabel : UILabel = {
         let UILabel = UILabel()
-        UILabel.font = .systemFont(ofSize: 15)
+        UILabel.font = FontManager.getFont(Font.Regular.rawValue).medium15Font
         UILabel.text = "팔로잉"
         UILabel.textAlignment = .center
         UILabel.textColor = .black
@@ -128,7 +128,7 @@ class MyInfoView: UIView{
     }()
     let introductLabel : UILabel = {
         let UILabel = UILabel()
-        UILabel.font = .systemFont(ofSize: 15)
+        UILabel.font = FontManager.getFont(Font.Regular.rawValue).medium15Font
         UILabel.textColor = .systemPink
         UILabel.textAlignment = .center
         UILabel.numberOfLines = 0
@@ -312,9 +312,7 @@ class MyInfoView: UIView{
                     //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
                     //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
                     DispatchQueue.global().async {
-                        let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
                         DispatchQueue.main.async {
-        //                    cell.imageView.image = UIImage(data: data!)
                             self.profileImg.kf.indicatorType = .activity
                             self.profileImg.kf.setImage(
                               with: url,

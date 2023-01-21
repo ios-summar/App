@@ -50,7 +50,7 @@ class DotFirstCollectionViewCell: UICollectionViewCell {
         UILabel.text = "대표 이미지"
         UILabel.textColor = UIColor.fontColor
         UILabel.numberOfLines = 0
-        UILabel.font = .boldSystemFont(ofSize: 14)
+        UILabel.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
         UILabel.sizeToFit()
         UILabel.textAlignment = .center
         return UILabel

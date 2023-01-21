@@ -30,7 +30,6 @@ class PreferencesView: UIView{
                 //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
                 //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
                 DispatchQueue.global().async {
-                    let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
                     DispatchQueue.main.async {
     //                    cell.imageView.image = UIImage(data: data!)
                         self.profileImg.kf.indicatorType = .activity
@@ -104,7 +103,7 @@ class PreferencesView: UIView{
     let logutBtn : UIButton = {
         let btn = UIButton()
         btn.setTitle("로그아웃", for: .normal)
-        btn.titleLabel?.font = .systemFont(ofSize: 14)
+        btn.titleLabel?.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
         btn.backgroundColor = UIColor.Gray02
         btn.setTitleColor(UIColor.init(r: 70, g: 76, b: 83), for: .normal)
         btn.layer.cornerRadius = 4
@@ -134,7 +133,7 @@ class PreferencesView: UIView{
         let btn = UIButton()
         btn.setTitle("탈퇴하기", for: .normal)
         btn.setTitleColor(UIColor.fontGrayColor, for: .normal)
-        btn.titleLabel?.font = .systemFont(ofSize: 12)
+        btn.titleLabel?.font = FontManager.getFont(Font.Regular.rawValue).smallFont
         btn.addTarget(self, action: #selector(withDraw), for: .touchUpInside)
         btn.setUnderline()
         return btn
@@ -144,7 +143,7 @@ class PreferencesView: UIView{
         let label = UILabel()
         label.text = "개인정보, SUMMAR에 저장된 콘텐츠와 설정이 모두 삭제됩니다."
         label.textColor = UIColor.fontGrayColor
-        label.font = .systemFont(ofSize: 12)
+        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
         label.sizeToFit()
         return label
     }()
@@ -257,7 +256,6 @@ class PreferencesView: UIView{
                     //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
                     //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
                     DispatchQueue.global().async {
-                        let data = try? Data(contentsOf: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check / try-catch
                         DispatchQueue.main.async {
         //                    cell.imageView.image = UIImage(data: data!)
                             self.profileImg.kf.indicatorType = .activity

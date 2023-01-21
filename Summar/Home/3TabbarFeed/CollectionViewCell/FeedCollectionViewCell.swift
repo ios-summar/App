@@ -29,7 +29,7 @@ class FeedCollectionViewCell: UICollectionViewCell {
         UILabel.text = "이미지\n추가하기"
         UILabel.textColor = UIColor.fontColor
         UILabel.numberOfLines = 0
-        UILabel.font = .boldSystemFont(ofSize: 14)
+        UILabel.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
         UILabel.sizeToFit()
         UILabel.textAlignment = .center
         return UILabel
@@ -39,7 +39,7 @@ class FeedCollectionViewCell: UICollectionViewCell {
         let UILabel = UILabel()
         UILabel.text = "(10건 이하)"
         UILabel.textColor = UIColor.fontColor
-        UILabel.font = .systemFont(ofSize: 12)
+        UILabel.font = FontManager.getFont(Font.Regular.rawValue).smallFont
         UILabel.sizeToFit()
         return UILabel
     }()
