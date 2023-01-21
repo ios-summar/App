@@ -136,7 +136,9 @@ class WriteFeedView : UIView, UITextViewDelegate {
     ]
     
     override func draw(_ rect: CGRect) {
-        
+        resultArr = []
+        collectionViewScroll.reloadData()
+        smLog("")
     }
     
     override init(frame: CGRect) {
@@ -218,6 +220,13 @@ class WriteFeedView : UIView, UITextViewDelegate {
             make.left.equalTo(20)
             make.height.equalTo(60)
         }
+    }
+    
+    func reset() {
+        view2TextView.text = "피드 내용은 2,000자 이내로 입력 가능합니다."
+        view2TextView.textColor = .lightGray
+        resultArr = []
+        collectionViewScroll.reloadData()
     }
     
     // MARK: - PlaceHolder 작업
@@ -308,9 +317,11 @@ extension WriteFeedView: UICollectionViewDelegate, UICollectionViewDataSource, U
             if indexPath.row != 11 {
                 if indexPath.row == 1 { // 두번째 cell
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotFirstCellReuseIdentifier, for: indexPath) as! DotFirstCollectionViewCell
+                    cell.removeImg()
                     return cell
                 }else { // 1, 2번째 cell 제외한 나머지 cell
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotCellReuseIdentifier, for: indexPath) as! DotCollectionViewCell
+                    cell.removeImg()
                     return cell
                 }
             }else { // empty cell로 padding

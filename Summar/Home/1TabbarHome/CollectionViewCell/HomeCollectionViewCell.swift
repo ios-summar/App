@@ -16,25 +16,6 @@ class HomeCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
-    lazy var pageControl: UIPageControl = {
-        // Create a UIPageControl.
-        let pageControl = UIPageControl()
-        // Set the number of pages to page control.
-//        pageControl.numberOfPages = self.arrProductPhotos.count
-        
-        // Set the current page.
-        pageControl.currentPage = 0
-        
-        // 페이지 표시 색상을 밝은 회색 설정
-        pageControl.pageIndicatorTintColor = UIColor.lightGray
-        // 현재 페이지 표시 색상을 검정색으로 설정
-        pageControl.currentPageIndicatorTintColor = UIColor.white
-        
-        pageControl.isUserInteractionEnabled = false
-        
-        return pageControl
-    }()
-    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         backgroundColor = UIColor.BackgroundColor

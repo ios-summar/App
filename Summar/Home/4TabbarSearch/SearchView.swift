@@ -9,9 +9,14 @@ import Foundation
 import UIKit
 import SnapKit
 
+protocol PushDelegateWithSearchUserInfo : AnyObject {
+    func pushDeleagteWithParam(_ VC: UIViewController, _ searchUserInfo: SearchUserInfo)
+}
 
 class SearchView: UIView{
     static let shared = SearchView()
+    
+    weak var pushDelegateWithSearchUserInfo : PushDelegateWithSearchUserInfo?
     
     let cellReuseIdentifier = "SearchTableViewCell"
     let helper = Helper()
@@ -299,6 +304,7 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let searchUserInfo = model?.content {
             print(searchUserInfo[indexPath.row])
+            self.pushDelegateWithSearchUserInfo?.pushDeleagteWithParam(ProfileViewController.shared, searchUserInfo[indexPath.row])
         }
     }
 }

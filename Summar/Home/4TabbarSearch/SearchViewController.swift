@@ -9,7 +9,14 @@ import Foundation
 import UIKit
 import SnapKit
 
-class SearchViewController : UIViewController{
+class SearchViewController : UIViewController, PushDelegateWithSearchUserInfo{
+    func pushDeleagteWithParam(_ VC: UIViewController, _ searchUserInfo: SearchUserInfo) {
+        if VC == ProfileViewController.shared {
+            ProfileViewController.shared.searchUserInfo = searchUserInfo
+            self.navigationController?.pushViewController(ProfileViewController.shared, animated: true)
+        }
+    }
+    
     func pushScreen(_ VC: UIViewController) {
         self.navigationController?.pushViewController(VC, animated: true)
     }
@@ -59,6 +66,7 @@ class SearchViewController : UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureDelegate()
         self.view.addSubview(searchView)
         self.view.backgroundColor = UIColor.searchGray
         
@@ -95,6 +103,10 @@ class SearchViewController : UIViewController{
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
             make.left.right.bottom.equalToSuperview()
         }
+    }
+    
+    func configureDelegate() {
+        searchView.pushDelegateWithSearchUserInfo = self
     }
     
     @objc func search() {

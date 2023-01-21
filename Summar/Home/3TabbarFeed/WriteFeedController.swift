@@ -33,12 +33,27 @@ class WriteFeedController : UIViewController, ImagePickerDelegate, PopDelegate{
     }()
     
     override func viewDidLoad() {
+        configureDelegate()
+        configureUI()
+    }
+    
+    func configureDelegate() {
         wfView.delegate = self
-        
         wfView.popDelegate = self
+    }
+    
+    /// UI 초기설정
+    func configureUI() {
+        // MARK: - SafeArea or View BackGroundColor Set
+        fillSafeArea(position: .top, color: .white)
+        fillSafeArea(position: .left, color: .white)
+        fillSafeArea(position: .right, color: .white)
+        fillSafeArea(position: .bottom, color: .white)
+        
+        // MARK: - NavigationBar
         self.navigationItem.titleView = titleLabel
         self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(closeAction), uiImage: UIImage(systemName: "xmark")!, tintColor: .black)
-
+        // MARK: - addView
         // MARK: - Feed Body
         self.view.addSubview(wfView)
         wfView.snp.makeConstraints{(make) in
@@ -47,11 +62,10 @@ class WriteFeedController : UIViewController, ImagePickerDelegate, PopDelegate{
             make.right.equalToSuperview()
             make.bottom.equalToSuperview()
         }
-        
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        wfView.setNeedsDisplay()
+    override func viewWillLayoutSubviews() {
+        wfView.reset()
     }
     
     func showAlert(_ message : String) {
@@ -79,8 +93,6 @@ class WriteFeedController : UIViewController, ImagePickerDelegate, PopDelegate{
         config.showsPhotoFilters = false
         config.showsVideoTrimmer = false
         config.screens = [.library]
-        config.library.onlySquare = false
-//        config.library.skipSelectionsGallery = false
         
         let picker = YPImagePicker(configuration: config)
         

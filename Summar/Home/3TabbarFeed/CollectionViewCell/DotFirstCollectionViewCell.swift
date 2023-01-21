@@ -29,6 +29,7 @@ class DotFirstCollectionViewCell: UICollectionViewCell {
         view.layer.addSublayer(self.shapeLayer)
         view.clipsToBounds = true
         view.layer.zPosition = 999
+        view.layer.cornerRadius = 10
         return view
     }()
     
@@ -96,6 +97,14 @@ class DotFirstCollectionViewCell: UICollectionViewCell {
         shapeLayer.removeFromSuperlayer()
         _ = [label1, imageView].map {
             $0.alpha = 0.0
+        }
+    }
+    
+    func removeImg() {
+        view.image = nil
+        view.layer.addSublayer(self.shapeLayer)
+        _ = [label1, imageView].map {
+            $0.alpha = 1.0
         }
     }
     

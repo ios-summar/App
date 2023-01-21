@@ -34,17 +34,25 @@ class FullScreenImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureUI()
+    }
+    
+    /// UI 초기설정
+    func configureUI() {
+        // MARK: - SafeArea or View BackGroundColor Set
+        fillSafeArea(position: .top, color: .white)
+        fillSafeArea(position: .left, color: .white)
+        fillSafeArea(position: .right, color: .white)
+        fillSafeArea(position: .bottom, color: .white)
+        
+        // MARK: - NavigationBar
         self.view.backgroundColor = .white
         
         self.navigationItem.titleView = titleLabel
         self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(topBtnAction(_:)), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
         
-        
-        _ = [fullScreenImageView].map {
-            self.view.addSubview($0)
-//            $0.layer.borderWidth = 1
-        }
-        
+        // MARK: - addView
+        self.view.addSubview(fullScreenImageView)
         fullScreenImageView.snp.makeConstraints{(make) in
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
             make.left.right.equalTo(0)
