@@ -67,7 +67,7 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
         UILabel.font = FontManager.getFont(Font.Regular.rawValue).medium15Font
         UILabel.textColor = UIColor.homeContentsColor
         UILabel.textAlignment = .left
-        UILabel.numberOfLines = 4
+        UILabel.numberOfLines = 3
         UILabel.lineBreakMode = .byTruncatingTail
         UILabel.sizeToFit()
         return UILabel
@@ -115,6 +115,12 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
         return scrollView
     }()
     
+    let line: UIView = {
+        let view = UIView()
+        view.backgroundColor = .Gray01
+        return view
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
@@ -126,8 +132,13 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
         contentView.addSubview(contentsLabel)
         contentView.addSubview(scrollView)
         contentView.addSubview(pageControl)
+        contentView.addSubview(line)
         
-        scrollView.layer.borderWidth = 1
+//        _ = [profileImg, nickName, major, contentsLabel, scrollView, pageControl].map {
+//            $0.layer.borderWidth = 1
+//        }
+        
+//        scrollView.layer.borderWidth = 1
         
         profileImg.snp.makeConstraints { (make) in
             
@@ -149,22 +160,44 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
             
             make.top.equalTo(profileImg.snp.bottom).offset(20)
             make.left.equalTo(20)
-            make.right.equalTo(-20)
+            make.width.equalTo(imageViewWidth)
         }
         scrollView.snp.makeConstraints { (make) in
             
             make.centerX.equalToSuperview()
             make.top.equalTo(contentsLabel.snp.bottom).offset(16)
             make.width.equalTo(imageViewWidth)
-            make.height.equalTo(imageViewHeight)
-            make.bottom.equalTo(-15)
+            make.height.equalTo(imageViewWidth)
         }
         pageControl.snp.makeConstraints { (make) in
             
-            make.top.equalTo(scrollView.snp.bottom).offset(-22)
+            make.top.equalTo(scrollView.snp.bottom).offset(-36)
             make.left.right.equalToSuperview()
         }
+        
+        line.snp.makeConstraints { (make) in
+            make.top.equalTo(scrollView.snp.bottom).offset(15)
+            make.left.right.equalToSuperview()
+            make.height.equalTo(16)
+            make.bottom.equalTo(0)
+        }
     }
+    
+    func heightForView(text:String, font:UIFont, width:CGFloat) -> CGFloat{
+        let label:UILabel = UILabel(frame: CGRectMake(0, 0, width, CGFloat.greatestFiniteMagnitude))
+        label.numberOfLines = 4
+        label.lineBreakMode = .byCharWrapping
+        label.font = font
+        label.text = text
+        
+        label.sizeToFit()
+        print(label.frame.height)
+        contentsLabel.snp.updateConstraints {
+            $0.height.equalTo(label.frame.height)
+        }
+        return label.frame.height
+    }
+
     
     func initImageArr(_ imageArr : [String], completion : @escaping(Bool) -> ()){
             pageControl.numberOfPages = imageArr.count
@@ -189,7 +222,7 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
                         imageview.clipsToBounds = true
                         let xPosition = self.imageViewWidth * CGFloat(i)
                         
-                        imageview.frame = CGRect(x: xPosition, y: 0, width: self.imageViewWidth, height: self.imageViewHeight)
+                        imageview.frame = CGRect(x: xPosition, y: 0, width: self.imageViewWidth, height: self.imageViewWidth)
                         self.scrollView.contentSize.width = self.imageViewWidth * CGFloat(1+i)
                         
                         self.scrollView.addSubview(imageview)
@@ -212,7 +245,7 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
             super.layoutSubviews()
             contentView.backgroundColor = .white
             // table view margin
-              contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0))
+//              contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0))
         }
 
     }

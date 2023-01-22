@@ -8,18 +8,28 @@
 import Foundation
 import UIKit
 
+protocol HomeViewDelegate : AnyObject {
+    func pushScreen(_ VC: UIViewController,_ any: Any)
+}
+
 class HomeView: UIView{
-    static let shared = HomeView()
     let helper = Helper.shared
     private let tableCellReuseIdentifier = "tableCell"
     private let bannerCellReuseIdentifier = "bannerCell"
     
+    weak var homeViewDelegate : HomeViewDelegate?
+    
     var displayCount : Int = 0
     var pageIndex : Int = 1
     
+    let viewWidth : CGFloat = {
+        let width = UIScreen.main.bounds.width
+        return width - 40
+    }()
+    
     var model : FeedSelectResponse? {
         didSet {
-            smLog("\n \(self.model) \n")
+            smLog("\n \(self.model?.content?.count) \n")
             
             tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: tableCellReuseIdentifier)
             tableView.register(BannerTableViewCell.self, forCellReuseIdentifier: bannerCellReuseIdentifier)
@@ -36,6 +46,7 @@ class HomeView: UIView{
         let view = UITableView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
+        view.showsVerticalScrollIndicator = false
         
         // 테이블뷰 왼쪽 마진 없애기
         view.separatorStyle = .none
@@ -61,7 +72,7 @@ class HomeView: UIView{
     }
     
     func selectFeed() {
-        let viewModel = HomeViewModel(0, 30)
+        let viewModel = HomeViewModel(0, (pageIndex * 30))
         viewModel.selectFeed()
         viewModel.didFinishFetch = {
             self.model = viewModel.feedSelectResponse
@@ -108,6 +119,7 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
             
             
             if let model = model?.content {
+                smLog("\(model.count)")
                 setProfileImage(cell.profileImg, model[indexPath.row - 1].user?.profileImageUrl)
                 cell.nickName.text = model[indexPath.row - 1].user?.userNickname
                 cell.major.text = model[indexPath.row - 1].user?.major2
@@ -125,6 +137,33 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
             cell.selectionStyle = .none
             
             return cell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        print("indexPath.row => ", indexPath.row)
+        print("displayCount => ", displayCount)
+        print("pageIndex => ", pageIndex)
+        print("")
+        
+        if let totalRecordCount = model?.totalRecordCount, let recordsPerPage = model?.recordsPerPage, let currentPageNo = model?.currentPageNo, let totalPageCount = model?.totalPageCount {
+            if pageIndex * 30 == indexPath.row {
+                self.pageIndex += 1
+                let viewModel = HomeViewModel(0, (pageIndex * 30))
+                viewModel.selectFeed()
+
+                viewModel.didFinishFetch = {
+                    self.model = viewModel.feedSelectResponse
+                    self.tableView.reloadData()
+                }
+                
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let model = model?.content {
+            homeViewDelegate?.pushScreen(FeedDetailViewController.shared, model[indexPath.row - 1])
         }
     }
     

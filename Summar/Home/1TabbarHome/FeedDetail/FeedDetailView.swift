@@ -1,27 +1,26 @@
 //
-//  ProfileView.swift
+//  FeedDetailView.swift
 //  Summar
 //
-//  Created by ukBook on 2023/01/21.
+//  Created by ukBook on 2023/01/22.
 //
 
 import Foundation
 import UIKit
-import SnapKit
 
-class ProfileView: UIView {
-    static let shared = ProfileView()
+class FeedDetailVeiw: UIView {
+    static let shared = FeedDetailVeiw()
     let helper = Helper.shared
     
-    var searchUserInfo : SearchUserInfo? {
+    var feedInfo : FeedInfo? {
         didSet {
-            smLog("\n \(searchUserInfo) \n")
+            smLog("feedInfo")
         }
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .yellow
+        backgroundColor = .orange
     }
 
     

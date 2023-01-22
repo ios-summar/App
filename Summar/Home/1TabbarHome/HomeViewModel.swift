@@ -13,6 +13,7 @@ class HomeViewModel {
     
     var feedSelectResponse: FeedSelectResponse? {
         didSet {
+            smLog("\n \(self.feedSelectResponse?.content?.count)")
             self.didFinishFetch?()
         }
     }
@@ -34,6 +35,7 @@ class HomeViewModel {
     
     
     func selectFeed(){
+        guard let pageIndex = pageIndex, let size = size else {return}
         self.request.selectFeed("/feed?page=\(pageIndex)&size=\(size)", completion: { (feedSelectResponse, error, status) in
             //error만 있을경우 서버오류
             //error,status != nil 경우 토큰 재발급

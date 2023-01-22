@@ -10,9 +10,16 @@ import UIKit
 import SnapKit
 import JJFloatingActionButton
 
-class HomeViewController : UIViewController {
+class HomeViewController : UIViewController, HomeViewDelegate {
+    func pushScreen(_ VC: UIViewController, _ any: Any) {
+        if VC === FeedDetailViewController.shared {
+            FeedDetailViewController.shared.feedInfo = any as? FeedInfo
+            self.navigationController?.pushViewController(FeedDetailViewController.shared, animated: true)
+        }
+    }
+    
     static let shared = HomeViewController()
-    let homeView = HomeView.shared
+    let homeView = HomeView()
     let actionButton = JJFloatingActionButton()
     
     let viewWidth : CGFloat = {
@@ -39,8 +46,19 @@ class HomeViewController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(homeView)
+        configureDelegate()
+        configureUI()
+    }
+    
+    func configureDelegate() {
+        homeView.homeViewDelegate = self
+    }
+    
+    /// UI 초기설정
+    func configureUI() {
+        // MARK: - SafeArea or View BackGroundColor Set
         
+        // MARK: - NavigationBar
         let lbNavTitle = UIView (frame: CGRect(x: 0, y: 0, width: viewWidth, height: 40))
         lbNavTitle.layer.borderWidth = 1
         
@@ -48,15 +66,18 @@ class HomeViewController : UIViewController {
             lbNavTitle.addSubview($0)
         }
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: lbNavTitle)
-        self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(topBtnAction(_:)), uiImage: UIImage(systemName: "heart")!, tintColor: .black)
-        
         titleImageView.snp.makeConstraints{(make) in
             make.centerY.equalToSuperview()
             make.left.equalTo(20)
             make.width.equalTo(72)
             make.height.equalTo(18)
         }
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: lbNavTitle)
+        self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(topBtnAction(_:)), uiImage: UIImage(systemName: "bell.fill")!, tintColor: .black)
+        // MARK: - addView
+        self.view.addSubview(homeView)
+        
         
         homeView.snp.makeConstraints{(make) in
             make.left.right.bottom.equalToSuperview()
