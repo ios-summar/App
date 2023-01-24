@@ -11,6 +11,7 @@ import SnapKit
 import Kingfisher
 
 class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate, PopDelegate{
+    let myInfoView = MyInfoView()
     var window = UIWindow(frame: UIScreen.main.bounds)
     
     func popScreen() {
@@ -33,7 +34,6 @@ class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate,
     }
     
     static let shared = MyInfoViewController()
-    let myInfoView = MyInfoView.shared
     
     // MARK: - Properties
     private var userInfo: UserInfo? {
@@ -68,15 +68,15 @@ class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate,
         
         myInfoView.snp.makeConstraints{(make) in
 
-            make.topMargin.equalTo(self.view.safeAreaLayoutGuide.snp.top)
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
+            make.left.right.equalToSuperview()
         }
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
+        myInfoView.selectFeed()
         if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
 //            print("UserInfo => ", value)
             print("UserInfo userSeq => ", value["userSeq"])

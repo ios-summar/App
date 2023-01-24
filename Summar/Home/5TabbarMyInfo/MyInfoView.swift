@@ -19,10 +19,14 @@ protocol PushDelegate : AnyObject {
 
 class MyInfoView: UIView{
     static let shared = MyInfoView()
+    let helper = Helper()
     let request = ServerRequest.shared
+    private let tableCellReuseIdentifier = "tableCell"
+    private let bannerCellReuseIdentifier = "bannerCell"
     
     weak var delegate : MyInfoViewDelegate?
     weak var pushDelegate : PushDelegate?
+    weak var homeViewDelegate : HomeViewDelegate?
     
     // MARK: - Injection
     let viewModel = MyInfoViewModel()
@@ -34,6 +38,22 @@ class MyInfoView: UIView{
             self.delegate?.parameter(userInfo)
         }
     }
+    
+    var model : FeedSelectResponse? {
+        didSet {
+            smLog("\n \(self.model?.content?.count) \n")
+            
+            tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: tableCellReuseIdentifier)
+            
+            tableView.delegate = self
+            tableView.dataSource = self
+            
+            tableView.reloadData()
+        }
+    }
+    
+    var displayCount : Int = 0
+    var pageIndex : Int = 1
     
     var requestDic = Dictionary<String, Any>()
     
@@ -134,26 +154,41 @@ class MyInfoView: UIView{
         UILabel.numberOfLines = 0
         return UILabel
     }()
-    let view2 = UIView()
+    let view2 : UIView = {
+        let view = HomeView()
+        return view
+    }()
     let view3 = UIView()
+    
+    let tableView : UITableView = {
+        let view = UITableView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        view.showsVerticalScrollIndicator = false
+        view.isScrollEnabled = false
+        
+        // 테이블뷰 왼쪽 마진 없애기
+        view.separatorStyle = .none
+//        view.separatorStyle = .singleLine
+//        view.cellLayoutMarginsFollowReadableWidth = false
+//        view.separatorInset.left = 0
+//        view.separatorColor = .gray
+        //
+        
+        view.estimatedRowHeight = 85.0
+        view.rowHeight = UITableView.automaticDimension
+        return view
+    }()
         
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(scrollView) // 메인뷰에
-        backgroundColor = UIColor.BackgroundColor
-        
-        print(#file , #function)
-        
-        _ = [view1, view2, view3].map { self.contentView.addSubview($0)}
-        scrollView.addSubview(contentView)
-        view1.addSubview(profileview)
-        
-        view1.addSubview(nickName)
-        view1.addSubview(major)
-        view1.addSubview(followerView)
-        view1.addSubview(followingView)
-        view1.addSubview(introductView)
+//        backgroundColor = UIColor.RedSeven
+//        scrollView.backgroundColor = UIColor.green
+//        view1.backgroundColor = .brown
+        _ = [view1, tableView].map { self.scrollView.addSubview($0) }
+        _ = [profileview, nickName, major, followerView, followingView, introductView].map { view1.addSubview($0) }
         
         profileview.addSubview(socialBadge)
         profileview.addSubview(profileImg)
@@ -168,28 +203,26 @@ class MyInfoView: UIView{
         
         introductView.addSubview(introductLabel)
         
+        scrollView.addSubview(contentView)
         scrollView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview() // 스크롤뷰가 표현될 영역
         }
         
-        contentView.snp.makeConstraints { (make) in
-            make.width.equalToSuperview()
-            make.centerX.top.bottom.equalToSuperview()
-        }
-        
-        view2.layer.borderWidth = 1
-        view2.layer.borderColor = UIColor.black.cgColor
-        
-        view3.layer.borderWidth = 1
-        view3.layer.borderColor = UIColor.black.cgColor
-        
-        
         view1.snp.makeConstraints { (make) in
             
             make.top.equalToSuperview()
-            make.left.equalTo(30)
-            make.right.equalTo(-30)
+            make.left.equalTo(20)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-20)
             make.height.equalTo(300)
+        }
+        
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(view1.snp.bottom).offset(10)
+//            make.left.right.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.left.right.equalToSuperview()
+            make.height.equalTo(3500)
+            make.bottom.equalToSuperview()
         }
         
         profileview.snp.makeConstraints { (make) in
@@ -272,15 +305,7 @@ class MyInfoView: UIView{
             make.bottom.right.equalTo(-20)
         }
         
-        view2.snp.makeConstraints { (make) in
-
-            make.top.equalTo(view1.snp.bottom).offset(30)
-            make.left.equalTo(30)
-            make.right.equalTo(-30)
-            make.bottom.equalToSuperview()
-        }
-        
-        requestMyInfo()
+//        requestMyInfo()
     }
     
     func requestMyInfo(){
@@ -351,6 +376,14 @@ class MyInfoView: UIView{
 //        viewModel.getUserFeed(userSeq)
     }
     
+    func selectFeed() {
+        let viewModel = HomeViewModel(0, (pageIndex * 30))
+        viewModel.selectFeed()
+        viewModel.didFinishFetch = {
+            self.model = viewModel.feedSelectResponse
+        }
+    }
+    
     @objc func btnAction(_ sender: Any){
         self.pushDelegate?.pushScreen(UpdateMyInfoViewController.shared)
     }
@@ -358,4 +391,90 @@ class MyInfoView: UIView{
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+extension MyInfoView: UITableViewDelegate, UITableViewDataSource{
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let totalRecordCount = model?.totalRecordCount, let recordsPerPage = model?.recordsPerPage, let currentPageNo = model?.currentPageNo, let totalPageCount = model?.totalPageCount {
+            if totalRecordCount < 30 { // 30개 미만일때는 총 건수만 return
+                return totalRecordCount
+            }else { // 30개 이상일때
+                if currentPageNo != totalPageCount { // 총건수를 30으로 나눴을때 현재페이지 != 마지막페이지
+                    displayCount = 30 * pageIndex
+                    return displayCount // 30개씩 * 현재페이지 ex) 120건 노출시 30.. 60.. 90.. 120...
+                }else { // 총건수를 30으로 나눴을때 현재페이지 == 마지막페이지
+                    displayCount = (30 * (pageIndex - 1)) + (totalRecordCount % 30)
+                    return displayCount //(30개씩 * 현재페이지) + 나머지(총 건수 % 30건)
+                }
+            }
+        }else {
+            return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            let cell = tableView.dequeueReusableCell(withIdentifier: tableCellReuseIdentifier, for: indexPath) as! HomeTableViewCell
+            if let model = model?.content {
+                smLog("\(model.count)")
+                setProfileImage(cell.profileImg, model[indexPath.row].user?.profileImageUrl)
+                cell.nickName.text = model[indexPath.row].user?.userNickname
+                cell.major.text = model[indexPath.row].user?.major2
+                cell.contentsLabel.text = model[indexPath.row].contents
+                cell.feedImages = model[indexPath.row].feedImages
+                
+                helper.lineSpacing(cell.contentsLabel, 5)
+            }
+            return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        print("indexPath.row => ", indexPath.row)
+        print("displayCount => ", displayCount)
+        print("pageIndex => ", pageIndex)
+        print("")
+        
+        if let totalRecordCount = model?.totalRecordCount, let recordsPerPage = model?.recordsPerPage, let currentPageNo = model?.currentPageNo, let totalPageCount = model?.totalPageCount {
+            if pageIndex * 30 == indexPath.row + 1 {
+                self.pageIndex += 1
+                let viewModel = HomeViewModel(0, (pageIndex * 30))
+                viewModel.selectFeed()
+
+                viewModel.didFinishFetch = {
+                    self.model = viewModel.feedSelectResponse
+                    self.tableView.reloadData()
+                }
+                
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let model = model?.content {
+            homeViewDelegate?.pushScreen(FeedDetailViewController.shared, model[indexPath.row - 1])
+        }
+    }
+    
+    func setProfileImage(_ imageView: UIImageView,_ urlString: String?) {
+        guard let urlString = urlString else {return}
+        let url = URL(string: urlString)
+        //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
+        //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
+        DispatchQueue.global().async {
+            DispatchQueue.main.async {
+                imageView.kf.indicatorType = .activity
+                imageView.kf.setImage(
+                  with: url,
+                  placeholder: nil,
+                  options: [.transition(.fade(1.2))],
+                  completionHandler: nil
+                )
+            }
+        }
+    }
+    
 }
