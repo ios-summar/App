@@ -168,7 +168,10 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
     }
     
     func setProfileImage(_ imageView: UIImageView,_ urlString: String?) {
-        guard let urlString = urlString else {return}
+        guard let urlString = urlString else {
+            imageView.image = UIImage(named: "NonProfile")
+            return
+        }
         let url = URL(string: urlString)
         //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
         //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.

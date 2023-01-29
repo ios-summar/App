@@ -10,25 +10,25 @@ import UIKit
 
 class FeedDetailViewController: UIViewController {
     static let shared = FeedDetailViewController()
+    let viewModel = FeedDetailViewModel()
     let feedView = FeedDetailVeiw()
     let helper = Helper()
     
+    var userSeq: Int?
+    
     var feedInfo : FeedInfo? {
         didSet {
-            print("\n \(feedInfo)")
+            feedView.feedInfo = feedInfo
         }
     }
-    let titleLabel : UILabel = {
-        let title = UILabel()
-        title.text = "피드 상세보기"
-        title.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
-        title.textColor = UIColor.black
-        title.sizeToFit()
-        return title
-    }()
     
     override func viewDidLoad() {
         configureUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+//        guard let userSeq = userSeq else {return}
+//        viewModel.getUserInfo(userSeq)
     }
     
     /// UI 초기설정
@@ -36,8 +36,13 @@ class FeedDetailViewController: UIViewController {
         // MARK: - SafeArea or View BackGroundColor Set
         
         // MARK: - NavigationBar
-        self.navigationItem.titleView = titleLabel
-        self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(popView), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
+        
+        let leftBarBtn = self.navigationItem.makeSFSymbolButton(self, action: #selector(popView), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
+        let rightBarBtn1 = self.navigationItem.makeSFSymbolButtonWidth30(self, action: #selector(share), uiImage: UIImage(named: "share")!, tintColor: .black)
+        let rightBarBtn2 = self.navigationItem.makeSFSymbolButtonWidth30(self, action: #selector(kebabMenu), uiImage: UIImage(named: "kebabMenu")!, tintColor: .black)
+        
+        self.navigationItem.leftBarButtonItem = leftBarBtn
+        self.navigationItem.rightBarButtonItems = [rightBarBtn2, rightBarBtn1]
         // MARK: - addView
         self.view.addSubview(feedView)
         feedView.snp.makeConstraints{
@@ -49,5 +54,13 @@ class FeedDetailViewController: UIViewController {
     
     @objc func popView() {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func share() {
+        smLog("")
+    }
+    
+    @objc func kebabMenu() {
+        smLog("")
     }
 }

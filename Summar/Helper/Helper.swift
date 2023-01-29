@@ -316,6 +316,20 @@ extension UINavigationItem {
         return barButtonItem
     }
     
+    func makeSFSymbolButtonWidth30(_ target: Any?, action: Selector, uiImage: UIImage, tintColor : UIColor) -> UIBarButtonItem {
+        let button = UIButton(type: .system)
+        button.setImage(uiImage, for: .normal)
+        button.addTarget(target, action: action, for: .touchUpInside)
+        button.tintColor = tintColor
+            
+        let barButtonItem = UIBarButtonItem(customView: button)
+        barButtonItem.customView?.translatesAutoresizingMaskIntoConstraints = false
+        barButtonItem.customView?.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        barButtonItem.customView?.widthAnchor.constraint(equalToConstant: 30).isActive = true
+            
+        return barButtonItem
+    }
+    
     func makeSFSymbolButtonLabel(_ target: Any?, action: Selector, title: String, tintColor : UIColor) -> UIBarButtonItem {
         let button = UIButton(type: .system)
         button.setTitle(title, for: .normal)

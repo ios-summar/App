@@ -71,6 +71,8 @@
 		A2527D4C297BE10F0031350B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2527D4B297BE10F0031350B /* ProfileView.swift */; };
 		A2527D4F297D14790031350B /* FeedDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2527D4E297D14790031350B /* FeedDetailViewController.swift */; };
 		A2527D51297D18C70031350B /* FeedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2527D50297D18C70031350B /* FeedDetailView.swift */; };
+		A257175A2986608F009163D5 /* FeedDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A25717592986608F009163D5 /* FeedDetailViewModel.swift */; };
+		A257175C2986660B009163D5 /* Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257175B2986660B009163D5 /* Protocol.swift */; };
 		A28EC0DA28CA1BC000F5BF98 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28EC0D928CA1BC000F5BF98 /* AppDelegate.swift */; };
 		A28EC0DC28CA1BC000F5BF98 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28EC0DB28CA1BC000F5BF98 /* SceneDelegate.swift */; };
 		A28EC0E328CA1BC100F5BF98 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A28EC0E228CA1BC100F5BF98 /* Assets.xcassets */; };
@@ -170,6 +172,8 @@
 		A2527D4B297BE10F0031350B /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		A2527D4E297D14790031350B /* FeedDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailViewController.swift; sourceTree = "<group>"; };
 		A2527D50297D18C70031350B /* FeedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailView.swift; sourceTree = "<group>"; };
+		A25717592986608F009163D5 /* FeedDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDetailViewModel.swift; sourceTree = "<group>"; };
+		A257175B2986660B009163D5 /* Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocol.swift; sourceTree = "<group>"; };
 		A28EC0D628CA1BC000F5BF98 /* Summar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Summar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A28EC0D928CA1BC000F5BF98 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A28EC0DB28CA1BC000F5BF98 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -394,6 +398,7 @@
 			children = (
 				A2527D4E297D14790031350B /* FeedDetailViewController.swift */,
 				A2527D50297D18C70031350B /* FeedDetailView.swift */,
+				A25717592986608F009163D5 /* FeedDetailViewModel.swift */,
 			);
 			path = FeedDetail;
 			sourceTree = "<group>";
@@ -443,6 +448,7 @@
 				5E816E04297A4526002BB4D3 /* FontManager.swift */,
 				5EB4F5F0296E94FF0061D64D /* PaddingLabel.swift */,
 				04CCEAFC2910A61D009DBE05 /* ServerRequest.swift */,
+				A257175B2986660B009163D5 /* Protocol.swift */,
 				5EB4F5F2296EAFFF0061D64D /* LogHelper.swift */,
 				5E816E19297A4C19002BB4D3 /* Record.swift */,
 				04CCEAFE2910A6EC009DBE05 /* Network.plist */,
@@ -732,6 +738,7 @@
 				A2ECB36729448E870005D88C /* ClippingViewController.swift in Sources */,
 				A2D27B722971C963002CF652 /* PushSettingViewController.swift in Sources */,
 				A210F6722960247600A517C5 /* FullScreenImageViewController.swift in Sources */,
+				A257175C2986660B009163D5 /* Protocol.swift in Sources */,
 				A2378EEB29781DFF0025A676 /* WriteFeedViewModel.swift in Sources */,
 				A28EC0DC28CA1BC000F5BF98 /* SceneDelegate.swift in Sources */,
 				A2527D4729782DBF0031350B /* FeedSelectResponse.swift in Sources */,
@@ -771,6 +778,7 @@
 				5EB4F5F1296E94FF0061D64D /* PaddingLabel.swift in Sources */,
 				048EAA842965493D004E4A08 /* PreferencesView.swift in Sources */,
 				04D4B0E1295D24F800AD5043 /* EmptyCollectionViewCell.swift in Sources */,
+				A257175A2986608F009163D5 /* FeedDetailViewModel.swift in Sources */,
 				A2D27B7B2972930B002CF652 /* PushInfo.swift in Sources */,
 				A2527D51297D18C70031350B /* FeedDetailView.swift in Sources */,
 				A2D27B8B2974298D002CF652 /* NoticeTitleTableViewCell.swift in Sources */,
