@@ -27,8 +27,8 @@ class FeedDetailViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-//        guard let userSeq = userSeq else {return}
-//        viewModel.getUserInfo(userSeq)
+        feedView.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+        
     }
     
     /// UI 초기설정

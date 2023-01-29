@@ -86,7 +86,7 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
     }()
     let followerLabel : UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = UIColor.init(r: 115, g: 120, b: 127, a: 1)
         label.font = FontManager.getFont(Font.Regular.rawValue).small11Font
         label.text = "팔로워"
         label.sizeToFit()
@@ -108,7 +108,7 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
     }()
     let followingLabel : UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = UIColor.init(r: 115, g: 120, b: 127, a: 1)
         label.font = FontManager.getFont(Font.Regular.rawValue).small11Font
         label.text = "팔로잉"
         label.sizeToFit()
@@ -134,7 +134,7 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
     }()
     let major : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.SemiBold.rawValue).smallFont
+        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
         label.sizeToFit()
         return label
@@ -191,12 +191,30 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
         
         return scrollView
     }()
-    
-    let test : UILabel = {
+
+    let heartImage : UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "heart")
+        view.tintColor = .black
+        return view
+    }()
+    let likeCount : UILabel = {
         let label = UILabel()
-        label.text = "wefwuehifiwuehfuiewhfiuwehifuhweiufhawliuefhalwiuehfialwuehfliauwheifluawehfliuahweilufhaweilufhaliwuefhailuw"
-        label.font = FontManager.getFont(Font.SemiBold.rawValue).smallFont
-        label.textColor = UIColor.init(r: 115, g: 120, b: 127)
+        label.text = "0"
+        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.sizeToFit()
+        return label
+    }()
+    let bubbleImage : UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "bubble")
+        view.tintColor = .black
+        return view
+    }()
+    let commentCount : UILabel = {
+        let label = UILabel()
+        label.text = "0"
+        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
         label.sizeToFit()
         return label
     }()
@@ -234,6 +252,12 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
         view.addSubview(scrollViewHorizontal)
         view.addSubview(pageControl)
         view.bringSubviewToFront(pageControl)
+        
+        scrollView.addSubview(heartImage)
+        scrollView.addSubview(likeCount)
+        
+        scrollView.addSubview(bubbleImage)
+        scrollView.addSubview(commentCount)
     }
     
     func setAttributes() {
@@ -324,6 +348,24 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
             make.width.equalTo(imageViewWidth)
             make.height.equalTo(20)
             make.centerX.equalToSuperview()
+        }
+        heartImage.snp.makeConstraints {
+            $0.top.equalTo(view.snp.bottom).offset(20)
+            $0.left.equalTo(20)
+            $0.width.height.equalTo(20)
+        }
+        likeCount.snp.makeConstraints {
+            $0.centerY.equalTo(heartImage.snp.centerY)
+            $0.left.equalTo(heartImage.snp.right).offset(5)
+        }
+        bubbleImage.snp.makeConstraints {
+            $0.centerY.equalTo(heartImage.snp.centerY)
+            $0.left.equalTo(likeCount.snp.right).offset(20)
+            $0.width.height.equalTo(20)
+        }
+        commentCount.snp.makeConstraints {
+            $0.centerY.equalTo(bubbleImage.snp.centerY)
+            $0.left.equalTo(bubbleImage.snp.right).offset(5)
         }
     }
     
