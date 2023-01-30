@@ -58,6 +58,10 @@ class HomeView: UIView{
         
         view.estimatedRowHeight = 85.0
         view.rowHeight = UITableView.automaticDimension
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(selectFeed), for: .valueChanged)
+        view.refreshControl = refreshControl
         return view
     }()
 
@@ -71,11 +75,12 @@ class HomeView: UIView{
         }
     }
     
-    func selectFeed() {
+    @objc func selectFeed() {
         let viewModel = HomeViewModel(0, (pageIndex * 30))
         viewModel.selectFeed()
         viewModel.didFinishFetch = {
             self.model = viewModel.feedSelectResponse
+            self.tableView.refreshControl?.endRefreshing()
         }
     }
 
