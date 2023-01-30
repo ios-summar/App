@@ -33,10 +33,6 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
         return width - 40
     }()
     
-    lazy var imageViewHeight : CGFloat = {
-        return self.imageViewWidth * 0.5415
-    }()
-    
     let profileImg : UIImageView = {
         let view = UIImageView()
         view.layer.borderWidth = 1
@@ -156,16 +152,11 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
             make.top.equalTo(profileImg.snp.centerY).offset(2)
             make.left.equalTo(profileImg.snp.right).offset(12)
         }
-        contentsLabel.snp.makeConstraints { (make) in
-            
-            make.top.equalTo(profileImg.snp.bottom).offset(20)
-            make.left.equalTo(20)
-            make.width.equalTo(imageViewWidth)
-        }
+        
         scrollView.snp.makeConstraints { (make) in
             
             make.centerX.equalToSuperview()
-            make.top.equalTo(contentsLabel.snp.bottom).offset(16)
+            make.top.equalTo(profileImg.snp.bottom).offset(20)
             make.width.equalTo(imageViewWidth)
             make.height.equalTo(imageViewWidth)
         }
@@ -175,8 +166,15 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
             make.left.right.equalToSuperview()
         }
         
+        contentsLabel.snp.makeConstraints { (make) in
+            
+            make.top.equalTo(scrollView.snp.bottom).offset(16)
+            make.left.equalTo(20)
+            make.width.equalTo(imageViewWidth)
+        }
+        
         line.snp.makeConstraints { (make) in
-            make.top.equalTo(scrollView.snp.bottom).offset(15)
+            make.top.equalTo(contentsLabel.snp.bottom).offset(15)
             make.left.right.equalToSuperview()
             make.height.equalTo(16)
             make.bottom.equalTo(0)

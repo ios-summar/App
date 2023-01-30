@@ -123,7 +123,7 @@ class MyInfoViewModel{
         if let introduce = userInfo.result.introduce {
             self.introduceString = introduce
         }else {
-            self.introduceString = "작성된 자기소개가 없습니다. 😥\n자기소개를 작성해 자신을 소개해보세요."
+            self.introduceString = "작성된 자기소개가 없습니다😥 자기소개를 작성해 자신을 소개해보세요."
         }
     }
     

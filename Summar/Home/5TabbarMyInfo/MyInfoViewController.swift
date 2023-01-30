@@ -76,7 +76,6 @@ class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate,
     
     
     override func viewWillAppear(_ animated: Bool) {
-        myInfoView.selectFeed()
         if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
 //            print("UserInfo => ", value)
             print("UserInfo userSeq => ", value["userSeq"])
