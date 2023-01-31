@@ -22,4 +22,10 @@ struct FeedInfo: Codable {
     let user : Info?
     let contents : String?
     let feedImages : [FeedImages]
+    let secretYn: Bool?
+    let commentYn: Bool?
+    let tempSaveYn: Bool?
+    let activated: Bool?
+    let lastModifiedDate: String?
+    let createdDate: String?
 }

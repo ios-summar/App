@@ -61,6 +61,40 @@ class FeedDetailViewController: UIViewController {
     }
     
     @objc func kebabMenu() {
-        smLog("")
+        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
+            guard let userSeq = value["userSeq"] else {return}
+            
+            if userSeq as? Int == feedInfo?.user?.userSeq { // 자신 피드
+                smLog("자기 피드")
+                helper.showAlertAction(vc: self, message1: "수정하기", message2: "삭제하기") { handler in
+                    switch handler {
+                    case "수정하기":
+                        print("게시글 수정 로직")
+                    case "삭제하기":
+                        print("삭제")
+                        self.helper.showAlertActionYN(vc: self, title: "알림", message: "정말로 해당 게시글을 삭제하시겠습니까?") { handler in
+                            guard let handler = handler else {
+                                print("취소")
+                                return
+                            }
+                            // 게시글 삭제 로직
+                            print("게시글 삭제 로직")
+                        }
+                    default:
+                        break
+                    }
+                }
+            }else {
+                smLog("자기 피드아님")
+                helper.showAlertAction(vc: self, message: "신고하기") { handler in
+                    switch handler {
+                    case "신고하기":
+                        print("신고하기")
+                    default:
+                        break
+                    }
+                }
+            }
+        }
     }
 }

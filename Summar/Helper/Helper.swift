@@ -35,6 +35,7 @@ class Helper : UIView{
         vc?.window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
     
+    /// UIView Alert 그냥 확인
     func showAlertActionNormal(vc: UIView?, preferredStyle: UIAlertController.Style = .alert, title: String = "알림", message: String = "", completTitle: String = "확인", completion: @escaping (Bool) -> ()) {
         guard let currentVc = vc else {
             return
@@ -48,6 +49,26 @@ class Helper : UIView{
         vc?.window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
     
+    /// UIViewController Alert 확인, 취소
+    func showAlertActionYN(vc: UIViewController?, preferredStyle: UIAlertController.Style = .alert, title: String = "알림", message: String = "", completTitle: String = "확인", cancleTitle: String = "취소", completion: @escaping (Bool?) -> ()) {
+        guard let currentVc = vc else {
+            return
+        }
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
+        let completAction = UIAlertAction(title: completTitle, style: .default) { action in
+            completion(true)
+        }
+        let cancleAction = UIAlertAction(title: cancleTitle, style: .cancel) { action in
+            completion(nil)
+        }
+        
+        alert.addAction(completAction)
+        alert.addAction(cancleAction)
+        currentVc.present(alert, animated: true, completion: nil)
+    }
+    
+    /// UIViewController Alert 기본
     func showAlertAction(vc: UIViewController?, preferredStyle: UIAlertController.Style = .alert, title: String = "알림", message: String = "", completeTitle: String = "확인", _ completeHandler:(() -> Void)? = nil){
                 
                 guard let currentVc = vc else {
@@ -68,6 +89,63 @@ class Helper : UIView{
                     }
                     
                     alert.addAction(completeAction)
+                    
+                    currentVc.present(alert, animated: true, completion: nil)
+                }
+    }
+    
+    /// 액션시트 2,1
+    func showAlertAction(vc: UIViewController?, preferredStyle: UIAlertController.Style = .actionSheet, message1: String = "", message2: String = "", cancel: String = "닫기", completeHandler:((String) -> Void)? = nil){
+                
+                guard let currentVc = vc else {
+                    completeHandler?("")
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: nil, message: nil, preferredStyle: preferredStyle)
+                    
+                    let action1 = UIAlertAction(title: message1, style: .default) { action in
+                        completeHandler?(message1)
+                    }
+                    
+                    let action2 = UIAlertAction(title: message2, style: .default) { action in
+                        completeHandler?(message2)
+                    }
+                    
+                    let cancelAction = UIAlertAction(title: cancel, style: .cancel) { action in
+                        completeHandler?(cancel)
+                    }
+                    
+                    alert.addAction(action1)
+                    alert.addAction(action2)
+                    alert.addAction(cancelAction)
+                    
+                    currentVc.present(alert, animated: true, completion: nil)
+                }
+    }
+    
+    /// 액션시트 1,1
+    func showAlertAction(vc: UIViewController?, preferredStyle: UIAlertController.Style = .actionSheet, message: String = "", cancel: String = "닫기", completeHandler:((String) -> Void)? = nil){
+                
+                guard let currentVc = vc else {
+                    completeHandler?("")
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: nil, message: nil, preferredStyle: preferredStyle)
+                    
+                    let action1 = UIAlertAction(title: message, style: .destructive) { action in
+                        completeHandler?(message)
+                    }
+                    
+                    let cancelAction = UIAlertAction(title: cancel, style: .cancel) { action in
+                        completeHandler?(cancel)
+                    }
+                    
+                    alert.addAction(action1)
+                    alert.addAction(cancelAction)
                     
                     currentVc.present(alert, animated: true, completion: nil)
                 }

@@ -49,9 +49,8 @@ class PreferencesViewModel{
     // MARK: - Network call
     func getUserInfo() {
         if let value = UserDefaults.standard.dictionary(forKey: "UserInfo") {
-            print("myInfo => \(value)")
-            let userId = value["userEmail"] as! String
-            self.request.requestMyInfo("/user/user-info?userEmail=\(userId)", completion: { (userInfo, error, status) in
+            guard let userSeq = value["userSeq"] else {return}
+            self.request.requestMyInfo("/user/user-info?userSeq=\(userSeq)", completion: { (userInfo, error, status) in
                 //error만 있을경우 서버오류
                 //error,status != nil 경우 토큰 재발급
                 if let error = error, let status = status {

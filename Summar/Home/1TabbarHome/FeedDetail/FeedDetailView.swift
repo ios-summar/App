@@ -9,7 +9,9 @@ import Foundation
 import UIKit
 
 final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
+    
     static let shared = FeedDetailVeiw()
+    let viewModel = FeedDetailViewModel()
     let helper = Helper.shared
     
     let imageViewWidth : CGFloat = {
@@ -19,32 +21,49 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
     var imageArr = [String]()
     var feedInfo : FeedInfo? {
         didSet {
-            guard let feedInfo = feedInfo else{ return }
-            
-            //닉네임 set
+            guard let feedInfo = feedInfo, let feedSeq = feedInfo.feedSeq else { return }
             smLog("\n \(feedInfo)")
             
-            setProfileImage(profileImg, feedInfo.user?.profileImageUrl) // 프로필 사진
-            self.nickName.text = feedInfo.user?.userNickname // 닉네임
-            self.major.text = feedInfo.user?.major2 // 전공
-            self.contentsLabel.text = feedInfo.contents // 피드 내용
-            helper.lineSpacing(contentsLabel, 5)
-            
-            // 팔로우 팔로잉 nil값임. 채윤님에게 요청
-            
-            
-            // 피드 이미지
-            let image = feedInfo.feedImages
+            // 피드 프로필 Set
+            viewModel.getFeedInfo(feedSeq)
+            viewModel.didFinishFetch = {
+                // 프로필
+                self.setProfileImage(self.profileImg, self.viewModel.profileImgURLString) // 프로필 사진
+                self.nickName.text = self.viewModel.nicknameString // 닉네임
+                self.major.text = self.viewModel.major2String // 전공
+                self.followerCountLabel.text = self.viewModel.followerString //팔로우
+                self.followingCountLabel.text = self.viewModel.followingString //팔로잉
+                
+                // 피드 내용
+                self.contentsLabel.text = self.viewModel.contentString
+                self.helper.lineSpacing(self.contentsLabel, 5)
+                
+                // 피드 이미지
+                guard let image = self.viewModel.feedInfo?.feedImages else {return}
+                
+                for i in 0 ..< image.count {
+                    self.imageArr.append(image[i].imageUrl!)
+                }
 
-            for i in 0 ..< image.count {
-                imageArr.append(image[i].imageUrl!)
-            }
-
-            initImageArr(imageArr) { finish in
-                if finish {
-                    self.imageArr = []
+                self.initImageArr(self.imageArr) { finish in
+                    if finish {
+                        self.imageArr = []
+                    }
                 }
             }
+            
+//            // 피드 이미지
+//            let image = feedInfo.feedImages
+//
+//            for i in 0 ..< image.count {
+//                imageArr.append(image[i].imageUrl!)
+//            }
+//
+//            initImageArr(imageArr) { finish in
+//                if finish {
+//                    self.imageArr = []
+//                }
+//            }
         }
     }
     
