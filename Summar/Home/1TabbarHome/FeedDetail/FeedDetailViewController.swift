@@ -11,7 +11,7 @@ import UIKit
 class FeedDetailViewController: UIViewController {
     static let shared = FeedDetailViewController()
     let viewModel = FeedDetailViewModel()
-    let feedView = FeedDetailVeiw()
+    let feedView = FeedDetailView()
     let helper = Helper()
     
     var userSeq: Int?
@@ -46,7 +46,8 @@ class FeedDetailViewController: UIViewController {
         // MARK: - addView
         self.view.addSubview(feedView)
         feedView.snp.makeConstraints{
-            $0.right.left.equalToSuperview()
+            $0.right.equalTo(self.view.safeAreaLayoutGuide.snp.right)
+            $0.left.equalTo(self.view.safeAreaLayoutGuide.snp.left)
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
             $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
         }

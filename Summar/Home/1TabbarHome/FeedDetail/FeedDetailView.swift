@@ -8,9 +8,9 @@
 import Foundation
 import UIKit
 
-final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
+final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
     
-    static let shared = FeedDetailVeiw()
+    static let shared = FeedDetailView()
     let viewModel = FeedDetailViewModel()
     let helper = Helper.shared
     
@@ -35,9 +35,7 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
                 self.commentCount.alpha = alphaCGFloat
                 
                 // 댓글 활성화 => addSubView
-                if commentYn {
-                    self.setCommentTableView()
-                }
+                self.setCommentTableView(commentYn)
                 
                 // 프로필
                 self.setProfileImage(self.profileImg, self.viewModel.profileImgURLString) // 프로필 사진
@@ -74,7 +72,7 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
     lazy var scrollView : UIScrollView = {
         let view = UIScrollView()
         view.isScrollEnabled = true
-        view.contentSize = CGSize(width: self.frame.width, height: 1200)
+//        view.contentSize = CGSize(width: self.frame.width, height: 1200)
         return view
     }()
     lazy var followView : UIView = {
@@ -239,24 +237,36 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
     lazy var commentTableView: UITableView = {
         let view = UITableView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .white
+        view.backgroundColor = .blue
         view.showsVerticalScrollIndicator = false
+        view.isScrollEnabled = false
         
         // 테이블뷰 왼쪽 마진 없애기
         view.separatorStyle = .none
-//        view.separatorStyle = .singleLine
-//        view.cellLayoutMarginsFollowReadableWidth = false
-//        view.separatorInset.left = 0
-//        view.separatorColor = .gray
-        //
-        
-        view.estimatedRowHeight = 85.0
+        view.estimatedRowHeight = 132
         view.rowHeight = UITableView.automaticDimension
+        view.register(HomeTableViewCell.self, forCellReuseIdentifier: "HomeTableViewCell")
+        view.dataSource = self
+        view.delegate = self
         return view
     }()
     let line2 : UIView = {
         let view = UIView()
-        view.backgroundColor = .blue
+        view.backgroundColor = .Gray01
+        return view
+    }()
+    lazy var commentView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }()
+    lazy var commentTextField: UITextField = {
+        let view = PaddingTextField()
+        view.placeholder = "댓글을 입력해 주세요."
+        view.backgroundColor = UIColor.Gray02
+        view.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
+        view.textColor = .black
+        view.layer.cornerRadius = 23
         return view
     }()
     
@@ -269,6 +279,7 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
     func setUI() {
         backgroundColor = .white
         
+        addSubview(commentView)
         addSubview(line)
         addSubview(scrollView)
         
@@ -312,9 +323,7 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
         scrollView.snp.makeConstraints {
             
             $0.top.equalTo(line.snp.bottom)
-            $0.left.equalTo(self.safeAreaLayoutGuide.snp.left)
-            $0.right.equalTo(self.safeAreaLayoutGuide.snp.right)
-            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+            $0.left.right.bottom.equalToSuperview()
         }
         profileImg.snp.makeConstraints { (make) in
             
@@ -325,12 +334,12 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
         nickName.snp.makeConstraints { (make) in
             
             make.bottom.equalTo(profileImg.snp.centerY).offset(-1)
-            make.left.equalTo(profileImg.snp.right).offset(12)
+            make.left.equalTo(profileImg.snp.right).offset(13)
         }
         major.snp.makeConstraints { (make) in
             
             make.top.equalTo(profileImg.snp.centerY).offset(2)
-            make.left.equalTo(profileImg.snp.right).offset(12)
+            make.left.equalTo(profileImg.snp.right).offset(13)
         }
         followView.snp.makeConstraints {
             $0.centerY.equalTo(profileImg.snp.centerY)
@@ -416,9 +425,49 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
             $0.width.equalTo(UIScreen.main.bounds.width)
             $0.height.equalTo(2)
         }
+        
+        scrollView.updateContentSize()
+        
+        self.setNeedsDisplay()
     }
     
-    func setCommentTableView() {
+    func setCommentTableView(_ commentYN: Bool) {
+        if commentYN {
+            addSubview(commentView)
+            commentView.addSubview(commentTextField)
+            commentView.snp.makeConstraints {
+                $0.centerX.equalToSuperview()
+                $0.bottom.left.right.equalToSuperview()
+                $0.height.equalTo(62)
+            }
+            commentTextField.snp.makeConstraints {
+                $0.top.equalTo(8)
+                $0.bottom.equalTo(-8)
+                $0.left.equalTo(20)
+                $0.right.equalTo(-20)
+            }
+            
+            scrollView.addSubview(commentTableView)
+            scrollView.snp.remakeConstraints {
+                $0.top.left.right.equalToSuperview()
+                $0.bottom.equalTo(commentView.snp.top)
+            }
+            commentTableView.backgroundColor = .blue
+            commentTableView.snp.makeConstraints {
+                $0.top.equalTo(line2.snp.bottom).offset(24)
+//                $0.left.right.equalToSuperview()
+                $0.centerX.equalToSuperview()
+                $0.height.width.equalTo(400)
+            }
+            scrollView.updateContentSize()
+        }else {
+            commentView.removeFromSuperview()
+            commentTableView.removeFromSuperview()
+            
+            scrollView.snp.remakeConstraints {
+                $0.top.left.right.bottom.equalTo(self.safeAreaLayoutGuide)
+            }
+        }
         
     }
     
@@ -487,5 +536,18 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
                 )
             }
         }
+    }
+}
+
+extension FeedDetailView : UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 18
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
+        cell.nickName.text = "12341234"
+        
+        return cell
     }
 }

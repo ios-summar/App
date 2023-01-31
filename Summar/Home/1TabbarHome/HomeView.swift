@@ -121,20 +121,8 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row != 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: tableCellReuseIdentifier, for: indexPath) as! HomeTableViewCell
-            
-            
-            if let model = model?.content {
-                smLog("\(model.count)")
-                setProfileImage(cell.profileImg, model[indexPath.row - 1].user?.profileImageUrl)
-                cell.nickName.text = model[indexPath.row - 1].user?.userNickname
-                cell.major.text = model[indexPath.row - 1].user?.major2
-                cell.contentsLabel.text = model[indexPath.row - 1].contents
-                cell.feedImages = model[indexPath.row - 1].feedImages
-                
-                helper.lineSpacing(cell.contentsLabel, 5)
-            }
-            
-            
+            guard let model = model?.content?[indexPath.row - 1] else{ return UITableViewCell() }
+            cell.setUpCell(model)
             
             return cell
         }else {
@@ -169,27 +157,6 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let model = model?.content {
             homeViewDelegate?.pushScreen(FeedDetailViewController.shared, model[indexPath.row - 1])
-        }
-    }
-    
-    func setProfileImage(_ imageView: UIImageView,_ urlString: String?) {
-        guard let urlString = urlString else {
-            imageView.image = UIImage(named: "NonProfile")
-            return
-        }
-        let url = URL(string: urlString)
-        //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
-        //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
-        DispatchQueue.global().async {
-            DispatchQueue.main.async {
-                imageView.kf.indicatorType = .activity
-                imageView.kf.setImage(
-                  with: url,
-                  placeholder: nil,
-                  options: [.transition(.fade(1.2))],
-                  completionHandler: nil
-                )
-            }
         }
     }
     

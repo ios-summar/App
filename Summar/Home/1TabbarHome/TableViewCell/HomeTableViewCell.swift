@@ -13,27 +13,27 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
     
     var imageArr = [String]()
     var feedImages : [FeedImages]? {
-            didSet {
-                guard let image = feedImages else {return}
-                
-                for i in 0 ..< image.count {
-                    imageArr.append(image[i].imageUrl!)
-                }
-                
-                initImageArr(imageArr) { finish in
-                    if finish {
-                        self.imageArr = []
-                    }
+        didSet {
+            guard let image = feedImages else {return}
+            
+            for i in 0 ..< image.count {
+                imageArr.append(image[i].imageUrl!)
+            }
+            
+            initImageArr(imageArr) { finish in
+                if finish {
+                    self.imageArr = []
                 }
             }
         }
+    }
     
     let imageViewWidth : CGFloat = {
         let width = UIScreen.main.bounds.width
         return width - 40
     }()
     
-    let profileImg : UIImageView = {
+    lazy var profileImg : UIImageView = {
         let view = UIImageView()
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.followShadowColor.cgColor
@@ -42,20 +42,42 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
         view.tintColor = UIColor.grayColor205
         view.contentMode = .scaleAspectFit
         view.clipsToBounds = true
+        view.isUserInteractionEnabled = true
+
+        let recognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didSelect(_:))
+        )
+        view.addGestureRecognizer(recognizer)
+        
         return view
     }()
-    let nickName : UILabel = {
+    lazy var nickName : UILabel = {
         let label = UILabel()
         label.font = FontManager.getFont(Font.Bold.rawValue).medium15Font
         label.textColor = .black
         label.sizeToFit()
+        label.isUserInteractionEnabled = true
+        
+        let recognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didSelect(_:))
+        )
+        label.addGestureRecognizer(recognizer)
         return label
     }()
-    let major : UILabel = {
+    lazy var major : UILabel = {
         let label = UILabel()
         label.font = FontManager.getFont(Font.SemiBold.rawValue).smallFont
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
         label.sizeToFit()
+        label.isUserInteractionEnabled = true
+        
+        let recognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didSelect(_:))
+        )
+        label.addGestureRecognizer(recognizer)
         return label
     }()
     let contentsLabel : UILabel = {
@@ -104,6 +126,13 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
         scrollView.isScrollEnabled = true
         
         scrollView.layer.cornerRadius = 6
+        scrollView.isUserInteractionEnabled = true
+
+        let recognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didSelect(_:))
+        )
+        scrollView.addGestureRecognizer(recognizer)
         
         // Specify the screen size of the scroll.
 //        scrollView.contentSize = CGSize(width: CGFloat(pageSize) * self.view.frame.maxX, height: 0)
@@ -116,6 +145,47 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
         view.backgroundColor = .Gray01
         return view
     }()
+    
+    @objc func didSelect(_ sender: UITapGestureRecognizer) {
+        print(sender)
+        
+        let nickNamePoint = sender.location(in: nickName)
+        let majorPoint = sender.location(in: major)
+        let profileImgPoint = sender.location(in: profileImg)
+    }
+    
+    func setUpCell(_ feedInfo: FeedInfo){
+        print("setUpCell \(feedInfo)")
+        
+        setProfileImage(profileImg, feedInfo.user?.profileImageUrl)
+        nickName.text = feedInfo.user?.userNickname
+        major.text = feedInfo.user?.major2
+        contentsLabel.text = feedInfo.contents
+        feedImages = feedInfo.feedImages
+        
+        helper.lineSpacing(contentsLabel, 5)
+    }
+    
+    func setProfileImage(_ imageView: UIImageView,_ urlString: String?) {
+        guard let urlString = urlString else {
+            imageView.image = UIImage(named: "NonProfile")
+            return
+        }
+        let url = URL(string: urlString)
+        //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
+        //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
+        DispatchQueue.global().async {
+            DispatchQueue.main.async {
+                imageView.kf.indicatorType = .activity
+                imageView.kf.setImage(
+                  with: url,
+                  placeholder: nil,
+                  options: [.transition(.fade(1.2))],
+                  completionHandler: nil
+                )
+            }
+        }
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

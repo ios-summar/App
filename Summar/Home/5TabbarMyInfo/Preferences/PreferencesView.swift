@@ -72,7 +72,7 @@ class PreferencesView: UIView{
     let profileview = UIView()
     let profileImg : UIImageView = {
         let view = UIImageView()
-        view.layer.cornerRadius = 27.5
+        view.layer.cornerRadius = 21
 //        view.image = UIImage(named: "NonProfile")
         view.tintColor = UIColor.grayColor205
         view.contentMode = .scaleAspectFit
@@ -175,12 +175,12 @@ class PreferencesView: UIView{
         profileview.snp.makeConstraints { (make) in
             make.top.equalTo(20)
             make.left.equalTo(20)
-            make.width.height.equalTo(55)
+            make.width.height.equalTo(42)
         }
         
         profileImg.snp.makeConstraints { (make) in
             make.left.top.equalToSuperview()
-            make.width.height.equalTo(55)
+            make.width.height.equalTo(42)
         }
         
         socialBadge.snp.makeConstraints { (make) in
@@ -190,12 +190,12 @@ class PreferencesView: UIView{
         
         nickName.snp.makeConstraints { (make) in
             make.bottom.equalTo(profileImg.snp.centerY).offset(-1)
-            make.left.equalTo(profileImg.snp.right).offset(10)
+            make.left.equalTo(profileImg.snp.right).offset(13)
         }
         
         major.snp.makeConstraints { (make) in
             make.top.equalTo(profileImg.snp.centerY).offset(2)
-            make.left.equalTo(profileImg.snp.right).offset(10)
+            make.left.equalTo(profileImg.snp.right).offset(13)
         }
         
         logutBtn.snp.makeConstraints { (make) in

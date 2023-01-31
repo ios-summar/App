@@ -328,12 +328,12 @@ class MyInfoView: UIView, ViewAttributes{
         nickName.snp.makeConstraints { (make) in
             
             make.bottom.equalTo(profileImg.snp.centerY).offset(-1)
-            make.left.equalTo(profileImg.snp.right).offset(12)
+            make.left.equalTo(profileImg.snp.right).offset(13)
         }
         major.snp.makeConstraints { (make) in
             
             make.top.equalTo(profileImg.snp.centerY).offset(2)
-            make.left.equalTo(profileImg.snp.right).offset(12)
+            make.left.equalTo(profileImg.snp.right).offset(13)
         }
         followView.snp.makeConstraints {
             $0.centerY.equalTo(profileImg.snp.centerY)
