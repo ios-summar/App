@@ -66,10 +66,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }else { // 네이버 로그인 처리
                 instance?.receiveAccessToken(URLContexts.first?.url)
             }
-    }
-        
-        
-        
+        }
         
 
 //        guard let scheme = URLContexts.first?.url.scheme else { return }
