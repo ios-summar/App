@@ -39,6 +39,8 @@ class FeedDetailViewModel {
     var followingString: String?
     var profileImgURLString: String?
     var feedImages: [FeedImages]?
+    var secretYn: Bool?
+    var commentYn: Bool?
     
     // 피드
     var contentString: String?
@@ -47,6 +49,7 @@ class FeedDetailViewModel {
     var showAlertClosure: (() -> ())?
     var updateLoadingStatus: (() -> ())?
     var didFinishFetch: (() -> ())?
+    var didFinishDelteFetch: (() -> ())?
     
     ///  피드 자세히보기
     func getFeedInfo(_ feedSeq: Int){
@@ -67,6 +70,26 @@ class FeedDetailViewModel {
             self.isLoading = false
             self.feedInfo = feedInfo
 
+        })
+    }
+    
+    ///  피드삭제
+    func deleteFeed(_ feedSeq: Int){
+        self.request.deleteFeed("/feed/\(feedSeq)", completion: { (feedInfo, error, status) in
+            if let error = error, let status = status {
+                if status == 500 {
+                    print("토큰 재발급")
+                    self.request.reloadToken(status)
+                }
+            }else if let error = error {
+                print(error)
+                self.error = error
+                self.isLoading = false
+                return
+            }
+            self.error = nil
+            self.isLoading = false
+            self.didFinishDelteFetch?()
         })
     }
     
@@ -92,6 +115,15 @@ class FeedDetailViewModel {
         //피드
         if let content = feedInfo.contents {
             self.contentString = content
+        }
+        
+        // 댓글 사용 유무 및 비공개
+        if let secretYn = feedInfo.secretYn {
+            self.secretYn = secretYn
+        }
+        
+        if let commentYn = feedInfo.commentYn {
+            self.commentYn = commentYn
         }
     }
 }

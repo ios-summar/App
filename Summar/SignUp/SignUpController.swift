@@ -73,7 +73,7 @@ class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate{
         view.addSubview(progressBar)
         view.addSubview(arrowBackWard)
         
-        helper.showAlertAction(vc: self, message: "회원정보가 없어\n회원가입 화면으로 이동합니다.")
+        helper.showAlertAction(vc: self, title: "알림", message: "회원정보가 없어\n회원가입 화면으로 이동합니다.")
         
         layoutInit()
     }

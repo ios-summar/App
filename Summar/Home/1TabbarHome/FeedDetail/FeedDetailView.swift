@@ -27,6 +27,18 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
             // 피드 프로필 Set
             viewModel.getFeedInfo(feedSeq)
             viewModel.didFinishFetch = {
+                guard let commentYn = self.viewModel.commentYn else {return}
+                let alphaCGFloat = commentYn ? 1.0 : 0.0
+                
+                // 댓글 막아놓음
+                self.bubbleImage.alpha = alphaCGFloat
+                self.commentCount.alpha = alphaCGFloat
+                
+                // 댓글 활성화 => addSubView
+                if commentYn {
+                    self.setCommentTableView()
+                }
+                
                 // 프로필
                 self.setProfileImage(self.profileImg, self.viewModel.profileImgURLString) // 프로필 사진
                 self.nickName.text = self.viewModel.nicknameString // 닉네임
@@ -51,19 +63,6 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
                     }
                 }
             }
-            
-//            // 피드 이미지
-//            let image = feedInfo.feedImages
-//
-//            for i in 0 ..< image.count {
-//                imageArr.append(image[i].imageUrl!)
-//            }
-//
-//            initImageArr(imageArr) { finish in
-//                if finish {
-//                    self.imageArr = []
-//                }
-//            }
         }
     }
     
@@ -237,6 +236,29 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
         label.sizeToFit()
         return label
     }()
+    lazy var commentTableView: UITableView = {
+        let view = UITableView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        view.showsVerticalScrollIndicator = false
+        
+        // 테이블뷰 왼쪽 마진 없애기
+        view.separatorStyle = .none
+//        view.separatorStyle = .singleLine
+//        view.cellLayoutMarginsFollowReadableWidth = false
+//        view.separatorInset.left = 0
+//        view.separatorColor = .gray
+        //
+        
+        view.estimatedRowHeight = 85.0
+        view.rowHeight = UITableView.automaticDimension
+        return view
+    }()
+    let line2 : UIView = {
+        let view = UIView()
+        view.backgroundColor = .blue
+        return view
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -277,6 +299,8 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
         
         scrollView.addSubview(bubbleImage)
         scrollView.addSubview(commentCount)
+        
+        scrollView.addSubview(line2)
     }
     
     func setAttributes() {
@@ -386,6 +410,16 @@ final class FeedDetailVeiw: UIView, ViewAttributes, UIScrollViewDelegate {
             $0.centerY.equalTo(bubbleImage.snp.centerY)
             $0.left.equalTo(bubbleImage.snp.right).offset(5)
         }
+        line2.snp.makeConstraints {
+            $0.top.equalTo(heartImage.snp.bottom).offset(20)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(UIScreen.main.bounds.width)
+            $0.height.equalTo(2)
+        }
+    }
+    
+    func setCommentTableView() {
+        
     }
     
     func initImageArr(_ imageArr : [String], completion : @escaping(Bool) -> ()){

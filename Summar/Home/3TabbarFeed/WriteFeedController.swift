@@ -69,7 +69,7 @@ class WriteFeedController : UIViewController, ImagePickerDelegate, PopDelegate{
     }
     
     func showAlert(_ message : String) {
-        helper.showAlertAction(vc: self, message: message)
+        helper.showAlertAction(vc: self, title: "알림", message: message)
     }
     
     @objc func closeAction() {

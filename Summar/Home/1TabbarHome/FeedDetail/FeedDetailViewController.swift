@@ -57,7 +57,12 @@ class FeedDetailViewController: UIViewController {
     }
     
     @objc func share() {
-        smLog("")
+        let activityVC = UIActivityViewController(activityItems: [feedView.feedInfo?.contents], applicationActivities: nil)
+        activityVC.popoverPresentationController?.sourceView = self.view
+        
+        //공유하기 기능 제외
+//        activityVC.excludedActivityTypes = [.airDrop]
+        self.present(activityVC, animated: true, completion: nil)
     }
     
     @objc func kebabMenu() {
@@ -71,14 +76,17 @@ class FeedDetailViewController: UIViewController {
                     case "수정하기":
                         print("게시글 수정 로직")
                     case "삭제하기":
-                        print("삭제")
                         self.helper.showAlertActionYN(vc: self, title: "알림", message: "정말로 해당 게시글을 삭제하시겠습니까?") { handler in
                             guard let handler = handler else {
-                                print("취소")
                                 return
                             }
+                            guard let feedSeq = self.feedInfo?.feedSeq else {return}
                             // 게시글 삭제 로직
-                            print("게시글 삭제 로직")
+                            print("게시글 삭제 로직 feedSeq => \(feedSeq)")
+                            self.viewModel.deleteFeed(feedSeq)
+                            self.viewModel.didFinishDelteFetch = {
+                                self.navigationController?.popViewController(animated: true)
+                            }
                         }
                     default:
                         break

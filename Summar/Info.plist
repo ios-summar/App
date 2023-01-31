@@ -61,6 +61,7 @@
 	</array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>summar</string>
 		<string>kakaolink</string>
 		<string>kakaokompassauth</string>
 		<string>naversearchthirdlogin</string>

@@ -478,7 +478,7 @@ class ServerRequest: NSObject {
             print("url => \(url)")
             print(token)
             AF.upload(multipartFormData: { (multipart) in
-                for x in 0 ... imageArr.count - 1 {
+                for x in 0 ..< imageArr.count {
                     if let imageData = imageArr[x].jpegData(compressionQuality: 1) {
                         multipart.append(imageData, withName: "images", fileName: "\(param["profileImageUrl"]).jpg", mimeType: "image/jpeg")
                         //이미지 데이터를 put할 데이터에 덧붙임
@@ -566,6 +566,46 @@ class ServerRequest: NSObject {
             AF.request(url,
                        method: .get,
                        parameters: param,
+                       encoding: URLEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json",
+                                 "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    guard let result = response.data else {return}
+                    struct Response : Codable {
+                        let result : FeedInfo
+                    }
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(Response.self, from: result)
+                        
+                        completion(json.result, nil, nil)
+                    } catch {
+                        print("error! \(error)")
+                        completion(nil, error, nil)
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    completion(nil, error, statusCode)
+                }
+            }
+        }
+    }
+    
+    // MARK: - 특정 피드삭제(FeedDelete)
+    ///특정 피드삭제(FeedDelete)
+    func deleteFeed(_ url: String, completion: @escaping (FeedInfo?, Error?, Int?) -> ()) {
+        let url = Server.url + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.request(url,
+                       method: .patch,
+                       parameters: nil,
                        encoding: URLEncoding.default,
                        headers: ["Content-Type":"application/json", "Accept":"application/json",
                                  "Authorization":"Bearer \(token)"])
