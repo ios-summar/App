@@ -46,30 +46,27 @@ class MyInfoViewModel{
     var didFinishFetch: (() -> ())?
     
     // MARK: - Network call
-    func getUserInfo() {
-        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo") {
-            guard let userSeq = value["userSeq"] else {return}
-            self.request.requestMyInfo("/user/user-info?userSeq=\(userSeq)", completion: { (userInfo, error, status) in
-                //error만 있을경우 서버오류
-                //error,status != nil 경우 토큰 재발급
-                if let error = error, let status = status {
-                    if status == 500 {
-                        print("토큰 재발급")
-                        self.request.reloadToken(status)
-                        self.getUserInfo()
-                    }
-                }else if let error = error {
-                    print(error)
-                    self.error = error
-                    self.isLoading = false
-                    return
+    func getUserInfo(_ userSeq: Int) {
+        self.request.requestMyInfo("/user/user-info?userSeq=\(userSeq)", completion: { (userInfo, error, status) in
+            //error만 있을경우 서버오류
+            //error,status != nil 경우 토큰 재발급
+            if let error = error, let status = status {
+                if status == 500 {
+                    print("토큰 재발급")
+                    self.request.reloadToken(status)
+                    self.getUserInfo(userSeq)
                 }
-                self.error = nil
+            }else if let error = error {
+                print(error)
+                self.error = error
                 self.isLoading = false
-                self.userInfo = userInfo
-                
-            })
-        }
+                return
+            }
+            self.error = nil
+            self.isLoading = false
+            self.userInfo = userInfo
+            
+        })
     }
     
     // MARK: - Network call
@@ -104,6 +101,8 @@ class MyInfoViewModel{
     private func setupText(with userInfo: UserInfo) {
         smLog("")
         print("userInfo", userInfo)
+        self.profileImgURLString = nil
+        
         if let nickname = userInfo.result.userNickname {
             self.nicknameString = nickname
         }

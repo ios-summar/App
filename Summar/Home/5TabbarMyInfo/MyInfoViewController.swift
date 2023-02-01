@@ -76,21 +76,17 @@ class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate,
     
     
     override func viewWillAppear(_ animated: Bool) {
-        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
-//            print("UserInfo => ", value)
-            print("UserInfo userSeq => ", value["userSeq"])
-            myInfoView.requestMyInfo()
-            myInfoView.requestMyFeed(value["userSeq"] as? Int ?? nil)
-            LoadingIndicator.hideLoading()
-        }else {
-            print("userInfo nil")
-        }
+        guard let value = UserDefaults.standard.dictionary(forKey: "UserInfo") else {return}
+        let userSeq: Int = value["userSeq"] as! Int
+        myInfoView.requestMyInfo(userSeq)
+        LoadingIndicator.hideLoading()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        myInfoView.touchLeft()
     }
     
     @objc func pushViewScreen(_ sender: Any) {
-//        guard let userInfo = userInfo else {return}
-//
-//        VC.userInfo = userInfo
         self.navigationController?.pushViewController(VC, animated: true)
     }
 }

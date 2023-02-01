@@ -9,17 +9,17 @@ import Foundation
 import UIKit
 import SnapKit
 
-class ProfileViewController : UIViewController{
+class ProfileViewController : UIViewController, ViewAttributes{
     static let shared = ProfileViewController()
-    let profileView = ProfileView()
+    let infoView = MyInfoView()
     let helper = Helper()
+    
+    var userSeq : Int?
     
     var searchUserInfo : SearchUserInfo? {
         didSet {
             guard let searchUserInfo = searchUserInfo else {return}
-            
-            profileView.searchUserInfo = searchUserInfo // UIView에 인자 전달
-            titleLabel.text = searchUserInfo.userNickname // 네비바 타이틀을 닉네임으로 set
+            userSeq = searchUserInfo.userSeq
         }
     }
     let titleLabel : UILabel = {
@@ -31,24 +31,32 @@ class ProfileViewController : UIViewController{
     }()
     
     override func viewDidLoad() {
-        configureUI()
+        setUI()
+        setAttributes()
     }
     
-    /// UI 초기설정
-    func configureUI() {
-        // MARK: - SafeArea or View BackGroundColor Set
-        
-        // MARK: - NavigationBar
-        self.navigationItem.titleView = titleLabel
+    override func viewWillAppear(_ animated: Bool) {
+        guard let userSeq = userSeq else {return}
+        infoView.requestMyInfo(userSeq)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        infoView.touchLeft()
+    }
+    
+    func setUI() {
         self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(popView), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
-        // MARK: - addView
-        self.view.addSubview(profileView)
-        profileView.snp.makeConstraints{
+        self.view.addSubview(infoView)
+    }
+    
+    func setAttributes() {
+        infoView.snp.makeConstraints{
             $0.right.left.equalToSuperview()
             $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
             $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
         }
     }
+    
     
     @objc func popView() {
         self.navigationController?.popViewController(animated: true)

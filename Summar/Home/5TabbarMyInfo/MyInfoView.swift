@@ -18,7 +18,6 @@ protocol PushDelegate : AnyObject {
 }
 
 class MyInfoView: UIView, ViewAttributes{
-    static let shared = MyInfoView()
     let helper = Helper()
     let request = ServerRequest.shared
     private let tableCellReuseIdentifier = "tableCell"
@@ -39,25 +38,10 @@ class MyInfoView: UIView, ViewAttributes{
         }
     }
     
-//    var model : FeedSelectResponse? {
-//        didSet {
-//            smLog("\n \(self.model?.content?.count) \n")
-//
-//            tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: tableCellReuseIdentifier)
-//
-//            tableView.delegate = self
-//            tableView.dataSource = self
-//
-//            tableView.reloadData()
-//        }
-//    }
-    
     var displayCount : Int = 0
     var pageIndex : Int = 1
     
     var requestDic = Dictionary<String, Any>()
-    
-//    let UserInfo = UserDefaults.standard.dictionary(forKey: "UserInfo")
     
     let line: UIView = {
         let view = UIView()
@@ -127,6 +111,7 @@ class MyInfoView: UIView, ViewAttributes{
     }()
     let profileImg : UIImageView = {
         let view = UIImageView()
+        view.image = nil
         view.layer.borderColor = UIColor.followShadowColor.cgColor
         view.layer.cornerRadius = 21
         view.tintColor = UIColor.grayColor205
@@ -156,7 +141,6 @@ class MyInfoView: UIView, ViewAttributes{
         UILabel.numberOfLines = 3
         UILabel.lineBreakMode = .byTruncatingTail
         UILabel.sizeToFit()
-        UILabel.layer.borderWidth = 1
         return UILabel
     }()
     
@@ -168,89 +152,48 @@ class MyInfoView: UIView, ViewAttributes{
         view.clipsToBounds = true
         return view
     }()
-//    let nickName : UILabel = {
-//        let label = UILabel()
-//        label.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
-//        label.textColor = .black
-//        label.sizeToFit()
-//        return label
-//    }()
-//    let major : UILabel = {
-//        let label = UILabel()
-//        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
-//        label.textColor = UIColor(r: 115, g: 120, b: 127)
-//        label.sizeToFit()
-//        return label
-//    }()
-//    lazy var followView : UIView = {
-//        let view = UIView()
-//        view.backgroundColor = UIColor.Gray01
-//        view.layer.cornerRadius = 5
-//        return view
-//    }()
-//    let divisionLine : UIView = {
-//        let view = UIView()
-//        view.backgroundColor = UIColor.Gray02
-//        return view
-//    }()
-//    let followerBtn : UIButton = {
-//        let button = UIButton()
-//        button.backgroundColor = .clear
-//        button.addTarget(self, action: #selector(followBtnAction(_:)), for: .touchUpInside)
-//        return button
-//    }()
-//    let followerCountLabel : UILabel = {
-//        let label = UILabel()
-//        label.textColor = .black
-//        label.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
-//        label.text = "0"
-//        label.sizeToFit()
-//        return label
-//    }()
-//    let followerLabel : UILabel = {
-//        let label = UILabel()
-//        label.textColor = UIColor.init(r: 115, g: 120, b: 127, a: 1)
-//        label.font = FontManager.getFont(Font.Regular.rawValue).small11Font
-//        label.text = "팔로워"
-//        label.sizeToFit()
-//        return label
-//    }()
-//    let followingBtn : UIButton = {
-//        let button = UIButton()
-//        button.backgroundColor = .clear
-//        button.addTarget(self, action: #selector(followBtnAction(_:)), for: .touchUpInside)
-//        return button
-//    }()
-//    let followingCountLabel : UILabel = {
-//        let label = UILabel()
-//        label.textColor = .black
-//        label.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
-//        label.text = "0"
-//        label.sizeToFit()
-//        return label
-//    }()
-//    let followingLabel : UILabel = {
-//        let label = UILabel()
-//        label.textColor = UIColor.init(r: 115, g: 120, b: 127, a: 1)
-//        label.font = FontManager.getFont(Font.Regular.rawValue).small11Font
-//        label.text = "팔로잉"
-//        label.sizeToFit()
-//        return label
-//    }()
-//    let introductLabel : UILabel = {
-//        let UILabel = UILabel()
-//        UILabel.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
-//        UILabel.textColor = .systemPink
-//        UILabel.textAlignment = .center
-//        UILabel.numberOfLines = 0
-//        return UILabel
-//    }()
-//    let view2 : UIView = {
-//        let view = HomeView()
-//        return view
-//    }()
-//    let view3 = UIView()
-//
+    let line2 : UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.Gray02
+        return view
+    }()
+    lazy var btnView = UIView()
+    lazy var leftBtn : UIButton = {
+        let button = UIButton()
+        button.setTitle("내 포트폴리오", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
+        button.backgroundColor = .white
+        button.tag = 1
+        button.addTarget(self, action: #selector(toggleBtn(_:)), for: .touchUpInside)
+        return button
+    }()
+    lazy var indicator : UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        return view
+    }()
+    lazy var rightBtn : UIButton = {
+        let button = UIButton()
+        button.setTitle("임시저장", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
+        button.backgroundColor = .white
+        button.tag = 2
+        button.addTarget(self, action: #selector(toggleBtn(_:)), for: .touchUpInside)
+        return button
+    }()
+    lazy var followBtn : UIButton = {
+        let button = UIButton()
+        button.setTitle("팔로우", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = FontManager.getFont(Font.Bold.rawValue).smallFont
+        button.backgroundColor = UIColor.magnifyingGlassColor
+        button.addTarget(self, action: #selector(toggleBtn(_:)), for: .touchUpInside)
+        button.layer.cornerRadius = 4
+        return button
+    }()
+    
 //    let tableView : UITableView = {
 //        let view = UITableView()
 //        view.translatesAutoresizingMaskIntoConstraints = false
@@ -270,6 +213,10 @@ class MyInfoView: UIView, ViewAttributes{
         super.init(frame: frame)
         setUI()
         setAttributes()
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
     }
     
     func setUI() {
@@ -297,6 +244,7 @@ class MyInfoView: UIView, ViewAttributes{
         followingBtn.addSubview(followingLabel)
         
         scrollView.addSubview(introduceLabel)
+        scrollView.addSubview(line2)
     }
     
     func setAttributes() {
@@ -377,13 +325,124 @@ class MyInfoView: UIView, ViewAttributes{
             make.left.equalTo(20)
             make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-20)
         }
+        line2.snp.makeConstraints { (make) in
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right)
+            make.height.equalTo(2)
+            make.top.equalTo(introduceLabel.snp.bottom).offset(74)
+        }
+        
+    }
+
+    // MARK: - 내 피드인지, 다른 사용자의 피드인지 확인
+    /// 내 피드인지, 다른 사용자의 피드인지 확인
+    func infoCheck(_ userInfo : UserInfo?) {
+        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
+            guard let userSeq = value["userSeq"], let userInfo = userInfo else {return}
+            
+            if userSeq as? Int == userInfo.result.userSeq {
+                print("내 피드")
+                myFeedSetUp()
+            }else {
+                print("상대방 피드")
+                notMyFeedSetup()
+            }
+        }
+    }
+    
+    func myFeedSetUp() {
+        followBtn.removeFromSuperview()
+        
+        scrollView.addSubview(btnView)
+        btnView.addSubview(leftBtn)
+        btnView.addSubview(rightBtn)
+        btnView.addSubview(indicator)
+        
+        btnView.snp.makeConstraints {
+            $0.bottom.equalTo(line2.snp.top)
+            $0.height.equalTo(44)
+            $0.width.equalTo(UIScreen.main.bounds.width)
+            $0.centerX.equalToSuperview()
+        }
+        
+        leftBtn.snp.makeConstraints {
+            $0.bottom.equalTo(line2.snp.top)
+            $0.height.equalTo(44)
+            $0.right.equalTo(self.btnView.snp.centerX)
+            $0.left.equalToSuperview()
+        }
+        
+        rightBtn.snp.makeConstraints {
+            $0.bottom.equalTo(line2.snp.top)
+            $0.height.equalTo(44)
+            $0.left.equalTo(self.btnView.snp.centerX)
+            $0.right.equalToSuperview()
+        }
+        
+        indicator.snp.makeConstraints {
+            $0.bottom.equalTo(line2.snp.top)
+            $0.height.equalTo(2)
+            $0.left.equalToSuperview()
+            $0.right.equalTo(self.btnView.snp.centerX)
+        }
+    }
+    
+    func notMyFeedSetup() {
+        socialBadge.removeFromSuperview()
+        btnView.removeFromSuperview()
+        scrollView.addSubview(followBtn)
+        
+        followBtn.snp.makeConstraints {
+            $0.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(20)
+            $0.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-20)
+            $0.bottom.equalTo(line2.snp.top).offset(-20)
+            $0.height.equalTo(38)
+        }
     }
     
     @objc func followBtnAction(_ sender: Any) {
         
     }
     
-    func requestMyInfo(){
+    @objc func toggleBtn(_ sender: Any) {
+        guard let btn = sender as? UIButton else {return}
+        switch btn.tag {
+        case 1:
+            touchLeft()
+        case 2:
+            touchRight()
+        default:
+            print("default")
+        }
+        
+    }
+    
+    func touchLeft(){
+        leftBtn.titleLabel?.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
+        rightBtn.titleLabel?.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
+        
+        indicator.snp.remakeConstraints {
+            $0.bottom.equalTo(line2.snp.top)
+            $0.height.equalTo(2)
+            $0.left.equalToSuperview()
+            $0.right.equalTo(self.btnView.snp.centerX)
+        }
+    }
+    
+    func touchRight(){
+        rightBtn.titleLabel?.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
+        leftBtn.titleLabel?.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
+        
+        indicator.snp.remakeConstraints {
+            $0.bottom.equalTo(line2.snp.top)
+            $0.height.equalTo(2)
+            $0.right.equalToSuperview()
+            $0.left.equalTo(self.btnView.snp.centerX)
+        }
+    }
+    
+    
+    func requestMyInfo(_ userSeq: Int){
         if let value = UserDefaults.standard.dictionary(forKey: "UserInfo") {
             let socialType = value["socialType"] as? String
             print("socialType", socialType)
@@ -401,31 +460,12 @@ class MyInfoView: UIView, ViewAttributes{
                 print("default")
             }
 
-            viewModel.getUserInfo()
-
+            viewModel.getUserInfo(userSeq)
             viewModel.didFinishFetch = {
                 self.userInfo = self.viewModel.userInfo
-                if let profile = self.userInfo?.result.profileImageUrl {
-//                if let profile = self.viewModel.profileImgURLString {
-                    //url에 정확한 이미지 url 주소를 넣는다.
-                    let url = URL(string: profile)
-                    //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
-                    //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
-                    DispatchQueue.global().async {
-                        DispatchQueue.main.async {
-                            self.profileImg.kf.indicatorType = .activity
-                            self.profileImg.kf.setImage(
-                              with: url,
-                              placeholder: nil,
-                              options: [.transition(.fade(1.2))],
-                              completionHandler: nil
-                            )
-                        }
-                    }
-                }else {
-                    self.profileImg.image = UIImage(named: "NonProfile")
-                }
-
+                self.infoCheck(self.userInfo)
+                
+                self.setProfileImage(self.profileImg, self.viewModel.profileImgURLString)
                 self.nickName.text = self.viewModel.nicknameString
                 self.major.text = self.viewModel.major2String
                 self.followerCountLabel.text = self.viewModel.followerString
@@ -446,19 +486,32 @@ class MyInfoView: UIView, ViewAttributes{
 
     }
     
+    func setProfileImage(_ imageView: UIImageView,_ urlString: String?) {
+        guard let urlString = urlString else {
+            imageView.image = UIImage(named: "NonProfile")
+            return
+        }
+        let url = URL(string: urlString)
+        //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
+        //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
+        DispatchQueue.global().async {
+            DispatchQueue.main.async {
+                imageView.kf.indicatorType = .activity
+                imageView.kf.setImage(
+                  with: url,
+                  placeholder: nil,
+                  options: [.transition(.fade(1.2))],
+                  completionHandler: nil
+                )
+            }
+        }
+    }
+    
     func requestMyFeed(_ userSeq: Int?){
         guard let userSeq = userSeq else { return }
         smLog("userSeq \(userSeq)")
-//        viewModel.getUserFeed(userSeq)
     }
     
-//    func selectFeed() {
-//        let viewModel = HomeViewModel(0, (pageIndex * 30))
-//        viewModel.selectFeed()
-//        viewModel.didFinishFetch = {
-//            self.model = viewModel.feedSelectResponse
-//        }
-//    }
     
     @objc func btnAction(_ sender: Any){
         self.pushDelegate?.pushScreen(UpdateMyInfoViewController.shared)
@@ -468,89 +521,3 @@ class MyInfoView: UIView, ViewAttributes{
         fatalError("init(coder:) has not been implemented")
     }
 }
-
-//extension MyInfoView: UITableViewDelegate, UITableViewDataSource{
-//
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return UITableView.automaticDimension
-//    }
-//
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        if let totalRecordCount = model?.totalRecordCount, let recordsPerPage = model?.recordsPerPage, let currentPageNo = model?.currentPageNo, let totalPageCount = model?.totalPageCount {
-//            if totalRecordCount < 30 { // 30개 미만일때는 총 건수만 return
-//                return totalRecordCount
-//            }else { // 30개 이상일때
-//                if currentPageNo != totalPageCount { // 총건수를 30으로 나눴을때 현재페이지 != 마지막페이지
-//                    displayCount = 30 * pageIndex
-//                    return displayCount // 30개씩 * 현재페이지 ex) 120건 노출시 30.. 60.. 90.. 120...
-//                }else { // 총건수를 30으로 나눴을때 현재페이지 == 마지막페이지
-//                    displayCount = (30 * (pageIndex - 1)) + (totalRecordCount % 30)
-//                    return displayCount //(30개씩 * 현재페이지) + 나머지(총 건수 % 30건)
-//                }
-//            }
-//        }else {
-//            return 0
-//        }
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//            let cell = tableView.dequeueReusableCell(withIdentifier: tableCellReuseIdentifier, for: indexPath) as! HomeTableViewCell
-//            if let model = model?.content {
-//                smLog("\(model.count)")
-//                setProfileImage(cell.profileImg, model[indexPath.row].user?.profileImageUrl)
-//                cell.nickName.text = model[indexPath.row].user?.userNickname
-//                cell.major.text = model[indexPath.row].user?.major2
-//                cell.contentsLabel.text = model[indexPath.row].contents
-//                cell.feedImages = model[indexPath.row].feedImages
-//
-//                helper.lineSpacing(cell.contentsLabel, 5)
-//            }
-//            return cell
-//    }
-//
-//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        print("indexPath.row => ", indexPath.row)
-//        print("displayCount => ", displayCount)
-//        print("pageIndex => ", pageIndex)
-//        print("")
-//
-//        if let totalRecordCount = model?.totalRecordCount, let recordsPerPage = model?.recordsPerPage, let currentPageNo = model?.currentPageNo, let totalPageCount = model?.totalPageCount {
-//            if pageIndex * 30 == indexPath.row + 1 {
-//                self.pageIndex += 1
-//                let viewModel = HomeViewModel(0, (pageIndex * 30))
-//                viewModel.selectFeed()
-//
-//                viewModel.didFinishFetch = {
-//                    self.model = viewModel.feedSelectResponse
-//                    self.tableView.reloadData()
-//                }
-//
-//            }
-//        }
-//    }
-//
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        if let model = model?.content {
-//            homeViewDelegate?.pushScreen(FeedDetailViewController.shared, model[indexPath.row - 1])
-//        }
-//    }
-//
-//    func setProfileImage(_ imageView: UIImageView,_ urlString: String?) {
-//        guard let urlString = urlString else {return}
-//        let url = URL(string: urlString)
-//        //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
-//        //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
-//        DispatchQueue.global().async {
-//            DispatchQueue.main.async {
-//                imageView.kf.indicatorType = .activity
-//                imageView.kf.setImage(
-//                  with: url,
-//                  placeholder: nil,
-//                  options: [.transition(.fade(1.2))],
-//                  completionHandler: nil
-//                )
-//            }
-//        }
-//    }
-//
-//}

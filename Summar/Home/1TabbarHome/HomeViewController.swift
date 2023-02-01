@@ -15,6 +15,9 @@ class HomeViewController : UIViewController, HomeViewDelegate {
         if VC === FeedDetailViewController.shared {
             FeedDetailViewController.shared.feedInfo = any as? FeedInfo
             self.navigationController?.pushViewController(FeedDetailViewController.shared, animated: true)
+        }else if VC === ProfileViewController.shared {
+            ProfileViewController.shared.userSeq = any as? Int
+            self.navigationController?.pushViewController(ProfileViewController.shared, animated: true)
         }
     }
     

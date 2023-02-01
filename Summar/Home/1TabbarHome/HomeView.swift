@@ -12,7 +12,18 @@ protocol HomeViewDelegate : AnyObject {
     func pushScreen(_ VC: UIViewController,_ any: Any)
 }
 
-class HomeView: UIView{
+class HomeView: UIView, HomeViewDelegate{
+    func pushScreen(_ VC: UIViewController, _ any: Any) {
+        smLog("")
+        if VC == FeedDetailViewController.shared {
+            let feedInfo = any as? FeedInfo
+            self.homeViewDelegate?.pushScreen(VC, feedInfo)
+        }else if VC == ProfileViewController.shared {
+            let userSeq = any as? Int
+            self.homeViewDelegate?.pushScreen(VC, userSeq)
+        }
+    }
+    
     let helper = Helper.shared
     private let tableCellReuseIdentifier = "tableCell"
     private let bannerCellReuseIdentifier = "bannerCell"
@@ -123,6 +134,7 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
             let cell = tableView.dequeueReusableCell(withIdentifier: tableCellReuseIdentifier, for: indexPath) as! HomeTableViewCell
             guard let model = model?.content?[indexPath.row - 1] else{ return UITableViewCell() }
             cell.setUpCell(model)
+            cell.delegate = self
             
             return cell
         }else {

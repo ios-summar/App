@@ -8,9 +8,14 @@
 import UIKit
 
 class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
+    weak var delegate : HomeViewDelegate?
+    
     let helper = Helper()
     let fontManger = FontManager()
     
+    var feedInfo: FeedInfo?
+    var userSeq: Int?
+    var feedSeq: Int?
     var imageArr = [String]()
     var feedImages : [FeedImages]? {
         didSet {
@@ -130,7 +135,7 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
 
         let recognizer = UITapGestureRecognizer(
             target: self,
-            action: #selector(didSelect(_:))
+            action: #selector(didSelectImg(_:))
         )
         scrollView.addGestureRecognizer(recognizer)
         
@@ -147,15 +152,19 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
     }()
     
     @objc func didSelect(_ sender: UITapGestureRecognizer) {
-        print(sender)
-        
-        let nickNamePoint = sender.location(in: nickName)
-        let majorPoint = sender.location(in: major)
-        let profileImgPoint = sender.location(in: profileImg)
+        guard let userSeq = userSeq else {return}
+        self.delegate?.pushScreen(ProfileViewController.shared, userSeq)
+    }
+    
+    @objc func didSelectImg(_ sender: UITapGestureRecognizer) {
+        guard let feedInfo = feedInfo else {return}
+        self.delegate?.pushScreen(FeedDetailViewController.shared, feedInfo)
     }
     
     func setUpCell(_ feedInfo: FeedInfo){
         print("setUpCell \(feedInfo)")
+        userSeq = feedInfo.user?.userSeq
+        self.feedInfo = feedInfo
         
         setProfileImage(profileImg, feedInfo.user?.profileImageUrl)
         nickName.text = feedInfo.user?.userNickname
@@ -199,12 +208,6 @@ class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
         contentView.addSubview(scrollView)
         contentView.addSubview(pageControl)
         contentView.addSubview(line)
-        
-//        _ = [profileImg, nickName, major, contentsLabel, scrollView, pageControl].map {
-//            $0.layer.borderWidth = 1
-//        }
-        
-//        scrollView.layer.borderWidth = 1
         
         profileImg.snp.makeConstraints { (make) in
             
