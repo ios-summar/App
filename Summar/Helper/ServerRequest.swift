@@ -183,6 +183,82 @@ class ServerRequest: NSObject {
         }
     }
     
+    // MARK: - 타 회원들 팔로우 여부 확인
+    ///타 회원들 팔로우 여부 확인
+    func followCheck(_ url: String, completion: @escaping (Bool?, Error?, Int?) -> ()) {
+        let url = Server.url + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.request(url,
+                       method: .get,
+                       parameters: nil,
+                       encoding: URLEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json",
+                                 "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    guard let result = response.data else {return}
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(NicknameCheck.self, from: result) // 파싱 구조가 같아서 사용
+                        
+                        completion(json.result?.result, nil, nil)
+                        
+                    } catch {
+                        print("error! \(error)")
+                        completion(nil, error, nil)
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    completion(nil, error, statusCode)
+                }
+            }
+        }
+    }
+    
+    // MARK: - 타 회원들 팔로우 / 팔로우 취소
+    ///타 회원들 팔로우 여부 확인
+    func followAction(_ url: String, _ param: Dictionary<String, Int> , _ httpMethod: String, completion: @escaping (ServerResult?, Error?, Int?) -> ()) {
+        let url = Server.url + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.request(url,
+                       method: HTTPMethod(rawValue: "\(httpMethod)"),
+                       parameters: param,
+                       encoding: JSONEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json",
+                                 "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    guard let result = response.data else {return}
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(ServerResult.self, from: result) // 파싱 구조가 같아서 사용
+                        
+                        completion(json, nil, nil)
+                        
+                    } catch {
+                        print("error! \(error)")
+                        completion(nil, error, nil)
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    completion(nil, error, statusCode)
+                }
+            }
+        }
+    }
+    
     // MARK: - 마이 써머리 유저 피드
     func requestMyFeed(_ url: String, completion: @escaping (UserInfo?, Error?, Int?) -> ()) {
         let url = Server.url + url

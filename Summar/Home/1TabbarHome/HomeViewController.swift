@@ -113,10 +113,6 @@ class HomeViewController : UIViewController, HomeViewDelegate {
         }
         
         actionButton.buttonColor = .systemBlue
-        actionButton.translatesAutoresizingMaskIntoConstraints = false
-        actionButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
-        actionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16).isActive = true
-        
         actionButton.configureDefaultItem { item in
             item.buttonColor = .white
             item.buttonImageColor = .systemBlue

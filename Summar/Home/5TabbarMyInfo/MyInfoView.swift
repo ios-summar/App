@@ -37,6 +37,11 @@ class MyInfoView: UIView, ViewAttributes{
             self.delegate?.parameter(userInfo)
         }
     }
+    var followCheck: Bool? {
+        didSet {
+            print("followCheck \(followCheck)")
+        }
+    }
     
     var displayCount : Int = 0
     var pageIndex : Int = 1
@@ -165,7 +170,7 @@ class MyInfoView: UIView, ViewAttributes{
         button.titleLabel?.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
         button.backgroundColor = .white
         button.tag = 1
-        button.addTarget(self, action: #selector(toggleBtn(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(profileBtnAction(_:)), for: .touchUpInside)
         return button
     }()
     lazy var indicator : UIView = {
@@ -180,16 +185,15 @@ class MyInfoView: UIView, ViewAttributes{
         button.titleLabel?.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
         button.backgroundColor = .white
         button.tag = 2
-        button.addTarget(self, action: #selector(toggleBtn(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(profileBtnAction(_:)), for: .touchUpInside)
         return button
     }()
     lazy var followBtn : UIButton = {
         let button = UIButton()
-        button.setTitle("팔로우", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = FontManager.getFont(Font.Bold.rawValue).smallFont
-        button.backgroundColor = UIColor.magnifyingGlassColor
-        button.addTarget(self, action: #selector(toggleBtn(_:)), for: .touchUpInside)
+        button.tag = 3
+        button.addTarget(self, action: #selector(profileBtnAction(_:)), for: .touchUpInside)
         button.layer.cornerRadius = 4
         return button
     }()
@@ -338,14 +342,15 @@ class MyInfoView: UIView, ViewAttributes{
     /// 내 피드인지, 다른 사용자의 피드인지 확인
     func infoCheck(_ userInfo : UserInfo?) {
         if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
-            guard let userSeq = value["userSeq"], let userInfo = userInfo else {return}
+            guard let userSeq = value["userSeq"], let userInfo = userInfo, let opponentUserSeq = userInfo.result.userSeq else {return}
+            let myUserSeq: Int = userSeq as! Int
             
-            if userSeq as? Int == userInfo.result.userSeq {
+            if myUserSeq == opponentUserSeq {
                 print("내 피드")
                 myFeedSetUp()
             }else {
                 print("상대방 피드")
-                notMyFeedSetup()
+                notMyFeedSetup(opponentUserSeq, myUserSeq)
             }
         }
     }
@@ -387,7 +392,20 @@ class MyInfoView: UIView, ViewAttributes{
         }
     }
     
-    func notMyFeedSetup() {
+    func notMyFeedSetup(_ followedUserSeq: Int, _ followingUserSeq: Int) {
+        viewModel.followCheck(followedUserSeq, followingUserSeq)
+        viewModel.didFinishFollowCheckFetch = {
+            guard let followResult = self.viewModel.followResult else { return }
+            
+            if !followResult { // 팔로우 안한 상태
+                self.followBtn.setTitle("팔로우", for: .normal)
+                self.followBtn.backgroundColor = UIColor.magnifyingGlassColor
+            }else { // 팔로우 한 상태
+                self.followBtn.setTitle("팔로우 취소", for: .normal)
+                self.followBtn.backgroundColor = UIColor.init(r: 70, g: 76, b: 83)
+            }
+        }
+        
         socialBadge.removeFromSuperview()
         btnView.removeFromSuperview()
         scrollView.addSubview(followBtn)
@@ -404,13 +422,15 @@ class MyInfoView: UIView, ViewAttributes{
         
     }
     
-    @objc func toggleBtn(_ sender: Any) {
+    @objc func profileBtnAction(_ sender: Any) {
         guard let btn = sender as? UIButton else {return}
         switch btn.tag {
         case 1:
-            touchLeft()
+            touchLeft() // 내 포트폴리오
         case 2:
-            touchRight()
+            touchRight() // 임시저장
+        case 3: // 팔로워
+            followAction()
         default:
             print("default")
         }
@@ -438,6 +458,37 @@ class MyInfoView: UIView, ViewAttributes{
             $0.height.equalTo(2)
             $0.right.equalToSuperview()
             $0.left.equalTo(self.btnView.snp.centerX)
+        }
+    }
+    
+    func followAction(){
+        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
+            guard let userSeq = value["userSeq"], let userInfo = userInfo, let opponentUserSeq = userInfo.result.userSeq else {return}
+            LoadingIndicator.showLoading()
+            let myUserSeq: Int = userSeq as! Int
+            let param : Dictionary<String, Int> = ["followedUserSeq": opponentUserSeq, "followingUserSeq": myUserSeq]
+            
+            guard let text = followBtn.titleLabel?.text else {return}
+            switch text { // 버튼 타이틀로 분기 처리
+            case "팔로우":
+                viewModel.followAction(param, "POST")
+                viewModel.didFinishFollowFetch = {
+                    self.followBtn.setTitle("팔로우 취소", for: .normal)
+                    self.followBtn.backgroundColor = UIColor.init(r: 70, g: 76, b: 83)
+                }
+            case "팔로우 취소":
+                viewModel.followAction(param, "DELETE")
+                viewModel.didFinishFollowFetch = {
+                    self.followBtn.setTitle("팔로우", for: .normal)
+                    self.followBtn.backgroundColor = UIColor.magnifyingGlassColor
+                }
+            default:
+                print("default")
+            }
+            
+            UIView.animate(withDuration: 1.0, animations: {
+                LoadingIndicator.hideLoading()
+            })
         }
     }
     

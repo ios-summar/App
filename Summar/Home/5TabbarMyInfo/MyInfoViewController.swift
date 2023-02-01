@@ -9,10 +9,13 @@ import Foundation
 import UIKit
 import SnapKit
 import Kingfisher
+import JJFloatingActionButton
 
 class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate, PopDelegate{
     let myInfoView = MyInfoView()
     var window = UIWindow(frame: UIScreen.main.bounds)
+    
+    let actionButton = JJFloatingActionButton()
     
     func popScreen() {
         print(#file , #function)
@@ -72,8 +75,40 @@ class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate,
             make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
             make.left.right.equalToSuperview()
         }
+        
+        floatingBtn()
     }
     
+    func floatingBtn(){
+        actionButton.addItem(title: "피드 작성하기", image: UIImage(systemName: "plus")?.withRenderingMode(.alwaysTemplate)) { item in
+            
+            let wrController = UINavigationController(rootViewController:  WriteFeedController.shared)
+            wrController.navigationBar.isTranslucent = false
+            wrController.navigationBar.backgroundColor = .white
+            wrController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+            self.present(wrController, animated: true, completion: nil)
+        }
+
+        
+        self.view.addSubview(actionButton)
+        
+        actionButton.snp.makeConstraints{(make) in
+            make.width.height.equalTo(56)
+            make.bottom.right.equalTo(self.view.safeAreaLayoutGuide).offset(-16)
+        }
+        
+        actionButton.buttonColor = .systemBlue
+        actionButton.configureDefaultItem { item in
+            item.buttonColor = .white
+            item.buttonImageColor = .systemBlue
+
+            item.layer.shadowColor = UIColor.black.cgColor
+            item.layer.shadowOffset = CGSize(width: 0, height: 1)
+            item.layer.shadowOpacity = Float(0.4)
+            item.layer.shadowRadius = CGFloat(2)
+        }
+
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         guard let value = UserDefaults.standard.dictionary(forKey: "UserInfo") else {return}

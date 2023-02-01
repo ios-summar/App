@@ -80,6 +80,7 @@ class FeedDetailViewModel {
                 if status == 500 {
                     print("토큰 재발급")
                     self.request.reloadToken(status)
+                    self.deleteFeed(feedSeq)
                 }
             }else if let error = error {
                 print(error)
