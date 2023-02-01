@@ -8,7 +8,7 @@
 import Foundation
 import AuthenticationServices
 
-class AppleLoginManager : NSObject{
+final class AppleLoginManager : NSObject{
     weak var viewController: UIViewController?
     weak var delegate: SocialSuccessDelegate?
     

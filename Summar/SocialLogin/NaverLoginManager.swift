@@ -9,7 +9,7 @@ import Foundation
 import NaverThirdPartyLogin
 import Alamofire
 
-class NaverLoginManager: NSObject{
+final class NaverLoginManager: NSObject{
     
     weak var delegate: SocialSuccessDelegate?
     let request = ServerRequest.shared

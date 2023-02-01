@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class FAQController: UIViewController {
+final class FAQController: UIViewController {
     static let shared = FAQController()
     let faqView = FAQView()
     let viewModel = FAQViewModel()

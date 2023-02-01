@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class WriteFeedViewModel {
+final class WriteFeedViewModel {
     private var request = ServerRequest.shared
     
     // MARK: - Closures for callback, since we are not using the ViewModel to the View.

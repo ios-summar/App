@@ -172,7 +172,7 @@ enum Font: Int {
     }
 }
 
-class FontManager {
+final class FontManager {
     /// 저장된 폰트 가져오기
     static func getFont(_ font: Int) -> Font {
         return Font(rawValue: font)!

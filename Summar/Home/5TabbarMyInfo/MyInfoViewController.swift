@@ -11,7 +11,7 @@ import SnapKit
 import Kingfisher
 import JJFloatingActionButton
 
-class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate, PopDelegate{
+final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate, PopDelegate{
     let myInfoView = MyInfoView()
     var window = UIWindow(frame: UIScreen.main.bounds)
     

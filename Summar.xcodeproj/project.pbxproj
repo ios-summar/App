@@ -98,7 +98,6 @@
 		A2E960DF29743BE5007E3B3B /* FAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E960DE29743BE5007E3B3B /* FAQView.swift */; };
 		A2E960E129743C17007E3B3B /* FAQViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E960E029743C17007E3B3B /* FAQViewModel.swift */; };
 		A2E960E429743C69007E3B3B /* FAQTitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E960E329743C69007E3B3B /* FAQTitleTableViewCell.swift */; };
-		A2ECB35C2940C5940005D88C /* SignUp3Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ECB35B2940C5940005D88C /* SignUp3Controller.swift */; };
 		A2ECB36529448CD10005D88C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ECB36429448CD10005D88C /* HomeViewController.swift */; };
 		A2ECB36729448E870005D88C /* ClippingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ECB36629448E870005D88C /* ClippingViewController.swift */; };
 		A2ECB36B29448EAF0005D88C /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ECB36A29448EAF0005D88C /* SearchViewController.swift */; };
@@ -202,7 +201,6 @@
 		A2E960DE29743BE5007E3B3B /* FAQView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQView.swift; sourceTree = "<group>"; };
 		A2E960E029743C17007E3B3B /* FAQViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQViewModel.swift; sourceTree = "<group>"; };
 		A2E960E329743C69007E3B3B /* FAQTitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQTitleTableViewCell.swift; sourceTree = "<group>"; };
-		A2ECB35B2940C5940005D88C /* SignUp3Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp3Controller.swift; sourceTree = "<group>"; };
 		A2ECB36429448CD10005D88C /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		A2ECB36629448E870005D88C /* ClippingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClippingViewController.swift; sourceTree = "<group>"; };
 		A2ECB36A29448EAF0005D88C /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -466,7 +464,6 @@
 				A2CAEDE229050A6C0053D6C9 /* SignUp1View.swift */,
 				04A69BD62907CFAE00EF7133 /* SignUp2View.swift */,
 				04904BDB290A5D96004ED5ED /* SignUp3View.swift */,
-				A2ECB35B2940C5940005D88C /* SignUp3Controller.swift */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -768,7 +765,6 @@
 				A2527D4F297D14790031350B /* FeedDetailViewController.swift in Sources */,
 				A2D27B822972FD7E002CF652 /* NoticeView.swift in Sources */,
 				5E5A05CE297685F900195962 /* LoadingIndicator.swift in Sources */,
-				A2ECB35C2940C5940005D88C /* SignUp3Controller.swift in Sources */,
 				A2E960E429743C69007E3B3B /* FAQTitleTableViewCell.swift in Sources */,
 				A2E960DF29743BE5007E3B3B /* FAQView.swift in Sources */,
 				045575782968084B009C0827 /* NicknameCheck.swift in Sources */,

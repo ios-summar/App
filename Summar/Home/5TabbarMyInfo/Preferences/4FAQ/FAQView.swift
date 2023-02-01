@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class FAQView: UIView {
+final class FAQView: UIView {
     let viewModel = FAQViewModel()
     var notice : Notice? {
         didSet {

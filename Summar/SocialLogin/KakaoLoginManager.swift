@@ -14,7 +14,7 @@ protocol SocialSuccessDelegate : AnyObject {
     func pushIdentifier(_ VC: UIViewController,_ requestDic: Dictionary<String, Any>)
 }
 
-class KakaoLoginManager : NSObject{
+final class KakaoLoginManager : NSObject{
     
     weak var delegate : SocialSuccessDelegate?
     

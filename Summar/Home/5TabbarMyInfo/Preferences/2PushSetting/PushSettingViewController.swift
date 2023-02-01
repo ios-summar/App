@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SafeAreaBrush
 
-class PushSettingViewController: UIViewController {
+final class PushSettingViewController: UIViewController {
     static let shared = PushSettingViewController()
     let pushSettingView = PushSettingView()
     

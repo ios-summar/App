@@ -7,7 +7,7 @@
 
 import Foundation
 
-class FeedDetailViewModel {
+final class FeedDetailViewModel {
     let request = ServerRequest()
     
 //    var userInfo: UserInfo? {

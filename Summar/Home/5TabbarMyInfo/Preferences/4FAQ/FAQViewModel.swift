@@ -7,7 +7,7 @@
 
 import Foundation
 
-class FAQViewModel {
+final class FAQViewModel {
     private var request = ServerRequest.shared
     
     var notice : Notice? {

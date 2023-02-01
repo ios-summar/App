@@ -8,7 +8,7 @@
 import Foundation
 import SnapKit
 
-class EmptyCollectionViewCell: UICollectionViewCell {
+final class EmptyCollectionViewCell: UICollectionViewCell {
     var view : UIView = {
         let view = UIButton()
         return view

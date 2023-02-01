@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import QuartzCore
 
-class FeedCollectionViewCell: UICollectionViewCell {
+final class FeedCollectionViewCell: UICollectionViewCell {
     lazy var view : UIImageView = {
         let view = UIImageView()
         view.layer.cornerRadius = 10

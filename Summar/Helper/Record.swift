@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class Record {
+final class Record {
     /// 폰트 체크 하기
     func fontCheck() {
         UIFont.familyNames.sorted().forEach { familyName in

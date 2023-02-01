@@ -7,7 +7,7 @@
 
 import Foundation
 
-class PushSettingViewModel {
+final class PushSettingViewModel {
     private var request = ServerRequest.shared
     
     // MARK: - Properties

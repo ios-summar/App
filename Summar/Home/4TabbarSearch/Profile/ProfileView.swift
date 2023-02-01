@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class ProfileView: UIView {
+final class ProfileView: UIView {
     static let shared = ProfileView()
     let helper = Helper.shared
     

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeCollectionViewCell: UICollectionViewCell {
+final class HomeCollectionViewCell: UICollectionViewCell {
     let imgProudctPhoto : UIImageView = {
         let view = UIImageView()
         view.backgroundColor = .systemBlue

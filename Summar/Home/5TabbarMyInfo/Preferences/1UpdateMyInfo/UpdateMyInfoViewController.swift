@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import YPImagePicker
 
-class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate, UpdateNavigationBar{
+final class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate, UpdateNavigationBar{
     let viewModel = UpdateMyInfoViewModel()
     let helper = Helper()
     

@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-class MyInfoViewModel{
+final class MyInfoViewModel{
     private var request = ServerRequest.shared
     
     // MARK: - Properties

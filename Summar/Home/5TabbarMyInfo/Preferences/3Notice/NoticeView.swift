@@ -16,7 +16,7 @@ struct cellData {
     var sectionData = String()
 }
 
-class NoticeView: UIView {
+final class NoticeView: UIView {
     let viewModel = NoticeViewModel()
     var notice : Notice? {
         didSet {

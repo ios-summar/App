@@ -20,7 +20,7 @@ struct Server {
     }
 }
 
-class ServerRequest: NSObject {
+final class ServerRequest: NSObject {
     static let shared = ServerRequest()
     
     var param : Dictionary<String, Any> = Dictionary<String, Any>()

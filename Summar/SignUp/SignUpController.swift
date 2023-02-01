@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate{
+final class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate{
     static let shared = SignUpController()
     
     func nextBtn(_ nickName: String) {

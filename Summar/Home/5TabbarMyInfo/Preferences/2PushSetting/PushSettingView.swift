@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class PushSettingView: UIView {
+final class PushSettingView: UIView {
     let viewModel = PushSettingViewModel()
     // MARK: - DB의 PushYN 초기값 설정
     var pushYN : Bool? {

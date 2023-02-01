@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class PreferencesController: UIViewController, PushDelegate, PopDelegate, MyInfoViewDelegate{
+final class PreferencesController: UIViewController, PushDelegate, PopDelegate, MyInfoViewDelegate{
     func parameter(_ userInfo: UserInfo?) {
         self.userInfo = userInfo
     }

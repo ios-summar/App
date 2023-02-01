@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class ProfileViewController : UIViewController, ViewAttributes{
+final class ProfileViewController : UIViewController, ViewAttributes{
     static let shared = ProfileViewController()
     let infoView = MyInfoView()
     let helper = Helper()
@@ -41,7 +41,15 @@ class ProfileViewController : UIViewController, ViewAttributes{
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        infoView.touchLeft()
+        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
+            guard let userSeq = value["userSeq"], let opponentUserSeq = self.userSeq else {return}
+            let myUserSeq: Int = userSeq as! Int
+            
+            // 내 피드일 때
+            if myUserSeq == opponentUserSeq {
+                infoView.touchLeft()
+            }
+        }
     }
     
     func setUI() {

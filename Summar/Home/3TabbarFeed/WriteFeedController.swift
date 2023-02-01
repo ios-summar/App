@@ -11,7 +11,7 @@ import BSImagePicker
 import Photos
 import YPImagePicker
 
-class WriteFeedController : UIViewController, ImagePickerDelegate, PopDelegate{
+final class WriteFeedController : UIViewController, ImagePickerDelegate, PopDelegate{
     func popScreen() {
         closeAction()
     }

@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class SignUp3View : UIView {
+final class SignUp3View : UIView {
     static let shared = SignUp3View()
     
     let helper = Helper()

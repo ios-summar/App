@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import JJFloatingActionButton
 
-class HomeViewController : UIViewController, HomeViewDelegate {
+final class HomeViewController : UIViewController, HomeViewDelegate {
     func pushScreen(_ VC: UIViewController, _ any: Any) {
         if VC === FeedDetailViewController.shared {
             FeedDetailViewController.shared.feedInfo = any as? FeedInfo

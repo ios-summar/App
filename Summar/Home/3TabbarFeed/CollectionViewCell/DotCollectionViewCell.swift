@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DotCollectionViewCell: UICollectionViewCell {
+final class DotCollectionViewCell: UICollectionViewCell {
     
     lazy var shapeLayer : CAShapeLayer = {
         let shapeLayer:CAShapeLayer = CAShapeLayer()

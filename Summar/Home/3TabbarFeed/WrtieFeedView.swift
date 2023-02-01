@@ -16,7 +16,7 @@ protocol ImagePickerDelegate : AnyObject {
     func showAlert(_ message: String)
 }
 
-class WriteFeedView : UIView, UITextViewDelegate {
+final class WriteFeedView : UIView, UITextViewDelegate {
     static let shared = WriteFeedView()
     let helper = Helper()
     let viewModel = WriteFeedViewModel()

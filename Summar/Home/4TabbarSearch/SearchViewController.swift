@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class SearchViewController : UIViewController, PushDelegateWithSearchUserInfo{
+final class SearchViewController : UIViewController, PushDelegateWithSearchUserInfo{
     func pushDeleagteWithParam(_ VC: UIViewController, _ searchUserInfo: SearchUserInfo) {
         if VC == ProfileViewController.shared {
             ProfileViewController.shared.searchUserInfo = searchUserInfo
@@ -111,28 +111,10 @@ class SearchViewController : UIViewController, PushDelegateWithSearchUserInfo{
     
     @objc func search() {
         guard let text = textField.text else { return }
-        if text.isEmpty {
-            if #available(iOS 16.0, *) {
-//                self.navigationItem.rightBarButtonItem?.isHidden = true
-            } else {
-                // Fallback on earlier versions
-            }
-        }else {
-            if #available(iOS 16.0, *) {
-//                self.navigationItem.rightBarButtonItem?.isHidden = false
-            } else {
-                // Fallback on earlier versions
-            }
-        }
         searchView.search(text)
     }
     
     @objc func deleteAction(){
-        if #available(iOS 16.0, *) {
-//            self.navigationItem.rightBarButtonItem?.isHidden = true
-        } else {
-            // Fallback on earlier versions
-        }
         textField.text = ""
         searchView.search("")
     }

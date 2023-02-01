@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class HomeController : UITabBarController {
+final class HomeController : UITabBarController {
     static let shared = HomeController()
 
     var layerHeight = CGFloat()

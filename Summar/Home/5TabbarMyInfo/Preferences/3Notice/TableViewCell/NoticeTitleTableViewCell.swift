@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class NoticeTitleTableViewCell: UITableViewCell {
+final class NoticeTitleTableViewCell: UITableViewCell {
     let view = UIView()
     var selectBool = false
 

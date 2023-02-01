@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class SocialLoginController : UIViewController, SocialLoginDelegate {
+final class SocialLoginController : UIViewController, SocialLoginDelegate {
     static let shared = SocialLoginController()
     let socialLoginView = SocialLoginView()
     

@@ -14,7 +14,7 @@ protocol SignUp1Delegate : class {
     func nextBtn(_ nickName: String)
 }
 
-class SignUp1View : UIView, UITextFieldDelegate {
+final class SignUp1View : UIView, UITextFieldDelegate {
     static let shared = SignUp1View()
     
     weak var delegate: SignUp1Delegate?

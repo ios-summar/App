@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class NoticeController: UIViewController {
+final class NoticeController: UIViewController {
     static let shared = NoticeController()
     let noticeView = NoticeView()
     let viewModel = NoticeViewModel()

@@ -13,7 +13,7 @@ protocol PushDelegateWithSearchUserInfo : AnyObject {
     func pushDeleagteWithParam(_ VC: UIViewController, _ searchUserInfo: SearchUserInfo)
 }
 
-class SearchView: UIView{
+final class SearchView: UIView{
     static let shared = SearchView()
     
     weak var pushDelegateWithSearchUserInfo : PushDelegateWithSearchUserInfo?

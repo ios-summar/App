@@ -14,7 +14,7 @@ protocol SocialLoginDelegate : class {
     func pushScreen(_ VC: UIViewController, _ requestDic: Dictionary<String, Any>)
 }
 
-class SocialLoginView : UIView, SocialSuccessDelegate{
+final class SocialLoginView : UIView, SocialSuccessDelegate{
     
     weak var delegate : SocialLoginDelegate?
     

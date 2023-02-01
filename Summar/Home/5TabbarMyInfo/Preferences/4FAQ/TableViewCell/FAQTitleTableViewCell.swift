@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class FAQTitleTableViewCell: UITableViewCell {
+final class FAQTitleTableViewCell: UITableViewCell {
     
     let view = UIView()
     var selectBool = false

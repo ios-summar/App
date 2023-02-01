@@ -7,7 +7,7 @@
 
 import Foundation
 
-class PreferencesViewModel{
+final class PreferencesViewModel{
     private var request = ServerRequest.shared
     
     // MARK: - Properties

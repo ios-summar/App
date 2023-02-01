@@ -8,7 +8,7 @@
 
 import Foundation
 
-class NoticeViewModel {
+final class NoticeViewModel {
     private var request = ServerRequest.shared
     
     var notice : Notice? {

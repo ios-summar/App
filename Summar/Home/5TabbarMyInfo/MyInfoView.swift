@@ -17,7 +17,7 @@ protocol PushDelegate : AnyObject {
     func pushScreen(_ VC: UIViewController)
 }
 
-class MyInfoView: UIView, ViewAttributes{
+final class MyInfoView: UIView, ViewAttributes{
     let helper = Helper()
     let request = ServerRequest.shared
     private let tableCellReuseIdentifier = "tableCell"
@@ -464,9 +464,10 @@ class MyInfoView: UIView, ViewAttributes{
     func followAction(){
         if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
             guard let userSeq = value["userSeq"], let userInfo = userInfo, let opponentUserSeq = userInfo.result.userSeq else {return}
-            LoadingIndicator.showLoading()
             let myUserSeq: Int = userSeq as! Int
             let param : Dictionary<String, Int> = ["followedUserSeq": opponentUserSeq, "followingUserSeq": myUserSeq]
+            
+            LoadingIndicator.showLoading()
             
             guard let text = followBtn.titleLabel?.text else {return}
             switch text { // 버튼 타이틀로 분기 처리
@@ -475,20 +476,29 @@ class MyInfoView: UIView, ViewAttributes{
                 viewModel.didFinishFollowFetch = {
                     self.followBtn.setTitle("팔로우 취소", for: .normal)
                     self.followBtn.backgroundColor = UIColor.init(r: 70, g: 76, b: 83)
+                    
+                    self.requestMyInfo(opponentUserSeq)
+                    
+                    UIView.animate(withDuration: 1.5, animations: {
+                        LoadingIndicator.hideLoading()
+                    })
                 }
             case "팔로우 취소":
                 viewModel.followAction(param, "DELETE")
                 viewModel.didFinishFollowFetch = {
                     self.followBtn.setTitle("팔로우", for: .normal)
                     self.followBtn.backgroundColor = UIColor.magnifyingGlassColor
+                    
+                    self.requestMyInfo(opponentUserSeq)
+                    
+                    UIView.animate(withDuration: 1.5, animations: {
+                        LoadingIndicator.hideLoading()
+                    })
                 }
             default:
                 print("default")
             }
             
-            UIView.animate(withDuration: 1.0, animations: {
-                LoadingIndicator.hideLoading()
-            })
         }
     }
     

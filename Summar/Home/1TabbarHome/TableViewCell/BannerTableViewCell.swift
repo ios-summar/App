@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BannerTableViewCell: UITableViewCell {
+final class BannerTableViewCell: UITableViewCell {
     
     private let cellReuseIdentifier = "collectionCell"
     

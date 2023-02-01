@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class HomeViewModel {
+final class HomeViewModel {
     private var request = ServerRequest.shared
     
     var feedSelectResponse: FeedSelectResponse? {

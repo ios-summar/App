@@ -8,7 +8,7 @@
 import Foundation
 import GoogleSignIn
 
-class GoogleLoginManager: NSObject{
+final class GoogleLoginManager: NSObject{
     
     weak var delegate : SocialSuccessDelegate?
     

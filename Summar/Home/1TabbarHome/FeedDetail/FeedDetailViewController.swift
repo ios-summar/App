@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class FeedDetailViewController: UIViewController {
+final class FeedDetailViewController: UIViewController {
     static let shared = FeedDetailViewController()
     let viewModel = FeedDetailViewModel()
     let feedView = FeedDetailView()

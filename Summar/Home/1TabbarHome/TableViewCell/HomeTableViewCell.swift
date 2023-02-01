@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
+final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
     weak var delegate : HomeViewDelegate?
     
     let helper = Helper()

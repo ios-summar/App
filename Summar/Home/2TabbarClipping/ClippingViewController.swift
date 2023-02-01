@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class ClippingViewController : UIViewController {
+final class ClippingViewController : UIViewController {
     static let shared = ClippingViewController()
     
     let label : UILabel = {

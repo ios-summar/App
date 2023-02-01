@@ -7,7 +7,7 @@
 
 import Foundation
 
-class UpdateMyInfoViewModel{
+final class UpdateMyInfoViewModel{
     private var request = ServerRequest.shared
     
     var serverResult: ServerResult? {

@@ -12,7 +12,7 @@ protocol HomeViewDelegate : AnyObject {
     func pushScreen(_ VC: UIViewController,_ any: Any)
 }
 
-class HomeView: UIView, HomeViewDelegate{
+final class HomeView: UIView, HomeViewDelegate{
     func pushScreen(_ VC: UIViewController, _ any: Any) {
         smLog("")
         if VC == FeedDetailViewController.shared {

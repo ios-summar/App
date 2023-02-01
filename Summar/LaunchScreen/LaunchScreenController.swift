@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class LaunchScreenController: UIViewController {
+final class LaunchScreenController: UIViewController {
     
     var mainVC : UIViewController!
     

@@ -16,7 +16,7 @@ protocol UpdateNavigationBar : AnyObject {
     func updateNavigationBar()
 }
 
-class UpdateMyInfoView: UIView, UITextViewDelegate, UITextFieldDelegate {
+final class UpdateMyInfoView: UIView, UITextViewDelegate, UITextFieldDelegate {
     
     weak var delegate : ImageUpdatePickerDelegate?
     weak var delegateUpdate : UpdateNavigationBar?

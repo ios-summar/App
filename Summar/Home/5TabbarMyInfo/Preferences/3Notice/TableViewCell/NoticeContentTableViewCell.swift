@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class NoticeContentTableViewCell: UITableViewCell {
+final class NoticeContentTableViewCell: UITableViewCell {
     
     let view = UIView()
 

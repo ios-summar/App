@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class FullScreenImageView : UIView, UIScrollViewDelegate{
+final class FullScreenImageView : UIView, UIScrollViewDelegate{
     static let shared = FullScreenImageView()
     
     var imageArr = [UIImage]()

@@ -12,7 +12,7 @@ protocol PopDelegate : AnyObject {
     func popScreen()
 }
 
-class PreferencesView: UIView{
+final class PreferencesView: UIView{
     weak var pushDelegate : PushDelegate?
     weak var popDelegate : PopDelegate?
     weak var myInfoDelegate : MyInfoViewDelegate?

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PreferencesTableViewCell: UITableViewCell {
+final class PreferencesTableViewCell: UITableViewCell {
 
     let preferencesImg : UIImageView = {
         let view = UIImageView()

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class SearchViewModel{
+final class SearchViewModel{
     private var request = ServerRequest.shared
     
     var nickname: String? = nil
