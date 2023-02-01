@@ -105,6 +105,10 @@ final class SearchViewController : UIViewController, PushDelegateWithSearchUserI
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        search()
+    }
+    
     func configureDelegate() {
         searchView.pushDelegateWithSearchUserInfo = self
     }
