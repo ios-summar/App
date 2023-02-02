@@ -72,7 +72,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
     lazy var scrollView : UIScrollView = {
         let view = UIScrollView()
         view.isScrollEnabled = true
-//        view.contentSize = CGSize(width: self.frame.width, height: 1200)
+        view.contentSize = CGSize(width: self.frame.width, height: 8000)
         return view
     }()
     lazy var followView : UIView = {
@@ -243,7 +243,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
         
         // 테이블뷰 왼쪽 마진 없애기
         view.separatorStyle = .none
-        view.estimatedRowHeight = 132
+        view.estimatedRowHeight = 130
         view.rowHeight = UITableView.automaticDimension
         view.register(CommentTableViewCell.self, forCellReuseIdentifier: "CommentTableViewCell")
         view.dataSource = self
@@ -447,18 +447,23 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
                 $0.right.equalTo(-20)
             }
             
+//            scrollView.layer.borderWidth = 1
             scrollView.addSubview(commentTableView)
             scrollView.snp.remakeConstraints {
                 $0.top.left.right.equalToSuperview()
                 $0.bottom.equalTo(commentView.snp.top)
             }
+            commentTableView.layer.borderWidth = 1
+            commentTableView.layer.borderColor = UIColor.red.cgColor
             commentTableView.backgroundColor = .blue
             commentTableView.snp.makeConstraints {
-                $0.top.equalTo(line2.snp.bottom).offset(12)
-                $0.centerX.equalToSuperview()
-                $0.height.width.equalTo(400)
+                $0.top.equalTo(line2.snp.bottom)
+                $0.left.right.equalTo(self.safeAreaLayoutGuide)
+                $0.height.equalTo(commentTableView.contentSize.height)
+//                $0.bottom.equalTo(commentView.snp.top)
             }
-            scrollView.updateContentSize()
+            
+            smLog("\(commentTableView.contentSize.height)")
         }else {
             commentView.removeFromSuperview()
             commentTableView.removeFromSuperview()
@@ -466,6 +471,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
             scrollView.snp.remakeConstraints {
                 $0.top.left.right.bottom.equalTo(self.safeAreaLayoutGuide)
             }
+            scrollView.updateContentSize()
         }
         
     }
@@ -540,6 +546,9 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
 }
 
 extension FeedDetailView : UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        scrollView.updateContentSize()
+    }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
@@ -551,7 +560,6 @@ extension FeedDetailView : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CommentTableViewCell", for: indexPath) as! CommentTableViewCell
         cell.TEST()
-        scrollView.updateContentSize()
         return cell
     }
 }

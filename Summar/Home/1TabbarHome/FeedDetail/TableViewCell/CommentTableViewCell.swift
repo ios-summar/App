@@ -88,7 +88,7 @@ class CommentTableViewCell: UITableViewCell, ViewAttributes{
         profileImg.layer.borderWidth = 1
         nickName.text = "임세모"
         major.text = "컴퓨터 / 통신 5시간전"
-        contentsLabel.text = "베니테이블 온보딩 웰컴키트를 제작하면서 실용성과 베니테이블 온보딩 웰컴키트를 제작하면서 실용성과 베니테이블 온보딩 웰컴키트를 제작하면서 실용성과 베니테이블 온보딩 웰컴키트를 제작하면서 실용성과"
+        contentsLabel.text = "베니테이블 온보딩 웰컴키트를 제작하면서 실용성과 베니테이블 온보딩 웰컴키트를 제작하면서 실용성과 베니테이블 온보딩 웰컴키트를 제작하면서 실용성과 베니테이블 온보딩 웰컴키트를 제작하면서 실용성과베니테이블 온보딩 웰컴키트를 제작하면서 실용성과 베니테이블 온보딩 웰컴키트를 제작하면서 실용성과 베니테이블 온보딩 웰컴키트를 제작하면서 실용성과 베니테이블 온보딩 웰컴키트를 제작하면서 실용성과"
         
         helper.lineSpacing(contentsLabel, 5)
     }
@@ -115,7 +115,7 @@ class CommentTableViewCell: UITableViewCell, ViewAttributes{
     func setAttributes(){
         profileImg.snp.makeConstraints { (make) in
             
-            make.top.equalTo(12)
+            make.top.equalTo(24)
             make.left.equalTo(20)
             make.width.height.equalTo(32)
         }
@@ -141,7 +141,6 @@ class CommentTableViewCell: UITableViewCell, ViewAttributes{
             make.top.equalTo(major.snp.bottom).offset(10)
             make.right.equalTo(-20)
         }
-        commentBtn.layer.borderWidth = 1
         commentBtn.snp.makeConstraints { (make) in
             
             make.left.equalTo(major.snp.left)
