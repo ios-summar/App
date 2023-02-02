@@ -426,8 +426,6 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
             $0.height.equalTo(2)
         }
         
-        scrollView.updateContentSize()
-        
         self.setNeedsDisplay()
     }
     
@@ -460,7 +458,6 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
                 $0.top.equalTo(line2.snp.bottom)
                 $0.left.right.equalTo(self.safeAreaLayoutGuide)
                 $0.height.equalTo(commentTableView.contentSize.height)
-//                $0.bottom.equalTo(commentView.snp.top)
             }
             
             smLog("\(commentTableView.contentSize.height)")
@@ -471,9 +468,8 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
             scrollView.snp.remakeConstraints {
                 $0.top.left.right.bottom.equalTo(self.safeAreaLayoutGuide)
             }
-            scrollView.updateContentSize()
         }
-        
+        scrollView.updateContentSize()
     }
     
     func initImageArr(_ imageArr : [String], completion : @escaping(Bool) -> ()){
