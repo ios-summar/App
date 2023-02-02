@@ -135,11 +135,11 @@ final class WriteFeedView : UIView, UITextViewDelegate {
         UIImage(systemName: "square.and.arrow.down")
     ]
     
-    override func draw(_ rect: CGRect) {
-        resultArr = []
-        collectionViewScroll.reloadData()
-        smLog("")
-    }
+//    override func draw(_ rect: CGRect) {
+//        resultArr = []
+//        collectionViewScroll.reloadData()
+//        smLog("")
+//    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -231,6 +231,8 @@ final class WriteFeedView : UIView, UITextViewDelegate {
     
     // MARK: - PlaceHolder 작업
     func textViewDidBeginEditing(_ textView: UITextView) {
+        smLog("\(textView.text!)")
+        smLog("\(textViewPlaceHolder)")
         if textView.text == textViewPlaceHolder {
             textView.text = nil
             textView.textColor = .black
@@ -305,8 +307,6 @@ extension WriteFeedView: UICollectionViewDelegate, UICollectionViewDataSource, U
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print(resultArr)
-        
         if indexPath.row == 0 { // 첫번째 cell
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! FeedCollectionViewCell
             return cell

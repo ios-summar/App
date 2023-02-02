@@ -163,12 +163,13 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
     
     func setUpCell(_ feedInfo: FeedInfo){
         print("setUpCell \(feedInfo)")
-        userSeq = feedInfo.user?.userSeq
+        guard let user = feedInfo.user, let major2 = user.major2 else { return }
         self.feedInfo = feedInfo
+        userSeq = user.userSeq
         
-        setProfileImage(profileImg, feedInfo.user?.profileImageUrl)
-        nickName.text = feedInfo.user?.userNickname
-        major.text = feedInfo.user?.major2
+        setProfileImage(profileImg, user.profileImageUrl)
+        nickName.text = user.userNickname
+        major.text = "\(major2) / \(compareDate(feedInfo.createdDate))"
         contentsLabel.text = feedInfo.contents
         feedImages = feedInfo.feedImages
         
@@ -280,6 +281,9 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
                 DispatchQueue.global().async {
                     DispatchQueue.main.async {
                         let imageview = UIImageView()
+                        imageview.contentMode = .scaleAspectFit
+                        imageview.backgroundColor = .white
+                        imageview.clipsToBounds = true
                         
                         imageview.kf.indicatorType = .activity
                         imageview.kf.setImage(
@@ -289,9 +293,6 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
                             completionHandler: nil
                         )
                         
-                        imageview.contentMode = .scaleAspectFit
-                        imageview.backgroundColor = .white
-                        imageview.clipsToBounds = true
                         let xPosition = self.imageViewWidth * CGFloat(i)
                         
                         imageview.frame = CGRect(x: xPosition, y: 0, width: self.imageViewWidth, height: self.imageViewWidth)

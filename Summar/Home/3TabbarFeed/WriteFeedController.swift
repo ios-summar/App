@@ -65,7 +65,7 @@ final class WriteFeedController : UIViewController, ImagePickerDelegate, PopDele
     }
     
     override func viewWillLayoutSubviews() {
-        wfView.reset()
+//        wfView.reset()
     }
     
     func showAlert(_ message : String) {
@@ -73,6 +73,7 @@ final class WriteFeedController : UIViewController, ImagePickerDelegate, PopDele
     }
     
     @objc func closeAction() {
+        wfView.reset()
         self.dismiss(animated: true, completion: nil)
     }
     

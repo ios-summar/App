@@ -103,8 +103,8 @@ final class FeedDetailViewModel {
         if let profileImgURL = feedInfo.user?.profileImageUrl {
             self.profileImgURLString = profileImgURL
         }
-        if let major2 = feedInfo.user?.major2 {
-            self.major2String = major2
+        if let major2 = feedInfo.user?.major2, let createdDate = feedInfo.createdDate {
+            self.major2String = "\(major2) / \(compareDate(createdDate))"
         }
         if let follower = feedInfo.user?.follower {
             self.followerString = follower.commaRepresentation

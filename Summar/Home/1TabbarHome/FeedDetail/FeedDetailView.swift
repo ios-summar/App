@@ -492,6 +492,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
                         
                         imageview.contentMode = .scaleAspectFit
                         imageview.clipsToBounds = true
+                        imageview.backgroundColor = .white
                         let xPosition = self.imageViewWidth * CGFloat(i)
                         
                         imageview.frame = CGRect(x: xPosition, y: 0, width: self.imageViewWidth, height: self.imageViewWidth)
