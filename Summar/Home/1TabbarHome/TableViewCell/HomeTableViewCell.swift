@@ -241,13 +241,13 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
         
         contentsLabel.snp.makeConstraints { (make) in
             
-            make.top.equalTo(scrollView.snp.bottom).offset(16)
+            make.top.equalTo(scrollView.snp.bottom).offset(20)
             make.left.equalTo(20)
             make.width.equalTo(imageViewWidth)
         }
         
         line.snp.makeConstraints { (make) in
-            make.top.equalTo(contentsLabel.snp.bottom).offset(15)
+            make.top.equalTo(contentsLabel.snp.bottom).offset(20)
             make.left.right.equalToSuperview()
             make.height.equalTo(16)
             make.bottom.equalTo(0)
