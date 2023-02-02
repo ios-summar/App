@@ -10,7 +10,7 @@ import Foundation
 internal func compareDate(_ dbDate: String?) -> String {
 //    2023-02-03T04:05:06
     guard let dbDate = dbDate else { return "" }
-    print("dbDate \(dbDate)")
+//    print("dbDate \(dbDate)")
     let year : Int = Int(dbDate.substring(from: 0, to: 3))!
     let month = Int(dbDate.substring(from: 5, to: 6))!
     let day = Int(dbDate.substring(from: 8, to: 9))!
@@ -23,7 +23,7 @@ internal func compareDate(_ dbDate: String?) -> String {
     let offsetComps = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute], from: startDate, to: Date())
     
     if case let (y?, m?, d?, h?, M?) = (offsetComps.year, offsetComps.month, offsetComps.day, offsetComps.hour, offsetComps.minute) {
-      print("\(y)년 \(m)월 \(d)일 \(h)시간 \(M)분 만큼 차이남")
+//      print("\(y)년 \(m)월 \(d)일 \(h)시간 \(M)분 만큼 차이남")
         if y >= 1 {
             return "\(y)년 전"
         }else if m >= 1 {

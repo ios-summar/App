@@ -36,7 +36,7 @@ final class SearchTableViewCell: UITableViewCell {
     }()
     let major : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.SemiBold.rawValue).smallFont
+        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
         label.textColor = UIColor.textColor115
         label.sizeToFit()
         label.numberOfLines = 2
@@ -60,7 +60,7 @@ final class SearchTableViewCell: UITableViewCell {
     }()
     
     func setUpCell(_ searchUserInfo: SearchUserInfo){
-        print("setUpCell \(searchUserInfo)")
+//        print("setUpCell \(searchUserInfo)")
         
         setProfileImage(profileImg, searchUserInfo.profileImageUrl)
         nickName.text = searchUserInfo.userNickname

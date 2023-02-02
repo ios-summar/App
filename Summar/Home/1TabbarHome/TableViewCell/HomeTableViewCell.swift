@@ -73,7 +73,7 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
     }()
     lazy var major : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.SemiBold.rawValue).smallFont
+        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
         label.sizeToFit()
         label.isUserInteractionEnabled = true
@@ -162,7 +162,7 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
     }
     
     func setUpCell(_ feedInfo: FeedInfo){
-        print("setUpCell \(feedInfo)")
+//        print("setUpCell \(feedInfo)")
         guard let user = feedInfo.user, let major2 = user.major2 else { return }
         self.feedInfo = feedInfo
         userSeq = user.userSeq

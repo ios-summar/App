@@ -245,7 +245,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
         view.separatorStyle = .none
         view.estimatedRowHeight = 132
         view.rowHeight = UITableView.automaticDimension
-        view.register(HomeTableViewCell.self, forCellReuseIdentifier: "HomeTableViewCell")
+        view.register(CommentTableViewCell.self, forCellReuseIdentifier: "CommentTableViewCell")
         view.dataSource = self
         view.delegate = self
         return view
@@ -454,8 +454,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
             }
             commentTableView.backgroundColor = .blue
             commentTableView.snp.makeConstraints {
-                $0.top.equalTo(line2.snp.bottom).offset(24)
-//                $0.left.right.equalToSuperview()
+                $0.top.equalTo(line2.snp.bottom).offset(12)
                 $0.centerX.equalToSuperview()
                 $0.height.width.equalTo(400)
             }
@@ -541,14 +540,18 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
 }
 
 extension FeedDetailView : UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 18
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
-        cell.nickName.text = "12341234"
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CommentTableViewCell", for: indexPath) as! CommentTableViewCell
+        cell.TEST()
+        scrollView.updateContentSize()
         return cell
     }
 }
