@@ -80,7 +80,6 @@ final class MyInfoView: UIView, ViewAttributes{
         let label = UILabel()
         label.textColor = .black
         label.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
-        label.text = "0"
         label.sizeToFit()
         return label
     }()
@@ -102,7 +101,6 @@ final class MyInfoView: UIView, ViewAttributes{
         let label = UILabel()
         label.textColor = .black
         label.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
-        label.text = "0"
         label.sizeToFit()
         return label
     }()

@@ -257,48 +257,11 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        print("model.content \(model)")
-        
         let cell = searchTableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! SearchTableViewCell
         
-        if let searchUserInfo = model?.content {
-            print("searchUserInfo.count => \(searchUserInfo.count)")
-            if searchUserInfo[indexPath.row].profileImageUrl != nil {
-                let url = URL(string: searchUserInfo[indexPath.row].profileImageUrl!)
-                //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
-                //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
-                DispatchQueue.global().async {
-                    DispatchQueue.main.async {
-                        //                    cell.imageView.image = UIImage(data: data!)
-                        cell.profileImg.kf.indicatorType = .activity
-                        cell.profileImg.kf.setImage(
-                            with: url,
-                            placeholder: nil,
-                            options: [.transition(.fade(1.2))],
-                            completionHandler: nil
-                        )
-                    }
-                }
-            }else {
-                cell.profileImg.image = UIImage(named: "NonProfile")
-            }
-            
-            cell.nickName.text = searchUserInfo[indexPath.row].userNickname
-            
-            if searchUserInfo[indexPath.row].introduce != nil {
-                cell.introduceLabel.text = searchUserInfo[indexPath.row].introduce
-            }else {
-//                cell.introduceLabel.text = ""
-                cell.revmoeIntroduceLabel()
-            }
-            
-            cell.major.text = searchUserInfo[indexPath.row].major2
-            
-            cell.followLabel.text = "팔로워 \(searchUserInfo[indexPath.row].follower!.commaRepresentation) · 팔로잉 \(searchUserInfo[indexPath.row].following!.commaRepresentation)"
+        guard let searchUserInfo = model?.content else { return UITableViewCell() }
+            cell.setUpCell(searchUserInfo[indexPath.row])
             return cell
-        }else {
-            return UITableViewCell()
-        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

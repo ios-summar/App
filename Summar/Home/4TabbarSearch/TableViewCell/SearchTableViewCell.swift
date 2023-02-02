@@ -58,6 +58,46 @@ final class SearchTableViewCell: UITableViewCell {
         UILabel.sizeToFit()
         return UILabel
     }()
+    
+    func setUpCell(_ searchUserInfo: SearchUserInfo){
+        print("setUpCell \(searchUserInfo)")
+        
+        setProfileImage(profileImg, searchUserInfo.profileImageUrl)
+        nickName.text = searchUserInfo.userNickname
+        major.text = searchUserInfo.major2
+        followLabel.text = "팔로워 \(searchUserInfo.follower!.commaRepresentation) · 팔로잉 \(searchUserInfo.following!.commaRepresentation)"
+        
+        print("searchUserInfo.introduce \(searchUserInfo.introduce)")
+        
+        guard let introduce = searchUserInfo.introduce else {
+            remakeConstraints(true)
+            return
+        }
+        remakeConstraints(false)
+        self.introduceLabel.text = introduce
+                
+    }
+    
+    func setProfileImage(_ imageView: UIImageView,_ urlString: String?) {
+        guard let urlString = urlString else {
+            imageView.image = UIImage(named: "NonProfile")
+            return
+        }
+        let url = URL(string: urlString)
+        //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
+        //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
+        DispatchQueue.global().async {
+            DispatchQueue.main.async {
+                imageView.kf.indicatorType = .activity
+                imageView.kf.setImage(
+                  with: url,
+                  placeholder: nil,
+                  options: [.transition(.fade(1.2))],
+                  completionHandler: nil
+                )
+            }
+        }
+    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -111,15 +151,35 @@ final class SearchTableViewCell: UITableViewCell {
         }
     }
     
-    func revmoeIntroduceLabel() {
-        introduceLabel.removeFromSuperview()
-        view.snp.removeConstraints()
-        view.snp.makeConstraints{(make) in
-            make.top.equalTo(15)
-            make.left.equalTo(profileImg.snp.right).offset(10)
-            make.right.equalTo(-20)
-            make.height.equalTo(80)
-            make.bottom.equalTo(-15)
+    func remakeConstraints(_ handler: Bool) {
+        if handler {
+            introduceLabel.snp.remakeConstraints{(make) in
+                make.top.equalTo(major.snp.bottom).offset(6)
+                make.height.equalTo(0)
+                make.right.equalToSuperview()
+                make.left.equalToSuperview()
+            }
+            view.snp.remakeConstraints{(make) in
+                make.top.equalTo(15)
+                make.left.equalTo(profileImg.snp.right).offset(10)
+                make.right.equalTo(-20)
+                make.height.equalTo(80)
+                make.bottom.equalTo(-15)
+            }
+        }else {
+            introduceLabel.snp.remakeConstraints{(make) in
+                make.top.equalTo(major.snp.bottom).offset(6)
+                make.height.equalTo(40)
+                make.right.equalToSuperview()
+                make.left.equalToSuperview()
+            }
+            view.snp.remakeConstraints{(make) in
+                make.top.equalTo(15)
+                make.left.equalTo(profileImg.snp.right).offset(10)
+                make.right.equalTo(-20)
+                make.height.equalTo(120)
+                make.bottom.equalTo(-15)
+            }
         }
         
     }
