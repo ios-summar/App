@@ -290,6 +290,7 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
                         )
                         
                         imageview.contentMode = .scaleAspectFit
+                        imageview.backgroundColor = .white
                         imageview.clipsToBounds = true
                         let xPosition = self.imageViewWidth * CGFloat(i)
                         
