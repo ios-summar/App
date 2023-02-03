@@ -65,12 +65,20 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
     
     var feedComment: FeedComment? {
         didSet {
+            guard let feedComment = feedComment, let content = feedComment.content else {return}
+            totalCount += content.count
+            smLog("\(totalCount)")
+            
+            for i in 0 ..< content.count { // 대댓글이 있을때 카운트 +=
+                guard let childCommentsCount = content[i].childCommentsCount else {return}
+                smLog("\(childCommentsCount)")
+                totalCount += childCommentsCount
+            }
+            smLog("\(totalCount)")
+            
             commentTableView.delegate = self
             commentTableView.dataSource = self
-            
-            if totalCount != 0 {
-                commentTableView.reloadData()
-            }
+            commentTableView.reloadData()
         }
     }
     
@@ -567,10 +575,6 @@ extension FeedDetailView : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let feedComment = feedComment, let content = feedComment.content else {return 0}
-        totalCount += content.count
-        
-        smLog("\(totalCount)")
         return totalCount
     }
     
