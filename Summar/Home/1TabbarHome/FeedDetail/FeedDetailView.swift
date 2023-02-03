@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
-    
     static let shared = FeedDetailView()
     let viewModel = FeedDetailViewModel()
     let helper = Helper.shared
@@ -54,7 +53,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
                 for i in 0 ..< image.count {
                     self.imageArr.append(image[i].imageUrl!)
                 }
-
+                
                 self.initImageArr(self.imageArr) { finish in
                     if finish {
                         self.imageArr = []
@@ -64,6 +63,20 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
         }
     }
     
+    var feedComment: FeedComment? {
+        didSet {
+            commentTableView.delegate = self
+            commentTableView.dataSource = self
+            
+            if totalCount != 0 {
+                commentTableView.reloadData()
+            }
+        }
+    }
+    
+    var size: Int = 30
+    var totalCount: Int = 0
+    
     let line: UIView = {
         let view = UIView()
         view.backgroundColor = .Gray01
@@ -72,7 +85,6 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
     lazy var scrollView : UIScrollView = {
         let view = UIScrollView()
         view.isScrollEnabled = true
-        view.contentSize = CGSize(width: self.frame.width, height: 8000)
         return view
     }()
     lazy var followView : UIView = {
@@ -169,7 +181,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
         // Create a UIPageControl.
         let pageControl = UIPageControl()
         // Set the number of pages to page control.
-//        pageControl.numberOfPages = self.arrProductPhotos.count
+        //        pageControl.numberOfPages = self.arrProductPhotos.count
         
         // Set the current page.
         pageControl.currentPage = 0
@@ -203,11 +215,11 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
         scrollView.backgroundColor = .clear
         
         // Specify the screen size of the scroll.
-//        scrollView.contentSize = CGSize(width: CGFloat(pageSize) * self.view.frame.maxX, height: 0)
+        //        scrollView.contentSize = CGSize(width: CGFloat(pageSize) * self.view.frame.maxX, height: 0)
         
         return scrollView
     }()
-
+    
     let heartImage : UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "heart")
@@ -235,7 +247,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
         return label
     }()
     lazy var commentTableView: UITableView = {
-        let view = UITableView()
+        let view = ContentSizedTableView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .blue
         view.showsVerticalScrollIndicator = false
@@ -246,8 +258,6 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
         view.estimatedRowHeight = 130
         view.rowHeight = UITableView.automaticDimension
         view.register(CommentTableViewCell.self, forCellReuseIdentifier: "CommentTableViewCell")
-        view.dataSource = self
-        view.delegate = self
         return view
     }()
     let line2 : UIView = {
@@ -391,11 +401,11 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
             make.height.equalTo(imageViewWidth)
         }
         scrollViewHorizontal.snp.makeConstraints { (make) in
-
+            
             make.edges.equalToSuperview()
         }
         pageControl.snp.makeConstraints { (make) in
-
+            
             make.bottom.equalTo(view.snp.bottom).offset(-10)
             make.width.equalTo(imageViewWidth)
             make.height.equalTo(20)
@@ -445,19 +455,20 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
                 $0.right.equalTo(-20)
             }
             
-//            scrollView.layer.borderWidth = 1
+            //            scrollView.layer.borderWidth = 1
             scrollView.addSubview(commentTableView)
             scrollView.snp.remakeConstraints {
                 $0.top.left.right.equalToSuperview()
                 $0.bottom.equalTo(commentView.snp.top)
             }
+            
+            
             commentTableView.layer.borderWidth = 1
             commentTableView.layer.borderColor = UIColor.red.cgColor
             commentTableView.backgroundColor = .blue
             commentTableView.snp.makeConstraints {
                 $0.top.equalTo(line2.snp.bottom)
                 $0.left.right.equalTo(self.safeAreaLayoutGuide)
-                $0.height.equalTo(commentTableView.contentSize.height)
             }
             
             smLog("\(commentTableView.contentSize.height)")
@@ -473,44 +484,53 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
     }
     
     func initImageArr(_ imageArr : [String], completion : @escaping(Bool) -> ()){
-            pageControl.numberOfPages = imageArr.count
-            
-            for i in 0..<imageArr.count{
-                let url = URL(string: imageArr[i])
-                //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
-                //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
-                DispatchQueue.global().async {
-                    DispatchQueue.main.async {
-                        let imageview = UIImageView()
-                        
-                        imageview.kf.indicatorType = .activity
-                        imageview.kf.setImage(
-                            with: url,
-                            placeholder: nil,
-                            options: [.transition(.fade(1.2))],
-                            completionHandler: nil
-                        )
-                        
-                        imageview.contentMode = .scaleAspectFit
-                        imageview.clipsToBounds = true
-                        imageview.backgroundColor = .white
-                        let xPosition = self.imageViewWidth * CGFloat(i)
-                        
-                        imageview.frame = CGRect(x: xPosition, y: 0, width: self.imageViewWidth, height: self.imageViewWidth)
-                        self.scrollViewHorizontal.contentSize.width = self.imageViewWidth * CGFloat(1+i)
-                        
-                        self.scrollViewHorizontal.addSubview(imageview)
-                    }
+        pageControl.numberOfPages = imageArr.count
+        
+        for i in 0..<imageArr.count{
+            let url = URL(string: imageArr[i])
+            //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
+            //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
+            DispatchQueue.global().async {
+                DispatchQueue.main.async {
+                    let imageview = UIImageView()
+                    
+                    imageview.kf.indicatorType = .activity
+                    imageview.kf.setImage(
+                        with: url,
+                        placeholder: nil,
+                        options: [.transition(.fade(1.2))],
+                        completionHandler: nil
+                    )
+                    
+                    imageview.contentMode = .scaleAspectFit
+                    imageview.clipsToBounds = true
+                    imageview.backgroundColor = .white
+                    let xPosition = self.imageViewWidth * CGFloat(i)
+                    
+                    imageview.frame = CGRect(x: xPosition, y: 0, width: self.imageViewWidth, height: self.imageViewWidth)
+                    self.scrollViewHorizontal.contentSize.width = self.imageViewWidth * CGFloat(1+i)
+                    
+                    self.scrollViewHorizontal.addSubview(imageview)
                 }
             }
-            completion(true)
         }
-        
+        completion(true)
+    }
+    
+    func getFeedComment() {
+        guard let feedSeq = feedInfo?.feedSeq else { return }
+        viewModel.getFeedComment(feedSeq, size)
+        viewModel.didFinishFeedCommentFetch = {
+            smLog("\(self.viewModel.feedComment)")
+            self.feedComment = self.viewModel.feedComment
+        }
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let currentPage = round(scrollView.contentOffset.x / imageViewWidth)
         pageControl.currentPage = Int(CGFloat(currentPage))
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -531,10 +551,10 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
             DispatchQueue.main.async {
                 imageView.kf.indicatorType = .activity
                 imageView.kf.setImage(
-                  with: url,
-                  placeholder: nil,
-                  options: [.transition(.fade(1.2))],
-                  completionHandler: nil
+                    with: url,
+                    placeholder: nil,
+                    options: [.transition(.fade(1.2))],
+                    completionHandler: nil
                 )
             }
         }
@@ -545,17 +565,21 @@ extension FeedDetailView : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         scrollView.updateContentSize()
     }
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 18
+        guard let feedComment = feedComment, let content = feedComment.content else {return 0}
+        totalCount += content.count
+        
+        smLog("\(totalCount)")
+        return totalCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let feedComment = feedComment, let content = feedComment.content else {return UITableViewCell()}
         let cell = tableView.dequeueReusableCell(withIdentifier: "CommentTableViewCell", for: indexPath) as! CommentTableViewCell
-        cell.TEST()
+        let ParentsContent = content[indexPath.row]
+        cell.setUpCell(ParentsContent)
+        
         return cell
     }
 }

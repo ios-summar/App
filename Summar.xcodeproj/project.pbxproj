@@ -44,6 +44,8 @@
 		04D4B0F1295D83A600AD5043 /* SearchUserList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D4B0F0295D83A600AD5043 /* SearchUserList.swift */; };
 		04FB196929122B5C00E9EE54 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FB196829122B5C00E9EE54 /* HomeController.swift */; };
 		53A0C10F4516215E3E98738E /* Pods_Summar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BF9D938854ABFCDF492869F /* Pods_Summar.framework */; };
+		5E1133BB298CE53F00465C0C /* ContentSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1133BA298CE53F00465C0C /* ContentSizedTableView.swift */; };
+		5E1133BD298CEA5F00465C0C /* FeedComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1133BC298CEA5F00465C0C /* FeedComment.swift */; };
 		5E4491B4296FF33D0048042D /* UpdateMyInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4491B3296FF33D0048042D /* UpdateMyInfoViewModel.swift */; };
 		5E5A05CE297685F900195962 /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5A05CD297685F900195962 /* LoadingIndicator.swift */; };
 		5E816E05297A4526002BB4D3 /* FontManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E816E04297A4526002BB4D3 /* FontManager.swift */; };
@@ -173,6 +175,8 @@
 		04FB196829122B5C00E9EE54 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		31B805EDCC88D71AF97E5DD2 /* Pods-Summar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Summar.debug.xcconfig"; path = "Target Support Files/Pods-Summar/Pods-Summar.debug.xcconfig"; sourceTree = "<group>"; };
 		4BF9D938854ABFCDF492869F /* Pods_Summar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Summar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E1133BA298CE53F00465C0C /* ContentSizedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizedTableView.swift; sourceTree = "<group>"; };
+		5E1133BC298CEA5F00465C0C /* FeedComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedComment.swift; sourceTree = "<group>"; };
 		5E4491B3296FF33D0048042D /* UpdateMyInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateMyInfoViewModel.swift; sourceTree = "<group>"; };
 		5E5A05CD297685F900195962 /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		5E816E04297A4526002BB4D3 /* FontManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontManager.swift; sourceTree = "<group>"; };
@@ -457,6 +461,7 @@
 				A2527D4E297D14790031350B /* FeedDetailViewController.swift */,
 				A2527D50297D18C70031350B /* FeedDetailView.swift */,
 				A25717592986608F009163D5 /* FeedDetailViewModel.swift */,
+				5E1133BC298CEA5F00465C0C /* FeedComment.swift */,
 			);
 			path = FeedDetail;
 			sourceTree = "<group>";
@@ -510,6 +515,7 @@
 				04CCEAFC2910A61D009DBE05 /* ServerRequest.swift */,
 				A257175D29893B81009163D5 /* PaddingTextField.swift */,
 				A257175B2986660B009163D5 /* Protocol.swift */,
+				5E1133BA298CE53F00465C0C /* ContentSizedTableView.swift */,
 				5EB4F5F2296EAFFF0061D64D /* LogHelper.swift */,
 				5EC01180298B81B5004FFA29 /* DateHelper.swift */,
 				5E816E19297A4C19002BB4D3 /* Record.swift */,
@@ -810,6 +816,7 @@
 				5E816E1A297A4C19002BB4D3 /* Record.swift in Sources */,
 				041EEEA02954362D006263C7 /* WrtieFeedView.swift in Sources */,
 				A2D27B862974144D002CF652 /* Notice.swift in Sources */,
+				5E1133BD298CEA5F00465C0C /* FeedComment.swift in Sources */,
 				5EB4F5F3296EAFFF0061D64D /* LogHelper.swift in Sources */,
 				A2527D4529782C750031350B /* HomeViewModel.swift in Sources */,
 				A2933E7429501B4800B84C5B /* MyInfoViewModel.swift in Sources */,
@@ -868,6 +875,7 @@
 				5E5A05CE297685F900195962 /* LoadingIndicator.swift in Sources */,
 				A2E960E429743C69007E3B3B /* FAQTitleTableViewCell.swift in Sources */,
 				A2E960DF29743BE5007E3B3B /* FAQView.swift in Sources */,
+				5E1133BB298CE53F00465C0C /* ContentSizedTableView.swift in Sources */,
 				045575782968084B009C0827 /* NicknameCheck.swift in Sources */,
 				04852F9228FE72E400A3EED9 /* SocialLoginView.swift in Sources */,
 				A2527D43297828CE0031350B /* FeedInsertResponse.swift in Sources */,

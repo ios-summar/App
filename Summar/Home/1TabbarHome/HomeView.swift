@@ -146,10 +146,10 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        print("indexPath.row => ", indexPath.row)
-        print("displayCount => ", displayCount)
-        print("pageIndex => ", pageIndex)
-        print("")
+//        print("indexPath.row => ", indexPath.row)
+//        print("displayCount => ", displayCount)
+//        print("pageIndex => ", pageIndex)
+//        print("")
         
         if let totalRecordCount = model?.totalRecordCount, let recordsPerPage = model?.recordsPerPage, let currentPageNo = model?.currentPageNo, let totalPageCount = model?.totalPageCount {
             if pageIndex * 30 == indexPath.row {

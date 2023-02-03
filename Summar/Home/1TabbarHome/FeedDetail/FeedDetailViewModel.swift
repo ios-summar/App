@@ -10,20 +10,18 @@ import Foundation
 final class FeedDetailViewModel {
     let request = ServerRequest()
     
-//    var userInfo: UserInfo? {
-//        didSet {
-//            print("MyInfoViewModel userInfo =>\n \(userInfo)")
-//            guard let p = userInfo else { return }
-//            self.setupText(with: p)
-//            self.didFinishFetch?()
-//        }
-//    }
     var feedInfo: FeedInfo? {
         didSet {
             print("FeedDetailViewModel feedInfo =>\n \(feedInfo)")
             guard let p = feedInfo else { return }
             self.setupText(with: p)
             self.didFinishFetch?()
+        }
+    }
+    var feedComment: FeedComment? {
+        didSet {
+            print("feedComment didSet")
+            self.didFinishFeedCommentFetch?()
         }
     }
     var error: Error? {
@@ -50,6 +48,7 @@ final class FeedDetailViewModel {
     var updateLoadingStatus: (() -> ())?
     var didFinishFetch: (() -> ())?
     var didFinishDelteFetch: (() -> ())?
+    var didFinishFeedCommentFetch: (() -> ())?
     
     ///  피드 자세히보기
     func getFeedInfo(_ feedSeq: Int){
@@ -91,6 +90,29 @@ final class FeedDetailViewModel {
             self.error = nil
             self.isLoading = false
             self.didFinishDelteFetch?()
+        })
+    }
+    
+    
+    ///  피드 자세히보기
+    func getFeedComment(_ feedSeq: Int, _ size: Int){
+        self.request.getFeedComment("/feed/\(feedSeq)/comments?page=0&size=\(size)", completion: { (feedComment, error, status) in
+            if let error = error, let status = status {
+                if status == 500 {
+                    print("토큰 재발급")
+                    self.request.reloadToken(status)
+                    self.getFeedComment(feedSeq, size)
+                }
+            }else if let error = error {
+                print(error)
+                self.error = error
+                self.isLoading = false
+                return
+            }
+            self.error = nil
+            self.isLoading = false
+            self.feedComment = feedComment
+
         })
     }
     

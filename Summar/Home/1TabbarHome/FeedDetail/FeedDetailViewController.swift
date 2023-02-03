@@ -28,7 +28,7 @@ final class FeedDetailViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         feedView.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
-        
+        feedView.getFeedComment() // 댓글 서버 통신
     }
     
     /// UI 초기설정

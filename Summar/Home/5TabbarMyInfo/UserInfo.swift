@@ -13,6 +13,7 @@ struct Info: Codable {
     let major1: String?
     let major2: String?
     let socialType: String?
+    let leaveYn: Bool?
     let follower: Int?
     let following: Int?
     let introduce: String?
@@ -26,6 +27,7 @@ struct Info: Codable {
         case major2 = "major2"
         case socialType = "social_type"
         case follower = "follower"
+        case leaveYn = "leaveYn"
         case following = "following"
         case introduce = "introduce"
         case profileImageUrl = "profileImageUrl"
