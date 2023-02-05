@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
+final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttributes {
     weak var delegate : HomeViewDelegate?
     
     let helper = Helper()
@@ -162,7 +162,7 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
     }
     
     func setUpCell(_ feedInfo: FeedInfo){
-//        print("setUpCell \(feedInfo)")
+        print("setUpCell \(feedInfo)")
         guard let user = feedInfo.user, let major2 = user.major2 else { return }
         self.feedInfo = feedInfo
         userSeq = user.userSeq
@@ -202,6 +202,11 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
         selectionStyle = .none
         backgroundColor = .Gray01
         
+        setUI()
+        setAttributes()
+    }
+    
+    func setUI() {
         contentView.addSubview(profileImg)
         contentView.addSubview(nickName)
         contentView.addSubview(major)
@@ -209,7 +214,9 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate {
         contentView.addSubview(scrollView)
         contentView.addSubview(pageControl)
         contentView.addSubview(line)
-        
+    }
+    
+    func setAttributes() {
         profileImg.snp.makeConstraints { (make) in
             
             make.top.equalTo(20)

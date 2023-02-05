@@ -42,6 +42,38 @@ final class MyInfoView: UIView, ViewAttributes{
             print("followCheck \(followCheck)")
         }
     }
+    var feedSelectResponse: FeedSelectResponse? {
+        didSet {
+            guard let feed = feedSelectResponse else {return}
+            if feed.totalRecordCount != 0 {
+                portfolioTableView.alpha = 1.0
+                PortFolioNot.alpha = 0.0
+                
+                portfolioTableView.delegate = self
+                portfolioTableView.dataSource = self
+                portfolioTableView.reloadData()
+                
+                scrollView.addSubview(portfolioTableView)
+                portfolioTableView.snp.makeConstraints {
+                    $0.top.equalTo(line2.snp.bottom)
+                    $0.left.right.equalTo(self.safeAreaLayoutGuide)
+//                    $0.height.equalTo(2500)
+                }
+            }else {
+                portfolioTableView.alpha = 0.0
+                PortFolioNot.alpha = 1.0
+                scrollView.addSubview(PortFolioNot)
+                
+                PortFolioNot.snp.makeConstraints {
+                    $0.top.equalTo(line2.snp.bottom).offset(80)
+                    $0.centerX.equalToSuperview()
+                    $0.width.equalTo(162)
+                    $0.height.equalTo(194)
+                }
+            }
+            scrollView.updateContentSize()
+        }
+    }
     
     var displayCount : Int = 0
     var pageIndex : Int = 1
@@ -196,19 +228,35 @@ final class MyInfoView: UIView, ViewAttributes{
         return button
     }()
     
-//    let tableView : UITableView = {
-//        let view = UITableView()
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        view.backgroundColor = .white
-//        view.showsVerticalScrollIndicator = false
-//        view.isScrollEnabled = false
-//
-//        // 테이블뷰 왼쪽 마진 없애기
-//        view.separatorStyle = .none
-//        view.estimatedRowHeight = 85.0
-//        view.rowHeight = UITableView.automaticDimension
-//        return view
-//    }()
+    lazy var portfolioTableView : UITableView = {
+        let view = UITableView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        view.showsVerticalScrollIndicator = false
+        view.isScrollEnabled = false
+
+        // 테이블뷰 왼쪽 마진 없애기
+        view.separatorStyle = .none
+        view.estimatedRowHeight = 130
+        view.rowHeight = UITableView.automaticDimension
+        
+//        view.layer.borderWidth = 1
+        view.backgroundColor = .blue
+        view.register(HomeTableViewCell.self, forCellReuseIdentifier: tableCellReuseIdentifier)
+        return view
+    }()
+    lazy var PortFolioNot : UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "PortFolioNot")
+        imageView.tintColor = UIColor.imageViewColor
+        return imageView
+    }()
+    lazy var TemporaryNot : UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "TemporaryNot")
+        imageView.tintColor = UIColor.imageViewColor
+        return imageView
+    }()
         
     
     override init(frame: CGRect) {
@@ -530,7 +578,7 @@ final class MyInfoView: UIView, ViewAttributes{
                 self.followerCountLabel.text = self.viewModel.followerString
                 self.followingCountLabel.text = self.viewModel.followingString
 
-                if self.viewModel.introduceString == "작성된 자기소개가 없습니다😥 자기소개를 작성해 자신을 소개해보세요." {
+                if self.viewModel.introduceString == "작성된 자기소개가 없습니다." {
                     self.introduceLabel.textColor = .systemBlue
                 }else {
                     self.introduceLabel.textColor = .black
@@ -543,6 +591,13 @@ final class MyInfoView: UIView, ViewAttributes{
             print(#file , "\(#function) else")
         }
 
+    }
+    
+    func getPortfolio(_ userSeq: Int){
+        viewModel.getPortfolio(userSeq)
+        viewModel.didFinishPortfolioFetch = {
+            self.feedSelectResponse = self.viewModel.feedSelectResponse
+        }
     }
     
     func setProfileImage(_ imageView: UIImageView,_ urlString: String?) {
@@ -578,5 +633,24 @@ final class MyInfoView: UIView, ViewAttributes{
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension MyInfoView: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let feed = feedSelectResponse?.totalRecordCount else {return 0}
+        return feed
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableCellReuseIdentifier, for: indexPath) as! HomeTableViewCell
+        guard let feed = feedSelectResponse?.content?[indexPath.row] else {return UITableViewCell()}
+        cell.setUpCell(feed)
+        scrollView.updateContentSize()
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        smLog("")
     }
 }

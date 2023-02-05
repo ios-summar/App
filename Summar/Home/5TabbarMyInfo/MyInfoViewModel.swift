@@ -28,6 +28,12 @@ final class MyInfoViewModel{
             self.didFinishFetch?()
         }
     }
+    var feedSelectResponse: FeedSelectResponse? {
+        didSet {
+            print("MyInfoViewModel feedSelectResponse =>\n \(feedSelectResponse)")
+            self.didFinishPortfolioFetch?()
+        }
+    }
     var error: Error? {
         didSet { self.showAlertClosure?() }
     }
@@ -51,6 +57,7 @@ final class MyInfoViewModel{
     var didFinishFetch: (() -> ())?
     var didFinishFollowCheckFetch: (() -> ())?
     var didFinishFollowFetch: (() -> ())?
+    var didFinishPortfolioFetch: (() -> ())?
     
     // MARK: - Network call
     func getUserInfo(_ userSeq: Int) {
@@ -124,32 +131,28 @@ final class MyInfoViewModel{
     }
     
     // MARK: - Network call
-//    func getUserFeed(_ userSeq: Int) {
-//        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo") {
-//            print("myInfo => \(value)")
-//            let userId = value["userEmail"] as! String
-//            self.request.requestMyFeed("/feed/\(userSeq)", completion: { (userInfo, error, status) in
-//                //error만 있을경우 서버오류
-//                //error,status != nil 경우 토큰 재발급
-//                if let error = error, let status = status {
-//                    if status == 500 {
-//                        print("토큰 재발급")
-//                        self.request.reloadToken(status)
-//                        self.getUserInfo()
-//                    }
-//                }else if let error = error {
-//                    print(error)
-//                    self.error = error
-//                    self.isLoading = false
-//                    return
-//                }
-//                self.error = nil
-//                self.isLoading = false
-//                self.userInfo = userInfo
-//                
-//            })
-//        }
-//    }
+    func getPortfolio(_ userSeq: Int) {
+        self.request.requestMyFeed("/feed/user/\(userSeq)?page=0&size=2000", completion: { (feedSelectResponse, error, status) in
+            //error만 있을경우 서버오류
+            //error,status != nil 경우 토큰 재발급
+            if let error = error, let status = status {
+                if status == 500 {
+                    print("토큰 재발급")
+                    self.request.reloadToken(status)
+                    self.getUserInfo(userSeq)
+                }
+            }else if let error = error {
+                print(error)
+                self.error = error
+                self.isLoading = false
+                return
+            }
+            self.error = nil
+            self.isLoading = false
+            self.feedSelectResponse = feedSelectResponse
+            
+        })
+    }
     
     // MARK: - UI Logic
     private func setupText(with userInfo: UserInfo) {
@@ -175,7 +178,7 @@ final class MyInfoViewModel{
         if let introduce = userInfo.result.introduce {
             self.introduceString = introduce
         }else {
-            self.introduceString = "작성된 자기소개가 없습니다😥 자기소개를 작성해 자신을 소개해보세요."
+            self.introduceString = "작성된 자기소개가 없습니다."
         }
     }
     

@@ -260,7 +260,7 @@ final class ServerRequest: NSObject {
     }
     
     // MARK: - 마이 써머리 유저 피드
-    func requestMyFeed(_ url: String, completion: @escaping (UserInfo?, Error?, Int?) -> ()) {
+    func requestMyFeed(_ url: String, completion: @escaping (FeedSelectResponse?, Error?, Int?) -> ()) {
         let url = Server.url + url
         if let token = UserDefaults.standard.string(forKey: "accessToken") {
             print("url => \(url)")
@@ -275,12 +275,11 @@ final class ServerRequest: NSObject {
             .responseJSON { response in
                 switch response.result {
                 case .success(let value):
-                    smLog("\(value)")
                     guard let result = response.data else {return}
                                     
                     do {
                         let decoder = JSONDecoder()
-                        let json = try decoder.decode(UserInfo.self, from: result)
+                        let json = try decoder.decode(FeedSelectResponse.self, from: result)
                         
                         completion(json, nil, nil)
                         

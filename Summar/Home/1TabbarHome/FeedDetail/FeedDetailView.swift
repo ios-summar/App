@@ -65,17 +65,6 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
     
     var feedComment: FeedComment? {
         didSet {
-            guard let feedComment = feedComment, let content = feedComment.content else {return}
-            totalCount += content.count
-            smLog("\(totalCount)")
-            
-            for i in 0 ..< content.count { // 대댓글이 있을때 카운트 +=
-                guard let childCommentsCount = content[i].childCommentsCount else {return}
-                smLog("\(childCommentsCount)")
-                totalCount += childCommentsCount
-            }
-            smLog("\(totalCount)")
-            
             commentTableView.delegate = self
             commentTableView.dataSource = self
             commentTableView.reloadData()
@@ -477,6 +466,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
             commentTableView.snp.makeConstraints {
                 $0.top.equalTo(line2.snp.bottom)
                 $0.left.right.equalTo(self.safeAreaLayoutGuide)
+//                $0.height.equalTo(800)
             }
             
             smLog("\(commentTableView.contentSize.height)")
@@ -575,14 +565,15 @@ extension FeedDetailView : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return totalCount
+        guard let feedComment = feedComment, let content = feedComment.content else {return 0}
+        return content.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let feedComment = feedComment, let content = feedComment.content else {return UITableViewCell()}
         let cell = tableView.dequeueReusableCell(withIdentifier: "CommentTableViewCell", for: indexPath) as! CommentTableViewCell
-        let ParentsContent = content[indexPath.row]
-        cell.setUpCell(ParentsContent)
+        let cellContent = content[indexPath.row]
+        cell.setUpCell(cellContent)
         
         return cell
     }

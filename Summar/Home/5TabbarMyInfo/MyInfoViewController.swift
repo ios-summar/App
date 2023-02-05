@@ -114,6 +114,7 @@ final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDel
         guard let value = UserDefaults.standard.dictionary(forKey: "UserInfo") else {return}
         let userSeq: Int = value["userSeq"] as! Int
         myInfoView.requestMyInfo(userSeq)
+        myInfoView.getPortfolio(userSeq)
         LoadingIndicator.hideLoading()
     }
     
