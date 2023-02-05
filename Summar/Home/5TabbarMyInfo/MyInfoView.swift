@@ -44,34 +44,37 @@ final class MyInfoView: UIView, ViewAttributes{
     }
     var feedSelectResponse: FeedSelectResponse? {
         didSet {
-            guard let feed = feedSelectResponse else {return}
-            if feed.totalRecordCount != 0 {
-                portfolioTableView.alpha = 1.0
-                PortFolioNot.alpha = 0.0
-                
-                portfolioTableView.delegate = self
-                portfolioTableView.dataSource = self
-                portfolioTableView.reloadData()
-                
-                scrollView.addSubview(portfolioTableView)
-                portfolioTableView.snp.makeConstraints {
-                    $0.top.equalTo(line2.snp.bottom)
-                    $0.left.right.equalTo(self.safeAreaLayoutGuide)
-//                    $0.height.equalTo(2500)
-                }
-            }else {
-                portfolioTableView.alpha = 0.0
-                PortFolioNot.alpha = 1.0
-                scrollView.addSubview(PortFolioNot)
-                
-                PortFolioNot.snp.makeConstraints {
-                    $0.top.equalTo(line2.snp.bottom).offset(80)
-                    $0.centerX.equalToSuperview()
-                    $0.width.equalTo(162)
-                    $0.height.equalTo(194)
-                }
-            }
-            scrollView.updateContentSize()
+            portfolioTableView.delegate = self
+            portfolioTableView.dataSource = self
+            portfolioTableView.reloadData()
+//            guard let feed = feedSelectResponse else {return}
+//            if feed.totalRecordCount != 0 {
+//                portfolioTableView.alpha = 1.0
+//                PortFolioNot.alpha = 0.0
+//
+//                portfolioTableView.delegate = self
+//                portfolioTableView.dataSource = self
+//                portfolioTableView.reloadData()
+//
+//                scrollView.addSubview(portfolioTableView)
+//                portfolioTableView.snp.makeConstraints {
+//                    $0.top.equalTo(line2.snp.bottom)
+//                    $0.left.right.equalTo(self.safeAreaLayoutGuide)
+////                    $0.height.equalTo(2500)
+//                }
+//            }else {
+//                portfolioTableView.alpha = 0.0
+//                PortFolioNot.alpha = 1.0
+//                scrollView.addSubview(PortFolioNot)
+//
+//                PortFolioNot.snp.makeConstraints {
+//                    $0.top.equalTo(line2.snp.bottom).offset(80)
+//                    $0.centerX.equalToSuperview()
+//                    $0.width.equalTo(162)
+//                    $0.height.equalTo(194)
+//                }
+//            }
+//            scrollView.updateContentSize()
         }
     }
     
@@ -597,7 +600,35 @@ final class MyInfoView: UIView, ViewAttributes{
         viewModel.getPortfolio(userSeq)
         viewModel.didFinishPortfolioFetch = {
             self.feedSelectResponse = self.viewModel.feedSelectResponse
+            self.setPortfolio(self.feedSelectResponse)
         }
+    }
+    
+    func setPortfolio(_ feed: FeedSelectResponse?) {
+            guard let feed = feed else {return}
+            if feed.totalRecordCount != 0 {
+                portfolioTableView.alpha = 1.0
+                PortFolioNot.alpha = 0.0
+
+                scrollView.addSubview(portfolioTableView)
+                portfolioTableView.snp.makeConstraints {
+                    $0.top.equalTo(line2.snp.bottom)
+                    $0.left.right.equalTo(self.safeAreaLayoutGuide)
+//                    $0.height.equalTo(2500)
+                }
+            }else {
+                portfolioTableView.alpha = 0.0
+                PortFolioNot.alpha = 1.0
+                scrollView.addSubview(PortFolioNot)
+
+                PortFolioNot.snp.makeConstraints {
+                    $0.top.equalTo(line2.snp.bottom).offset(80)
+                    $0.centerX.equalToSuperview()
+                    $0.width.equalTo(162)
+                    $0.height.equalTo(194)
+                }
+            }
+            scrollView.updateContentSize()
     }
     
     func setProfileImage(_ imageView: UIImageView,_ urlString: String?) {
