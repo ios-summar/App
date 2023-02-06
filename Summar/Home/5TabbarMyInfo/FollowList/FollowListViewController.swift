@@ -9,7 +9,14 @@ import Foundation
 import UIKit
 import SnapKit
 
-final class FollowListViewController: UIViewController, ViewAttributes{
+final class FollowListViewController: UIViewController, PushDelegate, ViewAttributes{
+    func pushScreen(_ VC: UIViewController, _ any: Any?) {
+        let userSeq = any as? Int
+        
+        ProfileViewController.shared.userSeq = userSeq
+        self.navigationController?.pushViewController(ProfileViewController.shared, animated: true)
+    }
+    
     static let shared = FollowListViewController()
     let followListView = FollowListView()
 
@@ -26,12 +33,16 @@ final class FollowListViewController: UIViewController, ViewAttributes{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        followListView.delegate = self
+        
         setUI()
         setAttributes()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        followListView.getFollowList(userSeq)
+        guard let userSeq = userSeq else {return}
+        followListView.userSeq = userSeq
+        followListView.getFollowerList(userSeq)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

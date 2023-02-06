@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 final class FollowListView: UIView, ViewAttributes {
+    weak var delegate: PushDelegate?
     let helper = Helper()
     var userSeq: Int?
     
@@ -192,10 +193,6 @@ final class FollowListView: UIView, ViewAttributes {
     }
     
     func touchLeft(){
-        //팔로워 테이블뷰 set
-        followerTableView.alpha = 1.0
-        followingTableView.alpha = 0.0
-        
         leftBtn.titleLabel?.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
         rightBtn.titleLabel?.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
         
@@ -206,13 +203,10 @@ final class FollowListView: UIView, ViewAttributes {
             $0.right.equalTo(self.btnView.snp.centerX)
         }
 
+        getFollowerList(userSeq)
     }
     
     func touchRight(){
-        //팔로잉 테이블뷰 set
-        followerTableView.alpha = 0.0
-        followingTableView.alpha = 1.0
-        
         rightBtn.titleLabel?.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
         leftBtn.titleLabel?.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
         
@@ -223,10 +217,45 @@ final class FollowListView: UIView, ViewAttributes {
             $0.left.equalTo(self.btnView.snp.centerX)
         }
 
+        getFollowingList(userSeq)
+    }
+    
+    func followerExist(_ handler: Bool) {
+        smLog("\(handler)")
+        followerTableView.alpha = 0.0
+        followingTableView.alpha = 0.0
+        noImage.alpha = 0.0
+        noLabel.alpha = 0.0
+        noLabel.text = "팔로우"
+        
+        //카운트후 alpha값 변경
+        if handler {
+            followerTableView.alpha = 1.0
+        }else {
+            noImage.alpha = 1.0
+            noLabel.alpha = 1.0
+        }
+    }
+    
+    func followingExist(_ handler: Bool) {
+        smLog("\(handler)")
+        followerTableView.alpha = 0.0
+        followingTableView.alpha = 0.0
+        noImage.alpha = 0.0
+        noLabel.alpha = 0.0
+        noLabel.text = "팔로잉"
+        
+        //카운트후 alpha값 변경
+        if handler {
+            followingTableView.alpha = 1.0
+        }else {
+            noImage.alpha = 1.0
+            noLabel.alpha = 1.0
+        }
     }
     
     /// 서버통신
-    func getFollowList(_ userSeq: Int?) {
+    func getFollowerList(_ userSeq: Int?) {
         guard let userSeq = userSeq else { return }
         smLog("\(userSeq)")
         let viewModel = FollowListViewModel(0, 30)
@@ -238,6 +267,11 @@ final class FollowListView: UIView, ViewAttributes {
             guard let totalRecordCount = viewModel.followerTotalRecordCountString else { return }
             
             self.leftBtn.setTitle(totalRecordCount, for: .normal)
+            if self.followerList?.totalRecordCount! != 0 {
+                self.followerExist(true)
+            }else {
+                self.followerExist(false)
+            }
         }
         
         //팔로잉
@@ -247,6 +281,26 @@ final class FollowListView: UIView, ViewAttributes {
             guard let totalRecordCount = viewModel.followingTotalRecordCountString else { return }
             
             self.rightBtn.setTitle(totalRecordCount, for: .normal)
+        }
+    }
+    
+    /// 서버통신
+    func getFollowingList(_ userSeq: Int?) {
+        guard let userSeq = userSeq else { return }
+        smLog("\(userSeq)")
+        let viewModel = FollowListViewModel(0, 30)
+        
+        //팔로잉
+        viewModel.getFollowingList(userSeq)
+        viewModel.didFinishFollowingListFetch = {
+            self.followingList = viewModel.followingList
+            guard let totalRecordCount = viewModel.followingTotalRecordCountString else { return }
+            
+            if self.followingList?.totalRecordCount! != 0 {
+                self.followingExist(true)
+            }else {
+                self.followingExist(false)
+            }
         }
     }
 }
@@ -284,10 +338,10 @@ extension FollowListView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView.tag == 1 {
             guard let follower = followerList?.content?[indexPath.row] else {return}
-            smLog("\(follower.userSeq)")
+            self.delegate?.pushScreen(ProfileViewController.shared, follower.userSeq)
         }else if tableView.tag == 2 {
             guard let following = followingList?.content?[indexPath.row] else {return}
-            smLog("\(following.userSeq)")
+            self.delegate?.pushScreen(ProfileViewController.shared, following.userSeq)
         }
         
     }
