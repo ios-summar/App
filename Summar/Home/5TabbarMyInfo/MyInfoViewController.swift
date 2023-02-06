@@ -23,11 +23,14 @@ final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDel
     
     let VC = PreferencesController.shared
     
-    func pushScreen(_ VC: UIViewController) {
+    func pushScreen(_ VC: UIViewController, _ any: Any?) {
         if VC == UpdateMyInfoViewController.shared {
             UpdateMyInfoViewController.shared.userInfo = self.userInfo
             print("MyInfoViewController => UpdateMyInfo userInfo\n \(userInfo)")
             self.navigationController?.pushViewController(UpdateMyInfoViewController.shared, animated: true)
+        }else if VC == FollowListViewController.shared {
+            FollowListViewController.shared.userSeq = any as? Int
+            self.navigationController?.pushViewController(FollowListViewController.shared, animated: true)
         }
     }
     
@@ -41,7 +44,7 @@ final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDel
     // MARK: - Properties
     private var userInfo: UserInfo? {
         didSet {
-//            print("MyInfoViewController userInfo =>\n\(userInfo)")
+            print("MyInfoViewController userSeq =>\n\(userInfo?.result.userSeq)")
         }
     }
     

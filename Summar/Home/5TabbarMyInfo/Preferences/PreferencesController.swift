@@ -21,7 +21,7 @@ final class PreferencesController: UIViewController, PushDelegate, PopDelegate, 
         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(SocialLoginController.shared, animated: true)
     }
     
-    func pushScreen(_ VC: UIViewController) {
+    func pushScreen(_ VC: UIViewController, _ any: Any?) {
         if VC == UpdateMyInfoViewController.shared {
             UpdateMyInfoViewController.shared.userInfo = self.userInfo
             self.navigationController?.pushViewController(UpdateMyInfoViewController.shared, animated: true)

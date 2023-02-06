@@ -9,7 +9,14 @@ import Foundation
 import UIKit
 import SnapKit
 
-final class ProfileViewController : UIViewController, ViewAttributes{
+final class ProfileViewController : UIViewController, PushDelegate, ViewAttributes{
+    func pushScreen(_ VC: UIViewController, _ any: Any?) {
+        if VC == FollowListViewController.shared {
+            FollowListViewController.shared.userSeq = any as? Int
+            self.navigationController?.pushViewController(FollowListViewController.shared, animated: true)
+        }
+    }
+    
     static let shared = ProfileViewController()
     let infoView = MyInfoView()
     let helper = Helper()
@@ -31,6 +38,8 @@ final class ProfileViewController : UIViewController, ViewAttributes{
     }()
     
     override func viewDidLoad() {
+        infoView.pushDelegate = self
+        
         setUI()
         setAttributes()
     }

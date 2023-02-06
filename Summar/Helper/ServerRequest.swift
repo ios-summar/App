@@ -259,6 +259,44 @@ final class ServerRequest: NSObject {
         }
     }
     
+    /// 팔로워, 팔로잉 전체리스트
+    func followList(_ url: String, completion: @escaping (SearchUserList?, Error?, Int?) -> ()) {
+        let url = Server.url + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.request(url,
+                       method: .get,
+                       parameters: nil,
+                       encoding: URLEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json",
+                                 "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    guard let result = response.data else {return}
+                                    
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(SearchUserList.self, from: result)
+                        
+                        completion(json, nil, nil)
+                        
+                    } catch {
+                        print("error! \(error)")
+                        completion(nil, error, nil)
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    completion(nil, error, statusCode)
+                }
+            }
+        }
+    }
+    
     // MARK: - 마이 써머리 유저 피드
     func requestMyFeed(_ url: String, completion: @escaping (FeedSelectResponse?, Error?, Int?) -> ()) {
         let url = Server.url + url

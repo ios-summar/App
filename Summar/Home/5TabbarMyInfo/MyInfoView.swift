@@ -14,7 +14,7 @@ protocol MyInfoViewDelegate : AnyObject {
 }
 
 protocol PushDelegate : AnyObject {
-    func pushScreen(_ VC: UIViewController)
+    func pushScreen(_ VC: UIViewController, _ any: Any?)
 }
 
 final class MyInfoView: UIView, ViewAttributes{
@@ -467,8 +467,12 @@ final class MyInfoView: UIView, ViewAttributes{
         }
     }
     
+    /// 팔로워, 팔로잉 리스트 화면이동 버튼 action
     @objc func followBtnAction(_ sender: Any) {
-        
+        guard let opponentUserSeq = userInfo?.result.userSeq else {return} // 내 피드 혹은 상대 피드
+        smLog("\(opponentUserSeq)")
+        FollowListViewController.shared.userSeq = opponentUserSeq
+        self.pushDelegate?.pushScreen(FollowListViewController.shared, opponentUserSeq)
     }
     
     @objc func profileBtnAction(_ sender: Any) {
@@ -659,7 +663,7 @@ final class MyInfoView: UIView, ViewAttributes{
     
     
     @objc func btnAction(_ sender: Any){
-        self.pushDelegate?.pushScreen(UpdateMyInfoViewController.shared)
+        self.pushDelegate?.pushScreen(UpdateMyInfoViewController.shared, nil)
     }
     
     required init?(coder: NSCoder) {
