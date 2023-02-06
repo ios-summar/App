@@ -226,7 +226,7 @@ final class FollowListView: UIView, ViewAttributes {
         followingTableView.alpha = 0.0
         noImage.alpha = 0.0
         noLabel.alpha = 0.0
-        noLabel.text = "팔로우"
+        noLabel.text = "팔로워가 없어요"
         
         //카운트후 alpha값 변경
         if handler {
@@ -243,7 +243,7 @@ final class FollowListView: UIView, ViewAttributes {
         followingTableView.alpha = 0.0
         noImage.alpha = 0.0
         noLabel.alpha = 0.0
-        noLabel.text = "팔로잉"
+        noLabel.text = "팔로우 중인 사람이 없어요"
         
         //카운트후 alpha값 변경
         if handler {
