@@ -10,8 +10,6 @@ import UIKit
 import SnapKit
 
 final class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegate{
-    static let shared = SignUpController()
-    
     func nextBtn(_ nickName: String) {
         print("nickName => \(nickName)")
         requestDic["userNickname"] = nickName
@@ -50,9 +48,9 @@ final class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegat
     }()
     
     
-    let signUp1View = SignUp1View.shared
-    let signUp2View = SignUp2View.shared
-    let signUp3View = SignUp3View.shared
+    let signUp1View = SignUp1View()
+    let signUp2View = SignUp2View()
+    let signUp3View = SignUp3View()
     
     
     override func viewDidLoad() {

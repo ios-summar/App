@@ -10,7 +10,6 @@ import UIKit
 import SafeAreaBrush
 
 final class PushSettingViewController: UIViewController {
-    static let shared = PushSettingViewController()
     let pushSettingView = PushSettingView()
     
     let lbNavTitle : UILabel = {

@@ -138,6 +138,8 @@ extension FollowingListView: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let following = followingList?.content?[indexPath.row] else {return}
-        self.delegate?.pushScreen(ProfileViewController.shared, following.userSeq)
+        let VC = ProfileViewController()
+        
+        self.delegate?.pushScreen(VC, following.userSeq)
     }
 }

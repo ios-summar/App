@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 final class NoticeController: UIViewController {
-    static let shared = NoticeController()
     let noticeView = NoticeView()
     let viewModel = NoticeViewModel()
     

@@ -10,9 +10,7 @@ import UIKit
 
 
 final class FullScreenImageViewController: UIViewController {
-    static let shared = FullScreenImageViewController()
-    
-    let fullScreenImageView = FullScreenImageView.shared
+    let fullScreenImageView = FullScreenImageView()
     
     // MARK: - Properties
     var imageArr: [UIImage]? {

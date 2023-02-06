@@ -14,8 +14,6 @@ protocol PushDelegateWithSearchUserInfo : AnyObject {
 }
 
 final class SearchView: UIView{
-    static let shared = SearchView()
-    
     weak var pushDelegateWithSearchUserInfo : PushDelegateWithSearchUserInfo?
     
     let cellReuseIdentifier = "SearchTableViewCell"
@@ -267,7 +265,9 @@ extension SearchView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let searchUserInfo = model?.content {
             print(searchUserInfo[indexPath.row])
-            self.pushDelegateWithSearchUserInfo?.pushDeleagteWithParam(ProfileViewController.shared, searchUserInfo[indexPath.row])
+            let VC = ProfileViewController()
+            
+            self.pushDelegateWithSearchUserInfo?.pushDeleagteWithParam(VC, searchUserInfo[indexPath.row])
         }
     }
 }

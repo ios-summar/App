@@ -8,8 +8,21 @@
 import Foundation
 import UIKit
 
-final class FeedDetailViewController: UIViewController {
-    static let shared = FeedDetailViewController()
+final class FeedDetailViewController: UIViewController, PushDelegate {
+    func pushScreen(_ VC: UIViewController, _ any: Any?) {
+        if VC.isKind(of: ProfileViewController.self) {
+            let VC = ProfileViewController()
+            VC.userSeq = any as? Int
+            
+            self.navigationController?.pushViewController(VC, animated: true)
+        }else if VC.isKind(of: FollowListTabman.self) {
+            let VC = FollowListTabman()
+            VC.userSeq = any as? Int
+            
+            self.navigationController?.pushViewController(VC, animated: true)
+        }
+    }
+    
     let viewModel = FeedDetailViewModel()
     let feedView = FeedDetailView()
     let helper = Helper()
@@ -23,6 +36,8 @@ final class FeedDetailViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        feedView.delegate = self
+        
         configureUI()
     }
     

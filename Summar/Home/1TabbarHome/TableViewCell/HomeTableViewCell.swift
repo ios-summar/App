@@ -153,12 +153,12 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
     
     @objc func didSelect(_ sender: UITapGestureRecognizer) {
         guard let userSeq = userSeq else {return}
-        self.delegate?.pushScreen(ProfileViewController.shared, userSeq)
+        self.delegate?.pushScreen(ProfileViewController(), userSeq)
     }
     
     @objc func didSelectImg(_ sender: UITapGestureRecognizer) {
         guard let feedInfo = feedInfo else {return}
-        self.delegate?.pushScreen(FeedDetailViewController.shared, feedInfo)
+        self.delegate?.pushScreen(FeedDetailViewController(), feedInfo)
     }
     
     func setUpCell(_ feedInfo: FeedInfo){

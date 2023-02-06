@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class CommentTableViewCell: UITableViewCell, ViewAttributes{
+final class CommentTableViewCell: UITableViewCell, ViewAttributes{
     let helper = Helper()
     
     lazy var profileImg : UIImageView = {

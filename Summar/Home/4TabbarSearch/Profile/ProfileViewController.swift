@@ -11,13 +11,14 @@ import SnapKit
 
 final class ProfileViewController : UIViewController, PushDelegate, ViewAttributes{
     func pushScreen(_ VC: UIViewController, _ any: Any?) {
-        if VC == FollowListViewController.shared {
-            FollowListViewController.shared.userSeq = any as? Int
-            self.navigationController?.pushViewController(FollowListViewController.shared, animated: true)
+        if VC.isKind(of: FollowListTabman.self) {
+            let VC = FollowListTabman()
+            VC.userSeq = any as? Int
+            
+            self.navigationController?.pushViewController(VC, animated: true)
         }
     }
     
-    static let shared = ProfileViewController()
     let infoView = MyInfoView()
     let helper = Helper()
     
@@ -29,13 +30,6 @@ final class ProfileViewController : UIViewController, PushDelegate, ViewAttribut
             userSeq = searchUserInfo.userSeq
         }
     }
-    let titleLabel : UILabel = {
-        let title = UILabel()
-        title.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
-        title.textColor = UIColor.black
-        title.sizeToFit()
-        return title
-    }()
     
     override func viewDidLoad() {
         infoView.pushDelegate = self

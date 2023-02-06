@@ -10,7 +10,6 @@ import UIKit
 import SnapKit
 
 final class SocialLoginController : UIViewController, SocialLoginDelegate {
-    static let shared = SocialLoginController()
     let socialLoginView = SocialLoginView()
     
     override func viewDidLoad() {
@@ -31,13 +30,15 @@ final class SocialLoginController : UIViewController, SocialLoginDelegate {
     func pushScreen(_ VC: UIViewController, _ requestDic: Dictionary<String, Any>) {
         print(#file , #function)
         print(VC)
-        if VC == SignUpController.shared {
-            let svc = SignUpController.shared
-            svc.requestDic = requestDic
-            self.navigationController?.pushViewController(svc, animated: true)
-        }else if VC == HomeController.shared {
-            let svc = HomeController.shared
-            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(svc, animated: false)
+        if VC.isKind(of: SignUpController.self) {
+            let VC = SignUpController()
+            
+            VC.requestDic = requestDic
+            self.navigationController?.pushViewController(VC, animated: true)
+        }else if VC.isKind(of: HomeController.self) {
+            let VC = HomeController()
+            
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(VC, animated: false)
         }
     }
 }

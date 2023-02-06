@@ -11,13 +11,13 @@ import SnapKit
 
 final class FollowingListViewController: UIViewController, PushDelegate, ViewAttributes{
     func pushScreen(_ VC: UIViewController, _ any: Any?) {
+        let VC = ProfileViewController()
         let userSeq = any as? Int
         
-        ProfileViewController.shared.userSeq = userSeq
-        self.navigationController?.pushViewController(ProfileViewController.shared, animated: true)
+        VC.userSeq = userSeq
+        self.navigationController?.pushViewController(VC, animated: true)
     }
     
-    static let shared = FollowingListViewController()
     let followingListView = FollowingListView()
 
     var userSeq: Int?

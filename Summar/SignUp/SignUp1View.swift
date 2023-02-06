@@ -15,8 +15,6 @@ protocol SignUp1Delegate : class {
 }
 
 final class SignUp1View : UIView, UITextFieldDelegate {
-    static let shared = SignUp1View()
-    
     weak var delegate: SignUp1Delegate?
     
     let helper = Helper()

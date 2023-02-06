@@ -17,8 +17,6 @@ final class WriteFeedController : UIViewController, ImagePickerDelegate, PopDele
     }
     
     let helper = Helper()
-    static let shared = WriteFeedController()
-    
     let wfView = WriteFeedView()
     
     var imageArr = [UIImage]()
@@ -78,10 +76,10 @@ final class WriteFeedController : UIViewController, ImagePickerDelegate, PopDele
     }
     
     func showImageFullScreen(_ imageArr: [UIImage]) {
-        let VC = FullScreenImageViewController.shared
+        let VC = FullScreenImageViewController()
         VC.imageArr = imageArr
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil // 스와이프 제스처 enable true
-        self.navigationController?.pushViewController(FullScreenImageViewController.shared, animated: true)
+        self.navigationController?.pushViewController(VC, animated: true)
     }
     
     // MARK: - ImagePicker func

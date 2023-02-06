@@ -161,7 +161,9 @@ extension FollowerListView: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let follower = followerList?.content?[indexPath.row] else {return}
-        self.delegate?.pushScreen(ProfileViewController.shared, follower.userSeq)
+        let VC = ProfileViewController()
+        
+        self.delegate?.pushScreen(VC, follower.userSeq)
         
     }
 }

@@ -10,8 +10,6 @@ import UIKit
 import SnapKit
 
 final class ClippingViewController : UIViewController {
-    static let shared = ClippingViewController()
-    
     let label : UILabel = {
         let label = UILabel()
         label.text = "스크랩보기"

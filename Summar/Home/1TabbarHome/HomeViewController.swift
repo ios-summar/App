@@ -12,16 +12,19 @@ import JJFloatingActionButton
 
 final class HomeViewController : UIViewController, HomeViewDelegate {
     func pushScreen(_ VC: UIViewController, _ any: Any) {
-        if VC === FeedDetailViewController.shared {
-            FeedDetailViewController.shared.feedInfo = any as? FeedInfo
-            self.navigationController?.pushViewController(FeedDetailViewController.shared, animated: true)
-        }else if VC === ProfileViewController.shared {
-            ProfileViewController.shared.userSeq = any as? Int
-            self.navigationController?.pushViewController(ProfileViewController.shared, animated: true)
+        if VC.isKind(of: FeedDetailViewController.self) {
+            let VC = FeedDetailViewController()
+            
+            VC.feedInfo = any as? FeedInfo
+            self.navigationController?.pushViewController(VC, animated: true)
+        }else if VC.isKind(of: ProfileViewController.self) {
+            let VC = ProfileViewController()
+            
+            VC.userSeq = any as? Int
+            self.navigationController?.pushViewController(VC, animated: true)
         }
     }
     
-    static let shared = HomeViewController()
     let homeView = HomeView()
     let actionButton = JJFloatingActionButton()
     
@@ -97,7 +100,7 @@ final class HomeViewController : UIViewController, HomeViewDelegate {
     func floatingBtn(){
         actionButton.addItem(title: "피드 작성하기", image: UIImage(systemName: "plus")?.withRenderingMode(.alwaysTemplate)) { item in
             
-            let wrController = UINavigationController(rootViewController:  WriteFeedController.shared)
+            let wrController = UINavigationController(rootViewController:  WriteFeedController())
             wrController.navigationBar.isTranslucent = false
             wrController.navigationBar.backgroundColor = .white
             wrController.modalPresentationStyle = UIModalPresentationStyle.fullScreen

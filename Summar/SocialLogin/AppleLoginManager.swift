@@ -87,9 +87,9 @@ extension AppleLoginManager : ASAuthorizationControllerDelegate, ASAuthorization
     func memberYN(_ TF: Bool, _ requestDic: Dictionary<String, Any>) {
         print(#file , #function)
         if TF { // 로그인 화면으로
-            self.delegate?.pushIdentifier(HomeController.shared, requestDic)
+            self.delegate?.pushIdentifier(HomeController(), requestDic)
         }else { // 회원가입 화면으로
-            self.delegate?.pushIdentifier(SignUpController.shared, requestDic)
+            self.delegate?.pushIdentifier(SignUpController(), requestDic)
         }
     }
     

@@ -10,8 +10,6 @@ import UIKit
 import SnapKit
 
 final class SignUp3View : UIView {
-    static let shared = SignUp3View()
-    
     let helper = Helper()
     
     let btnWidth : CGFloat = {
@@ -108,8 +106,8 @@ final class SignUp3View : UIView {
     
     @objc func nextAction(){
         print(#file , #function)
-        let svc = HomeController.shared
-        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(svc, animated: true)
+        let VC = HomeController()
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(VC, animated: true)
     }
     
     required init?(coder: NSCoder) {

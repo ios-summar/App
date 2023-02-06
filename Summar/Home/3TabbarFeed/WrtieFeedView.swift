@@ -17,7 +17,6 @@ protocol ImagePickerDelegate : AnyObject {
 }
 
 final class WriteFeedView : UIView, UITextViewDelegate {
-    static let shared = WriteFeedView()
     let helper = Helper()
     let viewModel = WriteFeedViewModel()
     

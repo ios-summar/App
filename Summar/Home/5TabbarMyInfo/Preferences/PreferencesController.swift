@@ -17,24 +17,30 @@ final class PreferencesController: UIViewController, PushDelegate, PopDelegate, 
     weak var delegate : PopDelegate?
     
     func popScreen() {
-//        self.navigationController?.popViewController(animated: true)
-        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(SocialLoginController.shared, animated: true)
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(SocialLoginController(), animated: true)
     }
     
     func pushScreen(_ VC: UIViewController, _ any: Any?) {
-        if VC == UpdateMyInfoViewController.shared {
-            UpdateMyInfoViewController.shared.userInfo = self.userInfo
-            self.navigationController?.pushViewController(UpdateMyInfoViewController.shared, animated: true)
-        }else if VC == PushSettingViewController.shared {
-            self.navigationController?.pushViewController(PushSettingViewController.shared, animated: true)
-        }else if VC == NoticeController.shared {
-            self.navigationController?.pushViewController(NoticeController.shared, animated: true)
-        }else if VC == FAQController.shared {
-            self.navigationController?.pushViewController(FAQController.shared, animated: true)
+        if VC.isKind(of: UpdateMyInfoViewController.self) {
+            let VC = UpdateMyInfoViewController()
+            VC.userInfo = self.userInfo
+            
+            self.navigationController?.pushViewController(VC, animated: true)
+        }else if VC.isKind(of: PushSettingViewController.self) {
+            let VC = PushSettingViewController()
+            
+            self.navigationController?.pushViewController(VC, animated: true)
+        }else if VC.isKind(of: NoticeController.self) {
+            let VC = NoticeController()
+            
+            self.navigationController?.pushViewController(VC, animated: true)
+        }else if VC.isKind(of: FAQController.self) {
+            let VC = FAQController()
+            
+            self.navigationController?.pushViewController(VC, animated: true)
         }
     }
     
-    static let shared = PreferencesController()
     let preferencesView = PreferencesView()
     
     var userInfo: UserInfo? {

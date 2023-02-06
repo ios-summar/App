@@ -10,10 +10,11 @@ import Tabman
 import Pageboy
 
 class FollowListTabman: TabmanViewController, ViewAttributes {
-    
-    static let shared = FollowListTabman()
     var userSeq: Int?
-    private var viewControllers = [FollowerListViewController.shared, FollowingListViewController.shared]
+    let VC1 = FollowerListViewController()
+    let VC2 = FollowingListViewController()
+    
+    lazy var viewControllers = [VC1, VC2]
     
     var followerList: SearchUserList? {
         didSet {
@@ -47,8 +48,8 @@ class FollowListTabman: TabmanViewController, ViewAttributes {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        FollowerListViewController.shared.userSeq = userSeq
-        FollowingListViewController.shared.userSeq = userSeq
+        VC1.userSeq = userSeq
+        VC2.userSeq = userSeq
         
         setUI()
         setAttributes()

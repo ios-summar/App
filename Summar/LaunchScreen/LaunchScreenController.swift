@@ -41,9 +41,9 @@ final class LaunchScreenController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now()){ //+ 2.0){ //TEST
             if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
-                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(HomeController.shared, animated: true)
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(HomeController(), animated: true)
             }else {
-                self.navigationController?.pushViewController(SocialLoginController.shared, animated: true)
+                self.navigationController?.pushViewController(SocialLoginController(), animated: true)
             }
         }
     }

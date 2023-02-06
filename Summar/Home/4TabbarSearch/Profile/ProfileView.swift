@@ -10,7 +10,6 @@ import UIKit
 import SnapKit
 
 final class ProfileView: UIView {
-    static let shared = ProfileView()
     let helper = Helper.shared
     
     var searchUserInfo : SearchUserInfo? {

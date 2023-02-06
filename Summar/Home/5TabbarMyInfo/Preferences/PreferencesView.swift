@@ -373,20 +373,20 @@ extension PreferencesView: UITableViewDelegate, UITableViewDataSource {
         switch indexPath.row {
         case 0: // 프로필 편집
             self.myInfoDelegate?.parameter(userInfo)
-            self.pushDelegate?.pushScreen(UpdateMyInfoViewController.shared, nil)
+            self.pushDelegate?.pushScreen(UpdateMyInfoViewController(), nil)
             break
         case 1: // 알림설정
             print("1")
             self.myInfoDelegate?.parameter(userInfo)
-            self.pushDelegate?.pushScreen(PushSettingViewController.shared, nil)
+            self.pushDelegate?.pushScreen(PushSettingViewController(), nil)
             break
         case 2: // 공지사항
             print("2")
-            self.pushDelegate?.pushScreen(NoticeController.shared, nil)
+            self.pushDelegate?.pushScreen(NoticeController(), nil)
             break
         case 3: // 자주 묻는 질문
             print("3")
-            self.pushDelegate?.pushScreen(FAQController.shared, nil)
+            self.pushDelegate?.pushScreen(FAQController(), nil)
             break
         case 4: // 버전 정보
             print("4")

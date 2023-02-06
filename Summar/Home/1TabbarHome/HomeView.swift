@@ -14,11 +14,10 @@ protocol HomeViewDelegate : AnyObject {
 
 final class HomeView: UIView, HomeViewDelegate{
     func pushScreen(_ VC: UIViewController, _ any: Any) {
-        smLog("")
-        if VC == FeedDetailViewController.shared {
+        if VC.isKind(of: FeedDetailViewController.self) {
             let feedInfo = any as? FeedInfo
             self.homeViewDelegate?.pushScreen(VC, feedInfo)
-        }else if VC == ProfileViewController.shared {
+        }else if VC.isKind(of: ProfileViewController.self) {
             let userSeq = any as? Int
             self.homeViewDelegate?.pushScreen(VC, userSeq)
         }
@@ -168,7 +167,7 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let model = model?.content {
-            homeViewDelegate?.pushScreen(FeedDetailViewController.shared, model[indexPath.row - 1])
+            homeViewDelegate?.pushScreen(FeedDetailViewController(), model[indexPath.row - 1])
         }
     }
     

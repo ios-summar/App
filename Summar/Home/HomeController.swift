@@ -9,8 +9,6 @@ import Foundation
 import UIKit
 
 final class HomeController : UITabBarController {
-    static let shared = HomeController()
-
     var layerHeight = CGFloat()
     public lazy var middleButton: UIButton! = {
         let middleButton = UIButton()
@@ -65,11 +63,10 @@ final class HomeController : UITabBarController {
     // MARK: - UIBar Create NavigtaionController
     func setupVCs() {
           viewControllers = [
-            createNavController(for: HomeViewController.shared, title: NSLocalizedString("홈", comment: ""), image: UIImage(named: "home")!, selectedImage: UIImage(named: "sHome")!),
-            createNavController(for: ClippingViewController.shared, title: NSLocalizedString("스크랩보기", comment: ""), image: UIImage(named: "scrab")!, selectedImage: UIImage(named: "sScrab")!),
-//            createNavController(for: WriteFeedController.shared, title: NSLocalizedString("", comment: ""), image: UIImage(named: "write")!, selectedImage: UIImage(named: "sWrite")!),
-            createNavController(for: SearchViewController.shared, title: NSLocalizedString("검색", comment: ""), image: UIImage(named: "search")!, selectedImage: UIImage(named: "sSearch")!),
-            createNavController(for: MyInfoViewController.shared, title: NSLocalizedString("마이 써머리", comment: ""), image: UIImage(named: "myInfo")!, selectedImage: UIImage(named: "sMyInfo")!)
+            createNavController(for: HomeViewController(), title: NSLocalizedString("홈", comment: ""), image: UIImage(named: "home")!, selectedImage: UIImage(named: "sHome")!),
+            createNavController(for: ClippingViewController(), title: NSLocalizedString("스크랩보기", comment: ""), image: UIImage(named: "scrab")!, selectedImage: UIImage(named: "sScrab")!),
+            createNavController(for: SearchViewController(), title: NSLocalizedString("검색", comment: ""), image: UIImage(named: "search")!, selectedImage: UIImage(named: "sSearch")!),
+            createNavController(for: MyInfoViewController(), title: NSLocalizedString("마이 써머리", comment: ""), image: UIImage(named: "myInfo")!, selectedImage: UIImage(named: "sMyInfo")!)
           ]
     }
     

@@ -11,9 +11,10 @@ import SnapKit
 
 final class SearchViewController : UIViewController, PushDelegateWithSearchUserInfo{
     func pushDeleagteWithParam(_ VC: UIViewController, _ searchUserInfo: SearchUserInfo) {
-        if VC == ProfileViewController.shared {
-            ProfileViewController.shared.searchUserInfo = searchUserInfo
-            self.navigationController?.pushViewController(ProfileViewController.shared, animated: true)
+        if VC.isKind(of: ProfileViewController.self) {
+            let VC = ProfileViewController()
+            VC.searchUserInfo = searchUserInfo
+            self.navigationController?.pushViewController(VC, animated: true)
         }
     }
     
@@ -21,8 +22,7 @@ final class SearchViewController : UIViewController, PushDelegateWithSearchUserI
         self.navigationController?.pushViewController(VC, animated: true)
     }
     
-    static let shared = SearchViewController()
-    let searchView = SearchView.shared
+    let searchView = SearchView()
     
     let viewWidth : CGFloat = {
         var btnWidth = UIScreen.main.bounds.width

@@ -55,8 +55,6 @@ final class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDeleg
           present(picker, animated: true, completion: nil)
     }
     
-    static let shared = UpdateMyInfoViewController()
-    
     let updateMyInfoView = UpdateMyInfoView()
     // MARK: - Properties
     var userInfo: UserInfo? {

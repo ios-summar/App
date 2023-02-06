@@ -21,16 +21,20 @@ final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDel
         print(#file , #function)
     }
     
-    let VC = PreferencesController.shared
+    let VC = PreferencesController()
     
     func pushScreen(_ VC: UIViewController, _ any: Any?) {
-        if VC == UpdateMyInfoViewController.shared {
-            UpdateMyInfoViewController.shared.userInfo = self.userInfo
+        if VC.isKind(of: UpdateMyInfoViewController.self) {
+            let VC = UpdateMyInfoViewController()
+            VC.userInfo = self.userInfo
+            
             print("MyInfoViewController => UpdateMyInfo userInfo\n \(userInfo)")
-            self.navigationController?.pushViewController(UpdateMyInfoViewController.shared, animated: true)
-        }else if VC == FollowListTabman.shared {
-            FollowListTabman.shared.userSeq = any as? Int
-            self.navigationController?.pushViewController(FollowListTabman.shared, animated: true)
+            self.navigationController?.pushViewController(VC, animated: true)
+        }else if VC.isKind(of: FollowListTabman.self) {
+            let VC = FollowListTabman()
+            VC.userSeq = any as? Int
+            
+            self.navigationController?.pushViewController(VC, animated: true)
         }
     }
     
@@ -38,8 +42,6 @@ final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDel
         print(#file , #function)
         self.userInfo = userInfo
     }
-    
-    static let shared = MyInfoViewController()
     
     // MARK: - Properties
     private var userInfo: UserInfo? {
@@ -85,7 +87,7 @@ final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDel
     func floatingBtn(){
         actionButton.addItem(title: "피드 작성하기", image: UIImage(systemName: "plus")?.withRenderingMode(.alwaysTemplate)) { item in
             
-            let wrController = UINavigationController(rootViewController:  WriteFeedController.shared)
+            let wrController = UINavigationController(rootViewController:  WriteFeedController())
             wrController.navigationBar.isTranslucent = false
             wrController.navigationBar.backgroundColor = .white
             wrController.modalPresentationStyle = UIModalPresentationStyle.fullScreen

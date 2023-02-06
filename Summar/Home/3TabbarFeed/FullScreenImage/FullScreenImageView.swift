@@ -9,8 +9,6 @@ import Foundation
 import UIKit
 
 final class FullScreenImageView : UIView, UIScrollViewDelegate{
-    static let shared = FullScreenImageView()
-    
     var imageArr = [UIImage]()
     
     let viewWidth : CGFloat = {

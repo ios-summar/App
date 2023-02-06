@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
-    static let shared = FeedDetailView()
+    weak var delegate: PushDelegate?
     let viewModel = FeedDetailViewModel()
     let helper = Helper.shared
     
@@ -148,6 +148,13 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
         view.tintColor = UIColor.grayColor205
         view.contentMode = .scaleAspectFit
         view.clipsToBounds = true
+        
+        let recognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didSelect(_:))
+        )
+        view.addGestureRecognizer(recognizer)
+        
         return view
     }()
     let nickName : UILabel = {
@@ -155,6 +162,13 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
         label.font = FontManager.getFont(Font.Bold.rawValue).medium15Font
         label.textColor = .black
         label.sizeToFit()
+        
+        let recognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didSelect(_:))
+        )
+        label.addGestureRecognizer(recognizer)
+        
         return label
     }()
     let major : UILabel = {
@@ -162,6 +176,13 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
         label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
         label.sizeToFit()
+        
+        let recognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didSelect(_:))
+        )
+        label.addGestureRecognizer(recognizer)
+        
         return label
     }()
     let contentsLabel : UILabel = {
@@ -468,8 +489,6 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
                 $0.left.right.equalTo(self.safeAreaLayoutGuide)
 //                $0.height.equalTo(800)
             }
-            
-            smLog("\(commentTableView.contentSize.height)")
         }else {
             commentView.removeFromSuperview()
             commentTableView.removeFromSuperview()
@@ -534,7 +553,16 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
     }
     
     @objc func followBtnAction(_ sedner: Any) {
+        guard let feedInfo = feedInfo, let user = feedInfo.user else { return }
+        
+        self.delegate?.pushScreen(FollowListTabman(), user.userSeq)
+    }
+    
+    @objc func didSelect(_ sender: UITapGestureRecognizer) {
         smLog("")
+        guard let feedInfo = feedInfo, let user = feedInfo.user else { return }
+        
+        self.delegate?.pushScreen(ProfileViewController(), user.userSeq)
     }
     
     func setProfileImage(_ imageView: UIImageView,_ urlString: String?) {
