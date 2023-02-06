@@ -28,9 +28,9 @@ final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDel
             UpdateMyInfoViewController.shared.userInfo = self.userInfo
             print("MyInfoViewController => UpdateMyInfo userInfo\n \(userInfo)")
             self.navigationController?.pushViewController(UpdateMyInfoViewController.shared, animated: true)
-        }else if VC == FollowListViewController.shared {
-            FollowListViewController.shared.userSeq = any as? Int
-            self.navigationController?.pushViewController(FollowListViewController.shared, animated: true)
+        }else if VC == FollowListTabman.shared {
+            FollowListTabman.shared.userSeq = any as? Int
+            self.navigationController?.pushViewController(FollowListTabman.shared, animated: true)
         }
     }
     

@@ -471,8 +471,7 @@ final class MyInfoView: UIView, ViewAttributes{
     @objc func followBtnAction(_ sender: Any) {
         guard let opponentUserSeq = userInfo?.result.userSeq else {return} // 내 피드 혹은 상대 피드
         smLog("\(opponentUserSeq)")
-        FollowListViewController.shared.userSeq = opponentUserSeq
-        self.pushDelegate?.pushScreen(FollowListViewController.shared, opponentUserSeq)
+        self.pushDelegate?.pushScreen(FollowListTabman.shared, opponentUserSeq)
     }
     
     @objc func profileBtnAction(_ sender: Any) {

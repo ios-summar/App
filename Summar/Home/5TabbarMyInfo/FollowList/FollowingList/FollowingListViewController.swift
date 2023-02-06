@@ -1,5 +1,5 @@
 //
-//  FollowListViewController.swift
+//  FollowingListViewController.swift
 //  Summar
 //
 //  Created by mac on 2023/01/04.
@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-final class FollowListViewController: UIViewController, PushDelegate, ViewAttributes{
+final class FollowingListViewController: UIViewController, PushDelegate, ViewAttributes{
     func pushScreen(_ VC: UIViewController, _ any: Any?) {
         let userSeq = any as? Int
         
@@ -17,8 +17,8 @@ final class FollowListViewController: UIViewController, PushDelegate, ViewAttrib
         self.navigationController?.pushViewController(ProfileViewController.shared, animated: true)
     }
     
-    static let shared = FollowListViewController()
-    let followListView = FollowListView()
+    static let shared = FollowingListViewController()
+    let followingListView = FollowingListView()
 
     var userSeq: Int?
     let arrowBackWard : UIButton = {
@@ -33,7 +33,7 @@ final class FollowListViewController: UIViewController, PushDelegate, ViewAttrib
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        followListView.delegate = self
+        followingListView.delegate = self
         
         setUI()
         setAttributes()
@@ -41,25 +41,17 @@ final class FollowListViewController: UIViewController, PushDelegate, ViewAttrib
     
     override func viewWillAppear(_ animated: Bool) {
         guard let userSeq = userSeq else {return}
-        followListView.userSeq = userSeq
-        followListView.getFollowerList(userSeq)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        followListView.touchLeft()
+        followingListView.userSeq = userSeq
+        followingListView.getFollowingList(userSeq)
     }
     
     func setUI() {
         smLog("\(userSeq)")
-        self.view.backgroundColor = .white
-        self.navigationController?.navigationBar.backgroundColor = .white
-        self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(topBtnAction(_:)), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
-        
-        self.view.addSubview(followListView)
+        self.view.addSubview(followingListView)
     }
     
     func setAttributes() {
-        followListView.snp.makeConstraints {
+        followingListView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }

@@ -83,11 +83,14 @@ PODS:
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
   - naveridlogin-sdk-ios (4.1.5)
+  - Pageboy (4.0.2)
   - PromisesObjC (2.1.1)
   - PryntTrimmerView (4.0.2)
   - SafeAreaBrush (1.0.4)
   - SnapKit (5.6.0)
   - SteviaLayout (4.7.3)
+  - Tabman (3.0.1):
+    - Pageboy (~> 4.0.2)
   - YPImagePicker (5.2.1):
     - PryntTrimmerView (= 4.0.2)
     - SteviaLayout (= 4.7.3)
@@ -106,6 +109,7 @@ DEPENDENCIES:
   - naveridlogin-sdk-ios
   - SafeAreaBrush
   - SnapKit
+  - Tabman
   - YPImagePicker
 
 SPEC REPOS:
@@ -132,11 +136,13 @@ SPEC REPOS:
     - Kingfisher
     - nanopb
     - naveridlogin-sdk-ios
+    - Pageboy
     - PromisesObjC
     - PryntTrimmerView
     - SafeAreaBrush
     - SnapKit
     - SteviaLayout
+    - Tabman
     - YPImagePicker
 
 SPEC CHECKSUMS:
@@ -162,13 +168,15 @@ SPEC CHECKSUMS:
   Kingfisher: cd762a593a61b2fbecf7645c00f9a801a3ebfc9c
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   naveridlogin-sdk-ios: 4351fe7162cd6b8b6dbb37bd7cc205304fa1d889
+  Pageboy: 34ff11e8d1041b81769d5bcde9b19a0cb7218bd9
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   PryntTrimmerView: 6a43cc90df5d99addeabd33d4ba09b1365322130
   SafeAreaBrush: 282315ce500e436c04b2c26b46e8ac0ad4288bbd
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
+  Tabman: a5880789298f81d3f2cdd6510b54ae637cfd8e09
   YPImagePicker: f36043210c10b0783034eb1947d6e06e31c461e4
 
-PODFILE CHECKSUM: 837df0146010b35458623b639532d631743e9801
+PODFILE CHECKSUM: a02f0adcd33e1c5dd6ca12cf04108f46bfda46d4
 
 COCOAPODS: 1.11.3
