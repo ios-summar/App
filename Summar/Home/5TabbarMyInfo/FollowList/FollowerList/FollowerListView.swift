@@ -155,8 +155,10 @@ extension FollowerListView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FollowListTableViewCell", for: indexPath) as! FollowListTableViewCell
-        guard let follower = followerList?.content?[indexPath.row] else {return UITableViewCell()}
-        cell.setUpCell(follower, "follower")
+        guard let follower = followerList?.content?[indexPath.row], let userSeq = userSeq else {return UITableViewCell()}
+        let myUserSeq = getMyUserSeq() == userSeq
+        
+        cell.setUpCell(follower, "follower", myUserSeq)
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

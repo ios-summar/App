@@ -9,7 +9,10 @@ import UIKit
 
 final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
     weak var delegate: PushDelegate?
+    
+    let viewModel = MyInfoViewModel()
     var userSeq: Int?
+    var setUpTuple: (String, Bool) = ("", true)
     
     let profileImg : UIImageView = {
         let view = UIImageView()
@@ -28,6 +31,15 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
         label.sizeToFit()
         return label
     }()
+    lazy var followBtn: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(followBtnAction(_:)), for: .touchUpInside)
+        button.titleLabel?.font = FontManager.getFont(Font.Bold.rawValue).smallFont
+        button.setTitleColor(UIColor.magnifyingGlassColor, for: .normal)
+        button.tag = 1
+        button.setTitle("팔로우", for: .normal)
+        return button
+    }()
     let major : UILabel = {
         let label = UILabel()
         label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
@@ -43,20 +55,47 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
         button.layer.cornerRadius = 4
         button.titleLabel?.font = FontManager.getFont(Font.SemiBold.rawValue).smallFont
         button.setTitleColor(UIColor.init(r: 70, g: 76, b: 83), for: .normal)
+        button.tag = 2
         return button
     }()
     
-    func setUpCell(_ follow: SearchUserInfo, _ handler: String){
+    func setUpCell(_ follow: SearchUserInfo, _ handler: String, _ myFollowList: Bool){
+        smLog("\(myFollowList)")
+        setUpTuple = (handler, myFollowList)
+        
         self.userSeq = follow.userSeq
         
         setProfileImage(profileImg, follow.profileImageUrl)
         nickName.text = follow.userNickname
         major.text = follow.major2
         
-        if handler == "follower" {
+        switch setUpTuple {
+        case ("follower", true): // 팔로워, 내 팔로우 리스트
+            guard let followUp = follow.followUp else {return}
+            
+            print("#팔로워, 내피드 (follower, true)")
             btn.setTitle("삭제", for: .normal)
-        }else if handler == "following" {
+            
+            if !followUp {
+                contentView.addSubview(followBtn)
+                followBtn.snp.makeConstraints {
+                    $0.centerY.equalTo(nickName.snp.centerY)
+                    $0.left.equalTo(nickName.snp.right).offset(6)
+                    $0.height.equalTo(31)
+                    $0.width.equalTo(40)
+                }
+            }
+            
+        case ("follower", false): // 팔로워, 내 팔로우 리스트 아님
+            print("#팔로워, 내피드 아님 (follower, false)")
+//            btn.setTitle("팔로우 취소", for: .normal)
+        case ("following", true): // 팔로잉, 내 팔로우 리스트
+            print("#팔로잉, 내피드 (following, true)")
             btn.setTitle("팔로우 취소", for: .normal)
+        case ("following", false): // 팔로잉, 내 팔로우 리스트 아님
+            print("#팔로잉, 내피드 아님 (following, false)")
+        default:
+            print("default")
         }
     }
     
@@ -124,7 +163,56 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
     }
     
     @objc func followBtnAction(_ sender: Any) {
-        smLog("")
+        guard let tag = (sender as AnyObject).tag as? Int else {return}
+        guard let opponentUserSeq = self.userSeq else {return}
+        
+        switch tag {
+        case 1:
+            smLog("팔로우, 추가(내 userSeq\(getMyUserSeq()) -> 상대 userSeq\(opponentUserSeq)")
+            
+            let param : Dictionary<String, Int> = ["followedUserSeq": opponentUserSeq, "followingUserSeq": getMyUserSeq()]
+            viewModel.followAction(param, "POST")
+            viewModel.didFinishFollowFetch = {
+                self.followBtn.removeFromSuperview()
+            }
+        case 2:
+            print("삭제, 팔로우 취소, 팔로우")
+            let text = btn.titleLabel?.text
+            
+            switch setUpTuple {
+            case ("follower", true): // 팔로워, 내피드
+                smLog("팔로워, 내피드")
+                if text == "삭제" {
+                    smLog("삭제(상대 userSeq -> 내 userSeq)")
+                }
+            case ("following", true),("follower", false), ("following", false): // (팔로잉, 내피드), (팔로워, 내피드 아님), (팔로잉, 내피드 아님)
+                if text == "팔로우 취소" {
+                    smLog("언팔, 삭제(내 userSeq \(getMyUserSeq()) -> 상대 userSeq\(opponentUserSeq)")
+                    
+                    let param : Dictionary<String, Int> = ["followedUserSeq": opponentUserSeq, "followingUserSeq": getMyUserSeq()]
+                    viewModel.followAction(param, "DELETE")
+                    viewModel.didFinishFollowFetch = {
+                        self.btn.setTitle("팔로우", for: .normal)
+                        self.btn.backgroundColor = UIColor.magnifyingGlassColor
+                        self.btn.setTitleColor(UIColor.white, for: .normal)
+                    }
+                }else if text == "팔로우" {
+                    smLog("다시 팔로우, 추가(내 userSeq\(getMyUserSeq()) -> 상대 userSeq\(opponentUserSeq)")
+                    
+                    let param : Dictionary<String, Int> = ["followedUserSeq": opponentUserSeq, "followingUserSeq": getMyUserSeq()]
+                    viewModel.followAction(param, "POST")
+                    viewModel.didFinishFollowFetch = {
+                        self.btn.setTitle("팔로우 취소", for: .normal)
+                        self.btn.backgroundColor = UIColor.Gray02
+                        self.btn.setTitleColor(UIColor.init(r: 70, g: 76, b: 83), for: .normal)
+                    }
+                }
+            default:
+                print("default1")
+            }
+        default:
+            print("default2")
+        }
     }
     
     required init?(coder: NSCoder) {
