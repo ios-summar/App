@@ -16,6 +16,13 @@ final class WriteFeedController : UIViewController, ImagePickerDelegate, PopDele
         closeAction()
     }
     
+    var feedInfo: FeedInfo? {
+        didSet {
+            smLog("\(feedInfo)")
+            wfView.feedInfo = self.feedInfo
+        }
+    }
+    
     let helper = Helper()
     let wfView = WriteFeedView()
     

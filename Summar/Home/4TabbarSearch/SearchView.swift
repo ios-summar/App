@@ -100,8 +100,8 @@ final class SearchView: UIView{
         }
         
         view.snp.makeConstraints{(make) in
-            make.top.equalTo(0)
-            make.left.bottom.right.equalTo(0)
+//            make.left.bottom.right.top.equalTo(0)
+            make.edges.equalToSuperview()
         }
         
         searchImageView.snp.makeConstraints{(make) in

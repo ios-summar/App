@@ -16,6 +16,22 @@ final class ProfileViewController : UIViewController, PushDelegate, ViewAttribut
             VC.userSeq = any as? Int
             
             self.navigationController?.pushViewController(VC, animated: true)
+        }else if VC.isKind(of: FeedDetailViewController.self) {
+            let VC = FeedDetailViewController()
+            VC.feedInfo = any as? FeedInfo
+            
+            self.navigationController?.pushViewController(VC, animated: true)
+        }else if VC.isKind(of: WriteFeedController.self){
+            guard let feedInfo = any as? FeedInfo, let feedSeq = feedInfo.feedSeq else {return}
+            
+            helper.showAlertAction(vc: self, message: "신고하기") { handler in
+                switch handler {
+                case "신고하기":
+                    print("신고하기")
+                default:
+                    break
+                }
+            }
         }
     }
     
@@ -41,6 +57,7 @@ final class ProfileViewController : UIViewController, PushDelegate, ViewAttribut
     override func viewWillAppear(_ animated: Bool) {
         guard let userSeq = userSeq else {return}
         infoView.requestMyInfo(userSeq)
+        infoView.getPortfolio(userSeq)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

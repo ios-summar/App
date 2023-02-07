@@ -69,6 +69,7 @@
 		5ECCBBDD2990892700470516 /* FollowerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECCBBDC2990892700470516 /* FollowerListView.swift */; };
 		5ECCBBDF29908E9B00470516 /* FollowListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECCBBDE29908E9B00470516 /* FollowListViewModel.swift */; };
 		5ECCBBE2299097EF00470516 /* FollowListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECCBBE1299097EF00470516 /* FollowListTableViewCell.swift */; };
+		5ECCBBEB2991E3D100470516 /* PortFolioTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECCBBEA2991E3D100470516 /* PortFolioTableViewCell.swift */; };
 		73C828866009690D7CA5CBE3 /* Pods_Summar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F73AE718C4CAF4B58983F7C /* Pods_Summar.framework */; };
 		A210F66F295B163400A517C5 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A210F66E295B163400A517C5 /* SearchView.swift */; };
 		A210F6722960247600A517C5 /* FullScreenImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A210F6712960247600A517C5 /* FullScreenImageViewController.swift */; };
@@ -207,6 +208,7 @@
 		5ECCBBDC2990892700470516 /* FollowerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowerListView.swift; sourceTree = "<group>"; };
 		5ECCBBDE29908E9B00470516 /* FollowListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowListViewModel.swift; sourceTree = "<group>"; };
 		5ECCBBE1299097EF00470516 /* FollowListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowListTableViewCell.swift; sourceTree = "<group>"; };
+		5ECCBBEA2991E3D100470516 /* PortFolioTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortFolioTableViewCell.swift; sourceTree = "<group>"; };
 		5F0B38E27800157DCDA781A6 /* Pods-Summar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Summar.debug.xcconfig"; path = "Target Support Files/Pods-Summar/Pods-Summar.debug.xcconfig"; sourceTree = "<group>"; };
 		A210F66E295B163400A517C5 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		A210F6712960247600A517C5 /* FullScreenImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewController.swift; sourceTree = "<group>"; };
@@ -462,6 +464,14 @@
 			path = TableViewCell;
 			sourceTree = "<group>";
 		};
+		5ECCBBE92991E39E00470516 /* TableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				5ECCBBEA2991E3D100470516 /* PortFolioTableViewCell.swift */,
+			);
+			path = TableViewCell;
+			sourceTree = "<group>";
+		};
 		A210F6702960246100A517C5 /* FullScreenImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -683,6 +693,7 @@
 		A2ECB36329448C9F0005D88C /* 5TabbarMyInfo */ = {
 			isa = PBXGroup;
 			children = (
+				5ECCBBE92991E39E00470516 /* TableViewCell */,
 				5ECCBBD9299081A100470516 /* FollowList */,
 				048EAA80296548F2004E4A08 /* Preferences */,
 				A2ECB36C29448EC10005D88C /* MyInfoViewController.swift */,
@@ -916,6 +927,7 @@
 				A2D27B7429727962002CF652 /* PushSettingView.swift in Sources */,
 				04239D7029553A74002ED10E /* Token.swift in Sources */,
 				A2CAEDE329050A6C0053D6C9 /* SignUp1View.swift in Sources */,
+				5ECCBBEB2991E3D100470516 /* PortFolioTableViewCell.swift in Sources */,
 				5E816E05297A4526002BB4D3 /* FontManager.swift in Sources */,
 				04040E972962734C00D3333C /* LaunchScreenController.swift in Sources */,
 				A2ECB36B29448EAF0005D88C /* SearchViewController.swift in Sources */,

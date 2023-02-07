@@ -17,11 +17,19 @@ protocol PushDelegate : AnyObject {
     func pushScreen(_ VC: UIViewController, _ any: Any?)
 }
 
-final class MyInfoView: UIView, ViewAttributes{
+final class MyInfoView: UIView, ViewAttributes, PushDelegate{
+    func pushScreen(_ VC: UIViewController, _ any: Any?) {
+        if VC.isKind(of: FeedDetailViewController.self){
+            let VC = FeedDetailViewController()
+            self.pushDelegate?.pushScreen(FeedDetailViewController(), any)
+        }else if VC.isKind(of: WriteFeedController.self){
+            let VC = WriteFeedController()
+            self.pushDelegate?.pushScreen(VC, any)
+        }
+    }
+    
     let helper = Helper()
     let request = ServerRequest.shared
-    private let tableCellReuseIdentifier = "tableCell"
-    private let bannerCellReuseIdentifier = "bannerCell"
     
     weak var delegate : MyInfoViewDelegate?
     weak var pushDelegate : PushDelegate?
@@ -47,34 +55,34 @@ final class MyInfoView: UIView, ViewAttributes{
             portfolioTableView.delegate = self
             portfolioTableView.dataSource = self
             portfolioTableView.reloadData()
-//            guard let feed = feedSelectResponse else {return}
-//            if feed.totalRecordCount != 0 {
-//                portfolioTableView.alpha = 1.0
-//                PortFolioNot.alpha = 0.0
-//
-//                portfolioTableView.delegate = self
-//                portfolioTableView.dataSource = self
-//                portfolioTableView.reloadData()
-//
-//                scrollView.addSubview(portfolioTableView)
-//                portfolioTableView.snp.makeConstraints {
-//                    $0.top.equalTo(line2.snp.bottom)
-//                    $0.left.right.equalTo(self.safeAreaLayoutGuide)
-////                    $0.height.equalTo(2500)
-//                }
-//            }else {
-//                portfolioTableView.alpha = 0.0
-//                PortFolioNot.alpha = 1.0
-//                scrollView.addSubview(PortFolioNot)
-//
-//                PortFolioNot.snp.makeConstraints {
-//                    $0.top.equalTo(line2.snp.bottom).offset(80)
-//                    $0.centerX.equalToSuperview()
-//                    $0.width.equalTo(162)
-//                    $0.height.equalTo(194)
-//                }
-//            }
-//            scrollView.updateContentSize()
+            //            guard let feed = feedSelectResponse else {return}
+            //            if feed.totalRecordCount != 0 {
+            //                portfolioTableView.alpha = 1.0
+            //                PortFolioNot.alpha = 0.0
+            //
+            //                portfolioTableView.delegate = self
+            //                portfolioTableView.dataSource = self
+            //                portfolioTableView.reloadData()
+            //
+            //                scrollView.addSubview(portfolioTableView)
+            //                portfolioTableView.snp.makeConstraints {
+            //                    $0.top.equalTo(line2.snp.bottom)
+            //                    $0.left.right.equalTo(self.safeAreaLayoutGuide)
+            ////                    $0.height.equalTo(2500)
+            //                }
+            //            }else {
+            //                portfolioTableView.alpha = 0.0
+            //                PortFolioNot.alpha = 1.0
+            //                scrollView.addSubview(PortFolioNot)
+            //
+            //                PortFolioNot.snp.makeConstraints {
+            //                    $0.top.equalTo(line2.snp.bottom).offset(80)
+            //                    $0.centerX.equalToSuperview()
+            //                    $0.width.equalTo(162)
+            //                    $0.height.equalTo(194)
+            //                }
+            //            }
+            //            scrollView.updateContentSize()
         }
     }
     
@@ -233,34 +241,37 @@ final class MyInfoView: UIView, ViewAttributes{
     
     lazy var portfolioTableView : UITableView = {
         let view = UITableView()
+        view.alpha = 0.0
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
         view.showsVerticalScrollIndicator = false
         view.isScrollEnabled = false
-
+        
         // 테이블뷰 왼쪽 마진 없애기
         view.separatorStyle = .none
         view.estimatedRowHeight = 130
         view.rowHeight = UITableView.automaticDimension
         
-//        view.layer.borderWidth = 1
+        //        view.layer.borderWidth = 1
         view.backgroundColor = .blue
-        view.register(HomeTableViewCell.self, forCellReuseIdentifier: tableCellReuseIdentifier)
+        view.register(PortFolioTableViewCell.self, forCellReuseIdentifier: "PortFolioTableViewCell")
         return view
     }()
-    lazy var PortFolioNot : UIImageView = {
+    lazy var notExist : UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "PortFolioNot")
+        imageView.alpha = 0.0
+        imageView.image = UIImage(named: "NoCount")
         imageView.tintColor = UIColor.imageViewColor
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
-    lazy var TemporaryNot : UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "TemporaryNot")
-        imageView.tintColor = UIColor.imageViewColor
-        return imageView
+    lazy var notExistLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.font = FontManager.getFont(Font.SemiBold.rawValue).mediumFont
+        label.sizeToFit()
+        return label
     }()
-        
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -386,7 +397,7 @@ final class MyInfoView: UIView, ViewAttributes{
         }
         
     }
-
+    
     // MARK: - 내 피드인지, 다른 사용자의 피드인지 확인
     /// 내 피드인지, 다른 사용자의 피드인지 확인
     func infoCheck(_ userInfo : UserInfo?) {
@@ -559,7 +570,7 @@ final class MyInfoView: UIView, ViewAttributes{
         if let value = UserDefaults.standard.dictionary(forKey: "UserInfo") {
             let socialType = value["socialType"] as? String
             print("socialType", socialType)
-
+            
             switch socialType {
             case "KAKAO":
                 socialBadge.image = UIImage(named: "kakao")
@@ -572,7 +583,7 @@ final class MyInfoView: UIView, ViewAttributes{
             default:
                 print("default")
             }
-
+            
             viewModel.getUserInfo(userSeq)
             viewModel.didFinishFetch = {
                 self.userInfo = self.viewModel.userInfo
@@ -583,20 +594,20 @@ final class MyInfoView: UIView, ViewAttributes{
                 self.major.text = self.viewModel.major2String
                 self.followerCountLabel.text = self.viewModel.followerString
                 self.followingCountLabel.text = self.viewModel.followingString
-
+                
                 if self.viewModel.introduceString == "작성된 자기소개가 없습니다." {
                     self.introduceLabel.textColor = .systemBlue
                 }else {
                     self.introduceLabel.textColor = .black
                 }
-
+                
                 self.introduceLabel.text = self.viewModel.introduceString
                 self.helper.lineSpacing(self.introduceLabel, 10)
             }
         }else {
             print(#file , "\(#function) else")
         }
-
+        
     }
     
     func getPortfolio(_ userSeq: Int){
@@ -608,30 +619,43 @@ final class MyInfoView: UIView, ViewAttributes{
     }
     
     func setPortfolio(_ feed: FeedSelectResponse?) {
-            guard let feed = feed else {return}
-            if feed.totalRecordCount != 0 {
-                portfolioTableView.alpha = 1.0
-                PortFolioNot.alpha = 0.0
-
-                scrollView.addSubview(portfolioTableView)
-                portfolioTableView.snp.makeConstraints {
-                    $0.top.equalTo(line2.snp.bottom)
-                    $0.left.right.equalTo(self.safeAreaLayoutGuide)
-//                    $0.height.equalTo(2500)
-                }
-            }else {
-                portfolioTableView.alpha = 0.0
-                PortFolioNot.alpha = 1.0
-                scrollView.addSubview(PortFolioNot)
-
-                PortFolioNot.snp.makeConstraints {
-                    $0.top.equalTo(line2.snp.bottom).offset(80)
-                    $0.centerX.equalToSuperview()
-                    $0.width.equalTo(162)
-                    $0.height.equalTo(194)
-                }
+        smLog("")
+        guard let feed = feed else {return}
+        if feed.totalRecordCount != 0 {
+            smLog("")
+            portfolioTableView.alpha = 1.0
+            notExist.alpha = 0.0
+            
+            scrollView.addSubview(portfolioTableView)
+            portfolioTableView.snp.makeConstraints {
+                $0.top.equalTo(line2.snp.bottom)
+                $0.left.right.equalTo(self.safeAreaLayoutGuide)
+                $0.height.equalTo(2500)
             }
-            scrollView.updateContentSize()
+        }else {
+            smLog("")
+            portfolioTableView.alpha = 0.0
+            notExist.alpha = 1.0
+            
+            scrollView.addSubview(notExist)
+            scrollView.addSubview(notExistLabel)
+            
+            notExistLabel.text = "작성한 포트폴리오가 없습니다."
+            
+            notExist.snp.makeConstraints {
+                
+                $0.top.equalTo(line2.snp.bottom).offset(80)
+                $0.centerX.equalToSuperview()
+                $0.width.equalTo(162)
+                $0.height.equalTo(194)
+            }
+            notExistLabel.snp.makeConstraints {
+                
+                $0.top.equalTo(notExist.snp.bottom).offset(2)
+                $0.centerX.equalToSuperview()
+            }
+        }
+        scrollView.updateContentSize()
     }
     
     func setProfileImage(_ imageView: UIImageView,_ urlString: String?) {
@@ -646,10 +670,10 @@ final class MyInfoView: UIView, ViewAttributes{
             DispatchQueue.main.async {
                 imageView.kf.indicatorType = .activity
                 imageView.kf.setImage(
-                  with: url,
-                  placeholder: nil,
-                  options: [.transition(.fade(1.2))],
-                  completionHandler: nil
+                    with: url,
+                    placeholder: nil,
+                    options: [.transition(.fade(1.2))],
+                    completionHandler: nil
                 )
             }
         }
@@ -671,20 +695,27 @@ final class MyInfoView: UIView, ViewAttributes{
 }
 
 extension MyInfoView: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let feed = feedSelectResponse?.totalRecordCount else {return 0}
         return feed
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: tableCellReuseIdentifier, for: indexPath) as! HomeTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PortFolioTableViewCell", for: indexPath) as! PortFolioTableViewCell
         guard let feed = feedSelectResponse?.content?[indexPath.row] else {return UITableViewCell()}
+        cell.delegate = self
         cell.setUpCell(feed)
+        
         scrollView.updateContentSize()
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        smLog("")
+        guard let feed = feedSelectResponse?.content?[indexPath.row] else {return}
+        self.pushDelegate?.pushScreen(FeedDetailViewController(), feed)
     }
 }

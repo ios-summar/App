@@ -91,6 +91,14 @@ final class FeedDetailViewController: UIViewController, PushDelegate {
                     switch handler {
                     case "수정하기":
                         print("게시글 수정 로직")
+                        let VC = WriteFeedController()
+                        VC.feedInfo = self.feedInfo
+                        
+                        let wrController = UINavigationController(rootViewController: VC)
+                        wrController.navigationBar.isTranslucent = false
+                        wrController.navigationBar.backgroundColor = .white
+                        wrController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+                        self.present(wrController, animated: true, completion: nil)
                     case "삭제하기":
                         self.helper.showAlertActionYN(vc: self, title: "알림", message: "정말로 해당 게시글을 삭제하시겠습니까?") { handler in
                             guard let handler = handler else {

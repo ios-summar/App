@@ -12,7 +12,9 @@ import Kingfisher
 import JJFloatingActionButton
 
 final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate, PopDelegate{
+    let helper = Helper()
     let myInfoView = MyInfoView()
+    let feedDetailViewModel = FeedDetailViewModel()
     var window = UIWindow(frame: UIScreen.main.bounds)
     
     let actionButton = JJFloatingActionButton()
@@ -35,6 +37,44 @@ final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDel
             VC.userSeq = any as? Int
             
             self.navigationController?.pushViewController(VC, animated: true)
+        }else if VC.isKind(of: FeedDetailViewController.self) {
+            let VC = FeedDetailViewController()
+            VC.feedInfo = any as? FeedInfo
+            
+            self.navigationController?.pushViewController(VC, animated: true)
+        }else if VC.isKind(of: WriteFeedController.self){
+            guard let feedInfo = any as? FeedInfo, let feedSeq = feedInfo.feedSeq else {return}
+            
+            helper.showAlertAction(vc: self, message1: "수정하기", message2: "삭제하기") { handler in
+                switch handler {
+                case "수정하기":
+                    let VC = WriteFeedController()
+                    VC.feedInfo = feedInfo
+                    
+                    let wrController = UINavigationController(rootViewController: VC)
+                    wrController.navigationBar.isTranslucent = false
+                    wrController.navigationBar.backgroundColor = .white
+                    wrController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+                    self.present(wrController, animated: true, completion: nil)
+                case "삭제하기":
+                    self.helper.showAlertActionYN(vc: self, title: "알림", message: "정말로 해당 게시글을 삭제하시겠습니까?") { handler in
+                        guard let handler = handler else {
+                            return
+                        }
+                        // 게시글 삭제 로직
+                        print("게시글 삭제 로직 feedSeq => \(feedSeq)")
+                        self.feedDetailViewModel.deleteFeed(feedSeq)
+                        self.feedDetailViewModel.didFinishDelteFetch = {
+                            guard let value = UserDefaults.standard.dictionary(forKey: "UserInfo") else {return}
+                            let userSeq: Int = value["userSeq"] as! Int
+                            self.myInfoView.requestMyInfo(userSeq)
+                            self.myInfoView.getPortfolio(userSeq)
+                        }
+                    }
+                default:
+                    break
+                }
+            }
         }
     }
     

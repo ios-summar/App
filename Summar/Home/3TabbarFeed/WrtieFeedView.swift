@@ -23,6 +23,54 @@ final class WriteFeedView : UIView, UITextViewDelegate {
     weak var delegate : ImagePickerDelegate?
     weak var popDelegate : PopDelegate?
     
+    // 피드 수정 Case
+    var feedInfo: FeedInfo? {
+        didSet {
+            guard let contents = feedInfo?.contents, let feedImages = feedInfo?.feedImages else {return}
+            smLog("\(feedInfo)")
+
+            DispatchQueue.global().sync {
+                for x in 0 ..< feedImages.count {
+                    guard let imageURL = feedImages[x].imageUrl, let img = self.urltoImage(imageURL) else {return}
+                    
+                    self.resultArr.append(img)
+                }
+            }
+            collectionViewScroll.reloadData()
+            
+            view2TextView.text = contents
+            view2TextView.textColor = .black
+            
+            temporarySaveBtn.removeFromSuperview()
+            registerBtn.setTitle("수정", for: .normal)
+            registerBtn.snp.remakeConstraints {
+                $0.left.equalTo(20)
+                $0.right.equalTo(-20)
+                $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-20)
+                $0.height.equalTo(60)
+            }
+            
+            
+        }
+    }
+    
+    func urltoImage(_ str: String) -> UIImage? {
+        if str.isEmpty || str.count == 0 {
+            return nil
+        }
+        
+        do {
+            let url = URL(string: str)
+            if url != nil {
+                let data = try Data(contentsOf: url!)
+                return UIImage(data: data)
+            }
+        }catch (let error){
+            print("\(error)")
+        }
+        return nil
+    }
+    
     var resultArr = [UIImage]()
     
     private let cellReuseIdentifier = "FeedCollectionCell"
@@ -133,12 +181,6 @@ final class WriteFeedView : UIView, UITextViewDelegate {
         UIImage(systemName: "square.and.arrow.up.trianglebadge.exclamationmark"),
         UIImage(systemName: "square.and.arrow.down")
     ]
-    
-//    override func draw(_ rect: CGRect) {
-//        resultArr = []
-//        collectionViewScroll.reloadData()
-//        smLog("")
-//    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -282,11 +324,21 @@ final class WriteFeedView : UIView, UITextViewDelegate {
         
         LoadingIndicator.showLoading()
         
-        viewModel.insertFeed(requestBody, resultArr)
-        viewModel.didFinishFetch = {
-            self.popDelegate?.popScreen()
+        guard let text = registerBtn.titleLabel?.text else {return}
+        switch text {
+        case "등록", "임시저장":
+            viewModel.insertFeed(requestBody, resultArr)
+            viewModel.didFinishFetch = {
+                self.popDelegate?.popScreen()
+                LoadingIndicator.hideLoading()
+            }
+        case "수정":
+            print("수정")
+            LoadingIndicator.hideLoading()
+        default:
             LoadingIndicator.hideLoading()
         }
+        
     }
     
     required init?(coder: NSCoder) {
