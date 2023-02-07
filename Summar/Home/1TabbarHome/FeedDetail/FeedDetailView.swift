@@ -139,7 +139,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
         label.sizeToFit()
         return label
     }()
-    let profileImg : UIImageView = {
+    lazy var profileImg : UIImageView = {
         let view = UIImageView()
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.followShadowColor.cgColor
@@ -148,6 +148,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
         view.tintColor = UIColor.grayColor205
         view.contentMode = .scaleAspectFit
         view.clipsToBounds = true
+        view.isUserInteractionEnabled = true
         
         let recognizer = UITapGestureRecognizer(
             target: self,
@@ -157,11 +158,12 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
         
         return view
     }()
-    let nickName : UILabel = {
+    lazy var nickName : UILabel = {
         let label = UILabel()
         label.font = FontManager.getFont(Font.Bold.rawValue).medium15Font
         label.textColor = .black
         label.sizeToFit()
+        label.isUserInteractionEnabled = true
         
         let recognizer = UITapGestureRecognizer(
             target: self,
@@ -171,11 +173,12 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
         
         return label
     }()
-    let major : UILabel = {
+    lazy var major : UILabel = {
         let label = UILabel()
         label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
         label.sizeToFit()
+        label.isUserInteractionEnabled = true
         
         let recognizer = UITapGestureRecognizer(
             target: self,
