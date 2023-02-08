@@ -13,6 +13,8 @@ protocol HomeViewDelegate : AnyObject {
 }
 
 final class HomeView: UIView, HomeViewDelegate{
+    weak var delegate: ScrollBarHidden?
+    weak var homeViewDelegate : HomeViewDelegate?
     func pushScreen(_ VC: UIViewController, _ any: Any) {
         if VC.isKind(of: FeedDetailViewController.self) {
             let feedInfo = any as? FeedInfo
@@ -27,7 +29,6 @@ final class HomeView: UIView, HomeViewDelegate{
     private let tableCellReuseIdentifier = "tableCell"
     private let bannerCellReuseIdentifier = "bannerCell"
     
-    weak var homeViewDelegate : HomeViewDelegate?
     
     var displayCount : Int = 0
     var pageIndex : Int = 1
@@ -167,6 +168,16 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let model = model?.content {
             homeViewDelegate?.pushScreen(FeedDetailViewController(), model[indexPath.row - 1])
+        }
+    }
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        if(velocity.y>0) {
+            self.delegate?.scrollBarInterAction(true)
+        } else {
+            self.delegate?.scrollBarInterAction(false)
+            
         }
     }
     

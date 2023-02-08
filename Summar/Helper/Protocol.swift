@@ -11,3 +11,7 @@ protocol ViewAttributes {
     func setUI()
     func setAttributes()
 }
+
+protocol ScrollBarHidden: AnyObject {
+    func scrollBarInterAction(_ handler : Bool)
+}
