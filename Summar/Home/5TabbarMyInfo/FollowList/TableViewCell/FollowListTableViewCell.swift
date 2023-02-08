@@ -184,6 +184,11 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
                 smLog("팔로워, 내피드")
                 if text == "삭제" {
                     smLog("삭제(상대 userSeq -> 내 userSeq)")
+                    
+                    let param : Dictionary<String, Int> = ["followedUserSeq": getMyUserSeq(), "followingUserSeq": opponentUserSeq]
+                    viewModel.followAction(param, "DELETE")
+                    viewModel.didFinishFollowFetch = {
+                    }
                 }
             case ("following", true),("follower", false), ("following", false): // (팔로잉, 내피드), (팔로워, 내피드 아님), (팔로잉, 내피드 아님)
                 if text == "팔로우 취소" {

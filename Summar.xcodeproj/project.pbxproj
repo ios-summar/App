@@ -61,6 +61,8 @@
 		5EB4F5F1296E94FF0061D64D /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB4F5F0296E94FF0061D64D /* PaddingLabel.swift */; };
 		5EB4F5F3296EAFFF0061D64D /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB4F5F2296EAFFF0061D64D /* LogHelper.swift */; };
 		5EB4F5F7296F898F0061D64D /* PreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB4F5F6296F898F0061D64D /* PreferencesViewModel.swift */; };
+		5EB809EA299371A3003FA74C /* ClippingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB809E9299371A3003FA74C /* ClippingView.swift */; };
+		5EB809EC29937382003FA74C /* ClippingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB809EB29937382003FA74C /* ClippingViewModel.swift */; };
 		5EC01181298B81B5004FFA29 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC01180298B81B5004FFA29 /* DateHelper.swift */; };
 		5EC01189298B9B20004FFA29 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC01188298B9B20004FFA29 /* NotificationService.swift */; };
 		5EC0118D298B9B20004FFA29 /* NotificationService.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5EC01186298B9B20004FFA29 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -200,6 +202,8 @@
 		5EB4F5F0296E94FF0061D64D /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		5EB4F5F2296EAFFF0061D64D /* LogHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogHelper.swift; sourceTree = "<group>"; };
 		5EB4F5F6296F898F0061D64D /* PreferencesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
+		5EB809E9299371A3003FA74C /* ClippingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClippingView.swift; sourceTree = "<group>"; };
+		5EB809EB29937382003FA74C /* ClippingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClippingViewModel.swift; sourceTree = "<group>"; };
 		5EC01180298B81B5004FFA29 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		5EC01186298B9B20004FFA29 /* NotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EC01188298B9B20004FFA29 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -662,6 +666,8 @@
 			isa = PBXGroup;
 			children = (
 				A2ECB36629448E870005D88C /* ClippingViewController.swift */,
+				5EB809E9299371A3003FA74C /* ClippingView.swift */,
+				5EB809EB29937382003FA74C /* ClippingViewModel.swift */,
 			);
 			path = 2TabbarClipping;
 			sourceTree = "<group>";
@@ -914,6 +920,7 @@
 				040D79FC2918FB2A0018B6A0 /* AppleLoginManager.swift in Sources */,
 				A2ECB36729448E870005D88C /* ClippingViewController.swift in Sources */,
 				A2D27B722971C963002CF652 /* PushSettingViewController.swift in Sources */,
+				5EB809EA299371A3003FA74C /* ClippingView.swift in Sources */,
 				A210F6722960247600A517C5 /* FullScreenImageViewController.swift in Sources */,
 				A257175C2986660B009163D5 /* Protocol.swift in Sources */,
 				A2378EEB29781DFF0025A676 /* WriteFeedViewModel.swift in Sources */,
@@ -961,6 +968,7 @@
 				A2527D4A297BDD770031350B /* ProfileViewController.swift in Sources */,
 				5EB4F5F1296E94FF0061D64D /* PaddingLabel.swift in Sources */,
 				048EAA842965493D004E4A08 /* PreferencesView.swift in Sources */,
+				5EB809EC29937382003FA74C /* ClippingViewModel.swift in Sources */,
 				04D4B0E1295D24F800AD5043 /* EmptyCollectionViewCell.swift in Sources */,
 				A257175A2986608F009163D5 /* FeedDetailViewModel.swift in Sources */,
 				A2D27B7B2972930B002CF652 /* PushInfo.swift in Sources */,

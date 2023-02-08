@@ -1,61 +1,60 @@
 //
-//  HomeView.swift
+//  ClippingView.swift
 //  Summar
 //
-//  Created by mac on 2022/12/14.
-// https://hryang.tistory.com/7 => scrollview programmatically
+//  Created by plsystems on 2023/02/08.
+//
 
 import Foundation
 import UIKit
 
-protocol HomeViewDelegate : AnyObject {
-    func pushScreen(_ VC: UIViewController,_ any: Any)
-}
-
-final class HomeView: UIView, HomeViewDelegate{
+final class ClippingView: UIView, ViewAttributes, HomeViewDelegate {
+    weak var delegate: HomeViewDelegate?
     func pushScreen(_ VC: UIViewController, _ any: Any) {
         if VC.isKind(of: FeedDetailViewController.self) {
             let feedInfo = any as? FeedInfo
-            self.homeViewDelegate?.pushScreen(VC, feedInfo)
+            self.delegate?.pushScreen(VC, feedInfo)
         }else if VC.isKind(of: ProfileViewController.self) {
             let userSeq = any as? Int
-            self.homeViewDelegate?.pushScreen(VC, userSeq)
+            self.delegate?.pushScreen(VC, userSeq)
         }
     }
-    
-    let helper = Helper.shared
-    private let tableCellReuseIdentifier = "tableCell"
-    private let bannerCellReuseIdentifier = "bannerCell"
-    
-    weak var homeViewDelegate : HomeViewDelegate?
     
     var displayCount : Int = 0
     var pageIndex : Int = 1
     
     let viewWidth : CGFloat = {
+        
         let width = UIScreen.main.bounds.width
         return width - 40
     }()
     
     var model : FeedSelectResponse? {
         didSet {
+            guard let count = model?.content?.count else {return}
             smLog("\n \(self.model?.content?.count) \n")
-            
-            tableView.delegate = self
-            tableView.dataSource = self
-             
-            tableView.reloadData()
+
+            if count > 0 {
+                tableView.alpha = 1.0
+                view.alpha = 0.0
+                
+                tableView.delegate = self
+                tableView.dataSource = self
+
+                tableView.reloadData()
+            }else {
+                tableView.alpha = 0.0
+                view.alpha = 1.0
+            }
         }
     }
-    
-    
-    lazy var tableView : UITableView = {
+    let tableView : UITableView = {
         let view = UITableView()
         view.register(HomeTableViewCell.self, forCellReuseIdentifier: "HomeTableViewCell")
-        view.register(BannerTableViewCell.self, forCellReuseIdentifier: "BannerTableViewCell")
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
         view.showsVerticalScrollIndicator = false
+        view.backgroundColor = UIColor.Gray01
         
         // 테이블뷰 왼쪽 마진 없애기
         view.separatorStyle = .none
@@ -73,53 +72,99 @@ final class HomeView: UIView, HomeViewDelegate{
         view.refreshControl = refreshControl
         return view
     }()
-
+    lazy var view: UIView = {
+        let view = UIView()
+        view.alpha = 0.0
+        return view
+    }()
+    lazy var noImage : UIImageView = {
+        
+        let imageView = UIImageView()
+//        imageView.alpha = 0.0
+        imageView.image = UIImage(named: "NoCount")
+        return imageView
+    }()
+    lazy var noLabel : UILabel = {
+        
+        let UILabel = UILabel()
+//        UILabel.alpha = 0.0
+        UILabel.textColor = .black
+        UILabel.font = FontManager.getFont(Font.SemiBold.rawValue).mediumFont
+        UILabel.sizeToFit()
+        UILabel.text = "저장된 스크랩이 없습니다.\n포트폴리오를 스크랩해 모아보세요!"
+        return UILabel
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        setUI()
+        setAttributes()
+    }
+    
+    func setUI() {
         addSubview(tableView)
-        tableView.snp.makeConstraints { (make) in
-            make.left.bottom.right.equalToSuperview()
-            make.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+        addSubview(view)
+        view.addSubview(noImage)
+        view.addSubview(noLabel)
+    }
+    
+    func setAttributes() {
+        tableView.snp.makeConstraints {
+
+            $0.edges.equalTo(self.safeAreaLayoutGuide)
+        }
+        view.snp.makeConstraints {
+            
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(80)
+            $0.width.equalTo(215)
+            $0.height.equalTo(250)
+            $0.centerX.equalToSuperview()
+        }
+        noImage.snp.makeConstraints {
+            
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(80)
+            $0.left.right.equalToSuperview()
+            $0.height.equalTo(194)
+        }
+        noLabel.snp.makeConstraints {
+            
+            $0.top.equalTo(noImage.snp.bottom).offset(12)
+            $0.centerX.equalToSuperview()
         }
     }
     
     @objc func selectFeed() {
-        let viewModel = HomeViewModel(0, (pageIndex * 30))
-        viewModel.selectFeed()
+        let viewModel = ClippingViewModel(0, (pageIndex * 30))
+        viewModel.scrapFeed()
         viewModel.didFinishFetch = {
             self.model = viewModel.feedSelectResponse
             self.tableView.refreshControl?.endRefreshing()
         }
     }
-
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
-extension HomeView: UITableViewDelegate, UITableViewDataSource{
+extension ClippingView: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 0 {
-            return 200
-        }else {
-            return UITableView.automaticDimension
-        }
+        return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let totalRecordCount = model?.totalRecordCount, let recordsPerPage = model?.recordsPerPage, let currentPageNo = model?.currentPageNo, let totalPageCount = model?.totalPageCount {
             if totalRecordCount < 30 { // 30개 미만일때는 총 건수만 return
-                return totalRecordCount + 1 // "+1" 은 위에 홈 배너를 위함
+                return totalRecordCount
             }else { // 30개 이상일때
                 if currentPageNo != totalPageCount { // 총건수를 30으로 나눴을때 현재페이지 != 마지막페이지
                     displayCount = 30 * pageIndex
-                    return displayCount + 1 // "+1" 은 위에 홈 배너를 위함 / 30개씩 * 현재페이지 ex) 120건 노출시 30.. 60.. 90.. 120...
+                    return displayCount// 30개씩 * 현재페이지 ex) 120건 노출시 30.. 60.. 90.. 120...
                 }else { // 총건수를 30으로 나눴을때 현재페이지 == 마지막페이지
                     displayCount = (30 * (pageIndex - 1)) + (totalRecordCount % 30)
-                    return displayCount + 1 // "+1" 은 위에 홈 배너를 위함 / (30개씩 * 현재페이지) + 나머지(총 건수 % 30건)
+                    return displayCount// (30개씩 * 현재페이지) + 나머지(총 건수 % 30건)
                 }
             }
         }else {
@@ -128,19 +173,12 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row != 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
-            guard let model = model?.content?[indexPath.row - 1] else{ return UITableViewCell() }
-            cell.setUpCell(model)
-            cell.delegate = self
-            
-            return cell
-        }else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "BannerTableViewCell", for: indexPath) as! BannerTableViewCell
-            cell.selectionStyle = .none
-            
-            return cell
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell", for: indexPath) as! HomeTableViewCell
+        guard let model = model?.content?[indexPath.row] else{ return UITableViewCell() }
+        cell.setUpCell(model)
+        cell.delegate = self
+        
+        return cell
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -152,8 +190,8 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
         if let totalRecordCount = model?.totalRecordCount, let recordsPerPage = model?.recordsPerPage, let currentPageNo = model?.currentPageNo, let totalPageCount = model?.totalPageCount {
             if pageIndex * 30 == indexPath.row {
                 self.pageIndex += 1
-                let viewModel = HomeViewModel(0, (pageIndex * 30))
-                viewModel.selectFeed()
+                let viewModel = ClippingViewModel(0, (pageIndex * 30))
+                viewModel.scrapFeed()
 
                 viewModel.didFinishFetch = {
                     self.model = viewModel.feedSelectResponse
@@ -166,8 +204,9 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let model = model?.content {
-            homeViewDelegate?.pushScreen(FeedDetailViewController(), model[indexPath.row - 1])
+            self.delegate?.pushScreen(FeedDetailViewController(), model[indexPath.row])
         }
     }
     
 }
+

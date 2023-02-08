@@ -9,13 +9,14 @@ import UIKit
 
 final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttributes {
     weak var delegate : HomeViewDelegate?
-    
+    let viewModel = HomeViewModel(nil, nil)
     let helper = Helper()
     let fontManger = FontManager()
     
     var feedInfo: FeedInfo?
     var userSeq: Int?
     var feedSeq: Int?
+    var likeCountInt: Int = 0
     var imageArr = [String]()
     var feedImages : [FeedImages]? {
         didSet {
@@ -48,6 +49,7 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
         view.contentMode = .scaleAspectFit
         view.clipsToBounds = true
         view.isUserInteractionEnabled = true
+        view.tag = 1
 
         let recognizer = UITapGestureRecognizer(
             target: self,
@@ -63,6 +65,7 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
         label.textColor = .black
         label.sizeToFit()
         label.isUserInteractionEnabled = true
+        label.tag = 1
         
         let recognizer = UITapGestureRecognizer(
             target: self,
@@ -77,6 +80,7 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
         label.sizeToFit()
         label.isUserInteractionEnabled = true
+        label.tag = 1
         
         let recognizer = UITapGestureRecognizer(
             target: self,
@@ -84,16 +88,6 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
         )
         label.addGestureRecognizer(recognizer)
         return label
-    }()
-    let contentsLabel : UILabel = {
-        let UILabel = UILabel()
-        UILabel.font = FontManager.getFont(Font.Regular.rawValue).medium15Font
-        UILabel.textColor = UIColor.homeContentsColor
-        UILabel.textAlignment = .left
-        UILabel.numberOfLines = 3
-        UILabel.lineBreakMode = .byTruncatingTail
-        UILabel.sizeToFit()
-        return UILabel
     }()
     lazy var pageControl: UIPageControl = {
         // Create a UIPageControl.
@@ -144,6 +138,73 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
         
         return scrollView
     }()
+    lazy var heartImage : UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(systemName: "heart") // 꽉찬 하트 heart.fill
+        view.tintColor = .black
+        view.isUserInteractionEnabled = true
+        view.tag = 2
+        
+        let recognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didSelect(_:))
+        )
+        view.addGestureRecognizer(recognizer)
+        
+        return view
+    }()
+    lazy var likeCount : UILabel = {
+        let label = UILabel()
+        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.sizeToFit()
+        label.isUserInteractionEnabled = true
+        label.tag = 2
+        
+        let recognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didSelect(_:))
+        )
+        label.addGestureRecognizer(recognizer)
+        
+        return label
+    }()
+    lazy var bubbleImage : UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(systemName: "bubble.left")
+        view.tintColor = .black
+        return view
+    }()
+    lazy var commentCount : UILabel = {
+        let label = UILabel()
+        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.sizeToFit()
+        label.isUserInteractionEnabled = true
+        return label
+    }()
+    lazy var bookmark : UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(systemName: "bookmark") // 꽉찬 북마크 heart.fill
+        view.tintColor = .black
+        view.isUserInteractionEnabled = true
+        view.tag = 3
+        
+        let recognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didSelect(_:))
+        )
+        view.addGestureRecognizer(recognizer)
+        return view
+    }()
+    let contentsLabel : UILabel = {
+        let UILabel = UILabel()
+        UILabel.font = FontManager.getFont(Font.Regular.rawValue).medium15Font
+        UILabel.textColor = UIColor.homeContentsColor
+        UILabel.textAlignment = .left
+        UILabel.numberOfLines = 3
+        UILabel.lineBreakMode = .byTruncatingTail
+        UILabel.sizeToFit()
+        return UILabel
+    }()
     
     let line: UIView = {
         let view = UIView()
@@ -152,8 +213,54 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
     }()
     
     @objc func didSelect(_ sender: UITapGestureRecognizer) {
-        guard let userSeq = userSeq else {return}
-        self.delegate?.pushScreen(ProfileViewController(), userSeq)
+        guard let feedSeq = feedInfo?.feedSeq else {return}
+        let tag = sender.view?.tag as? Int
+        let param : Dictionary<String, Int> = ["feedSeq": feedSeq, "userSeq": getMyUserSeq()]
+        
+        switch tag {
+        case 1: // 프로필 터치
+            guard let userSeq = userSeq else {return}
+            self.delegate?.pushScreen(ProfileViewController(), userSeq)
+            
+        case 2: // 좋아요 터치
+            viewModel.feedLikeScarp("like", feedSeq, param)
+            viewModel.didFinishLikeScrapFetch = {
+                UIDevice.vibrate()
+                let img = self.heartImage.image
+                
+                if img!.isEqual(UIImage(systemName: "heart")) {
+                    smLog("1")
+                    self.heartImage.image = UIImage(systemName: "heart.fill")
+                    self.likeCountInt += 1
+                    self.likeCount.text = String(self.likeCountInt.commaRepresentation)
+                }else {
+                    smLog("2")
+                    self.heartImage.image = UIImage(systemName: "heart")
+                    self.likeCountInt -= 1
+                    self.likeCount.text = String(self.likeCountInt.commaRepresentation)
+                }
+            }
+            
+        case 3: // 북마크 터치
+            viewModel.feedLikeScarp("scrap", feedSeq, param)
+            viewModel.didFinishLikeScrapFetch = {
+                UIDevice.vibrate()
+                let img = self.bookmark.image
+                
+                if img!.isEqual(UIImage(systemName: "bookmark")) {
+                    smLog("1")
+                    self.bookmark.image = UIImage(systemName: "bookmark.fill")
+                    self.bookmark.tintColor = UIColor.magnifyingGlassColor
+                }else {
+                    smLog("2")
+                    self.bookmark.image = UIImage(systemName: "bookmark")
+                    self.bookmark.tintColor = UIColor.black
+                }
+            }
+            
+        default:
+            print("default")
+        }
     }
     
     @objc func didSelectImg(_ sender: UITapGestureRecognizer) {
@@ -163,15 +270,53 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
     
     func setUpCell(_ feedInfo: FeedInfo){
         print("setUpCell \(feedInfo)")
-        guard let user = feedInfo.user, let major2 = user.major2 else { return }
+        guard let user = feedInfo.user, let major2 = user.major2, let likeYn = feedInfo.likeYn, let commentYn = feedInfo.commentYn, let totalLikeCount = feedInfo.totalLikeCount, let totalCommentCount = feedInfo.totalCommentCount, let scrapYn = feedInfo.scrapYn else { return }
         self.feedInfo = feedInfo
         userSeq = user.userSeq
         
+        // 프로필
         setProfileImage(profileImg, user.profileImageUrl)
         nickName.text = user.userNickname
         major.text = "\(major2) / \(compareDate(feedInfo.createdDate))"
-        contentsLabel.text = feedInfo.contents
+        
+        // 피드 이미지
         feedImages = feedInfo.feedImages
+        
+        // 좋아요
+        guard let image = likeYn ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart") else {return}
+        heartImage.image = image
+        
+        // 좋아요 카운트
+        likeCountInt = totalLikeCount
+        likeCount.text = String(likeCountInt.commaRepresentation)
+        
+        if commentYn {
+            // 댓글 카운트
+            commentCount.text = String(totalCommentCount.commaRepresentation)
+            bubbleImage.alpha = 1.0
+            commentCount.alpha = 1.0
+        }else {
+            bubbleImage.alpha = 0.0
+            commentCount.alpha = 0.0
+        }
+        
+        
+        // 북마크
+        guard let image = scrapYn ? UIImage(systemName: "bookmark.fill") : UIImage(systemName: "bookmark") else {return}
+        
+        bookmark.image = image
+        if scrapYn {
+            bookmark.tintColor = UIColor.magnifyingGlassColor
+        }else {
+            bookmark.tintColor = .black
+        }
+        
+        
+        
+        // 피드 내용
+        contentsLabel.text = feedInfo.contents
+        
+        
         
         helper.lineSpacing(contentsLabel, 5)
     }
@@ -210,9 +355,19 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
         contentView.addSubview(profileImg)
         contentView.addSubview(nickName)
         contentView.addSubview(major)
-        contentView.addSubview(contentsLabel)
+        
         contentView.addSubview(scrollView)
         contentView.addSubview(pageControl)
+        
+        contentView.addSubview(heartImage)
+        contentView.addSubview(likeCount)
+        
+        contentView.addSubview(bubbleImage)
+        contentView.addSubview(commentCount)
+        contentView.addSubview(bookmark)
+        
+        contentView.addSubview(contentsLabel)
+        
         contentView.addSubview(line)
     }
     
@@ -246,10 +401,38 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
             make.top.equalTo(scrollView.snp.bottom).offset(-36)
             make.left.right.equalToSuperview()
         }
-        
+        heartImage.snp.makeConstraints {
+            
+            $0.top.equalTo(scrollView.snp.bottom).offset(13)
+            $0.left.equalTo(20)
+            $0.width.height.equalTo(20)
+        }
+        likeCount.snp.makeConstraints {
+            
+            $0.centerY.equalTo(heartImage.snp.centerY)
+            $0.left.equalTo(heartImage.snp.right).offset(5)
+        }
+        bubbleImage.snp.makeConstraints {
+            
+            $0.centerY.equalTo(heartImage.snp.centerY)
+            $0.left.equalTo(likeCount.snp.right).offset(20)
+            $0.width.height.equalTo(20)
+        }
+        commentCount.snp.makeConstraints {
+            
+            $0.centerY.equalTo(bubbleImage.snp.centerY)
+            $0.left.equalTo(bubbleImage.snp.right).offset(5)
+        }
+        bookmark.snp.makeConstraints {
+            
+            $0.centerY.equalTo(heartImage.snp.centerY)
+            $0.right.equalTo(-20)
+            $0.width.equalTo(20)
+            $0.height.equalTo(20)
+        }
         contentsLabel.snp.makeConstraints { (make) in
             
-            make.top.equalTo(scrollView.snp.bottom).offset(20)
+            make.top.equalTo(heartImage.snp.bottom).offset(15)
             make.left.equalTo(20)
             make.width.equalTo(imageViewWidth)
         }

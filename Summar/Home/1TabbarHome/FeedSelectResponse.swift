@@ -25,6 +25,10 @@ struct FeedInfo: Codable {
     let secretYn: Bool?
     let commentYn: Bool?
     let tempSaveYn: Bool?
+    let likeYn: Bool?
+    let totalLikeCount: Int?
+    let scrapYn: Bool?
+    let totalCommentCount: Int?
     let activated: Bool?
     let lastModifiedDate: String?
     let createdDate: String?

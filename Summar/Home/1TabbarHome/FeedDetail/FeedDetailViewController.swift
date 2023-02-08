@@ -31,7 +31,7 @@ final class FeedDetailViewController: UIViewController, PushDelegate {
     
     var feedInfo : FeedInfo? {
         didSet {
-            feedView.feedInfo = feedInfo
+//            feedView.feedInfo = feedInfo
         }
     }
     
@@ -42,8 +42,10 @@ final class FeedDetailViewController: UIViewController, PushDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        guard let feedInfo = feedInfo else {return}
         feedView.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
-        feedView.getFeedComment() // 댓글 서버 통신
+        feedView.setUpContent(feedInfo)
+//        feedView.getFeedComment() // 댓글 서버 통신
     }
     
     /// UI 초기설정
