@@ -104,7 +104,7 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            return 115
+            return 200
         }else {
             return UITableView.automaticDimension
         }

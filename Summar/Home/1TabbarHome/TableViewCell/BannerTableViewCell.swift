@@ -53,14 +53,7 @@ final class BannerTableViewCell: UITableViewCell {
     }()
     
     var arrProductPhotos = [
-        UIImage(systemName: "doc"),
-        UIImage(systemName: "doc.fill"),
-        UIImage(systemName: "doc.circle"),
-        UIImage(systemName: "square.and.arrow.up"),
-        UIImage(systemName: "square.and.arrow.up.circle"),
-        UIImage(systemName: "square.and.arrow.up.circle.fill"),
-        UIImage(systemName: "square.and.arrow.up.trianglebadge.exclamationmark"),
-        UIImage(systemName: "square.and.arrow.down")
+        UIImage(named: "TitleBanner")
     ]
     var timer : Timer?
     var currentCelIndex = 0
@@ -72,19 +65,20 @@ final class BannerTableViewCell: UITableViewCell {
         backgroundColor = .Gray01
         
         contentView.addSubview(view1)
-        view1.layer.borderWidth = 1
+//        view1.layer.borderWidth = 1
         view1.backgroundColor = .white
         view1.snp.makeConstraints{(make) in
             make.top.left.right.bottom.equalToSuperview()
         }
         
         self.view1.addSubview(collectionView)
-        collectionView.layer.borderWidth = 1
-        collectionView.layer.borderColor = UIColor.red.cgColor
+//        collectionView.layer.borderWidth = 1
+//        collectionView.layer.borderColor = UIColor.red.cgColor
         collectionView.snp.makeConstraints{(make) in
-            make.top.bottom.equalToSuperview()
+            make.top.equalTo(6)
+            make.bottom.equalTo(-6)
             make.width.equalTo(viewWidth)
-            make.height.equalTo(115)
+            make.height.equalTo(188)
             make.centerX.equalToSuperview()
         }
         imgSlider()
