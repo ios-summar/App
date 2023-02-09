@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "sScrab.png",
+      "filename" : "line_1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "solid.png",
+      "filename" : "line_1 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "solid 1.png",
+      "filename" : "line_1 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
