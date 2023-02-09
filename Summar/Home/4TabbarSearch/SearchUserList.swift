@@ -27,5 +27,6 @@ struct SearchUserInfo: Codable {
     let introduce: String?
     let profileImageUrl: String?
     let followUp: Bool?
+    let followStatus: String?
 }
 

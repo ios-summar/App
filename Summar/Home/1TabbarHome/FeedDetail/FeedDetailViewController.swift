@@ -123,7 +123,12 @@ final class FeedDetailViewController: UIViewController, PushDelegate {
                 helper.showAlertAction(vc: self, message: "신고하기") { handler in
                     switch handler {
                     case "신고하기":
-                        print("신고하기")
+                        guard let userSeq = self.feedInfo?.user?.userSeq, let feedSeq = self.feedInfo?.feedSeq else {return}
+                        let VC = ReportViewController()
+                        
+                        VC.opponsentUserSeq = userSeq
+                        VC.feedSeq = feedSeq
+                        self.navigationController?.pushViewController(VC, animated: true)
                     default:
                         break
                     }

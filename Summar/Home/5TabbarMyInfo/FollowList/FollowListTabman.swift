@@ -89,7 +89,7 @@ class FollowListTabman: TabmanViewController, ViewAttributes {
     
     func setTabManTitle() {
         guard let userSeq = userSeq else {return}
-        let viewModel = FollowListViewModel(0, 2000)
+        let viewModel = FollowListViewModel(0, 100000)
         
         //팔로워
         viewModel.getFollowerList(userSeq)

@@ -132,7 +132,7 @@ final class MyInfoViewModel{
     
     // MARK: - Network call
     func getPortfolio(_ userSeq: Int) {
-        self.request.requestMyFeed("/feed/user/\(userSeq)?page=0&size=2000", completion: { (feedSelectResponse, error, status) in
+        self.request.requestMyFeed("/feed/user/\(userSeq)?page=0&size=100000", completion: { (feedSelectResponse, error, status) in
             //error만 있을경우 서버오류
             //error,status != nil 경우 토큰 재발급
             if let error = error, let status = status {

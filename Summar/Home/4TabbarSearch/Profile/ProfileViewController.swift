@@ -27,7 +27,12 @@ final class ProfileViewController : UIViewController, PushDelegate, ViewAttribut
             helper.showAlertAction(vc: self, message: "신고하기") { handler in
                 switch handler {
                 case "신고하기":
-                    print("신고하기")
+                    print("신고하기1")
+                    let VC = ReportViewController()
+                    
+                    VC.opponsentUserSeq = self.userSeq
+                    VC.feedSeq = feedSeq
+                    self.navigationController?.pushViewController(VC, animated: true)
                 default:
                     break
                 }

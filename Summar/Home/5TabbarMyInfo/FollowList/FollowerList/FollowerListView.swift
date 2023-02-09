@@ -103,21 +103,36 @@ final class FollowerListView: UIView, ViewAttributes {
     }
     
     /// 서버통신
-    func getFollowerList(_ userSeq: Int?) {
+    func getFollowerList(_ userSeq: Int?, _ handler: Bool) {
         guard let userSeq = userSeq else { return }
         smLog("\(userSeq)")
-        let viewModel = FollowListViewModel(0, 2000)
+        let viewModel = FollowListViewModel(0, 100000)
         
-        //팔로워
-        viewModel.getFollowerList(userSeq)
-        viewModel.didFinishFollowerListFetch = {
-            self.followerList = viewModel.followerList
-            guard let totalRecordCount = viewModel.followerTotalRecordCountString else { return }
-            
-            if self.followerList?.totalRecordCount! != 0 {
-                self.followerExist(true)
-            }else {
-                self.followerExist(false)
+        if handler {
+            //내 팔로워
+            smLog("내 팔로워")
+            viewModel.getFollowerList(userSeq)
+            viewModel.didFinishFollowerListFetch = {
+                self.followerList = viewModel.followerList
+                guard let totalRecordCount = viewModel.followerTotalRecordCountString else { return }
+                
+                if self.followerList?.totalRecordCount! != 0 {
+                    self.followerExist(true)
+                }else {
+                    self.followerExist(false)
+                }
+            }
+        }else { // 내 팔로워 아님
+            smLog("내 팔로워 아님")
+            viewModel.getFollowerListOpponent(userSeq)
+            viewModel.didFinishFollowerListFetch = {
+                self.followerList = viewModel.followerList
+                
+                if self.followerList?.totalRecordCount! != 0 {
+                    self.followerExist(true)
+                }else {
+                    self.followerExist(false)
+                }
             }
         }
     }

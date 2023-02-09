@@ -64,7 +64,7 @@ final class HomeController : UITabBarController {
     func setupVCs() {
           viewControllers = [
             createNavController(for: HomeViewController(), title: NSLocalizedString("홈", comment: ""), image: UIImage(named: "home")!, selectedImage: UIImage(named: "sHome")!),
-            createNavController(for: ClippingViewController(), title: NSLocalizedString("스크랩보기", comment: ""), image: UIImage(named: "scrab")!, selectedImage: UIImage(named: "sScrab")!),
+            createNavController(for: ClippingViewController(), title: NSLocalizedString("스크랩", comment: ""), image: UIImage(named: "scrap")!, selectedImage: UIImage(named: "sScrap")!),
             createNavController(for: SearchViewController(), title: NSLocalizedString("검색", comment: ""), image: UIImage(named: "search")!, selectedImage: UIImage(named: "sSearch")!),
             createNavController(for: MyInfoViewController(), title: NSLocalizedString("마이 써머리", comment: ""), image: UIImage(named: "myInfo")!, selectedImage: UIImage(named: "sMyInfo")!)
           ]

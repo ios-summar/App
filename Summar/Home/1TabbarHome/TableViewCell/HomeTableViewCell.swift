@@ -6,6 +6,7 @@
 //
 
 import UIKit
+//import Toast_Swift makeToast("asd", duration: 2.0, position: .center)
 
 final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttributes {
     weak var delegate : HomeViewDelegate?

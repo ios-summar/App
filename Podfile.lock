@@ -91,6 +91,7 @@ PODS:
   - SteviaLayout (4.7.3)
   - Tabman (3.0.1):
     - Pageboy (~> 4.0.2)
+  - Toast-Swift (5.0.1)
   - YPImagePicker (5.2.1):
     - PryntTrimmerView (= 4.0.2)
     - SteviaLayout (= 4.7.3)
@@ -110,6 +111,7 @@ DEPENDENCIES:
   - SafeAreaBrush
   - SnapKit
   - Tabman
+  - Toast-Swift
   - YPImagePicker
 
 SPEC REPOS:
@@ -143,6 +145,7 @@ SPEC REPOS:
     - SnapKit
     - SteviaLayout
     - Tabman
+    - Toast-Swift
     - YPImagePicker
 
 SPEC CHECKSUMS:
@@ -175,8 +178,9 @@ SPEC CHECKSUMS:
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
   Tabman: a5880789298f81d3f2cdd6510b54ae637cfd8e09
+  Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
   YPImagePicker: f36043210c10b0783034eb1947d6e06e31c461e4
 
-PODFILE CHECKSUM: a02f0adcd33e1c5dd6ca12cf04108f46bfda46d4
+PODFILE CHECKSUM: 93ccb0afe200238dc3de99e966c874beebe07e13
 
 COCOAPODS: 1.11.3

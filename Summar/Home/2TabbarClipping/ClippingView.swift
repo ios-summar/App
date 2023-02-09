@@ -48,7 +48,7 @@ final class ClippingView: UIView, ViewAttributes, HomeViewDelegate {
             }
         }
     }
-    let tableView : UITableView = {
+    lazy var tableView : UITableView = {
         let view = UITableView()
         view.register(HomeTableViewCell.self, forCellReuseIdentifier: "HomeTableViewCell")
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -58,11 +58,6 @@ final class ClippingView: UIView, ViewAttributes, HomeViewDelegate {
         
         // 테이블뷰 왼쪽 마진 없애기
         view.separatorStyle = .none
-//        view.separatorStyle = .singleLine
-//        view.cellLayoutMarginsFollowReadableWidth = false
-//        view.separatorInset.left = 0
-//        view.separatorColor = .gray
-        //
         
         view.estimatedRowHeight = 85.0
         view.rowHeight = UITableView.automaticDimension
@@ -80,14 +75,12 @@ final class ClippingView: UIView, ViewAttributes, HomeViewDelegate {
     lazy var noImage : UIImageView = {
         
         let imageView = UIImageView()
-//        imageView.alpha = 0.0
         imageView.image = UIImage(named: "NoCount")
         return imageView
     }()
     lazy var noLabel : UILabel = {
         
         let UILabel = UILabel()
-//        UILabel.alpha = 0.0
         UILabel.textColor = .black
         UILabel.font = FontManager.getFont(Font.SemiBold.rawValue).mediumFont
         UILabel.sizeToFit()

@@ -21,5 +21,6 @@ target 'Summar' do
    pod 'JJFloatingActionButton' # 플로팅 버튼
    pod 'SafeAreaBrush' # safeAreaColor
    pod 'Tabman' # Pager
+   pod 'Toast-Swift' # ToastMessage
    
 end

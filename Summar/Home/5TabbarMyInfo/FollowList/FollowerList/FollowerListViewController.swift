@@ -41,8 +41,10 @@ final class FollowerListViewController: UIViewController, PushDelegate, ViewAttr
     
     override func viewWillAppear(_ animated: Bool) {
         guard let userSeq = userSeq else {return}
+        let myFollow = userSeq == getMyUserSeq()  // true => 내 팔로우 리스트, false => 내 팔로우 리스트 아님
+        
         followerListView.userSeq = userSeq
-        followerListView.getFollowerList(userSeq)
+        followerListView.getFollowerList(userSeq, myFollow)
     }
     
     func setUI() {

@@ -77,6 +77,54 @@ final class FollowListViewModel {
     }
     
     // MARK: - Network call
+    func getFollowerListOpponent(_ userSeq: Int) {
+        let myUserSeq = getMyUserSeq()
+        self.request.followList("/follow/other-followers?userSeq=\(myUserSeq)&otherSeq=\(userSeq)&page=\(pageIndex)&size=\(size)", completion: { (followList, error, status) in
+            //error만 있을경우 서버오류
+            //error,status != nil 경우 토큰 재발급
+            if let error = error, let status = status {
+                if status == 500 {
+                    print("토큰 재발급")
+                    self.request.reloadToken(status)
+                    self.getFollowerList(userSeq)
+                }
+            }else if let error = error {
+                print(error)
+                self.error = error
+                self.isLoading = false
+                return
+            }
+            self.error = nil
+            self.isLoading = false
+            self.followerList = followList
+        })
+    }
+    
+    // MARK: - Network call
+    func getFollowingListOpponent(_ userSeq: Int) {
+        let myUserSeq = getMyUserSeq()
+        self.request.followList("/follow/other-followings?userSeq=\(myUserSeq)&otherSeq=\(userSeq)&page=\(pageIndex)&size=\(size)", completion: { (followList, error, status) in
+            //error만 있을경우 서버오류
+            //error,status != nil 경우 토큰 재발급
+            if let error = error, let status = status {
+                if status == 500 {
+                    print("토큰 재발급")
+                    self.request.reloadToken(status)
+                    self.getFollowingListOpponent(userSeq)
+                }
+            }else if let error = error {
+                print(error)
+                self.error = error
+                self.isLoading = false
+                return
+            }
+            self.error = nil
+            self.isLoading = false
+            self.followingList = followList
+        })
+    }
+    
+    // MARK: - Network call
     func getFollowingList(_ userSeq: Int) {
         self.request.followList("/follow/followings?userSeq=\(userSeq)&page=\(pageIndex)&size=\(size)", completion: { (followList, error, status) in
             //error만 있을경우 서버오류

@@ -85,15 +85,31 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
                     $0.width.equalTo(40)
                 }
             }
-            
-        case ("follower", false): // 팔로워, 내 팔로우 리스트 아님
-            print("#팔로워, 내피드 아님 (follower, false)")
-//            btn.setTitle("팔로우 취소", for: .normal)
         case ("following", true): // 팔로잉, 내 팔로우 리스트
             print("#팔로잉, 내피드 (following, true)")
             btn.setTitle("팔로우 취소", for: .normal)
-        case ("following", false): // 팔로잉, 내 팔로우 리스트 아님
-            print("#팔로잉, 내피드 아님 (following, false)")
+        case ("follower", false), ("following", false): // 팔로워, 내 팔로우 리스트 아님
+            guard let followStatus = follow.followStatus, let followSeq = follow.userSeq else {return}
+            print("#팔로워, 내피드 아님 (follower, false), #팔로잉, 내피드 아님 (following, false) \(followStatus)")
+            
+            switch followStatus {
+            case "나자신":
+                btn.removeFromSuperview()
+                
+            case "한쪽팔로우":
+                self.btn.setTitle("팔로우 취소", for: .normal)
+                self.btn.backgroundColor = UIColor.Gray02
+                self.btn.setTitleColor(UIColor.init(r: 70, g: 76, b: 83), for: .normal)
+                
+            case "암것도아님":
+                self.btn.setTitle("팔로우", for: .normal)
+                self.btn.backgroundColor = UIColor.magnifyingGlassColor
+                self.btn.setTitleColor(UIColor.white, for: .normal)
+                
+            default:
+                print("default")
+            }
+
         default:
             print("default")
         }
@@ -165,6 +181,7 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
     @objc func followBtnAction(_ sender: Any) {
         guard let tag = (sender as AnyObject).tag as? Int else {return}
         guard let opponentUserSeq = self.userSeq else {return}
+        UIDevice.vibrate()
         
         switch tag {
         case 1:

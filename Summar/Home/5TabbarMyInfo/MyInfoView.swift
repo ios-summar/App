@@ -55,34 +55,6 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
             portfolioTableView.delegate = self
             portfolioTableView.dataSource = self
             portfolioTableView.reloadData()
-            //            guard let feed = feedSelectResponse else {return}
-            //            if feed.totalRecordCount != 0 {
-            //                portfolioTableView.alpha = 1.0
-            //                PortFolioNot.alpha = 0.0
-            //
-            //                portfolioTableView.delegate = self
-            //                portfolioTableView.dataSource = self
-            //                portfolioTableView.reloadData()
-            //
-            //                scrollView.addSubview(portfolioTableView)
-            //                portfolioTableView.snp.makeConstraints {
-            //                    $0.top.equalTo(line2.snp.bottom)
-            //                    $0.left.right.equalTo(self.safeAreaLayoutGuide)
-            ////                    $0.height.equalTo(2500)
-            //                }
-            //            }else {
-            //                portfolioTableView.alpha = 0.0
-            //                PortFolioNot.alpha = 1.0
-            //                scrollView.addSubview(PortFolioNot)
-            //
-            //                PortFolioNot.snp.makeConstraints {
-            //                    $0.top.equalTo(line2.snp.bottom).offset(80)
-            //                    $0.centerX.equalToSuperview()
-            //                    $0.width.equalTo(162)
-            //                    $0.height.equalTo(194)
-            //                }
-            //            }
-            //            scrollView.updateContentSize()
         }
     }
     
@@ -487,6 +459,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     
     @objc func profileBtnAction(_ sender: Any) {
         guard let btn = sender as? UIButton else {return}
+        
         switch btn.tag {
         case 1:
             touchLeft() // 내 포트폴리오
@@ -529,6 +502,8 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
             guard let userSeq = value["userSeq"], let userInfo = userInfo, let opponentUserSeq = userInfo.result.userSeq else {return}
             let myUserSeq: Int = userSeq as! Int
             let param : Dictionary<String, Int> = ["followedUserSeq": opponentUserSeq, "followingUserSeq": myUserSeq]
+            
+            UIDevice.vibrate()
             
             LoadingIndicator.showLoading()
             
