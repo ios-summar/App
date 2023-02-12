@@ -152,6 +152,32 @@ final class Helper : UIView{
                 }
     }
     
+    /// 액션시트 1,1
+    func showAlertAction(vc: UIView?, preferredStyle: UIAlertController.Style = .actionSheet, message: String = "", cancel: String = "닫기", completeHandler:((String) -> Void)? = nil){
+                
+                guard let currentVc = vc else {
+                    completeHandler?("")
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: nil, message: nil, preferredStyle: preferredStyle)
+                    
+                    let action1 = UIAlertAction(title: message, style: .destructive) { action in
+                        completeHandler?(message)
+                    }
+                    
+                    let cancelAction = UIAlertAction(title: cancel, style: .cancel) { action in
+                        completeHandler?(cancel)
+                    }
+                    
+                    alert.addAction(action1)
+                    alert.addAction(cancelAction)
+                    
+                    vc?.window?.rootViewController?.present(alert, animated: true, completion: nil)
+                }
+    }
+    
     func checkNickNamePolicy(text: String) -> Bool {
         // String -> Array
         let arr = Array(text)

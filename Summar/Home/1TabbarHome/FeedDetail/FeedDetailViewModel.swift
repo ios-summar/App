@@ -49,6 +49,8 @@ final class FeedDetailViewModel {
     var didFinishFetch: (() -> ())?
     var didFinishDelteFetch: (() -> ())?
     var didFinishFeedCommentFetch: (() -> ())?
+    var didFinishCommentRegisterFetch: (() -> ())?
+    var didFinishCommentRemoveFetch: (() -> ())?
     
     ///  피드 자세히보기
     func getFeedInfo(_ feedSeq: Int){
@@ -113,6 +115,54 @@ final class FeedDetailViewModel {
             self.isLoading = false
             self.feedComment = feedComment
 
+        })
+    }
+    
+    ///  댓글 달기
+    func commentRegister(_ param: Dictionary<String, Any>){
+        let feedSeq = param["feedSeq"] as! Int
+        self.request.commentRegister("/feed/\(feedSeq)/comments", param, completion: { (serverResult, error, status) in
+            if let error = error, let status = status {
+                if status == 500 {
+                    print("토큰 재발급")
+                    self.request.reloadToken(status)
+                    self.commentRegister(param)
+                }
+            }else if let error = error {
+                print(error)
+                self.error = error
+                self.isLoading = false
+                return
+            }
+            self.error = nil
+            self.isLoading = false
+            
+            smLog("\(serverResult?.message)")
+            if serverResult?.message == "정상처리" {
+                self.didFinishCommentRegisterFetch?()
+            }
+            
+        })
+    }
+    
+    ///  댓글 삭제
+    func commentRemove(_ feedCommentSeq: Int){
+        self.request.commentRemove("/feed/comments/\(feedCommentSeq)", completion: { (serverResult, error, status) in
+            if let error = error, let status = status {
+                if status == 500 {
+                    print("토큰 재발급")
+                    self.request.reloadToken(status)
+                    self.commentRemove(feedCommentSeq)
+                }
+            }else if let error = error {
+                print(error)
+                self.error = error
+                self.isLoading = false
+                return
+            }
+            self.error = nil
+            self.isLoading = false
+            self.didFinishCommentRemoveFetch?()
         })
     }
     

@@ -249,11 +249,11 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
                 let img = self.bookmark.image
                 
                 if img!.isEqual(UIImage(systemName: "bookmark")) {
-                    smLog("1")
+                    toast("스크랩 완료")
                     self.bookmark.image = UIImage(systemName: "bookmark.fill")
                     self.bookmark.tintColor = UIColor.magnifyingGlassColor
                 }else {
-                    smLog("2")
+                    toast("스크랩 취소")
                     self.bookmark.image = UIImage(systemName: "bookmark")
                     self.bookmark.tintColor = UIColor.black
                 }

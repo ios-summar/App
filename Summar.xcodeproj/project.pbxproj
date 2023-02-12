@@ -71,7 +71,7 @@
 		5EC01181298B81B5004FFA29 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC01180298B81B5004FFA29 /* DateHelper.swift */; };
 		5EC01189298B9B20004FFA29 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC01188298B9B20004FFA29 /* NotificationService.swift */; };
 		5EC0118D298B9B20004FFA29 /* NotificationService.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5EC01186298B9B20004FFA29 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		5EC01194298B9D17004FFA29 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC01193298B9D17004FFA29 /* CommentTableViewCell.swift */; };
+		5EC01194298B9D17004FFA29 /* CommentParentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC01193298B9D17004FFA29 /* CommentParentTableViewCell.swift */; };
 		5ECCBBDB299081AF00470516 /* FollowerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECCBBDA299081AF00470516 /* FollowerListViewController.swift */; };
 		5ECCBBDD2990892700470516 /* FollowerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECCBBDC2990892700470516 /* FollowerListView.swift */; };
 		5ECCBBDF29908E9B00470516 /* FollowListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECCBBDE29908E9B00470516 /* FollowListViewModel.swift */; };
@@ -95,12 +95,16 @@
 		A257176929911BF9009163D5 /* FollowingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257176829911BF9009163D5 /* FollowingListView.swift */; };
 		A257176B29911D05009163D5 /* FollowListTabman.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257176A29911D05009163D5 /* FollowListTabman.swift */; };
 		A257176D2992803B009163D5 /* UserDefaultHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257176C2992803A009163D5 /* UserDefaultHelper.swift */; };
+		A257176F29965CF7009163D5 /* CommentChildTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257176E29965CF7009163D5 /* CommentChildTableViewCell.swift */; };
+		A257177129965D10009163D5 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A257177029965D10009163D5 /* CommentTableViewCell.swift */; };
 		A28EC0DA28CA1BC000F5BF98 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28EC0D928CA1BC000F5BF98 /* AppDelegate.swift */; };
 		A28EC0DC28CA1BC000F5BF98 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28EC0DB28CA1BC000F5BF98 /* SceneDelegate.swift */; };
 		A28EC0E328CA1BC100F5BF98 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A28EC0E228CA1BC100F5BF98 /* Assets.xcassets */; };
 		A28EC0E628CA1BC100F5BF98 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A28EC0E428CA1BC100F5BF98 /* LaunchScreen.storyboard */; };
 		A2933E72294F808500B84C5B /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2933E71294F808500B84C5B /* UserInfo.swift */; };
 		A2933E7429501B4800B84C5B /* MyInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2933E7329501B4800B84C5B /* MyInfoViewModel.swift */; };
+		A2941D822998DE8000D0DCF7 /* ReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2941D812998DE8000D0DCF7 /* ReportViewModel.swift */; };
+		A2941D842998F95300D0DCF7 /* ToastHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2941D832998F95300D0DCF7 /* ToastHelper.swift */; };
 		A2ADEBA728D081050018A358 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ADEBA628D081050018A358 /* Helper.swift */; };
 		A2CAEDE129050A630053D6C9 /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2CAEDE029050A630053D6C9 /* SignUpController.swift */; };
 		A2CAEDE329050A6C0053D6C9 /* SignUp1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2CAEDE229050A6C0053D6C9 /* SignUp1View.swift */; };
@@ -216,7 +220,7 @@
 		5EC01186298B9B20004FFA29 /* NotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EC01188298B9B20004FFA29 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		5EC0118A298B9B20004FFA29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5EC01193298B9D17004FFA29 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
+		5EC01193298B9D17004FFA29 /* CommentParentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentParentTableViewCell.swift; sourceTree = "<group>"; };
 		5ECCBBDA299081AF00470516 /* FollowerListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowerListViewController.swift; sourceTree = "<group>"; };
 		5ECCBBDC2990892700470516 /* FollowerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowerListView.swift; sourceTree = "<group>"; };
 		5ECCBBDE29908E9B00470516 /* FollowListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowListViewModel.swift; sourceTree = "<group>"; };
@@ -242,6 +246,8 @@
 		A257176829911BF9009163D5 /* FollowingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingListView.swift; sourceTree = "<group>"; };
 		A257176A29911D05009163D5 /* FollowListTabman.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowListTabman.swift; sourceTree = "<group>"; };
 		A257176C2992803A009163D5 /* UserDefaultHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultHelper.swift; sourceTree = "<group>"; };
+		A257176E29965CF7009163D5 /* CommentChildTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentChildTableViewCell.swift; sourceTree = "<group>"; };
+		A257177029965D10009163D5 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 		A28EC0D628CA1BC000F5BF98 /* Summar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Summar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A28EC0D928CA1BC000F5BF98 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A28EC0DB28CA1BC000F5BF98 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -250,6 +256,8 @@
 		A28EC0E728CA1BC100F5BF98 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A2933E71294F808500B84C5B /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		A2933E7329501B4800B84C5B /* MyInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyInfoViewModel.swift; sourceTree = "<group>"; };
+		A2941D812998DE8000D0DCF7 /* ReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewModel.swift; sourceTree = "<group>"; };
+		A2941D832998F95300D0DCF7 /* ToastHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastHelper.swift; sourceTree = "<group>"; };
 		A2ADEBA628D081050018A358 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		A2CAEDE029050A630053D6C9 /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		A2CAEDE229050A6C0053D6C9 /* SignUp1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp1View.swift; sourceTree = "<group>"; };
@@ -463,6 +471,7 @@
 			children = (
 				5EB809F72994AF32003FA74C /* ReportView2Controller.swift */,
 				5EB809F92994AF54003FA74C /* ReportView2.swift */,
+				A2941D812998DE8000D0DCF7 /* ReportViewModel.swift */,
 			);
 			path = Second;
 			sourceTree = "<group>";
@@ -489,7 +498,9 @@
 		5EC01192298B9D07004FFA29 /* TableViewCell */ = {
 			isa = PBXGroup;
 			children = (
-				5EC01193298B9D17004FFA29 /* CommentTableViewCell.swift */,
+				A257177029965D10009163D5 /* CommentTableViewCell.swift */,
+				5EC01193298B9D17004FFA29 /* CommentParentTableViewCell.swift */,
+				A257176E29965CF7009163D5 /* CommentChildTableViewCell.swift */,
 			);
 			path = TableViewCell;
 			sourceTree = "<group>";
@@ -625,6 +636,7 @@
 				A257176C2992803A009163D5 /* UserDefaultHelper.swift */,
 				5E816E19297A4C19002BB4D3 /* Record.swift */,
 				04CCEAFE2910A6EC009DBE05 /* Network.plist */,
+				A2941D832998F95300D0DCF7 /* ToastHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -937,11 +949,13 @@
 				A2D27B862974144D002CF652 /* Notice.swift in Sources */,
 				5E1133BD298CEA5F00465C0C /* FeedComment.swift in Sources */,
 				5EB4F5F3296EAFFF0061D64D /* LogHelper.swift in Sources */,
+				A257176F29965CF7009163D5 /* CommentChildTableViewCell.swift in Sources */,
 				5EB809F82994AF32003FA74C /* ReportView2Controller.swift in Sources */,
 				A2527D4529782C750031350B /* HomeViewModel.swift in Sources */,
 				A2933E7429501B4800B84C5B /* MyInfoViewModel.swift in Sources */,
 				04B864E529494D0600D814D9 /* HomeView.swift in Sources */,
 				A2E960DD29743BAF007E3B3B /* FAQController.swift in Sources */,
+				A2941D822998DE8000D0DCF7 /* ReportViewModel.swift in Sources */,
 				A210F66F295B163400A517C5 /* SearchView.swift in Sources */,
 				A28EC0DA28CA1BC000F5BF98 /* AppDelegate.swift in Sources */,
 				041EEE982952E708006263C7 /* Feed.swift in Sources */,
@@ -949,6 +963,7 @@
 				040D79FA2918FA3F0018B6A0 /* KakaoLoginManager.swift in Sources */,
 				04804542296D2FAE00D02A30 /* UpdateMyInfoViewController.swift in Sources */,
 				04FB196929122B5C00E9EE54 /* HomeController.swift in Sources */,
+				A2941D842998F95300D0DCF7 /* ToastHelper.swift in Sources */,
 				A210F6742960253600A517C5 /* FullScreenImageView.swift in Sources */,
 				A2D27B802972F7EF002CF652 /* NoticeController.swift in Sources */,
 				04B864F1294AEAB400D814D9 /* HomeCollectionViewCell.swift in Sources */,
@@ -992,7 +1007,7 @@
 				A2D27B7929728FC2002CF652 /* PushSettingViewModel.swift in Sources */,
 				A257176929911BF9009163D5 /* FollowingListView.swift in Sources */,
 				5EB809F42994A239003FA74C /* ReportTableViewCell.swift in Sources */,
-				5EC01194298B9D17004FFA29 /* CommentTableViewCell.swift in Sources */,
+				5EC01194298B9D17004FFA29 /* CommentParentTableViewCell.swift in Sources */,
 				04904BDC290A5D96004ED5ED /* SignUp3View.swift in Sources */,
 				048EAA822965490C004E4A08 /* PreferencesController.swift in Sources */,
 				5E4491B4296FF33D0048042D /* UpdateMyInfoViewModel.swift in Sources */,
@@ -1018,6 +1033,7 @@
 				5EB4F5F1296E94FF0061D64D /* PaddingLabel.swift in Sources */,
 				048EAA842965493D004E4A08 /* PreferencesView.swift in Sources */,
 				5EB809EC29937382003FA74C /* ClippingViewModel.swift in Sources */,
+				A257177129965D10009163D5 /* CommentTableViewCell.swift in Sources */,
 				04D4B0E1295D24F800AD5043 /* EmptyCollectionViewCell.swift in Sources */,
 				A257175A2986608F009163D5 /* FeedDetailViewModel.swift in Sources */,
 				A2D27B7B2972930B002CF652 /* PushInfo.swift in Sources */,

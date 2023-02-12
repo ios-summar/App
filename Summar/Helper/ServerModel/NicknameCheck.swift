@@ -16,5 +16,5 @@ struct NicknameCheck: Codable {
 }
 
 struct NicknameCheckResult: Codable {
-    let result: Bool
+    let result: Bool?
 }

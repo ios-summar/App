@@ -183,6 +183,46 @@ final class ServerRequest: NSObject {
         }
     }
     
+    // MARK: - 신고하기
+    /// 신고하기
+    func report(_ url: String, _ param: Dictionary<String, Any>, completion: @escaping (Bool?, Error?, Int?) -> ()) {
+        let url = Server.url + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.request(url,
+                       method: .post,
+                       parameters: param,
+                       encoding: JSONEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json",
+                                 "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    guard let result = response.data else {return}
+                                    
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(NicknameCheck.self, from: result)
+                        
+                        
+                        completion(json.result?.result, nil, nil)
+                        
+                    } catch {
+                        print("error! \(error)")
+                        completion(nil, error, nil)
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    completion(nil, error, statusCode)
+                }
+            }
+        }
+    }
+    
     // MARK: - 타 회원들 팔로우 여부 확인
     ///타 회원들 팔로우 여부 확인
     func followCheck(_ url: String, completion: @escaping (Bool?, Error?, Int?) -> ()) {
@@ -504,7 +544,7 @@ final class ServerRequest: NSObject {
             print(token)
             AF.request(url,
                        method: .get,
-                       parameters: param,
+                       parameters: nil,
                        encoding: URLEncoding.default,
                        headers: ["Content-Type":"application/json", "Accept":"application/json",
                                  "Authorization":"Bearer \(token)"])
@@ -640,7 +680,7 @@ final class ServerRequest: NSObject {
             print(token)
             AF.request(url,
                        method: .get,
-                       parameters: param,
+                       parameters: nil,
                        encoding: URLEncoding.default,
                        headers: ["Content-Type":"application/json", "Accept":"application/json",
                                  "Authorization":"Bearer \(token)"])
@@ -753,7 +793,7 @@ final class ServerRequest: NSObject {
             print(token)
             AF.request(url,
                        method: .get,
-                       parameters: param,
+                       parameters: nil,
                        encoding: URLEncoding.default,
                        headers: ["Content-Type":"application/json", "Accept":"application/json",
                                  "Authorization":"Bearer \(token)"])
@@ -833,7 +873,7 @@ final class ServerRequest: NSObject {
             print(token)
             AF.request(url,
                        method: .get,
-                       parameters: param,
+                       parameters: nil,
                        encoding: URLEncoding.default,
                        headers: ["Content-Type":"application/json", "Accept":"application/json",
                                  "Authorization":"Bearer \(token)"])
@@ -845,6 +885,80 @@ final class ServerRequest: NSObject {
                     do {
                         let decoder = JSONDecoder()
                         let json = try decoder.decode(FeedComment.self, from: result)
+                        
+                        completion(json, nil, nil)
+                    } catch {
+                        print("error! \(error)")
+                        completion(nil, error, nil)
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    completion(nil, error, statusCode)
+                }
+            }
+        }
+    }
+    
+    // MARK: - 댓글 달기
+    /// 댓글 달기
+    func commentRegister(_ url: String,_ param: Dictionary<String, Any> , completion: @escaping (ServerResult?, Error?, Int?) -> ()) {
+        let url = Server.url + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.request(url,
+                       method: .post,
+                       parameters: param,
+                       encoding: JSONEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json",
+                                 "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    guard let result = response.data else {return}
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(ServerResult.self, from: result)
+                        
+                        completion(json, nil, nil)
+                    } catch {
+                        print("error! \(error)")
+                        completion(nil, error, nil)
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    completion(nil, error, statusCode)
+                }
+            }
+        }
+    }
+    
+    // MARK: - 댓글 삭제
+    /// 댓글 삭제
+    func commentRemove(_ url: String, completion: @escaping (ServerResult?, Error?, Int?) -> ()) {
+        let url = Server.url + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.request(url,
+                       method: .patch,
+                       parameters: nil,
+                       encoding: URLEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json",
+                                 "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    guard let result = response.data else {return}
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(ServerResult.self, from: result)
                         
                         completion(json, nil, nil)
                     } catch {

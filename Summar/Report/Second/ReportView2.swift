@@ -9,17 +9,20 @@ import Foundation
 import UIKit
 
 final class ReportView2: UIView, ViewAttributes, UITextViewDelegate, UITextFieldDelegate {
-    
+    weak var delegate: UpdateNavigationBar?
     var reportReason: String? {
         didSet {
             report1TextField.text = reportReason
         }
     }
-    var myUserSeq: Int = getMyUserSeq()
-    var opponsentUserSeq: Int?
-    var feedSeq: Int?
+    var param: Dictionary<String, Any>? {
+        didSet {
+            smLog("\(param)")
+        }
+    }
     
     let textViewPlaceHolder = "상세한 신고 내용을 작성해 주세요."
+    var sendBool: Bool = false
     
     let view: UIView = {
         let view = UIView()
@@ -147,6 +150,20 @@ final class ReportView2: UIView, ViewAttributes, UITextViewDelegate, UITextField
             textView.text = textViewPlaceHolder
             textView.textColor = .lightGray
         }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.text.count > 999 {
+            textView.deleteBackward()
+        }
+        
+        if textView.text.count != 0{
+            sendBool = true
+        }else {
+            sendBool = false
+        }
+        
+        self.delegate?.updateNavigationBar()
     }
     
     required init?(coder: NSCoder) {

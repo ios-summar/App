@@ -177,7 +177,7 @@ final class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDeleg
             userInfoUserDefaults!["major2"] = major2
             UserDefaults.standard.set(userInfoUserDefaults!, forKey: "UserInfo")
             
-            self.helper.showAlertAction(vc: self, title: "알림", message: "프로필 편집을 완료했습니다.")
+            toast("프로필 편집 완료")
             self.navigationController?.popViewController(animated: true)
         }
             

@@ -330,9 +330,8 @@ final class PreferencesView: UIView{
                     self.viewModel.withDraw(userSeq)
                     
                     self.viewModel.didFinishWithDraw = {
-                        self.helper.showAlertActionNormal(vc: self, message: "탈퇴완료", completion: { bool in
-                            self.popDelegate?.popScreen()
-                        })
+                        toast("탈퇴완료")
+                        self.popDelegate?.popScreen()
                     }
                 }else {
                     print("userInfo nil")

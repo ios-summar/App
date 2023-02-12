@@ -8,7 +8,28 @@
 import Foundation
 import UIKit
 
-final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
+final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UITextViewDelegate, PushDelegate, TableViewReload {
+    func pushScreen(_ VC: UIViewController, _ any: Any?) {
+        if VC.isKind(of: ProfileViewController.self) {
+            let VC = ProfileViewController()
+            let userSeq = any as! Int
+            
+            self.delegate?.pushScreen(VC, userSeq)
+        }else if VC.isKind(of: ReportViewController.self) {
+            let VC = ReportViewController()
+            let param = any as! Dictionary<String, Any>
+            
+            self.delegate?.pushScreen(VC, param)
+        }
+    }
+    
+    func tableViewReload() {
+        self.commentTableView.reloadData()
+        
+        guard let feedInfo = feedInfo else { return }
+        setUpContent(feedInfo)
+    }
+    
     weak var delegate: PushDelegate?
     let viewModel = FeedDetailViewModel()
     let homeViewModel = HomeViewModel(nil, nil)
@@ -16,6 +37,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
     
     var likeCountInt: Int = 0
     var commentCountInt: Int = 0
+    var parentCommentSeq: Int = 0
     let imageViewWidth : CGFloat = {
         let width = UIScreen.main.bounds.width
         return width - 40
@@ -25,22 +47,21 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
         didSet {
             guard let commentYn = feedInfo?.commentYn else {return}
             
-            commentYn ? self.getFeedComment() : nil
+            _ = [bubbleImage, commentCount].map {
+                $0.alpha = commentYn ? 1.0 : 0.0
+            }
+            
             // 댓글 활성화 => addSubView
             self.setCommentTableView(commentYn)
+            commentYn ? self.getFeedComment() : nil
         }
     }
+    var feedComment: FeedComment?
     
-    var feedComment: FeedComment? {
-        didSet {
-            commentTableView.delegate = self
-            commentTableView.dataSource = self
-            commentTableView.reloadData()
-        }
-    }
-    
-    var size: Int = 30
+    var size: Int = 100000
     var totalCount: Int = 0
+    
+    let textViewPlaceHolder = "댓글을 입력해 주세요."
     
     let line: UIView = {
         let view = UIView()
@@ -270,13 +291,13 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
     lazy var commentTableView: UITableView = {
         let view = ContentSizedTableView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .blue
+        view.backgroundColor = .red
         view.showsVerticalScrollIndicator = false
         view.isScrollEnabled = false
         
         // 테이블뷰 왼쪽 마진 없애기
         view.separatorStyle = .none
-        view.estimatedRowHeight = 130
+        view.estimatedRowHeight = 60
         view.rowHeight = UITableView.automaticDimension
         view.register(CommentTableViewCell.self, forCellReuseIdentifier: "CommentTableViewCell")
         return view
@@ -291,13 +312,31 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
         view.backgroundColor = .white
         return view
     }()
-    lazy var commentTextField: UITextField = {
-        let view = PaddingTextField()
-        view.placeholder = "댓글을 입력해 주세요."
-        view.backgroundColor = UIColor.Gray02
-        view.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
-        view.textColor = .black
-        view.layer.cornerRadius = 23
+    lazy var commentTextView: UITextView = {
+        let textView = UITextView()
+        textView.backgroundColor = UIColor.Gray02
+        textView.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
+        textView.text = textViewPlaceHolder
+        textView.layer.cornerRadius = 18
+        textView.textColor = .lightGray
+        textView.delegate = self
+//        textView.sizeToFit()
+        textView.textContainerInset = UIEdgeInsets(top: 8, left: 15, bottom: 5, right: 30)
+        return textView
+    }()
+    lazy var uploadImg: UIImageView = {
+        let view = UIImageView()
+        view.alpha = 0.0
+        view.image = UIImage(named: "upload")
+        view.isUserInteractionEnabled = true
+        view.tag = 4
+        
+        let recognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didSelect(_:))
+        )
+        view.addGestureRecognizer(recognizer)
+        
         return view
     }()
     
@@ -310,15 +349,15 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
             self.feedInfo = self.viewModel.feedInfo
             guard let likeYn = self.feedInfo?.likeYn, let commentYn = self.feedInfo?.commentYn, let totalLikeCount = self.feedInfo?.totalLikeCount, let totalCommentCount = self.feedInfo?.totalCommentCount, let scrapYn = self.feedInfo?.scrapYn else {return}
             
-            guard let commentYn = self.viewModel.commentYn else {return}
-            let alphaCGFloat = commentYn ? 1.0 : 0.0
-            
-            // 댓글 막아놓음
-            self.bubbleImage.alpha = alphaCGFloat
-            self.commentCount.alpha = alphaCGFloat
-            
-            // 댓글 활성화 => addSubView
-            self.setCommentTableView(commentYn)
+//            guard let commentYn = self.viewModel.commentYn else {return}
+//            let alphaCGFloat = commentYn ? 1.0 : 0.0
+//
+//            // 댓글 막아놓음
+//            self.bubbleImage.alpha = alphaCGFloat
+//            self.commentCount.alpha = alphaCGFloat
+//
+//            // 댓글 활성화 => addSubView
+//            self.setCommentTableView(commentYn)
             
             // 프로필
             self.setProfileImage(self.profileImg, self.viewModel.profileImgURLString) // 프로필 사진
@@ -373,6 +412,13 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
                 self.bookmark.tintColor = .black
             }
         }
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
+        smLog("")
+        scrollView.updateContentSize()
     }
     
     override init(frame: CGRect) {
@@ -541,20 +587,74 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
         self.setNeedsDisplay()
     }
     
+    // MARK: - PlaceHolder 작업
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == textViewPlaceHolder {
+            textView.text = nil
+            textView.textColor = .black
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            textView.text = textViewPlaceHolder
+            textView.textColor = .lightGray
+        }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.text.count > 254 {
+            textView.deleteBackward()
+        }
+        
+        if textView.text == textViewPlaceHolder || textView.text.count == 0 { // Placeholder || 비어있음
+            uploadImg.alpha = 0.0
+        }else {
+            uploadImg.alpha = 1.0
+        }
+        
+        if 100 >= textView.contentSize.height + 20 {
+            commentView.snp.remakeConstraints {
+                
+                $0.centerX.equalToSuperview()
+                $0.bottom.left.right.equalToSuperview()
+                $0.height.equalTo(textView.contentSize.height + 20)
+            }
+        }
+    }
+    
+    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            smLog("\(textView)")
+        }
+        return true
+    }
+    
     func setCommentTableView(_ commentYN: Bool) {
         if commentYN {
             addSubview(commentView)
-            commentView.addSubview(commentTextField)
-            commentView.snp.makeConstraints {
+            commentView.addSubview(commentTextView)
+            commentView.addSubview(uploadImg)
+            
+            commentView.snp.remakeConstraints {
+                
                 $0.centerX.equalToSuperview()
                 $0.bottom.left.right.equalToSuperview()
-                $0.height.equalTo(62)
+                $0.height.equalTo(50)
             }
-            commentTextField.snp.makeConstraints {
+            commentTextView.snp.remakeConstraints {
+                
                 $0.top.equalTo(8)
                 $0.bottom.equalTo(-8)
                 $0.left.equalTo(20)
                 $0.right.equalTo(-20)
+            }
+            uploadImg.snp.remakeConstraints {
+                $0.width.height.equalTo(28)
+                $0.right.equalTo(-24)
+                $0.bottom.equalTo(-11)
+//                $0.bottom.equalToSuperview()
+//                $0.top.right.equalToSuperview()
             }
             
             //            scrollView.layer.borderWidth = 1
@@ -565,8 +665,8 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
             }
             
             
-            commentTableView.layer.borderWidth = 1
-            commentTableView.layer.borderColor = UIColor.red.cgColor
+//            commentTableView.layer.borderWidth = 1
+//            commentTableView.layer.borderColor = UIColor.red.cgColor
             commentTableView.backgroundColor = .blue
             commentTableView.snp.makeConstraints {
                 $0.top.equalTo(line2.snp.bottom)
@@ -580,8 +680,8 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
             scrollView.snp.remakeConstraints {
                 $0.top.left.right.bottom.equalTo(self.safeAreaLayoutGuide)
             }
+            self.setNeedsDisplay()
         }
-        scrollView.updateContentSize()
     }
     
     func initImageArr(_ imageArr : [String], completion : @escaping(Bool) -> ()){
@@ -624,6 +724,10 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
         viewModel.didFinishFeedCommentFetch = {
             smLog("\(self.viewModel.feedComment)")
             self.feedComment = self.viewModel.feedComment
+            
+            self.commentTableView.delegate = self
+            self.commentTableView.dataSource = self
+            self.commentTableView.reloadData()
         }
     }
     
@@ -678,16 +782,44 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
                 let img = self.bookmark.image
                 
                 if img!.isEqual(UIImage(systemName: "bookmark")) {
-                    smLog("1")
+                    toast("스크랩 완료")
                     self.bookmark.image = UIImage(systemName: "bookmark.fill")
                     self.bookmark.tintColor = UIColor.magnifyingGlassColor
                 }else {
-                    smLog("2")
+                    toast("스크랩 취소")
                     self.bookmark.image = UIImage(systemName: "bookmark")
                     self.bookmark.tintColor = UIColor.black
                 }
             }
+        
+        case 4: // 댓글 작성 버튼
+            guard let comment = commentTextView.text else {helper.showAlert(vc: self, message: "댓글을 작성해주세요."); return }
             
+            let param : Dictionary<String, Any> = [
+                "feedSeq": feedSeq,
+                "userSeq": getMyUserSeq(),
+                "comment": comment,
+                "parentCommentSeq": parentCommentSeq
+            ]
+            
+            smLog("\(param)")
+            LoadingIndicator.showLoading()
+            
+            viewModel.commentRegister(param)
+            viewModel.didFinishCommentRegisterFetch = {
+                self.commentTextView.text = self.textViewPlaceHolder
+                self.commentTextView.textColor = .lightGray
+                self.commentTextView.resignFirstResponder()
+                
+                self.getFeedComment()
+                
+                guard let feedInfo = self.feedInfo else { return }
+                self.setUpContent(feedInfo)
+            }
+            
+            UIView.animate(withDuration: 1.0, animations: {
+                LoadingIndicator.hideLoading()
+            })
         default:
             print("default")
         }
@@ -717,7 +849,11 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate {
 
 extension FeedDetailView : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        scrollView.updateContentSize()
+        self.setNeedsDisplay()
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -729,7 +865,9 @@ extension FeedDetailView : UITableViewDelegate, UITableViewDataSource {
         guard let feedComment = feedComment, let content = feedComment.content else {return UITableViewCell()}
         let cell = tableView.dequeueReusableCell(withIdentifier: "CommentTableViewCell", for: indexPath) as! CommentTableViewCell
         let cellContent = content[indexPath.row]
-        cell.setUpCell(cellContent)
+        cell.delegate = self
+        cell.reloadDelegate = self
+        cell.comment = cellContent
         
         return cell
     }

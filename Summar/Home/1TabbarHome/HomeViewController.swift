@@ -10,14 +10,14 @@ import UIKit
 import SnapKit
 import JJFloatingActionButton
 
-final class HomeViewController : UIViewController, HomeViewDelegate, ScrollBarHidden {
-    func scrollBarInterAction(_ handler: Bool) {
-        DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
-                self.navigationController?.setNavigationBarHidden(handler, animated: true)
-            }, completion: nil)
-        }
-    }
+final class HomeViewController : UIViewController, HomeViewDelegate {
+//    func scrollBarInterAction(_ handler: Bool) {
+//        DispatchQueue.main.async {
+//            UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
+//                self.navigationController?.setNavigationBarHidden(handler, animated: true)
+//            }, completion: nil)
+//        }
+//    }
     
     func pushScreen(_ VC: UIViewController, _ any: Any) {
         if VC.isKind(of: FeedDetailViewController.self) {
@@ -66,7 +66,7 @@ final class HomeViewController : UIViewController, HomeViewDelegate, ScrollBarHi
     
     func configureDelegate() {
         homeView.homeViewDelegate = self
-        homeView.delegate = self
+//        homeView.delegate = self
     }
     
     /// UI 초기설정

@@ -20,6 +20,11 @@ final class FeedDetailViewController: UIViewController, PushDelegate {
             VC.userSeq = any as? Int
             
             self.navigationController?.pushViewController(VC, animated: true)
+        }else if VC.isKind(of: ReportViewController.self) {
+            let VC = ReportViewController()
+            VC.param = any as! Dictionary<String, Any>
+            
+            self.navigationController?.pushViewController(VC, animated: true)
         }
     }
     
@@ -43,9 +48,9 @@ final class FeedDetailViewController: UIViewController, PushDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         guard let feedInfo = feedInfo else {return}
-        feedView.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
-        feedView.setUpContent(feedInfo)
-//        feedView.getFeedComment() // 댓글 서버 통신
+//        for _ in 0..<2 { //TEST
+            feedView.setUpContent(feedInfo)
+//        }
     }
     
     /// UI 초기설정
@@ -55,11 +60,11 @@ final class FeedDetailViewController: UIViewController, PushDelegate {
         // MARK: - NavigationBar
         
         let leftBarBtn = self.navigationItem.makeSFSymbolButton(self, action: #selector(popView), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
-        let rightBarBtn1 = self.navigationItem.makeSFSymbolButtonWidth30(self, action: #selector(share), uiImage: UIImage(named: "share")!, tintColor: .black)
+//        let rightBarBtn1 = self.navigationItem.makeSFSymbolButtonWidth30(self, action: #selector(share), uiImage: UIImage(named: "share")!, tintColor: .black)
         let rightBarBtn2 = self.navigationItem.makeSFSymbolButtonWidth30(self, action: #selector(kebabMenu), uiImage: UIImage(named: "kebabMenu")!, tintColor: .black)
         
         self.navigationItem.leftBarButtonItem = leftBarBtn
-        self.navigationItem.rightBarButtonItems = [rightBarBtn2, rightBarBtn1]
+        self.navigationItem.rightBarButtonItems = [rightBarBtn2]//, rightBarBtn1]
         // MARK: - addView
         self.view.addSubview(feedView)
         feedView.snp.makeConstraints{

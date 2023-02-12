@@ -253,6 +253,8 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
+        
+        scrollView.updateContentSize()
     }
     
     func setUI() {
@@ -384,6 +386,8 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
                 print("상대방 피드")
                 notMyFeedSetup(opponentUserSeq, myUserSeq)
             }
+            
+            self.setNeedsDisplay()
         }
     }
     
@@ -604,8 +608,8 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
             scrollView.addSubview(portfolioTableView)
             portfolioTableView.snp.makeConstraints {
                 $0.top.equalTo(line2.snp.bottom)
-                $0.left.right.equalTo(self.safeAreaLayoutGuide)
-                $0.height.equalTo(2500)
+                $0.left.right.bottom.equalToSuperview()
+//                $0.height.equalTo(2500)
             }
         }else {
             smLog("")
@@ -630,7 +634,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
                 $0.centerX.equalToSuperview()
             }
         }
-        scrollView.updateContentSize()
+        self.setNeedsDisplay()
     }
     
     func setProfileImage(_ imageView: UIImageView,_ urlString: String?) {
@@ -670,6 +674,10 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
 }
 
 extension MyInfoView: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        self.setNeedsDisplay()
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
@@ -685,7 +693,6 @@ extension MyInfoView: UITableViewDelegate, UITableViewDataSource {
         cell.delegate = self
         cell.setUpCell(feed)
         
-        scrollView.updateContentSize()
         return cell
     }
     

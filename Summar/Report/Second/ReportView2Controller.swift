@@ -7,9 +7,11 @@
 
 import Foundation
 import UIKit
+import Toast_Swift
 
 final class ReportView2Controller: UIViewController, ViewAttributes, UpdateNavigationBar{
     let helper = Helper()
+    let viewModel = ReportViewModel()
     let reportView = ReportView2()
     
     var param : Dictionary<String, Any> = [:]
@@ -32,6 +34,9 @@ final class ReportView2Controller: UIViewController, ViewAttributes, UpdateNavig
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        smLog("\(param)")
+        reportView.delegate = self
+        
         setUI()
         setAttributes()
     }
@@ -46,10 +51,10 @@ final class ReportView2Controller: UIViewController, ViewAttributes, UpdateNavig
                     NSAttributedString.Key.font: FontManager.getFont(Font.SemiBold.rawValue).medium15Font,
                     NSAttributedString.Key.foregroundColor: UIColor.magnifyingGlassColor],
                 for: .normal)
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
         
         reportView.reportReason = self.reportReason
-        reportView.opponsentUserSeq = self.opponsentUserSeq
-        reportView.feedSeq = self.feedSeq
+        reportView.param = self.param
         self.view.addSubview(reportView)
     }
     
@@ -61,7 +66,11 @@ final class ReportView2Controller: UIViewController, ViewAttributes, UpdateNavig
     }
     
     func updateNavigationBar() {
-        self.navigationItem.rightBarButtonItem?.isEnabled = true
+        if reportView.sendBool {
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
+        }else {
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
+        }
     }
     
     @objc func popScreen() {
@@ -70,5 +79,19 @@ final class ReportView2Controller: UIViewController, ViewAttributes, UpdateNavig
     
     @objc func sendReport(){
         smLog("")
+        
+        let reportType = reportView.report1TextField.text
+        let reportContent = reportView.view2TextView.text
+        
+        param["reportType"] = reportType
+        param["reportContent"] = reportContent
+        
+        viewModel.report(param)
+        viewModel.didFinishFetch = {
+            toast("신고완료, 관리자가 검토후 조치하겠습니다.")
+            
+            let controller = self.navigationController?.viewControllers[(self.navigationController?.viewControllers.count)! - 3]
+            self.navigationController?.popToViewController(controller!, animated: true)
+        }
     }
 }

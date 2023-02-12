@@ -12,9 +12,10 @@ final class ReportViewController: UIViewController, ViewAttributes, PushDelegate
     func pushScreen(_ VC: UIViewController, _ any: Any?) {
         let VC = VC as! ReportView2Controller
         
-        VC.opponsentUserSeq = self.opponsentUserSeq
-        VC.feedSeq = self.feedSeq
+//        VC.opponsentUserSeq = self.opponsentUserSeq
+//        VC.feedSeq = self.feedSeq
         VC.reportReason = any as! String
+        VC.param = self.param
         self.navigationController?.pushViewController(VC, animated: true)
     }
     

@@ -171,14 +171,13 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
         }
     }
     
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        
-        if(velocity.y>0) {
-            self.delegate?.scrollBarInterAction(true)
-        } else {
-            self.delegate?.scrollBarInterAction(false)
-            
-        }
-    }
+//    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+//        
+//        if(velocity.y>0) {
+//            self.delegate?.scrollBarInterAction(true)
+//        } else {
+//            self.delegate?.scrollBarInterAction(false)
+//        }
+//    }
     
 }
