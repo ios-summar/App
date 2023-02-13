@@ -224,9 +224,11 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         view.estimatedRowHeight = 130
         view.rowHeight = UITableView.automaticDimension
         
-        //        view.layer.borderWidth = 1
+        view.layer.borderWidth = 1
         view.backgroundColor = .blue
         view.register(PortFolioTableViewCell.self, forCellReuseIdentifier: "PortFolioTableViewCell")
+        view.delegate = self
+        view.dataSource = self
         return view
     }()
     lazy var notExist : UIImageView = {
@@ -375,19 +377,16 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     // MARK: - 내 피드인지, 다른 사용자의 피드인지 확인
     /// 내 피드인지, 다른 사용자의 피드인지 확인
     func infoCheck(_ userInfo : UserInfo?) {
-        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
-            guard let userSeq = value["userSeq"], let userInfo = userInfo, let opponentUserSeq = userInfo.result.userSeq else {return}
-            let myUserSeq: Int = userSeq as! Int
-            
-            if myUserSeq == opponentUserSeq {
-                print("내 피드")
-                myFeedSetUp()
-            }else {
-                print("상대방 피드")
-                notMyFeedSetup(opponentUserSeq, myUserSeq)
-            }
-            
-            self.setNeedsDisplay()
+        guard let userInfo = userInfo, let opponentUserSeq = userInfo.result.userSeq else {return}
+        
+        getPortfolio(opponentUserSeq)
+        
+        if getMyUserSeq() == opponentUserSeq {
+            print("내 피드")
+            myFeedSetUp()
+        }else {
+            print("상대방 피드")
+            notMyFeedSetup(opponentUserSeq, getMyUserSeq())
         }
     }
     
@@ -594,6 +593,8 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         viewModel.didFinishPortfolioFetch = {
             self.feedSelectResponse = self.viewModel.feedSelectResponse
             self.setPortfolio(self.feedSelectResponse)
+            
+            self.portfolioTableView.reloadData()
         }
     }
     
@@ -608,7 +609,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
             scrollView.addSubview(portfolioTableView)
             portfolioTableView.snp.makeConstraints {
                 $0.top.equalTo(line2.snp.bottom)
-                $0.left.right.bottom.equalToSuperview()
+                $0.left.right.equalTo(self.safeAreaLayoutGuide)
 //                $0.height.equalTo(2500)
             }
         }else {

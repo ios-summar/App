@@ -25,6 +25,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
     }
     
     func tableViewReload() {
+        smLog("commentTableView.reloadData()")
         self.commentTableView.reloadData()
         
         guard let feedInfo = feedInfo else { return }
@@ -339,8 +340,8 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
         
         // 테이블뷰 왼쪽 마진 없애기
         view.separatorStyle = .none
-        view.estimatedRowHeight = 60
-        view.rowHeight = UITableView.automaticDimension
+//        view.estimatedRowHeight = 60
+//        view.rowHeight = UITableView.automaticDimension
         view.register(CommentTableViewCell.self, forCellReuseIdentifier: "CommentTableViewCell")
         
         view.layer.borderWidth = 1
@@ -423,16 +424,6 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
         viewModel.didFinishFetch = {
             self.feedInfo = self.viewModel.feedInfo
             guard let likeYn = self.feedInfo?.likeYn, let commentYn = self.feedInfo?.commentYn, let totalLikeCount = self.feedInfo?.totalLikeCount, let totalCommentCount = self.feedInfo?.totalCommentCount, let scrapYn = self.feedInfo?.scrapYn else {return}
-            
-//            guard let commentYn = self.viewModel.commentYn else {return}
-//            let alphaCGFloat = commentYn ? 1.0 : 0.0
-//
-//            // 댓글 막아놓음
-//            self.bubbleImage.alpha = alphaCGFloat
-//            self.commentCount.alpha = alphaCGFloat
-//
-//            // 댓글 활성화 => addSubView
-//            self.setCommentTableView(commentYn)
             
             // 프로필
             self.setProfileImage(self.profileImg, self.viewModel.profileImgURLString) // 프로필 사진
@@ -800,10 +791,15 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
             smLog("\(self.viewModel.feedComment)")
             self.feedComment = self.viewModel.feedComment
             
+            smLog("commentTableView.reloadData()")
             self.commentTableView.delegate = self
             self.commentTableView.dataSource = self
-            self.commentTableView.reloadData()
+//            self.commentTableView.reloadData() // 이 부분을 비동기식 처리가 끝난후 해야함
+            
+            self.commentTableView.estimatedRowHeight = UITableView.automaticDimension
+            self.commentTableView.rowHeight = UITableView.automaticDimension
         }
+        
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

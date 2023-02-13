@@ -40,14 +40,12 @@ final class CommentTableViewCell: UITableViewCell, ViewAttributes, PushDelegate,
             tableView.delegate = self
             tableView.reloadData()
             
-//            tableView.estimatedRowHeight = 110
-//            tableView.rowHeight = UITableView.automaticDimension
-            
-            self.layoutIfNeeded()
+            tableView.estimatedRowHeight = UITableView.automaticDimension
+            tableView.rowHeight = UITableView.automaticDimension
         }
     }
     
-    let tableView: UITableView = {
+    lazy var tableView: UITableView = {
         let view = ContentSizedTableView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .blue
@@ -65,12 +63,6 @@ final class CommentTableViewCell: UITableViewCell, ViewAttributes, PushDelegate,
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-
-//        tableView.beginUpdates()
-//        tableView.reloadData()
-//        tableView.endUpdates()
-        
-//        print(tableView.intrinsicContentSize.height)
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -97,9 +89,9 @@ final class CommentTableViewCell: UITableViewCell, ViewAttributes, PushDelegate,
 }
 
 extension CommentTableViewCell: UITableViewDelegate, UITableViewDataSource {
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return UITableView.automaticDimension
-//    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let comment = comment, let childCommentsCount = comment.childCommentsCount else {return 0}
@@ -108,6 +100,7 @@ extension CommentTableViewCell: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let childCommentsCount = comment?.childCommentsCount else {return UITableViewCell()}
         
         switch indexPath.row {
         case 0:
@@ -116,8 +109,6 @@ extension CommentTableViewCell: UITableViewDelegate, UITableViewDataSource {
             cellP.delegate = self
             cellP.reloadDelegae = self
             cellP.replyDelegate = self
-//            cellP.layer.borderColor = UIColor.magenta.cgColor
-//            cellP.layer.borderWidth = 1
             
             cellP.setUpCell(comment)
             return cellP
@@ -126,8 +117,6 @@ extension CommentTableViewCell: UITableViewDelegate, UITableViewDataSource {
             let cellC = tableView.dequeueReusableCell(withIdentifier: "CommentChildTableViewCell", for: indexPath) as! CommentChildTableViewCell
             cellC.delegate = self
             cellC.reloadDelegae = self
-//            cellC.layer.borderColor = UIColor.red.cgColor
-//            cellC.layer.borderWidth = 1
             
             cellC.setUpCell(childComment)
             return cellC
