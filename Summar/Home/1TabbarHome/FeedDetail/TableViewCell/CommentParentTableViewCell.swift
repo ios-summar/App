@@ -12,9 +12,14 @@ protocol TableViewReload: AnyObject {
     func tableViewReload()
 }
 
+protocol ReplyDelegate: AnyObject {
+    func reply(parentCommentSeq: Int, userNickname: String, activated: Bool)
+}
+
 final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
     weak var delegate: PushDelegate?
     weak var reloadDelegae: TableViewReload?
+    weak var replyDelegate: ReplyDelegate?
     let helper = Helper()
     let viewModel = FeedDetailViewModel()
     var comment: Comment?
@@ -105,14 +110,17 @@ final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
             nickName.text = user.userNickname
             major.text = "\(major2) / \(compareDate(comment.createdDate))"
             contentsLabel.text = comment.comment
+            contentsLabel.textColor = .black
             helper.lineSpacing(contentsLabel, 5)
+            
         case false:
             profileImg.image = UIImage(named: "NonProfile")
             nickName.text = "(알 수 없음)"
             major.text = ""
-            contentsLabel.text = "(삭제된 댓글입니다)"
+            contentsLabel.text = "(삭제된 댓글입니다.)"
             contentsLabel.textColor = .lightGray
             helper.lineSpacing(contentsLabel, 5)
+            
         default:
             break
         }
@@ -151,7 +159,8 @@ final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
     
     
     func setUI(){
-//        contentView.layer.borderWidth = 1
+        contentView.backgroundColor = .systemGreen
+        
         contentView.addSubview(profileImg)
         contentView.addSubview(nickName)
         contentView.addSubview(major)
@@ -192,7 +201,7 @@ final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
         commentBtn.snp.makeConstraints { (make) in
             
             make.left.equalTo(major.snp.left)
-            make.top.equalTo(contentsLabel.snp.bottom).offset(10)
+            make.top.equalTo(contentsLabel.snp.bottom).offset(5)
             make.bottom.equalTo(0)
         }
     }
@@ -212,7 +221,7 @@ final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
         
     }
     @objc func btnAction(_ sender: Any){
-        guard let userSeq = comment?.user?.userSeq, let feedCommentSeq = comment?.feedCommentSeq, let feedSeq = comment?.feedSeq, let activated = comment?.activated else {return}
+        guard let userSeq = comment?.user?.userSeq, let userNickname = comment?.user?.userNickname , let feedCommentSeq = comment?.feedCommentSeq, let feedSeq = comment?.feedSeq, let activated = comment?.activated else {return}
         let tag = (sender as AnyObject).tag as! Int
         
             
@@ -256,6 +265,7 @@ final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
             case 2:
                 smLog("2")
                 
+                self.replyDelegate?.reply(parentCommentSeq: feedCommentSeq, userNickname: userNickname, activated: activated)
             default:
                 break
             }

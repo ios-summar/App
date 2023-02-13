@@ -9,7 +9,7 @@ import UIKit
 
 final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
     weak var delegate: PushDelegate?
-    
+    weak var refreshDelegate: RefreshFollowList?
     let viewModel = MyInfoViewModel()
     var userSeq: Int?
     var setUpTuple: (String, Bool) = ("", true)
@@ -88,6 +88,9 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
         case ("following", true): // 팔로잉, 내 팔로우 리스트
             print("#팔로잉, 내피드 (following, true)")
             btn.setTitle("팔로우 취소", for: .normal)
+            btn.backgroundColor = UIColor.Gray02
+            btn.setTitleColor(UIColor.init(r: 70, g: 76, b: 83), for: .normal)
+            
         case ("follower", false), ("following", false): // 팔로워, 내 팔로우 리스트 아님
             guard let followStatus = follow.followStatus, let followSeq = follow.userSeq else {return}
             print("#팔로워, 내피드 아님 (follower, false), #팔로잉, 내피드 아님 (following, false) \(followStatus)")
@@ -191,6 +194,8 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
             viewModel.followAction(param, "POST")
             viewModel.didFinishFollowFetch = {
                 self.followBtn.removeFromSuperview()
+                
+                toast("팔로우")
             }
         case 2:
             print("삭제, 팔로우 취소, 팔로우")
@@ -202,31 +207,49 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
                 if text == "삭제" {
                     smLog("삭제(상대 userSeq -> 내 userSeq)")
                     
-                    let param : Dictionary<String, Int> = ["followedUserSeq": getMyUserSeq(), "followingUserSeq": opponentUserSeq]
+                    let param : Dictionary<String, Int> = [
+                        "followedUserSeq": getMyUserSeq(),
+                        "followingUserSeq": opponentUserSeq
+                    ]
+                    
                     viewModel.followAction(param, "DELETE")
                     viewModel.didFinishFollowFetch = {
+                        self.refreshDelegate?.refreshTabManTitle()
+                        toast("삭제됨")
                     }
                 }
             case ("following", true),("follower", false), ("following", false): // (팔로잉, 내피드), (팔로워, 내피드 아님), (팔로잉, 내피드 아님)
                 if text == "팔로우 취소" {
                     smLog("언팔, 삭제(내 userSeq \(getMyUserSeq()) -> 상대 userSeq\(opponentUserSeq)")
                     
-                    let param : Dictionary<String, Int> = ["followedUserSeq": opponentUserSeq, "followingUserSeq": getMyUserSeq()]
+                    let param : Dictionary<String, Int> = [
+                        "followedUserSeq": opponentUserSeq,
+                        "followingUserSeq": getMyUserSeq()
+                    ]
+                    
                     viewModel.followAction(param, "DELETE")
                     viewModel.didFinishFollowFetch = {
                         self.btn.setTitle("팔로우", for: .normal)
                         self.btn.backgroundColor = UIColor.magnifyingGlassColor
                         self.btn.setTitleColor(UIColor.white, for: .normal)
+                        
+                        toast("팔로우 취소")
                     }
                 }else if text == "팔로우" {
                     smLog("다시 팔로우, 추가(내 userSeq\(getMyUserSeq()) -> 상대 userSeq\(opponentUserSeq)")
                     
-                    let param : Dictionary<String, Int> = ["followedUserSeq": opponentUserSeq, "followingUserSeq": getMyUserSeq()]
+                    let param : Dictionary<String, Int> = [
+                        "followedUserSeq": opponentUserSeq,
+                        "followingUserSeq": getMyUserSeq()
+                    ]
+                    
                     viewModel.followAction(param, "POST")
                     viewModel.didFinishFollowFetch = {
                         self.btn.setTitle("팔로우 취소", for: .normal)
                         self.btn.backgroundColor = UIColor.Gray02
                         self.btn.setTitleColor(UIColor.init(r: 70, g: 76, b: 83), for: .normal)
+                        
+                        toast("팔로우")
                     }
                 }
             default:

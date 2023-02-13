@@ -44,6 +44,7 @@ final class FollowerListViewController: UIViewController, PushDelegate, ViewAttr
         let myFollow = userSeq == getMyUserSeq()  // true => 내 팔로우 리스트, false => 내 팔로우 리스트 아님
         
         followerListView.userSeq = userSeq
+        followerListView.myFollow = myFollow
         followerListView.getFollowerList(userSeq, myFollow)
     }
     

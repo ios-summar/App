@@ -71,7 +71,7 @@ final class CommentChildTableViewCell: UITableViewCell, ViewAttributes{
     }()
     lazy var contentsLabel : UILabel = {
         let UILabel = UILabel()
-//        UILabel.layer.borderWidth = 1
+        UILabel.layer.borderWidth = 1
         UILabel.font = FontManager.getFont(Font.SemiBold.rawValue).smallFont
         UILabel.textColor = UIColor.homeContentsColor
         UILabel.textAlignment = .left
@@ -92,14 +92,17 @@ final class CommentChildTableViewCell: UITableViewCell, ViewAttributes{
             nickName.text = user.userNickname
             major.text = "\(major2) / \(compareDate(comment.createdDate))"
             contentsLabel.text = comment.comment
+            contentsLabel.textColor = .black
             helper.lineSpacing(contentsLabel, 5)
+            
         case false:
             profileImg.image = UIImage(named: "NonProfile")
             nickName.text = "(알 수 없음)"
             major.text = ""
-            contentsLabel.text = "(삭제된 댓글입니다)"
+            contentsLabel.text = "(삭제된 댓글입니다.)"
             contentsLabel.textColor = .lightGray
             helper.lineSpacing(contentsLabel, 5)
+            
         default:
             break
         }
@@ -138,7 +141,8 @@ final class CommentChildTableViewCell: UITableViewCell, ViewAttributes{
     
     
     func setUI(){
-//        contentView.layer.borderWidth = 1
+        contentView.backgroundColor = .systemBlue
+        
         contentView.addSubview(profileImg)
         contentView.addSubview(nickName)
         contentView.addSubview(major)

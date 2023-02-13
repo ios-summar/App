@@ -8,9 +8,8 @@
 import Foundation
 import UIKit
 
-final class CommentTableViewCell: UITableViewCell, ViewAttributes, PushDelegate, TableViewReload {
+final class CommentTableViewCell: UITableViewCell, ViewAttributes, PushDelegate, TableViewReload, ReplyDelegate{
     weak var delegate: PushDelegate?
-    weak var reloadDelegate: TableViewReload?
     func pushScreen(_ VC: UIViewController, _ any: Any?) {
         if VC.isKind(of: ProfileViewController.self) {
             let VC = ProfileViewController()
@@ -25,8 +24,14 @@ final class CommentTableViewCell: UITableViewCell, ViewAttributes, PushDelegate,
         }
     }
     
+    weak var reloadDelegate: TableViewReload?
     func tableViewReload() {
         self.reloadDelegate?.tableViewReload()
+    }
+    
+    weak var replyDelegate: ReplyDelegate?
+    func reply(parentCommentSeq: Int, userNickname: String, activated: Bool) {
+        self.replyDelegate?.reply(parentCommentSeq: parentCommentSeq, userNickname: userNickname, activated: activated)
     }
     
     var comment: Comment? {
@@ -53,6 +58,8 @@ final class CommentTableViewCell: UITableViewCell, ViewAttributes, PushDelegate,
         view.separatorStyle = .none
         view.register(CommentParentTableViewCell.self, forCellReuseIdentifier: "CommentParentTableViewCell")
         view.register(CommentChildTableViewCell.self, forCellReuseIdentifier: "CommentChildTableViewCell")
+        
+        view.layer.borderWidth = 1
         return view
     }()
     
@@ -78,12 +85,10 @@ final class CommentTableViewCell: UITableViewCell, ViewAttributes, PushDelegate,
     }
     
     func setUI() {
-        smLog("")
         self.contentView.addSubview(tableView)
     }
     
     func setAttributes() {
-        smLog("")
         tableView.snp.makeConstraints {
             
             $0.top.left.right.bottom.equalToSuperview()
@@ -110,6 +115,7 @@ extension CommentTableViewCell: UITableViewDelegate, UITableViewDataSource {
             let cellP = tableView.dequeueReusableCell(withIdentifier: "CommentParentTableViewCell", for: indexPath) as! CommentParentTableViewCell
             cellP.delegate = self
             cellP.reloadDelegae = self
+            cellP.replyDelegate = self
 //            cellP.layer.borderColor = UIColor.magenta.cgColor
 //            cellP.layer.borderWidth = 1
             

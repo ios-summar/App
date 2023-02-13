@@ -8,7 +8,8 @@
 import Foundation
 import UIKit
 
-final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UITextViewDelegate, PushDelegate, TableViewReload {
+final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UITextViewDelegate, PushDelegate, TableViewReload, ReplyDelegate{
+    weak var delegate: PushDelegate?
     func pushScreen(_ VC: UIViewController, _ any: Any?) {
         if VC.isKind(of: ProfileViewController.self) {
             let VC = ProfileViewController()
@@ -30,7 +31,48 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
         setUpContent(feedInfo)
     }
     
-    weak var delegate: PushDelegate?
+    func reply(parentCommentSeq: Int, userNickname: String, activated: Bool) {
+        self.parentCommentSeq = parentCommentSeq
+        
+        addSubview(replyView)
+        replyView.addSubview(replyLabel)
+        replyView.addSubview(replyXmark)
+        
+        switch activated {
+        case true:
+            replyLabel.text = "\(userNickname)님에게 답글 쓰기.."
+        case false:
+            replyLabel.text = "(알 수 없음)님에게 답글 쓰기.."
+        default:
+            break
+        }
+        
+        replyView.snp.makeConstraints {
+
+            $0.left.right.equalToSuperview()
+            $0.bottom.equalTo(commentView.snp.top)
+            $0.height.equalTo(40)
+        }
+        replyXmark.snp.makeConstraints {
+
+            $0.centerY.equalToSuperview()
+            $0.right.equalTo(-20)
+            $0.height.equalTo(20)
+            $0.width.equalTo(15)
+        }
+        replyLabel.snp.makeConstraints {
+
+            $0.bottom.top.equalToSuperview()
+            $0.left.equalTo(20)
+            $0.right.equalTo(replyXmark.snp.left)
+        }
+        scrollView.snp.remakeConstraints {
+
+            $0.top.left.right.equalToSuperview()
+            $0.bottom.equalTo(replyLabel.snp.top)
+        }
+    }
+    
     let viewModel = FeedDetailViewModel()
     let homeViewModel = HomeViewModel(nil, nil)
     let helper = Helper.shared
@@ -300,6 +342,10 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
         view.estimatedRowHeight = 60
         view.rowHeight = UITableView.automaticDimension
         view.register(CommentTableViewCell.self, forCellReuseIdentifier: "CommentTableViewCell")
+        
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.red.cgColor
+        
         return view
     }()
     let line2 : UIView = {
@@ -330,6 +376,35 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
         view.image = UIImage(named: "upload")
         view.isUserInteractionEnabled = true
         view.tag = 4
+        
+        let recognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(didSelect(_:))
+        )
+        view.addGestureRecognizer(recognizer)
+        
+        return view
+    }()
+    lazy var replyView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.Gray02
+        return view
+    }()
+    lazy var replyLabel: UILabel = {
+        
+        let view = UILabel()
+        view.backgroundColor = UIColor.Gray02
+        view.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        view.textColor = .lightGray
+        return view
+    }()
+    lazy var replyXmark: UIImageView = {
+        
+        let view = UIImageView()
+        view.image = UIImage(systemName: "xmark")
+        view.tintColor = .black
+        view.isUserInteractionEnabled = true
+        view.tag = 5
         
         let recognizer = UITapGestureRecognizer(
             target: self,
@@ -815,11 +890,25 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
                 
                 guard let feedInfo = self.feedInfo else { return }
                 self.setUpContent(feedInfo)
+                
+                self.replyView.removeFromSuperview()
+                self.scrollView.snp.remakeConstraints {
+                    $0.top.left.right.equalToSuperview()
+                    $0.bottom.equalTo(self.commentView.snp.top)
+                }
             }
             
             UIView.animate(withDuration: 1.0, animations: {
                 LoadingIndicator.hideLoading()
             })
+        case 5: // 대댓글 RemoveView
+            self.parentCommentSeq = 0
+            
+            replyView.removeFromSuperview()
+            scrollView.snp.remakeConstraints {
+                $0.top.left.right.equalToSuperview()
+                $0.bottom.equalTo(commentView.snp.top)
+            }
         default:
             print("default")
         }
@@ -867,8 +956,9 @@ extension FeedDetailView : UITableViewDelegate, UITableViewDataSource {
         let cellContent = content[indexPath.row]
         cell.delegate = self
         cell.reloadDelegate = self
-        cell.comment = cellContent
+        cell.replyDelegate = self
         
+        cell.comment = cellContent
         return cell
     }
 }

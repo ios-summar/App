@@ -8,10 +8,17 @@
 import Foundation
 import UIKit
 
-final class FollowerListView: UIView, ViewAttributes {
+final class FollowerListView: UIView, ViewAttributes, RefreshFollowList{
     weak var delegate: PushDelegate?
+    weak var refreshDelegate: RefreshFollowList?
+    func refreshTabManTitle() {
+        guard let userSeq = userSeq, let myFollow = myFollow else {return}
+        getFollowerList(userSeq, myFollow)
+    }
+    
     let helper = Helper()
     var userSeq: Int?
+    var myFollow: Bool?
     
     var followerList: SearchUserList? {
         didSet {
@@ -170,6 +177,7 @@ extension FollowerListView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FollowListTableViewCell", for: indexPath) as! FollowListTableViewCell
+        cell.refreshDelegate = self
         guard let follower = followerList?.content?[indexPath.row], let userSeq = userSeq else {return UITableViewCell()}
         let myUserSeq = getMyUserSeq() == userSeq
         

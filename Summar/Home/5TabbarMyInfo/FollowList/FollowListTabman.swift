@@ -9,7 +9,11 @@ import Foundation
 import Tabman
 import Pageboy
 
-class FollowListTabman: TabmanViewController, ViewAttributes {
+protocol RefreshFollowList: AnyObject {
+    func refreshTabManTitle()
+}
+
+class FollowListTabman: TabmanViewController, ViewAttributes{
     var userSeq: Int?
     let VC1 = FollowerListViewController()
     let VC2 = FollowingListViewController()
@@ -124,12 +128,14 @@ extension FollowListTabman: PageboyViewControllerDataSource, TMBarDataSource {
     }
     
     func barItem(for bar: TMBar, at index: Int) -> TMBarItemable {
-        guard let followerList = followerList?.totalRecordCount, let followingList = followingList?.totalRecordCount else {return TMBarItem(title: "")}
+//        guard let followerList = followerList?.totalRecordCount, let followingList = followingList?.totalRecordCount else {return TMBarItem(title: "")}
         
         if index == 0 {
-            return TMBarItem(title: "\(followerList) 팔로워")
+//            return TMBarItem(title: "\(followerList) 팔로워")
+            return TMBarItem(title: "팔로워")
         }else {
-            return TMBarItem(title: "\(followingList) 팔로잉")
+//            return TMBarItem(title: "\(followingList) 팔로잉")
+            return TMBarItem(title: "팔로잉")
         }
     }
 }
