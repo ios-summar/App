@@ -22,5 +22,6 @@ target 'Summar' do
    pod 'SafeAreaBrush' # safeAreaColor
    pod 'Tabman' # Pager
    pod 'Toast-Swift' # ToastMessage
+   pod 'SkeletonView' # 스켈레톤뷰
    
 end
