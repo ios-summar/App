@@ -10,7 +10,7 @@ import UIKit
 final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
     weak var delegate: PushDelegate?
     weak var refreshDelegate: RefreshFollowList?
-    let viewModel = MyInfoViewModel()
+    let viewModel = MyInfoViewModel(nil, nil)
     var userSeq: Int?
     var setUpTuple: (String, Bool) = ("", true)
     

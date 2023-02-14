@@ -20,6 +20,16 @@ final class MyInfoViewModel{
         }
     }
     
+    var pageIndex: Int? = nil
+    var size: Int? = nil
+    
+    init(_ pageIndex: Int?, _ size: Int?){
+        self.pageIndex = pageIndex
+        self.size = size
+        
+        print("pageIndex : \(pageIndex), size : \(size) ")
+    }
+    
     var userInfo: UserInfo? {
         didSet {
             print("MyInfoViewModel userInfo =>\n \(userInfo)")
@@ -34,6 +44,14 @@ final class MyInfoViewModel{
             self.didFinishPortfolioFetch?()
         }
     }
+    
+    var temporaryResponse: FeedSelectResponse? {
+        didSet {
+            print("MyInfoViewModel temporaryResponse =>\n \(temporaryResponse)")
+            self.didFinishTemporarySaveFetch?()
+        }
+    }
+    
     var error: Error? {
         didSet { self.showAlertClosure?() }
     }
@@ -58,6 +76,7 @@ final class MyInfoViewModel{
     var didFinishFollowCheckFetch: (() -> ())?
     var didFinishFollowFetch: (() -> ())?
     var didFinishPortfolioFetch: (() -> ())?
+    var didFinishTemporarySaveFetch: (() -> ())?
     
     // MARK: - Network call
     func getUserInfo(_ userSeq: Int) {
@@ -130,7 +149,8 @@ final class MyInfoViewModel{
         })
     }
     
-    // MARK: - Network call
+    // MARK: - 포트폴리오
+    /// 포트폴리오
     func getPortfolio(_ userSeq: Int) {
         self.request.requestMyFeed("/feed/user/\(userSeq)?page=0&size=100000", completion: { (feedSelectResponse, error, status) in
             //error만 있을경우 서버오류
@@ -150,6 +170,35 @@ final class MyInfoViewModel{
             self.error = nil
             self.isLoading = false
             self.feedSelectResponse = feedSelectResponse
+            
+        })
+    }
+    
+    // MARK: - 임시저장
+    /// 임시저장
+    func getTemporarySave() {
+        guard let pageIndex = pageIndex, let size = size else {return}
+        let userSeq = getMyUserSeq()
+        self.request.requestMyFeed("/feed/temp/\(userSeq)/?page=\(pageIndex)&size=\(size)", completion: { (feedSelectResponse, error, status) in
+            //error만 있을경우 서버오류
+            //error,status != nil 경우 토큰 재발급
+            if let error = error, let status = status {
+                if status == 500 {
+                    print("토큰 재발급")
+                    self.request.reloadToken(status)
+                    self.getTemporarySave()
+                }
+            }else if let error = error {
+                print(error)
+                self.error = error
+                self.isLoading = false
+                return
+            }
+            smLog("\(feedSelectResponse)")
+            
+            self.error = nil
+            self.isLoading = false
+            self.temporaryResponse = feedSelectResponse
             
         })
     }

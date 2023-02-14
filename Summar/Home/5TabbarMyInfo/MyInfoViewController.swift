@@ -65,10 +65,9 @@ final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDel
                         print("게시글 삭제 로직 feedSeq => \(feedSeq)")
                         self.feedDetailViewModel.deleteFeed(feedSeq)
                         self.feedDetailViewModel.didFinishDelteFetch = {
-                            guard let value = UserDefaults.standard.dictionary(forKey: "UserInfo") else {return}
-                            let userSeq: Int = value["userSeq"] as! Int
-                            self.myInfoView.requestMyInfo(userSeq)
-                            self.myInfoView.getPortfolio(userSeq)
+                            
+                            self.myInfoView.requestMyInfo(getMyUserSeq())
+                            self.myInfoView.getPortfolio()
                         }
                     }
                 default:
@@ -159,7 +158,9 @@ final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDel
         guard let value = UserDefaults.standard.dictionary(forKey: "UserInfo") else {return}
         let userSeq: Int = value["userSeq"] as! Int
         myInfoView.requestMyInfo(userSeq)
-        myInfoView.getPortfolio(userSeq)
+        myInfoView.getPortfolio()
+        
+        // 수정화면에서 넘어올때 hide
         LoadingIndicator.hideLoading()
     }
     

@@ -36,7 +36,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     weak var homeViewDelegate : HomeViewDelegate?
     
     // MARK: - Injection
-    let viewModel = MyInfoViewModel()
+    let viewModel = MyInfoViewModel(nil, nil)
     
     // MARK: - Properties
     private var userInfo: UserInfo? {
@@ -50,11 +50,40 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
             print("followCheck \(followCheck)")
         }
     }
-    var feedSelectResponse: FeedSelectResponse? {
+    var portfolioResponse: FeedSelectResponse? {
         didSet {
             portfolioTableView.delegate = self
             portfolioTableView.dataSource = self
             portfolioTableView.reloadData()
+        }
+    }
+    
+    var temporaryResponse: FeedSelectResponse? {
+        didSet {
+            
+            if temporaryResponse?.content?.count != 0 {
+                smLog("")
+                temporarySaveCollectionView.alpha = 1.0
+                
+                scrollView.addSubview(temporarySaveCollectionView)
+                temporarySaveCollectionView.snp.makeConstraints {
+                    $0.top.equalTo(line2.snp.bottom)
+                    $0.left.equalTo(20)
+                    $0.right.equalTo(-20)
+                    $0.height.equalTo(400)
+                }
+                
+                temporarySaveCollectionView.delegate = self
+                temporarySaveCollectionView.dataSource = self
+                temporarySaveCollectionView.reloadData()
+                smLog("")
+            }else {
+                portfolioTableView.alpha = 0.0
+                temporarySaveCollectionView.alpha = 0.0
+                notExist.alpha = 1.0
+                notExistLabel.alpha = 1.0
+                notExistLabel.text = "임시 저장된 포트폴리오가 없습니다."
+            }
         }
     }
     
@@ -71,7 +100,8 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     lazy var scrollView : UIScrollView = {
         let view = UIScrollView()
         view.isScrollEnabled = true
-        view.contentSize = CGSize(width: self.frame.width, height: 1200)
+//        view.contentSize = CGSize(width: self.frame.width, height: 1200)
+        view.backgroundColor = UIColor.Gray01
         return view
     }()
     lazy var followView : UIView = {
@@ -241,6 +271,24 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         label.sizeToFit()
         return label
     }()
+    lazy var temporarySaveCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.itemSize = CGSize(width: 161, height: 214)
+        
+        
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.alpha = 0.0
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.red
+        view.showsVerticalScrollIndicator = false
+        view.isScrollEnabled = false
+        view.layer.cornerRadius = 7
+        view.register(TemporarySaveCollectionvViewCell.self, forCellWithReuseIdentifier: "TemporarySaveCollectionvViewCell")
+        
+        return view
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -372,9 +420,8 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     // MARK: - 내 피드인지, 다른 사용자의 피드인지 확인
     /// 내 피드인지, 다른 사용자의 피드인지 확인
     func infoCheck(_ userInfo : UserInfo?) {
-        guard let userInfo = userInfo, let opponentUserSeq = userInfo.result.userSeq else {return}
-        
-        getPortfolio(opponentUserSeq)
+        guard let opponentUserSeq = userInfo?.result.userSeq else {return}
+        getPortfolio()
         
         if getMyUserSeq() == opponentUserSeq {
             print("내 피드")
@@ -472,6 +519,8 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     }
     
     func touchLeft(){
+        getPortfolio()
+        
         leftBtn.titleLabel?.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
         rightBtn.titleLabel?.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
         
@@ -484,6 +533,10 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     }
     
     func touchRight(){
+        portfolioTableView.alpha = 0.0
+        
+        getTemporarySave()
+        
         rightBtn.titleLabel?.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
         leftBtn.titleLabel?.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
         
@@ -583,15 +636,26 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         
     }
     
-    func getPortfolio(_ userSeq: Int){
+    func getPortfolio(){
+        guard let userSeq = userInfo?.result.userSeq else {return}
         viewModel.getPortfolio(userSeq)
+        
         viewModel.didFinishPortfolioFetch = {
-            self.feedSelectResponse = self.viewModel.feedSelectResponse
-            self.setPortfolio(self.feedSelectResponse)
+            self.portfolioResponse = self.viewModel.feedSelectResponse
+            self.setPortfolio(self.portfolioResponse)
             
             self.portfolioTableView.delegate = self
             self.portfolioTableView.dataSource = self
             self.portfolioTableView.reloadData()
+        }
+    }
+    
+    func getTemporarySave(){
+        let viewModel = MyInfoViewModel(0, 100000)
+        viewModel.getTemporarySave()
+        
+        viewModel.didFinishTemporarySaveFetch = {
+            self.temporaryResponse = viewModel.temporaryResponse
         }
     }
     
@@ -601,6 +665,8 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         if feed.totalRecordCount != 0 {
             smLog("")
             portfolioTableView.alpha = 1.0
+            temporarySaveCollectionView.alpha = 0.0
+            notExistLabel.alpha = 1.0
             notExist.alpha = 0.0
             
             scrollView.addSubview(portfolioTableView)
@@ -611,7 +677,9 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         }else {
             smLog("")
             portfolioTableView.alpha = 0.0
+            temporarySaveCollectionView.alpha = 0.0
             notExist.alpha = 1.0
+            notExistLabel.alpha = 1.0
             
             scrollView.addSubview(notExist)
             scrollView.addSubview(notExistLabel)
@@ -680,13 +748,13 @@ extension MyInfoView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let feed = feedSelectResponse?.totalRecordCount else {return 0}
+        guard let feed = portfolioResponse?.totalRecordCount else {return 0}
         return feed
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PortFolioTableViewCell", for: indexPath) as! PortFolioTableViewCell
-        guard let feed = feedSelectResponse?.content?[indexPath.row] else {return UITableViewCell()}
+        guard let feed = portfolioResponse?.content?[indexPath.row] else {return UITableViewCell()}
         cell.delegate = self
         cell.setUpCell(feed)
         
@@ -694,7 +762,34 @@ extension MyInfoView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let feed = feedSelectResponse?.content?[indexPath.row] else {return}
+        guard let feed = portfolioResponse?.content?[indexPath.row] else {return}
         self.pushDelegate?.pushScreen(FeedDetailViewController(), feed)
     }
+}
+
+extension MyInfoView: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        self.setNeedsDisplay()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 161, height: 214)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let totalRecordCount = temporaryResponse?.totalRecordCount else {return 0}
+        smLog("\(totalRecordCount)")
+        return totalRecordCount
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        smLog("")
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TemporarySaveCollectionvViewCell", for: indexPath) as! TemporarySaveCollectionvViewCell
+        smLog("")
+        guard let content = temporaryResponse?.content?[indexPath.row] else {return UICollectionViewCell()}
+        smLog("")
+        cell.setUpCell(content)
+        return cell
+    }
+    
 }

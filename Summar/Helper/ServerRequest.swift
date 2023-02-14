@@ -337,7 +337,7 @@ final class ServerRequest: NSObject {
         }
     }
     
-    // MARK: - 마이 써머리 유저 피드
+    // MARK: - 마이 써머리 유저 피드, 임시저장
     func requestMyFeed(_ url: String, completion: @escaping (FeedSelectResponse?, Error?, Int?) -> ()) {
         let url = Server.url + url
         if let token = UserDefaults.standard.string(forKey: "accessToken") {

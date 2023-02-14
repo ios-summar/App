@@ -62,7 +62,7 @@ final class ProfileViewController : UIViewController, PushDelegate, ViewAttribut
     override func viewWillAppear(_ animated: Bool) {
         guard let userSeq = userSeq else {return}
         infoView.requestMyInfo(userSeq)
-        infoView.getPortfolio(userSeq)
+        infoView.getPortfolio()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

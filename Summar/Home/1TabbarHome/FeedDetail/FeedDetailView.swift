@@ -890,6 +890,8 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
             
             viewModel.commentRegister(param)
             viewModel.didFinishCommentRegisterFetch = {
+                self.uploadImg.alpha = 0.0
+                
                 self.commentTextView.text = self.textViewPlaceHolder
                 self.commentTextView.textColor = .lightGray
                 self.commentTextView.resignFirstResponder()
