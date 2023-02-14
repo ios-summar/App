@@ -25,7 +25,6 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
     }
     
     func tableViewReload() {
-        smLog("commentTableView.reloadData()")
         self.commentTableView.reloadData()
         
         guard let feedInfo = feedInfo else { return }
@@ -94,12 +93,34 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
                 $0.alpha = commentYn ? 1.0 : 0.0
             }
             
-            // 댓글 활성화 => addSubView
-            self.setCommentTableView(commentYn)
-            commentYn ? self.getFeedComment() : nil
         }
     }
-    var feedComment: FeedComment?
+    
+    var resultFeedComment: [Comment] = []
+    var feedComment: FeedComment? {
+        didSet {
+            guard let comment = feedComment?.content else {return}
+            resultFeedComment = []
+            
+            for i in 0 ..< comment.count {
+                resultFeedComment.append(comment[i])
+                
+                guard let childCommentsCount = comment[i].childCommentsCount, let childComment = comment[i].childComments else {return}
+                for x in 0 ..< childCommentsCount {
+                    resultFeedComment.append(childComment[x])
+                }
+            }
+            
+            self.commentTableView.delegate = self
+            self.commentTableView.dataSource = self
+            self.commentTableView.reloadData() // 이 부분을 비동기식 처리가 끝난후 해야함
+            
+            self.commentTableView.estimatedRowHeight = UITableView.automaticDimension
+            self.commentTableView.rowHeight = UITableView.automaticDimension
+        }
+    }
+    
+    
     
     var size: Int = 100000
     var totalCount: Int = 0
@@ -332,21 +353,16 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
         return view
     }()
     lazy var commentTableView: UITableView = {
+        
         let view = ContentSizedTableView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .red
         view.showsVerticalScrollIndicator = false
         view.isScrollEnabled = false
         
         // 테이블뷰 왼쪽 마진 없애기
         view.separatorStyle = .none
-//        view.estimatedRowHeight = 60
-//        view.rowHeight = UITableView.automaticDimension
-        view.register(CommentTableViewCell.self, forCellReuseIdentifier: "CommentTableViewCell")
-        
-        view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.red.cgColor
-        
+        view.register(CommentParentTableViewCell.self, forCellReuseIdentifier: "CommentParentTableViewCell")
+        view.register(CommentChildTableViewCell.self, forCellReuseIdentifier: "CommentChildTableViewCell")
         return view
     }()
     let line2 : UIView = {
@@ -424,6 +440,10 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
         viewModel.didFinishFetch = {
             self.feedInfo = self.viewModel.feedInfo
             guard let likeYn = self.feedInfo?.likeYn, let commentYn = self.feedInfo?.commentYn, let totalLikeCount = self.feedInfo?.totalLikeCount, let totalCommentCount = self.feedInfo?.totalCommentCount, let scrapYn = self.feedInfo?.scrapYn else {return}
+            
+            // 댓글 활성화 => addSubView
+            self.setCommentTableView(commentYn)
+            commentYn ? self.getFeedComment() : nil
             
             // 프로필
             self.setProfileImage(self.profileImg, self.viewModel.profileImgURLString) // 프로필 사진
@@ -790,14 +810,6 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
         viewModel.didFinishFeedCommentFetch = {
             smLog("\(self.viewModel.feedComment)")
             self.feedComment = self.viewModel.feedComment
-            
-            smLog("commentTableView.reloadData()")
-            self.commentTableView.delegate = self
-            self.commentTableView.dataSource = self
-//            self.commentTableView.reloadData() // 이 부분을 비동기식 처리가 끝난후 해야함
-            
-            self.commentTableView.estimatedRowHeight = UITableView.automaticDimension
-            self.commentTableView.rowHeight = UITableView.automaticDimension
         }
         
     }
@@ -942,19 +954,26 @@ extension FeedDetailView : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let feedComment = feedComment, let content = feedComment.content else {return 0}
-        return content.count
+        return resultFeedComment.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let feedComment = feedComment, let content = feedComment.content else {return UITableViewCell()}
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CommentTableViewCell", for: indexPath) as! CommentTableViewCell
-        let cellContent = content[indexPath.row]
-        cell.delegate = self
-        cell.reloadDelegate = self
-        cell.replyDelegate = self
+        let cellContent = resultFeedComment[indexPath.row]
         
-        cell.comment = cellContent
-        return cell
+        if cellContent.childComments != nil { // 부모 댓글
+            let cellP = tableView.dequeueReusableCell(withIdentifier: "CommentParentTableViewCell", for: indexPath) as! CommentParentTableViewCell
+            cellP.replyDelegate = self
+            cellP.delegate = self
+            cellP.reloadDelegate = self
+            cellP.setUpCell(cellContent)
+            
+            return cellP
+        }else { // 자식 댓글
+            let cellC = tableView.dequeueReusableCell(withIdentifier: "CommentChildTableViewCell", for: indexPath) as! CommentChildTableViewCell
+            cellC.delegate = self
+            cellC.setUpCell(cellContent)
+            
+            return cellC
+        }
     }
 }

@@ -48,9 +48,7 @@ final class FeedDetailViewController: UIViewController, PushDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         guard let feedInfo = feedInfo else {return}
-//        for _ in 0..<2 { //TEST
-            feedView.setUpContent(feedInfo)
-//        }
+        feedView.setUpContent(feedInfo)
     }
     
     /// UI 초기설정
@@ -129,10 +127,16 @@ final class FeedDetailViewController: UIViewController, PushDelegate {
                     switch handler {
                     case "신고하기":
                         guard let userSeq = self.feedInfo?.user?.userSeq, let feedSeq = self.feedInfo?.feedSeq else {return}
-                        let VC = ReportViewController()
                         
-                        VC.opponsentUserSeq = userSeq
-                        VC.feedSeq = feedSeq
+                        let VC = ReportViewController()
+                        let param: Dictionary<String, Any> = [
+                            "mySeq": getMyUserSeq(),
+                            "userSeq": userSeq,
+                            "feedSeq": feedSeq,
+                            "feedCommentSeq": 0
+                        ]
+                        
+                        VC.param = param
                         self.navigationController?.pushViewController(VC, animated: true)
                     default:
                         break

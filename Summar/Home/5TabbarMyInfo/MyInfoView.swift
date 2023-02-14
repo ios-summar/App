@@ -21,7 +21,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     func pushScreen(_ VC: UIViewController, _ any: Any?) {
         if VC.isKind(of: FeedDetailViewController.self){
             let VC = FeedDetailViewController()
-            self.pushDelegate?.pushScreen(FeedDetailViewController(), any)
+            self.pushDelegate?.pushScreen(VC, any)
         }else if VC.isKind(of: WriteFeedController.self){
             let VC = WriteFeedController()
             self.pushDelegate?.pushScreen(VC, any)
@@ -212,7 +212,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     }()
     
     lazy var portfolioTableView : UITableView = {
-        let view = UITableView()
+        let view = ContentSizedTableView()
         view.alpha = 0.0
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
@@ -221,14 +221,9 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         
         // 테이블뷰 왼쪽 마진 없애기
         view.separatorStyle = .none
-        view.estimatedRowHeight = 130
+        view.estimatedRowHeight = UITableView.automaticDimension
         view.rowHeight = UITableView.automaticDimension
-        
-        view.layer.borderWidth = 1
-        view.backgroundColor = .blue
         view.register(PortFolioTableViewCell.self, forCellReuseIdentifier: "PortFolioTableViewCell")
-        view.delegate = self
-        view.dataSource = self
         return view
     }()
     lazy var notExist : UIImageView = {
@@ -594,6 +589,8 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
             self.feedSelectResponse = self.viewModel.feedSelectResponse
             self.setPortfolio(self.feedSelectResponse)
             
+            self.portfolioTableView.delegate = self
+            self.portfolioTableView.dataSource = self
             self.portfolioTableView.reloadData()
         }
     }
@@ -610,7 +607,6 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
             portfolioTableView.snp.makeConstraints {
                 $0.top.equalTo(line2.snp.bottom)
                 $0.left.right.equalTo(self.safeAreaLayoutGuide)
-//                $0.height.equalTo(2500)
             }
         }else {
             smLog("")
@@ -634,8 +630,8 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
                 $0.top.equalTo(notExist.snp.bottom).offset(2)
                 $0.centerX.equalToSuperview()
             }
+            self.setNeedsDisplay()
         }
-        self.setNeedsDisplay()
     }
     
     func setProfileImage(_ imageView: UIImageView,_ urlString: String?) {

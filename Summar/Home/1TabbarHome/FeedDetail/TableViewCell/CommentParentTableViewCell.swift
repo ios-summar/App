@@ -18,7 +18,7 @@ protocol ReplyDelegate: AnyObject {
 
 final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
     weak var delegate: PushDelegate?
-    weak var reloadDelegae: TableViewReload?
+    weak var reloadDelegate: TableViewReload?
     weak var replyDelegate: ReplyDelegate?
     let helper = Helper()
     let viewModel = FeedDetailViewModel()
@@ -159,8 +159,6 @@ final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
     
     
     func setUI(){
-        contentView.backgroundColor = .systemGreen
-        
         contentView.addSubview(profileImg)
         contentView.addSubview(nickName)
         contentView.addSubview(major)
@@ -244,7 +242,7 @@ final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
                             self.viewModel.didFinishCommentRemoveFetch = {
                                 toast("댓글 삭제완료")
                                 
-                                self.reloadDelegae?.tableViewReload()
+                                self.reloadDelegate?.tableViewReload()
                             }
                             break
                         case "신고하기":

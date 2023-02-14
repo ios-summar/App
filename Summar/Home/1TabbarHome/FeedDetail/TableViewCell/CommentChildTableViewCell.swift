@@ -71,7 +71,6 @@ final class CommentChildTableViewCell: UITableViewCell, ViewAttributes{
     }()
     lazy var contentsLabel : UILabel = {
         let UILabel = UILabel()
-        UILabel.layer.borderWidth = 1
         UILabel.font = FontManager.getFont(Font.SemiBold.rawValue).smallFont
         UILabel.textColor = UIColor.homeContentsColor
         UILabel.textAlignment = .left
@@ -141,8 +140,6 @@ final class CommentChildTableViewCell: UITableViewCell, ViewAttributes{
     
     
     func setUI(){
-        contentView.backgroundColor = .systemBlue
-        
         contentView.addSubview(profileImg)
         contentView.addSubview(nickName)
         contentView.addSubview(major)
@@ -187,8 +184,13 @@ final class CommentChildTableViewCell: UITableViewCell, ViewAttributes{
     }
     
     @objc func didSelect(_ sender: UITapGestureRecognizer) {
-        guard let userSeq = comment?.user?.userSeq else {return}
-        self.delegate?.pushScreen(ProfileViewController(), userSeq)
+        guard let userSeq = comment?.user?.userSeq, let activated = comment?.activated else {return}
+        
+        if activated {
+            self.delegate?.pushScreen(ProfileViewController(), userSeq)
+        }else {
+            print("삭제된 댓글")
+        }
     }
     
     @objc func btnAction(_ sender: Any){
