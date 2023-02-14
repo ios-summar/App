@@ -191,7 +191,12 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         UILabel.sizeToFit()
         return UILabel
     }()
-    
+    lazy var profileSuperview: UIView = {
+        
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }()
     let profileview = UIView()
     let socialBadge : UIImageView = {
         let view = UIImageView()
@@ -307,27 +312,29 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         
         addSubview(line)
         addSubview(scrollView)
+        scrollView.addSubview(profileSuperview)
         
-        scrollView.addSubview(profileview)
+        profileSuperview.addSubview(profileview)
         profileview.addSubview(profileImg)
         profileview.addSubview(socialBadge)
         
-        scrollView.addSubview(nickName)
-        scrollView.addSubview(major)
-        scrollView.addSubview(followView)
+        profileSuperview.addSubview(nickName)
+        profileSuperview.addSubview(major)
         
+        profileSuperview.addSubview(followView)
         followView.addSubview(divisionLine)
         followView.addSubview(followerBtn)
-        followView.addSubview(followingBtn)
         
+        followView.addSubview(followingBtn)
         followerBtn.addSubview(followerCountLabel)
         followerBtn.addSubview(followerLabel)
         
         followingBtn.addSubview(followingCountLabel)
         followingBtn.addSubview(followingLabel)
         
-        scrollView.addSubview(introduceLabel)
+        profileSuperview.addSubview(introduceLabel)
         scrollView.addSubview(line2)
+        
     }
     
     func setAttributes() {
@@ -343,6 +350,13 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
             $0.right.equalTo(self.safeAreaLayoutGuide.snp.right)
             $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
         }
+        profileSuperview.snp.makeConstraints {
+            
+            $0.top.equalTo(0)
+            $0.left.equalTo(self.safeAreaLayoutGuide.snp.left)
+            $0.right.equalTo(self.safeAreaLayoutGuide.snp.right)
+            $0.height.equalTo(230)
+        }
         profileview.snp.makeConstraints { (make) in
             
             make.top.equalTo(20)
@@ -350,10 +364,12 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
             make.width.height.equalTo(42)
         }
         socialBadge.snp.makeConstraints { (make) in
+            
             make.width.height.equalTo(16)
             make.right.top.equalToSuperview()
         }
         profileImg.snp.makeConstraints { (make) in
+            
             make.edges.equalToSuperview()
         }
         nickName.snp.makeConstraints { (make) in
@@ -367,6 +383,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
             make.left.equalTo(profileImg.snp.right).offset(13)
         }
         followView.snp.makeConstraints {
+            
             $0.centerY.equalTo(profileImg.snp.centerY)
             $0.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-20)
             $0.width.equalTo(107)
@@ -379,26 +396,32 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
             $0.height.equalTo(31)
         }
         followerBtn.snp.makeConstraints {
+            
             $0.left.top.bottom.equalToSuperview()
             $0.right.equalTo(divisionLine.snp.left)
         }
         followerCountLabel.snp.makeConstraints {
+            
             $0.centerX.equalToSuperview()
             $0.bottom.equalTo(followerBtn.snp.centerY).offset(-2)
         }
         followerLabel.snp.makeConstraints {
+            
             $0.centerX.equalToSuperview()
             $0.top.equalTo(followerBtn.snp.centerY).offset(2)
         }
         followingBtn.snp.makeConstraints {
+            
             $0.right.top.bottom.equalToSuperview()
             $0.left.equalTo(divisionLine.snp.right)
         }
         followingCountLabel.snp.makeConstraints {
+            
             $0.centerX.equalToSuperview()
             $0.bottom.equalTo(followingBtn.snp.centerY).offset(-2)
         }
         followingLabel.snp.makeConstraints {
+            
             $0.centerX.equalToSuperview()
             $0.top.equalTo(followingBtn.snp.centerY).offset(2)
         }
@@ -409,10 +432,11 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
             make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-20)
         }
         line2.snp.makeConstraints { (make) in
+            
             make.left.equalTo(self.safeAreaLayoutGuide.snp.left)
             make.right.equalTo(self.safeAreaLayoutGuide.snp.right)
             make.height.equalTo(2)
-            make.top.equalTo(introduceLabel.snp.bottom).offset(74)
+            make.top.equalTo(profileSuperview.snp.bottom)
         }
         
     }
