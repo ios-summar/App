@@ -278,7 +278,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         
         let view = ContentSizedCollectionView(frame: .zero, collectionViewLayout: layout)
         view.alpha = 0.0
-        view.backgroundColor = .blue
+        view.backgroundColor = UIColor.Gray01 //.blue
         view.translatesAutoresizingMaskIntoConstraints = false
         view.showsVerticalScrollIndicator = false
         view.isScrollEnabled = false
