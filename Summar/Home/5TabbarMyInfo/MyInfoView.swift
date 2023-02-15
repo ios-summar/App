@@ -60,25 +60,16 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     
     var temporaryResponse: FeedSelectResponse? {
         didSet {
+            temporarySaveCollectionView.reloadData()
             
             if temporaryResponse?.content?.count != 0 {
-                smLog("")
                 temporarySaveCollectionView.alpha = 1.0
                 
                 scrollView.addSubview(temporarySaveCollectionView)
                 temporarySaveCollectionView.snp.makeConstraints {
                     $0.top.equalTo(line2.snp.bottom)
-                    $0.left.equalTo(20)
-                    $0.right.equalTo(-20)
-                    $0.height.equalTo(400)
+                    $0.left.right.equalTo(self.safeAreaLayoutGuide)
                 }
-                
-                temporarySaveCollectionView.register(TemporarySaveCollectionvViewCell.self, forCellWithReuseIdentifier: "TemporarySaveCollectionvViewCell")
-                
-                temporarySaveCollectionView.delegate = self
-                temporarySaveCollectionView.dataSource = self
-                temporarySaveCollectionView.reloadData()
-                smLog("")
             }else {
                 portfolioTableView.alpha = 0.0
                 temporarySaveCollectionView.alpha = 0.0
@@ -283,21 +274,25 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     lazy var temporarySaveCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 12, right: 20)
         
-        
-        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let view = ContentSizedCollectionView(frame: .zero, collectionViewLayout: layout)
         view.alpha = 0.0
+        view.backgroundColor = .blue
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.red
         view.showsVerticalScrollIndicator = false
         view.isScrollEnabled = false
-        view.layer.cornerRadius = 7
+        
+        view.register(TemporarySaveCollectionvViewCell.self, forCellWithReuseIdentifier: "TemporarySaveCollectionvViewCell")
+        view.dataSource = self
+        view.delegate = self
+        
         return view
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         setUI()
         setAttributes()
     }
@@ -809,8 +804,7 @@ extension MyInfoView: UICollectionViewDelegate, UICollectionViewDataSource, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        smLog("")
-        return CGSize(width: 161, height: 214)
+        return CGSize(width: UIScreen.main.bounds.width/2 - 30, height: (UIScreen.main.bounds.width/2 - 30) * 1.25)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -820,18 +814,15 @@ extension MyInfoView: UICollectionViewDelegate, UICollectionViewDataSource, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        smLog("")
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TemporarySaveCollectionvViewCell", for: indexPath) as! TemporarySaveCollectionvViewCell
-        smLog("")
         guard let content = temporaryResponse?.content?[indexPath.row] else {return UICollectionViewCell()}
-        smLog("")
         cell.setUpCell(content)
         
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        smLog("\(indexPath.row)")
     }
     
 }

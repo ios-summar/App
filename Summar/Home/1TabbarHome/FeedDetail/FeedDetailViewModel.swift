@@ -56,7 +56,7 @@ final class FeedDetailViewModel {
     func getFeedInfo(_ feedSeq: Int){
         self.request.feedInfo("/feed/\(feedSeq)", completion: { (feedInfo, error, status) in
             if let error = error, let status = status {
-                if status == 500 {
+                if status == 401 {
                     print("토큰 재발급")
                     self.request.reloadToken(status)
                     self.getFeedInfo(feedSeq)
@@ -78,7 +78,7 @@ final class FeedDetailViewModel {
     func deleteFeed(_ feedSeq: Int){
         self.request.deleteFeed("/feed/\(feedSeq)", completion: { (feedInfo, error, status) in
             if let error = error, let status = status {
-                if status == 500 {
+                if status == 401 {
                     print("토큰 재발급")
                     self.request.reloadToken(status)
                     self.deleteFeed(feedSeq)
@@ -100,7 +100,7 @@ final class FeedDetailViewModel {
     func getFeedComment(_ feedSeq: Int, _ size: Int){
         self.request.getFeedComment("/feed/\(feedSeq)/comments?page=0&size=\(size)", completion: { (feedComment, error, status) in
             if let error = error, let status = status {
-                if status == 500 {
+                if status == 401 {
                     print("토큰 재발급")
                     self.request.reloadToken(status)
                     self.getFeedComment(feedSeq, size)
@@ -123,7 +123,7 @@ final class FeedDetailViewModel {
         let feedSeq = param["feedSeq"] as! Int
         self.request.commentRegister("/feed/\(feedSeq)/comments", param, completion: { (serverResult, error, status) in
             if let error = error, let status = status {
-                if status == 500 {
+                if status == 401 {
                     print("토큰 재발급")
                     self.request.reloadToken(status)
                     self.commentRegister(param)
@@ -149,7 +149,7 @@ final class FeedDetailViewModel {
     func commentRemove(_ feedCommentSeq: Int){
         self.request.commentRemove("/feed/comments/\(feedCommentSeq)", completion: { (serverResult, error, status) in
             if let error = error, let status = status {
-                if status == 500 {
+                if status == 401 {
                     print("토큰 재발급")
                     self.request.reloadToken(status)
                     self.commentRemove(feedCommentSeq)

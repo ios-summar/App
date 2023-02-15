@@ -54,7 +54,7 @@ final class PreferencesViewModel{
                 //error만 있을경우 서버오류
                 //error,status != nil 경우 토큰 재발급
                 if let error = error, let status = status {
-                    if status == 500 {
+                    if status == 401 {
                         print("토큰 재발급")
                         self.request.reloadToken(status)
                         self.getUserInfo()
@@ -78,7 +78,7 @@ final class PreferencesViewModel{
             //error만 있을경우 서버오류
             //error,status != nil 경우 토큰 재발급
             if let error = error, let status = status {
-                if status == 500 {
+                if status == 401 {
                     print("토큰 재발급")
                     self.request.reloadToken(status)
                     self.withDraw(userSeq)

@@ -1063,23 +1063,23 @@ final class ServerRequest: NSObject {
     // MARK: - AccessToken 혹은 RefreshToken 재요청
     func reloadToken(_ statusCode: Int?){
         if let statusCode = statusCode {
-            if statusCode == 500{
+            if statusCode == 401{
                 // 토큰 재요청
-                print("AccessToken 토큰 재요청 -> UserDefault Change -> 서버요청")
+                smLog("AccessToken 토큰 재요청 -> UserDefault Change -> 서버요청")
                 
                 self.requestAccessToken("/user/give-access-token", completion: {(accessToken, error) in
                     
                     if let error = error {
-                        print("error \(error)")
+                        smLog("error \(error)")
                         
-                        print("AccessToken AND RefreshToken 재요청 -> UserDefault Change -> 서버요청")
+                        smLog("AccessToken AND RefreshToken 재요청 -> UserDefault Change -> 서버요청")
                         
                         self.requestRefreshToken("/user/give-both-token", completion: {(bothToken, error) in
                             if let error = error {
-                                print("error \(error)")
+                                smLog("error \(error)")
                             }
                             if let bothToken = bothToken {
-                                print("bothToken \(bothToken)")
+                                smLog("bothToken \(bothToken)")
                                 let accessToken = bothToken.results.accessToken
                                 
                                 UserDefaults.standard.set(accessToken, forKey: "accessToken")

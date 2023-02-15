@@ -35,7 +35,7 @@ final class UpdateMyInfoViewModel{
             //error,status != nil 경우 토큰 재발급
             if let error = error, let status = status {
                 print("updateUserInfo() if let error")
-                if status == 500 {
+                if status == 401 {
                     print("토큰 재발급")
                     self.request.reloadToken(status)
                     self.updateUserInfo(param)

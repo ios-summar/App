@@ -311,15 +311,16 @@ final class WriteFeedView : UIView, UITextViewDelegate {
         if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
             guard let userSeq = value["userSeq"] else {return}
             requestBody["userSeq"] = userSeq
-            requestBody["contents"] = view2TextView.text
             requestBody["commentYn"] = switch1.isOn
             requestBody["secretYn"] = switch2.isOn
         }
         
         if index == "insertFeed" {
             requestBody["tempSaveYn"] = false
+            requestBody["contents"] = view2TextView.text
         }else {
             requestBody["tempSaveYn"] = true
+            requestBody["contents"] = nil
         }
         
         LoadingIndicator.showLoading()
@@ -329,6 +330,12 @@ final class WriteFeedView : UIView, UITextViewDelegate {
         case "등록", "임시저장":
             viewModel.insertFeed(requestBody, resultArr)
             viewModel.didFinishFetch = {
+                
+                if text == "임시저장" {
+                    smLog("")
+                    toast("임시 저장한 포트폴리오는 마이 써머리 탭에서 확인 가능합니다.")
+                }
+                
                 self.popDelegate?.popScreen()
                 LoadingIndicator.hideLoading()
             }

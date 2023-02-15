@@ -9,14 +9,17 @@ import Foundation
 import SnapKit
 
 final class TemporarySaveCollectionvViewCell: UICollectionViewCell, ViewAttributes {
+    let helper = Helper()
+    
     let feedImageView: UIImageView = {
         let view = UIImageView()
+        view.contentMode = .scaleAspectFill
+        view.clipsToBounds = true
         return view
     }()
     let contentLabel: UILabel = {
         let view = UILabel()
-        view.layer.borderWidth = 1
-        view.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
+        view.font = FontManager.getFont(Font.Regular.rawValue).smallFont
         view.textColor = .black
         view.lineBreakMode = .byTruncatingTail
         view.numberOfLines = 3
@@ -25,7 +28,6 @@ final class TemporarySaveCollectionvViewCell: UICollectionViewCell, ViewAttribut
     }()
     let dateLabel: UILabel = {
         let view = UILabel()
-        view.layer.borderWidth = 1
         view.font = FontManager.getFont(Font.Regular.rawValue).smallFont
         view.textColor = UIColor(r: 115, g: 120, b: 127)
         view.numberOfLines = 1
@@ -34,9 +36,17 @@ final class TemporarySaveCollectionvViewCell: UICollectionViewCell, ViewAttribut
     }()
     
     func setUpCell(_ model: FeedInfo) {
+        smLog("\n \(model) \n")
+//        smLog("\(model.feedImages.count == 0)")
         
-        setUpImg(feedImageView, model.feedImages[0].imageUrl)
+        if model.feedImages.count != 0 {
+            setUpImg(feedImageView, model.feedImages[0].imageUrl)
+        }else {
+            feedImageView.image = UIImage(named: "NoExsitTemporarySaveImage")
+        }
+        
         contentLabel.text = model.contents
+        helper.lineSpacing(contentLabel, 5)
         dateLabel.text = compareDate(model.lastModifiedDate)
     }
     
@@ -59,6 +69,7 @@ final class TemporarySaveCollectionvViewCell: UICollectionViewCell, ViewAttribut
         DispatchQueue.global().async {
             DispatchQueue.main.async {
                 imageView.kf.indicatorType = .activity
+                imageView.contentMode = .scaleAspectFill
                 imageView.kf.setImage(
                   with: url,
                   placeholder: nil,
@@ -82,12 +93,15 @@ final class TemporarySaveCollectionvViewCell: UICollectionViewCell, ViewAttribut
     }
     
     func contentViewInit() {
+        
         contentView.layer.borderWidth = 1
+        contentView.layer.borderColor = UIColor.Gray02.cgColor
         contentView.backgroundColor = .white
-        contentView.layer.cornerRadius = 4
+        contentView.layer.cornerRadius = 7
     }
     
     func setUI() {
+        
         contentView.addSubview(feedImageView)
         contentView.addSubview(contentLabel)
         contentView.addSubview(dateLabel)
@@ -97,19 +111,20 @@ final class TemporarySaveCollectionvViewCell: UICollectionViewCell, ViewAttribut
         
         feedImageView.snp.makeConstraints {
             
-            $0.left.right.top.equalToSuperview()
-            $0.height.equalTo(106)
-        }
-        dateLabel.snp.makeConstraints {
-            
-            $0.bottom.right.equalTo(-10)
-            $0.left.equalTo(12)
+            $0.left.right.top.equalTo(contentView)
+            $0.bottom.equalTo(contentView.snp.centerY)
         }
         contentLabel.snp.makeConstraints {
             
             $0.top.equalTo(feedImageView.snp.bottom).offset(10)
             $0.left.equalTo(12)
             $0.right.equalTo(-12)
+//            $0.bottom.equalTo(dateLabel.snp.top).offset(-5)
+        }
+        dateLabel.snp.makeConstraints {
+            
+            $0.bottom.right.equalTo(-10)
+            $0.left.equalTo(12)
         }
     }
 }

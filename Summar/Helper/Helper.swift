@@ -198,7 +198,8 @@ final class Helper : UIView{
     }
     
     func lineSpacing(_ uiLabel: UILabel, _ lineCF: CGFloat){
-        let attrString = NSMutableAttributedString(string: uiLabel.text!)
+        guard let text = uiLabel.text else {return}
+        let attrString = NSMutableAttributedString(string: text)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = lineCF
         attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attrString.length))
