@@ -44,7 +44,6 @@ final class HomeView: UIView, HomeViewDelegate{
             
             tableView.delegate = self
             tableView.dataSource = self
-             
             tableView.reloadData()
         }
     }
@@ -158,7 +157,6 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
 
                 viewModel.didFinishFetch = {
                     self.model = viewModel.feedSelectResponse
-                    self.tableView.reloadData()
                 }
                 
             }

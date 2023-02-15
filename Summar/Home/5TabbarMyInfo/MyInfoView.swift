@@ -674,10 +674,6 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         viewModel.didFinishPortfolioFetch = {
             self.portfolioResponse = self.viewModel.feedSelectResponse
             self.setPortfolio(self.portfolioResponse)
-            
-            self.portfolioTableView.delegate = self
-            self.portfolioTableView.dataSource = self
-            self.portfolioTableView.reloadData()
         }
     }
     
