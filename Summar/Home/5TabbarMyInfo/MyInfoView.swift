@@ -73,6 +73,8 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
                     $0.height.equalTo(400)
                 }
                 
+                temporarySaveCollectionView.register(TemporarySaveCollectionvViewCell.self, forCellWithReuseIdentifier: "TemporarySaveCollectionvViewCell")
+                
                 temporarySaveCollectionView.delegate = self
                 temporarySaveCollectionView.dataSource = self
                 temporarySaveCollectionView.reloadData()
@@ -282,7 +284,6 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: 161, height: 214)
         
         
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -292,8 +293,6 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         view.showsVerticalScrollIndicator = false
         view.isScrollEnabled = false
         view.layer.cornerRadius = 7
-        view.register(TemporarySaveCollectionvViewCell.self, forCellWithReuseIdentifier: "TemporarySaveCollectionvViewCell")
-        
         return view
     }()
     
@@ -804,12 +803,13 @@ extension MyInfoView: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension MyInfoView: UICollectionViewDelegate, UICollectionViewDataSource {
+extension MyInfoView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         self.setNeedsDisplay()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        smLog("")
         return CGSize(width: 161, height: 214)
     }
     
@@ -826,7 +826,12 @@ extension MyInfoView: UICollectionViewDelegate, UICollectionViewDataSource {
         guard let content = temporaryResponse?.content?[indexPath.row] else {return UICollectionViewCell()}
         smLog("")
         cell.setUpCell(content)
+        
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
     }
     
 }

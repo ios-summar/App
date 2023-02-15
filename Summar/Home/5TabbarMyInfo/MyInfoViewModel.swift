@@ -47,7 +47,7 @@ final class MyInfoViewModel{
     
     var temporaryResponse: FeedSelectResponse? {
         didSet {
-            print("MyInfoViewModel temporaryResponse =>\n \(temporaryResponse)")
+//            print("MyInfoViewModel temporaryResponse =>\n \(temporaryResponse)")
             self.didFinishTemporarySaveFetch?()
         }
     }
@@ -194,7 +194,6 @@ final class MyInfoViewModel{
                 self.isLoading = false
                 return
             }
-            smLog("\(feedSelectResponse)")
             
             self.error = nil
             self.isLoading = false

@@ -9,11 +9,11 @@ import Foundation
 import SnapKit
 
 final class TemporarySaveCollectionvViewCell: UICollectionViewCell, ViewAttributes {
-    lazy var feedImageView: UIImageView = {
+    let feedImageView: UIImageView = {
         let view = UIImageView()
         return view
     }()
-    lazy var contentLabel: UILabel = {
+    let contentLabel: UILabel = {
         let view = UILabel()
         view.layer.borderWidth = 1
         view.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
@@ -23,7 +23,7 @@ final class TemporarySaveCollectionvViewCell: UICollectionViewCell, ViewAttribut
         view.sizeToFit()
         return view
     }()
-    lazy var dateLabel: UILabel = {
+    let dateLabel: UILabel = {
         let view = UILabel()
         view.layer.borderWidth = 1
         view.font = FontManager.getFont(Font.Regular.rawValue).smallFont
