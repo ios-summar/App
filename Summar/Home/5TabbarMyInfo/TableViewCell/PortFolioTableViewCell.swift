@@ -449,7 +449,7 @@ final class PortFolioTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewA
             DispatchQueue.global().async {
                 DispatchQueue.main.async {
                     let imageview = UIImageView()
-                    imageview.contentMode = .scaleAspectFit
+                    imageview.contentMode = .scaleAspectFill
                     imageview.backgroundColor = .white
                     imageview.clipsToBounds = true
                     

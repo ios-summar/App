@@ -119,6 +119,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         let button = UIButton()
         button.backgroundColor = .clear
         button.addTarget(self, action: #selector(followBtnAction(_:)), for: .touchUpInside)
+        button.tag = 11
         return button
     }()
     let followerCountLabel : UILabel = {
@@ -140,6 +141,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         let button = UIButton()
         button.backgroundColor = .clear
         button.addTarget(self, action: #selector(followBtnAction(_:)), for: .touchUpInside)
+        button.tag = 12
         return button
     }()
     let followingCountLabel : UILabel = {
@@ -521,9 +523,20 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     
     /// 팔로워, 팔로잉 리스트 화면이동 버튼 action
     @objc func followBtnAction(_ sender: Any) {
-        guard let opponentUserSeq = userInfo?.result.userSeq else {return} // 내 피드 혹은 상대 피드
-        smLog("\(opponentUserSeq)")
-        self.pushDelegate?.pushScreen(FollowListTabman(), opponentUserSeq)
+        guard let userSeq = userInfo?.result.userSeq, let btn = sender as? UIButton else {return} // 내 피드 혹은 상대 피드
+        let VC = FollowListTabman()
+        var param : Dictionary<String, Int> = ["userSeq": userSeq]
+        
+        switch btn.tag {
+        case 11:
+            param["scrollToIndex"] = 0
+        case 12:
+            param["scrollToIndex"] = 1
+        default:
+            break
+        }
+        
+        self.pushDelegate?.pushScreen(VC, param)
     }
     
     @objc func profileBtnAction(_ sender: Any) {

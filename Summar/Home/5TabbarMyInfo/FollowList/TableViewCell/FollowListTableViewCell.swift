@@ -99,7 +99,7 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
             case "나자신":
                 btn.removeFromSuperview()
                 
-            case "한쪽팔로우":
+            case "한쪽팔로우", "맞팔":
                 self.btn.setTitle("팔로우 취소", for: .normal)
                 self.btn.backgroundColor = UIColor.Gray02
                 self.btn.setTitleColor(UIColor.init(r: 70, g: 76, b: 83), for: .normal)

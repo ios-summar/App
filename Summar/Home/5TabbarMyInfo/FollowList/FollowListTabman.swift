@@ -20,6 +20,7 @@ class FollowListTabman: TabmanViewController, ViewAttributes{
     
     lazy var viewControllers = [VC1, VC2]
     
+    var scrollToIndex: Int = 0
     var followerList: SearchUserList? {
         didSet {
             smLog("\(followerList)")
@@ -129,6 +130,8 @@ extension FollowListTabman: PageboyViewControllerDataSource, TMBarDataSource {
     
     func barItem(for bar: TMBar, at index: Int) -> TMBarItemable {
 //        guard let followerList = followerList?.totalRecordCount, let followingList = followingList?.totalRecordCount else {return TMBarItem(title: "")}
+        smLog("\(scrollToIndex)")
+        scrollToIndex == 1 ? scrollToPage(.at(index: 1), animated: false) : scrollToPage(.at(index: 0), animated: false)
         
         if index == 0 {
 //            return TMBarItem(title: "\(followerList) 팔로워")

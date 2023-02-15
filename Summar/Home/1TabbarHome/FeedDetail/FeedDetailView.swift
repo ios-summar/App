@@ -789,7 +789,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
                         completionHandler: nil
                     )
                     
-                    imageview.contentMode = .scaleAspectFit
+                    imageview.contentMode = .scaleAspectFill
                     imageview.clipsToBounds = true
                     imageview.backgroundColor = .white
                     let xPosition = self.imageViewWidth * CGFloat(i)
@@ -973,6 +973,7 @@ extension FeedDetailView : UITableViewDelegate, UITableViewDataSource {
         }else { // 자식 댓글
             let cellC = tableView.dequeueReusableCell(withIdentifier: "CommentChildTableViewCell", for: indexPath) as! CommentChildTableViewCell
             cellC.delegate = self
+            cellC.reloadDelegate = self
             cellC.setUpCell(cellContent)
             
             return cellC

@@ -10,7 +10,7 @@ import UIKit
 
 final class CommentChildTableViewCell: UITableViewCell, ViewAttributes{
     weak var delegate: PushDelegate?
-    weak var reloadDelegae: TableViewReload?
+    weak var reloadDelegate: TableViewReload?
     let helper = Helper()
     let viewModel = FeedDetailViewModel()
     var comment: Comment?
@@ -215,7 +215,7 @@ final class CommentChildTableViewCell: UITableViewCell, ViewAttributes{
                     self.viewModel.didFinishCommentRemoveFetch = {
                         toast("댓글 삭제완료")
                         
-                        self.reloadDelegae?.tableViewReload()
+                        self.reloadDelegate?.tableViewReload()
                     }
                     break
                 case "신고하기":

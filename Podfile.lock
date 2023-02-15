@@ -87,6 +87,7 @@ PODS:
   - PromisesObjC (2.1.1)
   - PryntTrimmerView (4.0.2)
   - SafeAreaBrush (1.0.4)
+  - SkeletonView (1.30.4)
   - SnapKit (5.6.0)
   - SteviaLayout (4.7.3)
   - Tabman (3.0.1):
@@ -109,6 +110,7 @@ DEPENDENCIES:
   - Kingfisher
   - naveridlogin-sdk-ios
   - SafeAreaBrush
+  - SkeletonView
   - SnapKit
   - Tabman
   - Toast-Swift
@@ -142,6 +144,7 @@ SPEC REPOS:
     - PromisesObjC
     - PryntTrimmerView
     - SafeAreaBrush
+    - SkeletonView
     - SnapKit
     - SteviaLayout
     - Tabman
@@ -175,12 +178,13 @@ SPEC CHECKSUMS:
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   PryntTrimmerView: 6a43cc90df5d99addeabd33d4ba09b1365322130
   SafeAreaBrush: 282315ce500e436c04b2c26b46e8ac0ad4288bbd
+  SkeletonView: 5a050f6411e697abd4cda0a8d767013399dccd69
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
   Tabman: a5880789298f81d3f2cdd6510b54ae637cfd8e09
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
   YPImagePicker: f36043210c10b0783034eb1947d6e06e31c461e4
 
-PODFILE CHECKSUM: 93ccb0afe200238dc3de99e966c874beebe07e13
+PODFILE CHECKSUM: 76363206acc03da173bf454607c5b0ac5f20829a
 
 COCOAPODS: 1.11.3

@@ -472,7 +472,7 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
                 DispatchQueue.global().async {
                     DispatchQueue.main.async {
                         let imageview = UIImageView()
-                        imageview.contentMode = .scaleAspectFit
+                        imageview.contentMode = .scaleAspectFill
                         imageview.backgroundColor = .white
                         imageview.clipsToBounds = true
                         

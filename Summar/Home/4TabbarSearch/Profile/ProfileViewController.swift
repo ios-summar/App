@@ -13,7 +13,9 @@ final class ProfileViewController : UIViewController, PushDelegate, ViewAttribut
     func pushScreen(_ VC: UIViewController, _ any: Any?) {
         if VC.isKind(of: FollowListTabman.self) {
             let VC = FollowListTabman()
-            VC.userSeq = any as? Int
+            let param = any as? Dictionary<String, Int>
+            VC.userSeq = param!["userSeq"] as! Int
+            VC.scrollToIndex = param!["scrollToIndex"] as! Int
             
             self.navigationController?.pushViewController(VC, animated: true)
         }else if VC.isKind(of: FeedDetailViewController.self) {
