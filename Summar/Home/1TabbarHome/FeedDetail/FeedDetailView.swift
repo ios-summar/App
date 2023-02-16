@@ -76,7 +76,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
     }
     
     let viewModel = FeedDetailViewModel()
-    let homeViewModel = HomeViewModel(nil, nil)
+    let homeViewModel = HomeViewModel()
     let helper = Helper.shared
     
     var likeCountInt: Int = 0

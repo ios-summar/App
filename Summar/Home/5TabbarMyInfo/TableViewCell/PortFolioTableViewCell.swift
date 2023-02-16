@@ -13,7 +13,7 @@ final class PortFolioTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewA
     weak var delegate : PushDelegate?
     let helper = Helper.shared
     let fontManager = FontManager.shared
-    let viewModel = HomeViewModel(nil, nil)
+    let viewModel = HomeViewModel()
     
     var feedInfo: FeedInfo?
     var userSeq: Int?
@@ -203,8 +203,8 @@ final class PortFolioTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewA
             self.delegate?.pushScreen(ProfileViewController(), userSeq)
             
         case 2: // 좋아요 터치
-            viewModel.feedLikeScarp("like", feedSeq, param)
-            viewModel.didFinishLikeScrapFetch = {
+            self.viewModel.feedLikeScarp("like", feedSeq, param)
+            self.viewModel.didFinishLikeScrapFetch = {
                 UIDevice.vibrate()
                 let img = self.heartImage.image
                 
@@ -222,8 +222,8 @@ final class PortFolioTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewA
             }
             
         case 3: // 북마크 터치
-            viewModel.feedLikeScarp("scrap", feedSeq, param)
-            viewModel.didFinishLikeScrapFetch = {
+            self.viewModel.feedLikeScarp("scrap", feedSeq, param)
+            self.viewModel.didFinishLikeScrapFetch = {
                 UIDevice.vibrate()
                 let img = self.bookmark.image
                 

@@ -18,15 +18,8 @@ final class HomeViewModel {
         }
     }
     
-    var pageIndex: Int? = nil
-    var size: Int? = nil
-    
-    init(_ pageIndex: Int?, _ size: Int?){
-        self.pageIndex = pageIndex
-        self.size = size
-        
-        print("pageIndex : \(pageIndex), size : \(size) ")
-    }
+    var pageIndex: Int = 0
+    var size: Int = 0
     
     // MARK: - Closures for callback, since we are not using the ViewModel to the View.
     var showAlertClosure: (() -> ())?
@@ -35,8 +28,8 @@ final class HomeViewModel {
     var didFinishLikeScrapFetch: (() -> ())?
     
     
-    func selectFeed(){
-        guard let pageIndex = pageIndex, let size = size else {return}
+    func selectFeed(pageIndex: Int, size: Int){
+//        guard let pageIndex = pageIndex, let size = size else {return}
         self.request.selectFeed("/feed?page=\(pageIndex)&size=\(size)", completion: { (feedSelectResponse, error, status) in
             //error만 있을경우 서버오류
             //error,status != nil 경우 토큰 재발급
@@ -44,7 +37,7 @@ final class HomeViewModel {
                 if status == 401 {
                     smLog("토큰 재발급")
                     self.request.reloadToken(status)
-                    self.selectFeed()
+                    self.selectFeed(pageIndex: pageIndex, size: size)
                 }
             }else if let error = error {
                 print(error)

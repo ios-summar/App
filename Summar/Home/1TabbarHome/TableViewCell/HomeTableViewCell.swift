@@ -10,7 +10,7 @@ import UIKit
 
 final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttributes {
     weak var delegate : HomeViewDelegate?
-    let viewModel = HomeViewModel(nil, nil)
+    let viewModel = HomeViewModel()
     let helper = Helper.shared
     let fontManager = FontManager.shared
     

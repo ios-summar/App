@@ -26,12 +26,13 @@ final class HomeView: UIView, HomeViewDelegate{
     }
     
     let helper = Helper.shared
+    let viewModel = HomeViewModel()
     private let tableCellReuseIdentifier = "tableCell"
     private let bannerCellReuseIdentifier = "bannerCell"
     
     
     var displayCount : Int = 0
-    var pageIndex : Int = 1
+    var sizeIndex : Int = 1
     
     let viewWidth : CGFloat = {
         let width = UIScreen.main.bounds.width
@@ -85,10 +86,9 @@ final class HomeView: UIView, HomeViewDelegate{
     }
     
     @objc func selectFeed() {
-        let viewModel = HomeViewModel(0, (pageIndex * 30))
-        viewModel.selectFeed()
-        viewModel.didFinishFetch = {
-            self.model = viewModel.feedSelectResponse
+        self.viewModel.selectFeed(pageIndex: 0, size: sizeIndex * 30)
+        self.viewModel.didFinishFetch = {
+            self.model = self.viewModel.feedSelectResponse
             self.tableView.refreshControl?.endRefreshing()
         }
     }
@@ -115,10 +115,10 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
                 return totalRecordCount + 1 // "+1" 은 위에 홈 배너를 위함
             }else { // 30개 이상일때
                 if currentPageNo != totalPageCount { // 총건수를 30으로 나눴을때 현재페이지 != 마지막페이지
-                    displayCount = 30 * pageIndex
+                    displayCount = 30 * sizeIndex
                     return displayCount + 1 // "+1" 은 위에 홈 배너를 위함 / 30개씩 * 현재페이지 ex) 120건 노출시 30.. 60.. 90.. 120...
                 }else { // 총건수를 30으로 나눴을때 현재페이지 == 마지막페이지
-                    displayCount = (30 * (pageIndex - 1)) + (totalRecordCount % 30)
+                    displayCount = (30 * (sizeIndex - 1)) + (totalRecordCount % 30)
                     return displayCount + 1 // "+1" 은 위에 홈 배너를 위함 / (30개씩 * 현재페이지) + 나머지(총 건수 % 30건)
                 }
             }
@@ -150,13 +150,12 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource{
 //        print("")
         
         if let totalRecordCount = model?.totalRecordCount, let recordsPerPage = model?.recordsPerPage, let currentPageNo = model?.currentPageNo, let totalPageCount = model?.totalPageCount {
-            if pageIndex * 30 == indexPath.row {
-                self.pageIndex += 1
-                let viewModel = HomeViewModel(0, (pageIndex * 30))
-                viewModel.selectFeed()
-
-                viewModel.didFinishFetch = {
-                    self.model = viewModel.feedSelectResponse
+            if sizeIndex * 30 == indexPath.row {
+                self.sizeIndex += 1
+                
+                self.viewModel.selectFeed(pageIndex: 0, size: sizeIndex * 30)
+                self.viewModel.didFinishFetch = {
+                    self.model = self.viewModel.feedSelectResponse
                 }
                 
             }
