@@ -12,6 +12,7 @@ final class FollowingListView: UIView, ViewAttributes {
     weak var delegate: PushDelegate?
     let helper = Helper.shared
     let fontManager = FontManager.shared
+    let viewModel = FollowListViewModel(0, 100000)
     var userSeq: Int?
     
     var followingList: SearchUserList? {
@@ -104,13 +105,12 @@ final class FollowingListView: UIView, ViewAttributes {
     func getFollowingList(_ userSeq: Int?, _ handler: Bool) {
         guard let userSeq = userSeq else { return }
         smLog("\(userSeq)")
-        let viewModel = FollowListViewModel(0, 100000)
         
         if handler {
             //내 팔로잉
             viewModel.getFollowingList(userSeq)
             viewModel.didFinishFollowingListFetch = {
-                self.followingList = viewModel.followingList
+                self.followingList = self.viewModel.followingList
                 
                 if self.followingList?.totalRecordCount! != 0 {
                     self.followingExist(true)
@@ -122,7 +122,7 @@ final class FollowingListView: UIView, ViewAttributes {
             smLog("내 팔로워 아님")
             viewModel.getFollowingListOpponent(userSeq)
             viewModel.didFinishFollowingListFetch = {
-                self.followingList = viewModel.followingList
+                self.followingList = self.viewModel.followingList
                 
                 if self.followingList?.totalRecordCount! != 0 {
                     self.followingExist(true)

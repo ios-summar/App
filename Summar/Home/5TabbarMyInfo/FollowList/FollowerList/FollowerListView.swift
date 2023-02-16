@@ -11,6 +11,7 @@ import UIKit
 final class FollowerListView: UIView, ViewAttributes, RefreshFollowList{
     weak var delegate: PushDelegate?
     weak var refreshDelegate: RefreshFollowList?
+    let viewModel = FollowListViewModel(0, 100000)
     func refreshTabManTitle() {
         guard let userSeq = userSeq, let myFollow = myFollow else {return}
         getFollowerList(userSeq, myFollow)
@@ -114,15 +115,14 @@ final class FollowerListView: UIView, ViewAttributes, RefreshFollowList{
     func getFollowerList(_ userSeq: Int?, _ handler: Bool) {
         guard let userSeq = userSeq else { return }
         smLog("\(userSeq)")
-        let viewModel = FollowListViewModel(0, 100000)
         
         if handler {
             //내 팔로워
             smLog("내 팔로워")
             viewModel.getFollowerList(userSeq)
             viewModel.didFinishFollowerListFetch = {
-                self.followerList = viewModel.followerList
-                guard let totalRecordCount = viewModel.followerTotalRecordCountString else { return }
+                self.followerList = self.viewModel.followerList
+                guard let totalRecordCount = self.viewModel.followerTotalRecordCountString else { return }
                 
                 if self.followerList?.totalRecordCount! != 0 {
                     self.followerExist(true)
@@ -134,7 +134,7 @@ final class FollowerListView: UIView, ViewAttributes, RefreshFollowList{
             smLog("내 팔로워 아님")
             viewModel.getFollowerListOpponent(userSeq)
             viewModel.didFinishFollowerListFetch = {
-                self.followerList = viewModel.followerList
+                self.followerList = self.viewModel.followerList
                 
                 if self.followerList?.totalRecordCount! != 0 {
                     self.followerExist(true)

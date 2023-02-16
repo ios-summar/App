@@ -20,6 +20,7 @@ class FollowListTabman: TabmanViewController, ViewAttributes{
     
     lazy var viewControllers = [VC1, VC2]
     let fontManager = FontManager.shared
+    let viewModel = FollowListViewModel(0, 100000)
     
     var scrollToIndex: Int = 0
     var followerList: SearchUserList? {
@@ -95,18 +96,17 @@ class FollowListTabman: TabmanViewController, ViewAttributes{
     
     func setTabManTitle() {
         guard let userSeq = userSeq else {return}
-        let viewModel = FollowListViewModel(0, 100000)
         
         //팔로워
         viewModel.getFollowerList(userSeq)
         viewModel.didFinishFollowerListFetch = {
-            self.followerList = viewModel.followerList
+            self.followerList = self.viewModel.followerList
         }
         
         //팔로잉
         viewModel.getFollowingList(userSeq)
         viewModel.didFinishFollowingListFetch = {
-            self.followingList = viewModel.followingList
+            self.followingList = self.viewModel.followingList
         }
     }
     
