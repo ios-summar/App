@@ -17,7 +17,8 @@ final class SearchView: UIView{
     weak var pushDelegateWithSearchUserInfo : PushDelegateWithSearchUserInfo?
     
     let cellReuseIdentifier = "SearchTableViewCell"
-    let helper = Helper()
+    let helper = Helper.shared
+    let fontManager = FontManager.shared
     var model : SearchUserList? = nil {
         didSet {
             //            smLog("model.count")
@@ -53,7 +54,7 @@ final class SearchView: UIView{
     
     lazy var searchCountLabel : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Bold.rawValue).smallFont
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).smallFont
         label.numberOfLines = 1
         label.textAlignment = .left
         label.textColor = UIColor.magnifyingGlassColor
@@ -64,7 +65,7 @@ final class SearchView: UIView{
     lazy var searchDescriptionLabel : UILabel = {
         let label = UILabel()
         label.text = "검색 결과"
-        label.font = FontManager.getFont(Font.SemiBold.rawValue).smallFont
+        label.font = self.fontManager.getFont(Font.SemiBold.rawValue).smallFont
         label.numberOfLines = 1
         label.textAlignment = .left
         label.textColor = UIColor.black

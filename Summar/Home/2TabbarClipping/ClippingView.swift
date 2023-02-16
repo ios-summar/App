@@ -10,6 +10,8 @@ import UIKit
 
 final class ClippingView: UIView, ViewAttributes, HomeViewDelegate {
     weak var delegate: HomeViewDelegate?
+    let fontManager = FontManager.shared
+    
     func pushScreen(_ VC: UIViewController, _ any: Any) {
         if VC.isKind(of: FeedDetailViewController.self) {
             let feedInfo = any as? FeedInfo
@@ -82,7 +84,7 @@ final class ClippingView: UIView, ViewAttributes, HomeViewDelegate {
         
         let UILabel = UILabel()
         UILabel.textColor = .black
-        UILabel.font = FontManager.getFont(Font.SemiBold.rawValue).mediumFont
+        UILabel.font = self.fontManager.getFont(Font.SemiBold.rawValue).mediumFont
         UILabel.sizeToFit()
         UILabel.text = "저장된 스크랩이 없습니다.\n포트폴리오를 스크랩해 모아보세요!"
         return UILabel

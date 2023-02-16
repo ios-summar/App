@@ -17,12 +17,13 @@ protocol UpdateNavigationBar : AnyObject {
 }
 
 final class UpdateMyInfoView: UIView, UITextViewDelegate, UITextFieldDelegate {
+    let fontManager = FontManager.shared
     
     weak var delegate : ImageUpdatePickerDelegate?
     weak var delegateUpdate : UpdateNavigationBar?
     
     
-    let helper = Helper()
+    let helper = Helper.shared
     let request = ServerRequest.shared
     
     let pickerData = ["" ,"인문계열" , "사회계열" , "교육계열" , "공학계열" , "자연계열" , "의약계열" , "예체능계열"]  // 피커뷰에 보여줄 테스트 데이터
@@ -160,7 +161,7 @@ final class UpdateMyInfoView: UIView, UITextViewDelegate, UITextFieldDelegate {
     }()
     
     
-    let nickNameTextField : UITextField = {
+    lazy var nickNameTextField : UITextField = {
         let nickNameTextField = UITextField()
         nickNameTextField.translatesAutoresizingMaskIntoConstraints = false
         nickNameTextField.layer.borderWidth = 1
@@ -170,7 +171,7 @@ final class UpdateMyInfoView: UIView, UITextViewDelegate, UITextFieldDelegate {
         nickNameTextField.placeholder = "영문 또는 한글 2~8자"
         nickNameTextField.attributedPlaceholder = NSAttributedString(string: "영문 또는 한글 2~8자", attributes: [NSAttributedString.Key.foregroundColor : UIColor.grayColor205])
         nickNameTextField.addLeftPadding()
-        nickNameTextField.font = FontManager.getFont(Font.Regular.rawValue).medium15Font
+        nickNameTextField.font = self.fontManager.getFont(Font.Regular.rawValue).medium15Font
         nickNameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         nickNameTextField.textColor = .black
         nickNameTextField.tag = 2
@@ -179,38 +180,38 @@ final class UpdateMyInfoView: UIView, UITextViewDelegate, UITextFieldDelegate {
         return nickNameTextField
     }()
     
-    let nicknameLabel : UILabel = {
+    lazy var nicknameLabel : UILabel = {
         let label = UILabel()
         label.text = "마이 닉네임"
         label.textColor = .black
-        label.font = FontManager.getFont(Font.Bold.rawValue).medium15Font
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).medium15Font
         label.sizeToFit()
         return label
     }()
     
-    let nicknameCheckBtn : UIButton = {
+    lazy var nicknameCheckBtn : UIButton = {
         let btn = UIButton()
         btn.layer.cornerRadius = 4
         btn.setTitle("중복 확인", for: .normal)
-        btn.titleLabel?.font = FontManager.getFont(Font.Bold.rawValue).smallFont
+        btn.titleLabel?.font = self.fontManager.getFont(Font.Bold.rawValue).smallFont
         btn.backgroundColor = UIColor.magnifyingGlassColor
         btn.addTarget(self, action: #selector(nicknameCheckAction), for: .touchUpInside)
         btn.alpha = 1.0
         return btn
     }()
     
-    let InValidationLabel : UILabel = {
+    lazy var InValidationLabel : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Regular.rawValue).small11Font
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).small11Font
         label.sizeToFit()
         return label
     }()
     
-    let majorLabel : UILabel = {
+    lazy var majorLabel : UILabel = {
         let label = UILabel()
         label.text = "전공"
         label.textColor = .black
-        label.font = FontManager.getFont(Font.Bold.rawValue).medium15Font
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).medium15Font
         label.sizeToFit()
         return label
     }()
@@ -226,7 +227,7 @@ final class UpdateMyInfoView: UIView, UITextViewDelegate, UITextFieldDelegate {
         editMajor.placeholder = "전공 계열선택"
         editMajor.attributedPlaceholder = NSAttributedString(string: "전공 계열선택", attributes: [NSAttributedString.Key.foregroundColor : UIColor.grayColor205])
         editMajor.addLeftPadding()
-        editMajor.font = FontManager.getFont(Font.Regular.rawValue).medium15Font
+        editMajor.font = self.fontManager.getFont(Font.Regular.rawValue).medium15Font
         editMajor.textColor = .black
         editMajor.addTarget(self, action: #selector(editingDidBegin(_:)), for: .editingDidBegin)
         editMajor.addTarget(self, action: #selector(editingDidEnd(_:)), for: .editingDidEnd)
@@ -242,7 +243,7 @@ final class UpdateMyInfoView: UIView, UITextViewDelegate, UITextFieldDelegate {
         return label
     }()
     
-    let majorTextField : UITextField = {
+    lazy var majorTextField : UITextField = {
         let majorTextField = UITextField()
         majorTextField.tintColor = .white
         majorTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -254,7 +255,7 @@ final class UpdateMyInfoView: UIView, UITextViewDelegate, UITextFieldDelegate {
         majorTextField.attributedPlaceholder = NSAttributedString(string: "전공 학과선택", attributes: [NSAttributedString.Key.foregroundColor : UIColor.grayColor205])
         majorTextField.addLeftPadding()
         majorTextField.textColor = .black
-        majorTextField.font = FontManager.getFont(Font.Regular.rawValue).medium15Font
+        majorTextField.font = self.fontManager.getFont(Font.Regular.rawValue).medium15Font
         majorTextField.addTarget(self, action: #selector(editingDidBegin(_:)), for: .editingDidBegin)
         majorTextField.addTarget(self, action: #selector(editingDidEnd(_:)), for: .editingDidEnd)
         majorTextField.tag = 1
@@ -268,11 +269,11 @@ final class UpdateMyInfoView: UIView, UITextViewDelegate, UITextFieldDelegate {
         return label
     }()
     
-    let introduceLabel : UILabel = {
+    lazy var introduceLabel : UILabel = {
         let label = UILabel()
         label.text = "프로필 메시지"
         label.textColor = .black
-        label.font = FontManager.getFont(Font.Bold.rawValue).medium15Font
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).medium15Font
         label.sizeToFit()
         return label
     }()
@@ -289,7 +290,7 @@ final class UpdateMyInfoView: UIView, UITextViewDelegate, UITextFieldDelegate {
     lazy var view2TextView : UITextView = {
         let textView = UITextView()
         textView.backgroundColor = UIColor.white
-        textView.font = FontManager.getFont(Font.Regular.rawValue).medium15Font
+        textView.font = self.fontManager.getFont(Font.Regular.rawValue).medium15Font
         textView.text = textViewPlaceHolder
         textView.textColor = .lightGray
         textView.delegate = self

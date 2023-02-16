@@ -9,23 +9,25 @@ import Foundation
 import UIKit
 
 final class NoticeTitleTableViewCell: UITableViewCell {
+    let fontManager = FontManager.shared
+    
     let view = UIView()
     var selectBool = false
 
     lazy var tableLabel : UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = FontManager.getFont(Font.SemiBold.rawValue).medium15Font
+        label.font = self.fontManager.getFont(Font.SemiBold.rawValue).medium15Font
         label.numberOfLines = 0
         label.lineBreakMode = .byClipping
         label.sizeToFit()
         return label
     }()
     
-    let dateLabel : UILabel = {
+    lazy var dateLabel : UILabel = {
         let label = UILabel()
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
-        label.font = FontManager.getFont(Font.Regular.rawValue).small11Font
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).small11Font
         label.numberOfLines = 0
         label.lineBreakMode = .byClipping
         return label

@@ -15,10 +15,10 @@ protocol SocialLoginDelegate : class {
 }
 
 final class SocialLoginView : UIView, SocialSuccessDelegate{
-    
     weak var delegate : SocialLoginDelegate?
     
-    let helper : Helper = Helper()
+    let helper = Helper.shared
+    let fontManager = FontManager.shared
     let kakaoLoginManager = KakaoLoginManager()
     let appleLoginManager = AppleLoginManager()
     let naverLoginManager = NaverLoginManager()
@@ -44,11 +44,11 @@ final class SocialLoginView : UIView, SocialSuccessDelegate{
         return kakaoFrame
     }()
     
-    let kakaoLabel : UILabel = {
+    lazy var kakaoLabel : UILabel = {
         let kakaoLabel = UILabel()
         kakaoLabel.text = "카카오톡으로 시작하기"
         kakaoLabel.textColor = .black
-        kakaoLabel.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        kakaoLabel.font = self.fontManager.getFont(Font.Bold.rawValue).extraLargeFont
         return kakaoLabel
     }()
     
@@ -67,11 +67,11 @@ final class SocialLoginView : UIView, SocialSuccessDelegate{
         return appleFrame
     }()
     
-    let appleLabel : UILabel = {
+    lazy var appleLabel : UILabel = {
         let appleLabel = UILabel()
         appleLabel.text = "애플계정으로 시작하기"
         appleLabel.textColor = .white
-        appleLabel.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        appleLabel.font = self.fontManager.getFont(Font.Bold.rawValue).extraLargeFont
         return appleLabel
     }()
     
@@ -90,11 +90,11 @@ final class SocialLoginView : UIView, SocialSuccessDelegate{
         return naverFrame
     }()
     
-    let naverLabel : UILabel = {
+    lazy var naverLabel : UILabel = {
         let naverLabel = UILabel()
         naverLabel.text = "네이버로 시작하기"
         naverLabel.textColor = .white
-        naverLabel.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        naverLabel.font = self.fontManager.getFont(Font.Bold.rawValue).extraLargeFont
         return naverLabel
     }()
     
@@ -113,11 +113,11 @@ final class SocialLoginView : UIView, SocialSuccessDelegate{
         return googleFrame
     }()
     
-    let googleLabel : UILabel = {
+    lazy var googleLabel : UILabel = {
         let googleLabel = UILabel()
         googleLabel.text = "구글로 시작하기"
         googleLabel.textColor = .white
-        googleLabel.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        googleLabel.font = self.fontManager.getFont(Font.Bold.rawValue).extraLargeFont
         return googleLabel
     }()
     

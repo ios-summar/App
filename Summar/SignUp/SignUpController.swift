@@ -26,7 +26,7 @@ final class SignUpController : UIViewController, SignUp1Delegate, SignUp2Delegat
         self.arrowBackWard.removeFromSuperview()
     }
     
-    let helper : Helper = Helper()
+    let helper = Helper.shared
     let request = ServerRequest.shared
     
     var requestDic: Dictionary<String, Any> = Dictionary<String, Any>()

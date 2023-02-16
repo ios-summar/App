@@ -12,7 +12,7 @@ final class GoogleLoginManager: NSObject{
     
     weak var delegate : SocialSuccessDelegate?
     
-    let helper = Helper()
+    let helper = Helper.shared
     let request = ServerRequest.shared
     
     let socialType = "GOOGLE"

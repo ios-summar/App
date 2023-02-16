@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 final class FullScreenImageView : UIView, UIScrollViewDelegate{
+    let fontManager = FontManager.shared
     var imageArr = [UIImage]()
     
     let viewWidth : CGFloat = {
@@ -16,7 +17,7 @@ final class FullScreenImageView : UIView, UIScrollViewDelegate{
         return btnWidth
     }()
     
-    let helper = Helper()
+    let helper = Helper.shared
     
     let view1 : UIView = {
         let view = UIView()
@@ -81,7 +82,7 @@ final class FullScreenImageView : UIView, UIScrollViewDelegate{
     
     lazy var label1 : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).extraLargeFont
         label.textColor = .black
         label.numberOfLines = 0
         label.textAlignment = .center
@@ -89,10 +90,10 @@ final class FullScreenImageView : UIView, UIScrollViewDelegate{
         return label
     }()
     
-    let label2 : UILabel = {
+    lazy var label2 : UILabel = {
         let label = UILabel()
         label.text = "대표 이미지"
-        label.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).extraLargeFont
         label.textColor = .systemBlue
         label.numberOfLines = 0
         label.textAlignment = .center

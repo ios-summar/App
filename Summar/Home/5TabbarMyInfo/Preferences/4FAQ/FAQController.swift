@@ -11,11 +11,12 @@ import UIKit
 final class FAQController: UIViewController {
     let faqView = FAQView()
     let viewModel = FAQViewModel()
+    let fontManager = FontManager.shared
     
-    let titleLabel : UILabel = {
+    lazy var titleLabel : UILabel = {
         let title = UILabel()
         title.text = "자주묻는질문"
-        title.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        title.font = self.fontManager.getFont(Font.Bold.rawValue).extraLargeFont
         title.textColor = UIColor.black
         title.sizeToFit()
         return title

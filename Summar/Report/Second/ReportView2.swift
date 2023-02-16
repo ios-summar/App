@@ -9,7 +9,9 @@ import Foundation
 import UIKit
 
 final class ReportView2: UIView, ViewAttributes, UITextViewDelegate, UITextFieldDelegate {
+    let fontManager = FontManager.shared
     weak var delegate: UpdateNavigationBar?
+    
     var reportReason: String? {
         didSet {
             report1TextField.text = reportReason
@@ -29,18 +31,18 @@ final class ReportView2: UIView, ViewAttributes, UITextViewDelegate, UITextField
         view.backgroundColor = .white
         return view
     }()
-    let report1Label: UILabel = {
+    lazy var report1Label: UILabel = {
         let label = UILabel()
         label.text = "신고 이유"
         label.textColor = .black
-        label.font = FontManager.getFont(Font.Bold.rawValue).medium15Font
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).medium15Font
         label.sizeToFit()
         return label
     }()
     
-    let report1TextField: UITextField = {
+    lazy var report1TextField: UITextField = {
         let textField = PaddingTextField()
-        textField.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
+        textField.font = self.fontManager.getFont(Font.Regular.rawValue).mediumFont
         textField.textColor = .black
         
         textField.layer.borderWidth = 1
@@ -52,11 +54,11 @@ final class ReportView2: UIView, ViewAttributes, UITextViewDelegate, UITextField
         return textField
     }()
     
-    let report2Label: UILabel = {
+    lazy var report2Label: UILabel = {
         let label = UILabel()
         label.text = "신고 내용"
         label.textColor = .black
-        label.font = FontManager.getFont(Font.Bold.rawValue).medium15Font
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).medium15Font
         label.sizeToFit()
         return label
     }()
@@ -73,7 +75,7 @@ final class ReportView2: UIView, ViewAttributes, UITextViewDelegate, UITextField
     lazy var view2TextView: UITextView = {
         let textView = UITextView()
         textView.backgroundColor = UIColor.white
-        textView.font = FontManager.getFont(Font.Regular.rawValue).medium15Font
+        textView.font = self.fontManager.getFont(Font.Regular.rawValue).medium15Font
         textView.text = textViewPlaceHolder
         textView.textColor = .lightGray
         textView.delegate = self

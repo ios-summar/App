@@ -10,7 +10,8 @@ import UIKit
 
 final class FollowingListView: UIView, ViewAttributes {
     weak var delegate: PushDelegate?
-    let helper = Helper()
+    let helper = Helper.shared
+    let fontManager = FontManager.shared
     var userSeq: Int?
     
     var followingList: SearchUserList? {
@@ -45,7 +46,7 @@ final class FollowingListView: UIView, ViewAttributes {
         let UILabel = UILabel()
         UILabel.alpha = 0.0
         UILabel.textColor = .black
-        UILabel.font = FontManager.getFont(Font.SemiBold.rawValue).mediumFont
+        UILabel.font = self.fontManager.getFont(Font.SemiBold.rawValue).mediumFont
         UILabel.sizeToFit()
         UILabel.text = "팔로우 중인 사람이 없어요"
         return UILabel

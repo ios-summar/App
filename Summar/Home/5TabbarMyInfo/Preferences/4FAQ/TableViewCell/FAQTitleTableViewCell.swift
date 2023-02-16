@@ -9,14 +9,15 @@ import Foundation
 import UIKit
 
 final class FAQTitleTableViewCell: UITableViewCell {
+    let fontManager = FontManager.shared
     
     let view = UIView()
     var selectBool = false
 
-    let tableLabel : UILabel = {
+    lazy var tableLabel : UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = FontManager.getFont(Font.SemiBold.rawValue).medium15Font
+        label.font = self.fontManager.getFont(Font.SemiBold.rawValue).medium15Font
         label.numberOfLines = 0
         label.lineBreakMode = .byClipping
         label.sizeToFit()

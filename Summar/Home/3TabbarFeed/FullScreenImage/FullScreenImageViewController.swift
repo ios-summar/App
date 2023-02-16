@@ -11,6 +11,7 @@ import UIKit
 
 final class FullScreenImageViewController: UIViewController {
     let fullScreenImageView = FullScreenImageView()
+    let fontManager = FontManager.shared
     
     // MARK: - Properties
     var imageArr: [UIImage]? {
@@ -21,10 +22,10 @@ final class FullScreenImageViewController: UIViewController {
         }
     }
     
-    let titleLabel : UILabel = {
+    lazy var titleLabel : UILabel = {
         let title = UILabel()
         title.text = "이미지 크게보기"
-        title.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        title.font = self.fontManager.getFont(Font.Bold.rawValue).extraLargeFont
         title.textColor = .black
         title.sizeToFit()
         return title

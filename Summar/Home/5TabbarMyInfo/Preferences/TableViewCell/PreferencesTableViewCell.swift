@@ -8,7 +8,8 @@
 import UIKit
 
 final class PreferencesTableViewCell: UITableViewCell {
-
+    let fontManager = FontManager.shared
+    
     let preferencesImg : UIImageView = {
         let view = UIImageView()
         view.image = UIImage(systemName: "person.fill")
@@ -17,17 +18,17 @@ final class PreferencesTableViewCell: UITableViewCell {
         return view
     }()
     
-    let label : UILabel = {
+    lazy var label : UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = FontManager.getFont(Font.SemiBold.rawValue).medium15Font
+        label.font = self.fontManager.getFont(Font.SemiBold.rawValue).medium15Font
         return label
     }()
     
     lazy var versionLabel : UILabel = {
         let label = UILabel()
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
-        label.font = FontManager.getFont(Font.SemiBold.rawValue).small11Font
+        label.font = self.fontManager.getFont(Font.SemiBold.rawValue).small11Font
         return label
     }()
     
@@ -35,7 +36,7 @@ final class PreferencesTableViewCell: UITableViewCell {
         let label = UILabel()
         label.text = "업데이트를 진행해 주세요"
         label.textColor = UIColor.updateColor
-        label.font = FontManager.getFont(Font.SemiBold.rawValue).small11Font
+        label.font = self.fontManager.getFont(Font.SemiBold.rawValue).small11Font
         label.alpha = 0.0
         return label
     }()

@@ -19,7 +19,8 @@ final class ReportViewController: UIViewController, ViewAttributes, PushDelegate
         self.navigationController?.pushViewController(VC, animated: true)
     }
     
-    let helper = Helper()
+    let helper = Helper.shared
+    let fontManager = FontManager.shared
     let reportView = ReportView()
     
     var param : Dictionary<String, Any> = [:]
@@ -28,11 +29,11 @@ final class ReportViewController: UIViewController, ViewAttributes, PushDelegate
     var opponsentUserSeq: Int?
     var feedSeq: Int?
     
-    let lbNavTitle : UILabel = {
+    lazy var lbNavTitle : UILabel = {
         let title = UILabel()
         title.frame = CGRect(x: 0, y: 0, width: 150, height: 40)
         title.text = "신고하기"
-        title.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        title.font = self.fontManager.getFont(Font.Bold.rawValue).extraLargeFont
         title.textColor = UIColor.black
         title.sizeToFit()
         return title

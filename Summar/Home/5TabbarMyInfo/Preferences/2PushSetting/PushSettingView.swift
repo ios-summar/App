@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 final class PushSettingView: UIView {
+    let fontManager = FontManager.shared
     let viewModel = PushSettingViewModel()
     // MARK: - DB의 PushYN 초기값 설정
     var pushYN : Bool? {
@@ -24,28 +25,28 @@ final class PushSettingView: UIView {
         return view
     }()
     
-    let label : UILabel = {
+    lazy var label : UILabel = {
         let label = UILabel()
         label.text = "푸시알림"
         label.textColor = .black
-        label.font = FontManager.getFont(Font.Bold.rawValue).medium15Font
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).medium15Font
         label.sizeToFit()
         return label
     }()
     
-    let titleLabel : UILabel = {
+    lazy var titleLabel : UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = FontManager.getFont(Font.Bold.rawValue).laergeFont
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).laergeFont
         label.text = "일반 알림"
         label.sizeToFit()
         return label
     }()
     
-    let conentLabel : UILabel = {
+    lazy var conentLabel : UILabel = {
         let label = UILabel()
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
-        label.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).mediumFont
         label.text = "좋아요, 댓글, 팔로우 등 알림"
         label.sizeToFit()
         return label

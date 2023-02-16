@@ -16,7 +16,8 @@ final class FollowerListView: UIView, ViewAttributes, RefreshFollowList{
         getFollowerList(userSeq, myFollow)
     }
     
-    let helper = Helper()
+    let helper = Helper.shared
+    let fontManager = FontManager.shared
     var userSeq: Int?
     var myFollow: Bool?
     
@@ -54,7 +55,7 @@ final class FollowerListView: UIView, ViewAttributes, RefreshFollowList{
         let UILabel = UILabel()
         UILabel.alpha = 0.0
         UILabel.textColor = .black
-        UILabel.font = FontManager.getFont(Font.SemiBold.rawValue).mediumFont
+        UILabel.font = self.fontManager.getFont(Font.SemiBold.rawValue).mediumFont
         UILabel.sizeToFit()
         UILabel.text = "팔로워가 없어요"
         return UILabel

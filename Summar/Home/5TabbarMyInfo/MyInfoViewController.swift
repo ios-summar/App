@@ -12,7 +12,8 @@ import Kingfisher
 import JJFloatingActionButton
 
 final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate, PopDelegate{
-    let helper = Helper()
+    let helper = Helper.shared
+    let fontManager = FontManager.shared
     let myInfoView = MyInfoView()
     let feedDetailViewModel = FeedDetailViewModel()
     var window = UIWindow(frame: UIScreen.main.bounds)
@@ -91,11 +92,11 @@ final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDel
         }
     }
     
-    let lbNavTitle : UILabel = {
+    lazy var lbNavTitle : UILabel = {
         let title = UILabel()
         title.frame = CGRect(x: 0, y: 0, width: 150, height: 40)
         title.text = "마이 써머리"
-        title.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        title.font = self.fontManager.getFont(Font.Bold.rawValue).extraLargeFont
         title.textColor = UIColor.black
         title.sizeToFit()
         return title

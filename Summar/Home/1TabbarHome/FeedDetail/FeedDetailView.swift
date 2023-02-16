@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 
 final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UITextViewDelegate, PushDelegate, TableViewReload, ReplyDelegate{
+    let fontManager = FontManager.shared
+    
     weak var delegate: PushDelegate?
     func pushScreen(_ VC: UIViewController, _ any: Any?) {
         if VC.isKind(of: ProfileViewController.self) {
@@ -154,17 +156,17 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
         button.addTarget(self, action: #selector(followBtnAction(_:)), for: .touchUpInside)
         return button
     }()
-    let followerCountLabel : UILabel = {
+    lazy var followerCountLabel : UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).mediumFont
         label.sizeToFit()
         return label
     }()
-    let followerLabel : UILabel = {
+    lazy var followerLabel : UILabel = {
         let label = UILabel()
         label.textColor = UIColor.init(r: 115, g: 120, b: 127, a: 1)
-        label.font = FontManager.getFont(Font.Regular.rawValue).small11Font
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).small11Font
         label.text = "팔로워"
         label.sizeToFit()
         return label
@@ -175,17 +177,17 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
         button.addTarget(self, action: #selector(followBtnAction(_:)), for: .touchUpInside)
         return button
     }()
-    let followingCountLabel : UILabel = {
+    lazy var followingCountLabel : UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).mediumFont
         label.sizeToFit()
         return label
     }()
-    let followingLabel : UILabel = {
+    lazy var followingLabel : UILabel = {
         let label = UILabel()
         label.textColor = UIColor.init(r: 115, g: 120, b: 127, a: 1)
-        label.font = FontManager.getFont(Font.Regular.rawValue).small11Font
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).small11Font
         label.text = "팔로잉"
         label.sizeToFit()
         return label
@@ -212,7 +214,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
     }()
     lazy var nickName : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Bold.rawValue).medium15Font
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).medium15Font
         label.textColor = .black
         label.sizeToFit()
         label.isUserInteractionEnabled = true
@@ -228,7 +230,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
     }()
     lazy var major : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
         label.sizeToFit()
         label.isUserInteractionEnabled = true
@@ -242,9 +244,9 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
         
         return label
     }()
-    let contentsLabel : UILabel = {
+    lazy var contentsLabel : UILabel = {
         let UILabel = UILabel()
-        UILabel.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
+        UILabel.font = self.fontManager.getFont(Font.Regular.rawValue).mediumFont
         UILabel.textColor = UIColor.homeContentsColor
         UILabel.textAlignment = .left
         UILabel.numberOfLines = 0
@@ -312,7 +314,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
     }()
     lazy var likeCount : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         label.sizeToFit()
         label.isUserInteractionEnabled = true
         label.tag = 2
@@ -333,7 +335,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
     }()
     lazy var commentCount : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         label.sizeToFit()
         label.isUserInteractionEnabled = true
         return label
@@ -378,7 +380,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
     lazy var commentTextView: UITextView = {
         let textView = UITextView()
         textView.backgroundColor = UIColor.Gray02
-        textView.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
+        textView.font = self.fontManager.getFont(Font.Regular.rawValue).mediumFont
         textView.text = textViewPlaceHolder
         textView.layer.cornerRadius = 18
         textView.textColor = .lightGray
@@ -411,7 +413,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
         
         let view = UILabel()
         view.backgroundColor = UIColor.Gray02
-        view.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        view.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         view.textColor = .lightGray
         return view
     }()
@@ -960,22 +962,22 @@ extension FeedDetailView : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cellP = tableView.dequeueReusableCell(withIdentifier: "CommentParentTableViewCell", for: indexPath) as! CommentParentTableViewCell
+        let cellC = tableView.dequeueReusableCell(withIdentifier: "CommentChildTableViewCell", for: indexPath) as! CommentChildTableViewCell
         let cellContent = resultFeedComment[indexPath.row]
         
         if cellContent.childComments != nil { // 부모 댓글
-            let cellP = tableView.dequeueReusableCell(withIdentifier: "CommentParentTableViewCell", for: indexPath) as! CommentParentTableViewCell
+            
             cellP.replyDelegate = self
             cellP.delegate = self
             cellP.reloadDelegate = self
             cellP.setUpCell(cellContent)
-            
             return cellP
         }else { // 자식 댓글
-            let cellC = tableView.dequeueReusableCell(withIdentifier: "CommentChildTableViewCell", for: indexPath) as! CommentChildTableViewCell
+            
             cellC.delegate = self
             cellC.reloadDelegate = self
             cellC.setUpCell(cellContent)
-            
             return cellC
         }
     }

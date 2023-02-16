@@ -17,8 +17,8 @@ protocol SignUp1Delegate : class {
 final class SignUp1View : UIView, UITextFieldDelegate {
     weak var delegate: SignUp1Delegate?
     
-    let helper = Helper()
-    let request = ServerRequest()
+    let helper = Helper.shared
+    let request = ServerRequest.shared
     
     var accessoryView: UIView = {
         return UIView(frame: CGRect(x: 0.0, y: 0.0, width: UIScreen.main.bounds.width, height: 72.0))

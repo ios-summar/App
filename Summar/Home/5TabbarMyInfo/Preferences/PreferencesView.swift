@@ -17,7 +17,8 @@ final class PreferencesView: UIView{
     weak var popDelegate : PopDelegate?
     weak var myInfoDelegate : MyInfoViewDelegate?
 
-    let helper = Helper()
+    let helper = Helper.shared
+    let fontManager = FontManager.shared
     let viewModel = PreferencesViewModel()
     
     var userInfo : UserInfo? {
@@ -86,24 +87,24 @@ final class PreferencesView: UIView{
         view.clipsToBounds = true
         return view
     }()
-    let nickName : UILabel = {
+    lazy var nickName : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).extraLargeFont
         label.textColor = .black
         label.sizeToFit()
         return label
     }()
-    let major : UILabel = {
+    lazy var major : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
         label.sizeToFit()
         return label
     }()
-    let logutBtn : UIButton = {
+    lazy var logutBtn : UIButton = {
         let btn = UIButton()
         btn.setTitle("로그아웃", for: .normal)
-        btn.titleLabel?.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
+        btn.titleLabel?.font = self.fontManager.getFont(Font.Regular.rawValue).mediumFont
         btn.backgroundColor = UIColor.Gray02
         btn.setTitleColor(UIColor.init(r: 70, g: 76, b: 83), for: .normal)
         btn.layer.cornerRadius = 4
@@ -129,21 +130,21 @@ final class PreferencesView: UIView{
         return view
     }()
     
-    let withDrawBtn : UIButton = {
+    lazy var withDrawBtn : UIButton = {
         let btn = UIButton()
         btn.setTitle("탈퇴하기", for: .normal)
         btn.setTitleColor(UIColor.fontGrayColor, for: .normal)
-        btn.titleLabel?.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        btn.titleLabel?.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         btn.addTarget(self, action: #selector(withDraw), for: .touchUpInside)
         btn.setUnderline()
         return btn
     }()
     
-    let withDrawLabel : UILabel = {
+    lazy var withDrawLabel : UILabel = {
         let label = UILabel()
         label.text = "개인정보, SUMMAR에 저장된 콘텐츠와 설정이 모두 삭제됩니다."
         label.textColor = UIColor.fontGrayColor
-        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         label.sizeToFit()
         return label
     }()

@@ -11,8 +11,8 @@ import UIKit
 final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttributes {
     weak var delegate : HomeViewDelegate?
     let viewModel = HomeViewModel(nil, nil)
-    let helper = Helper()
-    let fontManger = FontManager()
+    let helper = Helper.shared
+    let fontManager = FontManager.shared
     
     var feedInfo: FeedInfo?
     var userSeq: Int?
@@ -62,7 +62,7 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
     }()
     lazy var nickName : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Bold.rawValue).medium15Font
+        label.font = fontManager.getFont(Font.Bold.rawValue).medium15Font
         label.textColor = .black
         label.sizeToFit()
         label.isUserInteractionEnabled = true
@@ -77,7 +77,7 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
     }()
     lazy var major : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = fontManager.getFont(Font.Regular.rawValue).smallFont
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
         label.sizeToFit()
         label.isUserInteractionEnabled = true
@@ -156,7 +156,7 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
     }()
     lazy var likeCount : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = fontManager.getFont(Font.Regular.rawValue).smallFont
         label.sizeToFit()
         label.isUserInteractionEnabled = true
         label.tag = 2
@@ -177,7 +177,7 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
     }()
     lazy var commentCount : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = fontManager.getFont(Font.Regular.rawValue).smallFont
         label.sizeToFit()
         label.isUserInteractionEnabled = true
         return label
@@ -196,9 +196,9 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
         view.addGestureRecognizer(recognizer)
         return view
     }()
-    let contentsLabel : UILabel = {
+    lazy var contentsLabel : UILabel = {
         let UILabel = UILabel()
-        UILabel.font = FontManager.getFont(Font.Regular.rawValue).medium15Font
+        UILabel.font = self.fontManager.getFont(Font.Regular.rawValue).medium15Font
         UILabel.textColor = UIColor.homeContentsColor
         UILabel.textAlignment = .left
         UILabel.numberOfLines = 3

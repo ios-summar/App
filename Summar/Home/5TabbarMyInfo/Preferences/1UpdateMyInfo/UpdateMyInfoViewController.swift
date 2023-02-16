@@ -11,7 +11,8 @@ import YPImagePicker
 
 final class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDelegate, UpdateNavigationBar{
     let viewModel = UpdateMyInfoViewModel()
-    let helper = Helper()
+    let helper = Helper.shared
+    let fontManager = FontManager.shared
     
     var param : Dictionary<String, Any> = [:]
     
@@ -63,11 +64,11 @@ final class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDeleg
         }
     }
     
-    let lbNavTitle : UILabel = {
+    lazy var lbNavTitle : UILabel = {
         let title = UILabel()
         title.frame = CGRect(x: 0, y: 0, width: 150, height: 40)
         title.text = "프로필 편집"
-        title.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        title.font = self.fontManager.getFont(Font.Bold.rawValue).extraLargeFont
         title.textColor = UIColor.black
         title.sizeToFit()
         return title
@@ -108,7 +109,7 @@ final class UpdateMyInfoViewController: UIViewController, ImageUpdatePickerDeleg
         self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(popScreen), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
         self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButtonLabel(self, action: #selector(updateProfile), title: "완료", tintColor: UIColor.magnifyingGlassColor)
         self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([
-                    NSAttributedString.Key.font: FontManager.getFont(Font.SemiBold.rawValue).medium15Font,
+            NSAttributedString.Key.font: self.fontManager.getFont(Font.SemiBold.rawValue).medium15Font,
                     NSAttributedString.Key.foregroundColor: UIColor.magnifyingGlassColor],
                 for: .normal)
         

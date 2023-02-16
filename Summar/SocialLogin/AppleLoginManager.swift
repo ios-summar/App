@@ -13,7 +13,7 @@ final class AppleLoginManager : NSObject{
     weak var delegate: SocialSuccessDelegate?
     
     let request = ServerRequest.shared
-    let helper : Helper = Helper()
+    let helper = Helper.shared
     
     
     let socialType = "APPLE"

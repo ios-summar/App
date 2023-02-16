@@ -10,13 +10,14 @@ import UIKit
 import SafeAreaBrush
 
 final class PushSettingViewController: UIViewController {
+    let fontManager = FontManager.shared
     let pushSettingView = PushSettingView()
     
-    let lbNavTitle : UILabel = {
+    lazy var lbNavTitle : UILabel = {
         let title = UILabel()
         title.frame = CGRect(x: 0, y: 0, width: 150, height: 40)
         title.text = "알림설정"
-        title.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        title.font = self.fontManager.getFont(Font.Bold.rawValue).extraLargeFont
         title.textColor = UIColor.black
         title.sizeToFit()
         return title

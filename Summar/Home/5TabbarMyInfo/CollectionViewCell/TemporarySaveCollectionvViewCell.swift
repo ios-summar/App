@@ -9,7 +9,8 @@ import Foundation
 import SnapKit
 
 final class TemporarySaveCollectionvViewCell: UICollectionViewCell, ViewAttributes {
-    let helper = Helper()
+    let helper = Helper.shared
+    let fontManager = FontManager.shared
     
     let feedImageView: UIImageView = {
         let view = UIImageView()
@@ -17,18 +18,18 @@ final class TemporarySaveCollectionvViewCell: UICollectionViewCell, ViewAttribut
         view.clipsToBounds = true
         return view
     }()
-    let contentLabel: UILabel = {
+    lazy var contentLabel: UILabel = {
         let view = UILabel()
-        view.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        view.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         view.textColor = .black
         view.lineBreakMode = .byTruncatingTail
         view.numberOfLines = 3
         view.sizeToFit()
         return view
     }()
-    let dateLabel: UILabel = {
+    lazy var dateLabel: UILabel = {
         let view = UILabel()
-        view.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        view.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         view.textColor = UIColor(r: 115, g: 120, b: 127)
         view.numberOfLines = 1
         view.sizeToFit()

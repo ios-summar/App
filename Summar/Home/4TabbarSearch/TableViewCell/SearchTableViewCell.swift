@@ -8,7 +8,7 @@
 import UIKit
 
 final class SearchTableViewCell: UITableViewCell {
-
+    let fontManager = FontManager.shared
     // imageView, label 3
     
     let view : UIView = {
@@ -27,32 +27,32 @@ final class SearchTableViewCell: UITableViewCell {
         view.clipsToBounds = true
         return view
     }()
-    let nickName : UILabel = {
+    lazy var nickName : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Bold.rawValue).medium15Font
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).medium15Font
         label.textColor = .black
         label.sizeToFit()
         return label
     }()
-    let major : UILabel = {
+    lazy var major : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         label.textColor = UIColor.textColor115
         label.sizeToFit()
         label.numberOfLines = 2
         return label
     }()
-    let introduceLabel : UILabel = {
+    lazy var introduceLabel : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         label.textColor = UIColor.fontGrayColor
         label.sizeToFit()
         label.numberOfLines = 2
         return label
     }()
-    let followLabel : UILabel = {
+    lazy var followLabel : UILabel = {
         let UILabel = UILabel()
-        UILabel.font = FontManager.getFont(Font.Regular.rawValue).small11Font
+        UILabel.font = self.fontManager.getFont(Font.Regular.rawValue).small11Font
         UILabel.textAlignment = .center
         UILabel.textColor = UIColor.fontGrayColor
         UILabel.sizeToFit()

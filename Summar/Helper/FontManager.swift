@@ -173,8 +173,9 @@ enum Font: Int {
 }
 
 final class FontManager {
+    static let shared = FontManager()
     /// 저장된 폰트 가져오기
-    static func getFont(_ font: Int) -> Font {
+    func getFont(_ font: Int) -> Font {
         return Font(rawValue: font)!
     }
 }

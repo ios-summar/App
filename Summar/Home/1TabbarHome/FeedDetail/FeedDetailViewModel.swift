@@ -8,7 +8,7 @@
 import Foundation
 
 final class FeedDetailViewModel {
-    let request = ServerRequest()
+    let request = ServerRequest.shared
     
     var feedInfo: FeedInfo? {
         didSet {

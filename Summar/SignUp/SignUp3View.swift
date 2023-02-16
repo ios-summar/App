@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 final class SignUp3View : UIView {
-    let helper = Helper()
+    let helper = Helper.shared
     
     let btnWidth : CGFloat = {
         var btnWidth = UIScreen.main.bounds.width

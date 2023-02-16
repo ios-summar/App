@@ -9,13 +9,14 @@ import Foundation
 import UIKit
 
 final class NoticeController: UIViewController {
+    let fontManager = FontManager.shared
     let noticeView = NoticeView()
     let viewModel = NoticeViewModel()
     
-    let titleLabel : UILabel = {
+    lazy var titleLabel : UILabel = {
         let title = UILabel()
         title.text = "공지사항"
-        title.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        title.font = self.fontManager.getFont(Font.Bold.rawValue).extraLargeFont
         title.textColor = UIColor.black
         title.sizeToFit()
         return title

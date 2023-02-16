@@ -30,7 +30,7 @@ final class FeedDetailViewController: UIViewController, PushDelegate {
     
     let viewModel = FeedDetailViewModel()
     let feedView = FeedDetailView()
-    let helper = Helper()
+    let helper = Helper.shared
     
     var userSeq: Int?
     

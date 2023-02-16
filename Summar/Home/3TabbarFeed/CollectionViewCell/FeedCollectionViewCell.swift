@@ -10,6 +10,8 @@ import SnapKit
 import QuartzCore
 
 final class FeedCollectionViewCell: UICollectionViewCell {
+    let fontManager = FontManager.shared
+    
     lazy var view : UIImageView = {
         let view = UIImageView()
         view.layer.cornerRadius = 10
@@ -24,22 +26,22 @@ final class FeedCollectionViewCell: UICollectionViewCell {
         return btn
     }()
     
-    let label1 : UILabel = {
+    lazy var label1 : UILabel = {
         let UILabel = UILabel()
         UILabel.text = "이미지\n추가하기"
         UILabel.textColor = UIColor.fontColor
         UILabel.numberOfLines = 0
-        UILabel.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
+        UILabel.font = self.fontManager.getFont(Font.Bold.rawValue).mediumFont
         UILabel.sizeToFit()
         UILabel.textAlignment = .center
         return UILabel
     }()
     
-    let label2 : UILabel = {
+    lazy var label2 : UILabel = {
         let UILabel = UILabel()
         UILabel.text = "(10건 이하)"
         UILabel.textColor = UIColor.fontColor
-        UILabel.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        UILabel.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         UILabel.sizeToFit()
         return UILabel
     }()

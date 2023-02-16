@@ -8,6 +8,7 @@
 import UIKit
 
 final class DotFirstCollectionViewCell: UICollectionViewCell {
+    let fontManager = FontManager.shared
     
     lazy var shapeLayer : CAShapeLayer = {
         let shapeLayer:CAShapeLayer = CAShapeLayer()
@@ -46,12 +47,12 @@ final class DotFirstCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    let label1 : UILabel = {
+    lazy var label1 : UILabel = {
         let UILabel = UILabel()
         UILabel.text = "대표 이미지"
         UILabel.textColor = UIColor.fontColor
         UILabel.numberOfLines = 0
-        UILabel.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
+        UILabel.font = self.fontManager.getFont(Font.Bold.rawValue).mediumFont
         UILabel.sizeToFit()
         UILabel.textAlignment = .center
         return UILabel

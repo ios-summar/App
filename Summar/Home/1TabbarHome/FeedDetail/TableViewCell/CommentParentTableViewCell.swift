@@ -20,7 +20,8 @@ final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
     weak var delegate: PushDelegate?
     weak var reloadDelegate: TableViewReload?
     weak var replyDelegate: ReplyDelegate?
-    let helper = Helper()
+    let helper = Helper.shared
+    let fontManager = FontManager.shared
     let viewModel = FeedDetailViewModel()
     var comment: Comment?
     
@@ -44,7 +45,7 @@ final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
     }()
     lazy var nickName : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
+        label.font = fontManager.getFont(Font.Bold.rawValue).mediumFont
         label.textColor = .black
         label.sizeToFit()
         label.isUserInteractionEnabled = true
@@ -58,7 +59,7 @@ final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
     }()
     lazy var major : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = fontManager.getFont(Font.Regular.rawValue).smallFont
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
         label.sizeToFit()
         label.isUserInteractionEnabled = true
@@ -81,7 +82,7 @@ final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
     lazy var contentsLabel : UILabel = {
         let UILabel = UILabel()
 //        UILabel.layer.borderWidth = 1
-        UILabel.font = FontManager.getFont(Font.SemiBold.rawValue).smallFont
+        UILabel.font = fontManager.getFont(Font.SemiBold.rawValue).smallFont
         UILabel.textColor = UIColor.homeContentsColor
         UILabel.textAlignment = .left
         UILabel.numberOfLines = 0
@@ -92,7 +93,7 @@ final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
     lazy var commentBtn : UIButton = {
         let UIButton = UIButton()
         UIButton.tag = 2
-        UIButton.titleLabel?.font = FontManager.getFont(Font.SemiBold.rawValue).smallFont
+        UIButton.titleLabel?.font = fontManager.getFont(Font.SemiBold.rawValue).smallFont
         UIButton.setTitle("답글 쓰기", for: .normal)
         UIButton.setTitleColor(UIColor.init(r: 115, g: 120, b: 127), for: .normal)
         UIButton.addTarget(self, action: #selector(btnAction), for: .touchUpInside)

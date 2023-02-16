@@ -23,15 +23,16 @@ final class WriteFeedController : UIViewController, ImagePickerDelegate, PopDele
         }
     }
     
-    let helper = Helper()
+    let helper = Helper.shared
+    let fontManager = FontManager.shared
     let wfView = WriteFeedView()
     
     var imageArr = [UIImage]()
     
-    let titleLabel : UILabel = {
+    lazy var titleLabel : UILabel = {
         let title = UILabel()
         title.text = "피드 작성"
-        title.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        title.font = self.fontManager.getFont(Font.Bold.rawValue).extraLargeFont
         title.textColor = UIColor.black
         title.sizeToFit()
         return title

@@ -31,7 +31,7 @@ final class SignUp2View : UIView{
     
     weak var delegate : SignUp2Delegate?
     
-    let helper = Helper()
+    let helper = Helper.shared
     let btnWidth : CGFloat = {
         var btnWidth = UIScreen.main.bounds.width
         return btnWidth / 3 - 20

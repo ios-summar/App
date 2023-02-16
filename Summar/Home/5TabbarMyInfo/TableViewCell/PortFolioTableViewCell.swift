@@ -11,8 +11,8 @@ import UIKit
 
 final class PortFolioTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttributes {
     weak var delegate : PushDelegate?
-    let helper = Helper()
-    let fontManger = FontManager()
+    let helper = Helper.shared
+    let fontManager = FontManager.shared
     let viewModel = HomeViewModel(nil, nil)
     
     var feedInfo: FeedInfo?
@@ -86,7 +86,7 @@ final class PortFolioTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewA
     }()
     lazy var likeCount : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         label.sizeToFit()
         label.isUserInteractionEnabled = true
         label.tag = 2
@@ -107,7 +107,7 @@ final class PortFolioTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewA
     }()
     lazy var commentCount : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         label.sizeToFit()
         label.isUserInteractionEnabled = true
         return label
@@ -126,9 +126,9 @@ final class PortFolioTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewA
         view.addGestureRecognizer(recognizer)
         return view
     }()
-    let contentsLabel : UILabel = {
+    lazy var contentsLabel : UILabel = {
         let UILabel = UILabel()
-        UILabel.font = FontManager.getFont(Font.Regular.rawValue).medium15Font
+        UILabel.font = self.fontManager.getFont(Font.Regular.rawValue).medium15Font
         UILabel.textColor = UIColor.homeContentsColor
         UILabel.textAlignment = .left
         UILabel.numberOfLines = 3

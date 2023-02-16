@@ -43,7 +43,7 @@ final class ProfileViewController : UIViewController, PushDelegate, ViewAttribut
     }
     
     let infoView = MyInfoView()
-    let helper = Helper()
+    let helper = Helper.shared
     
     var userSeq : Int?
     

@@ -28,7 +28,8 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         }
     }
     
-    let helper = Helper()
+    let helper = Helper.shared
+    let fontManager = FontManager.shared
     let request = ServerRequest.shared
     
     weak var delegate : MyInfoViewDelegate?
@@ -115,17 +116,17 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         button.tag = 11
         return button
     }()
-    let followerCountLabel : UILabel = {
+    lazy var followerCountLabel : UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).mediumFont
         label.sizeToFit()
         return label
     }()
-    let followerLabel : UILabel = {
+    lazy var followerLabel : UILabel = {
         let label = UILabel()
         label.textColor = UIColor.init(r: 115, g: 120, b: 127, a: 1)
-        label.font = FontManager.getFont(Font.Regular.rawValue).small11Font
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).small11Font
         label.text = "팔로워"
         label.sizeToFit()
         return label
@@ -137,17 +138,17 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         button.tag = 12
         return button
     }()
-    let followingCountLabel : UILabel = {
+    lazy var followingCountLabel : UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).mediumFont
         label.sizeToFit()
         return label
     }()
-    let followingLabel : UILabel = {
+    lazy var followingLabel : UILabel = {
         let label = UILabel()
         label.textColor = UIColor.init(r: 115, g: 120, b: 127, a: 1)
-        label.font = FontManager.getFont(Font.Regular.rawValue).small11Font
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).small11Font
         label.text = "팔로잉"
         label.sizeToFit()
         return label
@@ -162,23 +163,23 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         view.clipsToBounds = true
         return view
     }()
-    let nickName : UILabel = {
+    lazy var nickName : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).extraLargeFont
         label.textColor = .black
         label.sizeToFit()
         return label
     }()
-    let major : UILabel = {
+    lazy var major : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
         label.sizeToFit()
         return label
     }()
-    let introduceLabel : UILabel = {
+    lazy var introduceLabel : UILabel = {
         let UILabel = UILabel()
-        UILabel.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
+        UILabel.font = self.fontManager.getFont(Font.Regular.rawValue).mediumFont
         UILabel.textColor = UIColor.homeContentsColor
         UILabel.textAlignment = .left
         UILabel.numberOfLines = 3
@@ -210,7 +211,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         let button = UIButton()
         button.setTitle("내 포트폴리오", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
+        button.titleLabel?.font = self.fontManager.getFont(Font.Bold.rawValue).mediumFont
         button.backgroundColor = .white
         button.tag = 1
         button.addTarget(self, action: #selector(profileBtnAction(_:)), for: .touchUpInside)
@@ -225,7 +226,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         let button = UIButton()
         button.setTitle("임시저장", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
+        button.titleLabel?.font = self.fontManager.getFont(Font.Regular.rawValue).mediumFont
         button.backgroundColor = .white
         button.tag = 2
         button.addTarget(self, action: #selector(profileBtnAction(_:)), for: .touchUpInside)
@@ -234,7 +235,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     lazy var followBtn : UIButton = {
         let button = UIButton()
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = FontManager.getFont(Font.Bold.rawValue).smallFont
+        button.titleLabel?.font = self.fontManager.getFont(Font.Bold.rawValue).smallFont
         button.tag = 3
         button.addTarget(self, action: #selector(profileBtnAction(_:)), for: .touchUpInside)
         button.layer.cornerRadius = 4
@@ -267,7 +268,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     lazy var notExistLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = FontManager.getFont(Font.SemiBold.rawValue).mediumFont
+        label.font = self.fontManager.getFont(Font.SemiBold.rawValue).mediumFont
         label.sizeToFit()
         return label
     }()
@@ -497,9 +498,11 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
             if !followResult { // 팔로우 안한 상태
                 self.followBtn.setTitle("팔로우", for: .normal)
                 self.followBtn.backgroundColor = UIColor.magnifyingGlassColor
+                toast("팔로우")
             }else { // 팔로우 한 상태
                 self.followBtn.setTitle("팔로우 취소", for: .normal)
                 self.followBtn.backgroundColor = UIColor.init(r: 70, g: 76, b: 83)
+                toast("팔로우 취소")
             }
         }
         
@@ -552,8 +555,8 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     func touchLeft(){
         getPortfolio()
         
-        leftBtn.titleLabel?.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
-        rightBtn.titleLabel?.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
+        leftBtn.titleLabel?.font = self.fontManager.getFont(Font.Bold.rawValue).mediumFont
+        rightBtn.titleLabel?.font = self.fontManager.getFont(Font.Regular.rawValue).mediumFont
         
         indicator.snp.remakeConstraints {
             $0.bottom.equalTo(line2.snp.top)
@@ -568,8 +571,8 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         
         getTemporarySave()
         
-        rightBtn.titleLabel?.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
-        leftBtn.titleLabel?.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
+        rightBtn.titleLabel?.font = self.fontManager.getFont(Font.Bold.rawValue).mediumFont
+        leftBtn.titleLabel?.font = self.fontManager.getFont(Font.Regular.rawValue).mediumFont
         
         indicator.snp.remakeConstraints {
             $0.bottom.equalTo(line2.snp.top)

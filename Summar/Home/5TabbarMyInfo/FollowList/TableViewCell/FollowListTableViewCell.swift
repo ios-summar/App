@@ -11,6 +11,8 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
     weak var delegate: PushDelegate?
     weak var refreshDelegate: RefreshFollowList?
     let viewModel = MyInfoViewModel(nil, nil)
+    let fontManager = FontManager.shared
+    
     var userSeq: Int?
     var setUpTuple: (String, Bool) = ("", true)
     
@@ -24,9 +26,9 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
         view.clipsToBounds = true
         return view
     }()
-    let nickName : UILabel = {
+    lazy var nickName : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Bold.rawValue).medium15Font
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).medium15Font
         label.textColor = .black
         label.sizeToFit()
         return label
@@ -34,26 +36,26 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
     lazy var followBtn: UIButton = {
         let button = UIButton()
         button.addTarget(self, action: #selector(followBtnAction(_:)), for: .touchUpInside)
-        button.titleLabel?.font = FontManager.getFont(Font.Bold.rawValue).smallFont
+        button.titleLabel?.font = self.fontManager.getFont(Font.Bold.rawValue).smallFont
         button.setTitleColor(UIColor.magnifyingGlassColor, for: .normal)
         button.tag = 1
         button.setTitle("팔로우", for: .normal)
         return button
     }()
-    let major : UILabel = {
+    lazy var major : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         label.textColor = UIColor.textColor115
         label.sizeToFit()
         label.numberOfLines = 2
         return label
     }()
-    let btn : UIButton = {
+    lazy var btn : UIButton = {
         let button = UIButton()
         button.addTarget(self, action: #selector(followBtnAction(_:)), for: .touchUpInside)
         button.backgroundColor = UIColor.Gray02
         button.layer.cornerRadius = 4
-        button.titleLabel?.font = FontManager.getFont(Font.SemiBold.rawValue).smallFont
+        button.titleLabel?.font = self.fontManager.getFont(Font.SemiBold.rawValue).smallFont
         button.setTitleColor(UIColor.init(r: 70, g: 76, b: 83), for: .normal)
         button.tag = 2
         return button

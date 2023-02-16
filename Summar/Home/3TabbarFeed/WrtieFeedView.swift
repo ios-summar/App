@@ -17,7 +17,8 @@ protocol ImagePickerDelegate : AnyObject {
 }
 
 final class WriteFeedView : UIView, UITextViewDelegate {
-    let helper = Helper()
+    let helper = Helper.shared
+    let fontManager = FontManager.shared
     let viewModel = WriteFeedViewModel()
     
     weak var delegate : ImagePickerDelegate?
@@ -112,7 +113,7 @@ final class WriteFeedView : UIView, UITextViewDelegate {
     lazy var view2TextView : UITextView = {
         let textView = UITextView()
         textView.backgroundColor = UIColor.textFieldColor
-        textView.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
+        textView.font = self.fontManager.getFont(Font.Regular.rawValue).mediumFont
         textView.text = textViewPlaceHolder
         textView.textColor = .lightGray
         textView.delegate = self
@@ -132,21 +133,21 @@ final class WriteFeedView : UIView, UITextViewDelegate {
         return sw
     }()
     
-    let leftLabel : UILabel = {
+    lazy var leftLabel : UILabel = {
         let label = UILabel()
         label.textColor = UIColor.fontColor
         label.text = "댓글기능 켜기"
         label.textAlignment = .left
-        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         return label
     }()
     
-    let rightLabel : UILabel = {
+    lazy var rightLabel : UILabel = {
         let label = UILabel()
         label.textColor = UIColor.fontColor
         label.text = "피드 비공개하기"
         label.textAlignment = .left
-        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         return label
     }()
     

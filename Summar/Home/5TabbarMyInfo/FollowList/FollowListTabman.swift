@@ -19,6 +19,7 @@ class FollowListTabman: TabmanViewController, ViewAttributes{
     let VC2 = FollowingListViewController()
     
     lazy var viewControllers = [VC1, VC2]
+    let fontManager = FontManager.shared
     
     var scrollToIndex: Int = 0
     var followerList: SearchUserList? {
@@ -76,8 +77,8 @@ class FollowListTabman: TabmanViewController, ViewAttributes{
             
             $0.tintColor = .black
             $0.selectedTintColor = .black
-            $0.selectedFont = FontManager.getFont(Font.Bold.rawValue).mediumFont
-            $0.font = FontManager.getFont(Font.Regular.rawValue).mediumFont
+            $0.selectedFont = self.fontManager.getFont(Font.Bold.rawValue).mediumFont
+            $0.font = self.fontManager.getFont(Font.Regular.rawValue).mediumFont
         }
         bar.snp.makeConstraints {
             

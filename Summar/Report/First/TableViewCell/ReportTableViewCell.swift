@@ -8,11 +8,12 @@
 import UIKit
 
 final class ReportTableViewCell: UITableViewCell, ViewAttributes {
+    let fontManager = FontManager.shared
     
-    let label : UILabel = {
+    lazy var label : UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = FontManager.getFont(Font.SemiBold.rawValue).mediumFont
+        label.font = self.fontManager.getFont(Font.SemiBold.rawValue).mediumFont
         return label
     }()
     

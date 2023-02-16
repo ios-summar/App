@@ -11,7 +11,8 @@ import UIKit
 final class CommentChildTableViewCell: UITableViewCell, ViewAttributes{
     weak var delegate: PushDelegate?
     weak var reloadDelegate: TableViewReload?
-    let helper = Helper()
+    let helper = Helper.shared
+    let fontManager = FontManager.shared
     let viewModel = FeedDetailViewModel()
     var comment: Comment?
     
@@ -35,7 +36,7 @@ final class CommentChildTableViewCell: UITableViewCell, ViewAttributes{
     }()
     lazy var nickName : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Bold.rawValue).mediumFont
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).mediumFont
         label.textColor = .black
         label.sizeToFit()
         label.isUserInteractionEnabled = true
@@ -49,7 +50,7 @@ final class CommentChildTableViewCell: UITableViewCell, ViewAttributes{
     }()
     lazy var major : UILabel = {
         let label = UILabel()
-        label.font = FontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
         label.sizeToFit()
         label.isUserInteractionEnabled = true
@@ -71,7 +72,7 @@ final class CommentChildTableViewCell: UITableViewCell, ViewAttributes{
     }()
     lazy var contentsLabel : UILabel = {
         let UILabel = UILabel()
-        UILabel.font = FontManager.getFont(Font.SemiBold.rawValue).smallFont
+        UILabel.font = self.fontManager.getFont(Font.SemiBold.rawValue).smallFont
         UILabel.textColor = UIColor.homeContentsColor
         UILabel.textAlignment = .left
         UILabel.numberOfLines = 0

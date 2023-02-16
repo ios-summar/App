@@ -10,6 +10,8 @@ import UIKit
 import SnapKit
 
 final class ClippingViewController : UIViewController, ViewAttributes, HomeViewDelegate{
+    let fontManager = FontManager.shared
+    
     func pushScreen(_ VC: UIViewController, _ any: Any) {
         if VC.isKind(of: FeedDetailViewController.self) {
             let VC = FeedDetailViewController()
@@ -25,11 +27,11 @@ final class ClippingViewController : UIViewController, ViewAttributes, HomeViewD
     }
     
     let clippingView = ClippingView()
-    let lbNavTitle : UILabel = {
+    lazy var lbNavTitle : UILabel = {
         let title = UILabel()
         title.frame = CGRect(x: 0, y: 0, width: 150, height: 40)
         title.text = "스크랩보기"
-        title.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        title.font = self.fontManager.getFont(Font.Bold.rawValue).extraLargeFont
         title.textColor = UIColor.black
         title.sizeToFit()
         return title

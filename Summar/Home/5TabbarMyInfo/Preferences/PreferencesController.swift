@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 
 final class PreferencesController: UIViewController, PushDelegate, PopDelegate, MyInfoViewDelegate{
+    let fontManager = FontManager.shared
     func parameter(_ userInfo: UserInfo?) {
         self.userInfo = userInfo
     }
@@ -49,10 +50,10 @@ final class PreferencesController: UIViewController, PushDelegate, PopDelegate, 
         }
     }
     
-    let titleLabel : UILabel = {
+    lazy var titleLabel : UILabel = {
         let title = UILabel()
         title.text = "설정"
-        title.font = FontManager.getFont(Font.Bold.rawValue).extraLargeFont
+        title.font = self.fontManager.getFont(Font.Bold.rawValue).extraLargeFont
         title.textColor = UIColor.black
         title.sizeToFit()
         return title

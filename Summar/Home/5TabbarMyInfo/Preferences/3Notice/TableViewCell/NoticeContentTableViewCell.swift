@@ -9,13 +9,13 @@ import Foundation
 import UIKit
 
 final class NoticeContentTableViewCell: UITableViewCell {
-    
+    let fontManager = FontManager.shared
     let view = UIView()
 
-    let tableLabel : UILabel = {
+    lazy var tableLabel : UILabel = {
         let label = UILabel()
         label.textColor = UIColor.textColor115
-        label.font = FontManager.getFont(Font.Regular.rawValue).medium15Font
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).medium15Font
         label.numberOfLines = 0
         return label
     }()
