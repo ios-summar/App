@@ -62,7 +62,7 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
     }()
     lazy var nickName : UILabel = {
         let label = UILabel()
-        label.font = fontManager.getFont(Font.Bold.rawValue).medium15Font
+        label.font = self.fontManager.getFont(Font.Bold.rawValue).medium15Font
         label.textColor = .black
         label.sizeToFit()
         label.isUserInteractionEnabled = true
@@ -77,7 +77,7 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
     }()
     lazy var major : UILabel = {
         let label = UILabel()
-        label.font = fontManager.getFont(Font.Regular.rawValue).smallFont
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
         label.sizeToFit()
         label.isUserInteractionEnabled = true
