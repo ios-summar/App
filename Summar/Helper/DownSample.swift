@@ -31,3 +31,16 @@ func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
 
     return newImage!
 }
+
+func resize(image: UIImage, newWidth: CGFloat) -> UIImage {
+    let scale = newWidth / image.size.width
+    let newHeight = image.size.height * scale
+
+    let size = CGSize(width: newWidth, height: newHeight)
+    let render = UIGraphicsImageRenderer(size: size)
+    let renderImage = render.image { context in
+        image.draw(in: CGRect(origin: .zero, size: size))
+    }
+    
+    return renderImage
+}

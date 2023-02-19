@@ -41,7 +41,7 @@ final class PreferencesView: UIView{
                             completionHandler: { result in
                             switch(result) {
                                 case .success(let imageResult):
-                                let resized = resizeImage(image: imageResult.image, newWidth: 42)
+                                let resized = resize(image: imageResult.image, newWidth: 42)
                                 self.profileImg.image = resized
                                 self.profileImg.isHidden = false
                                 case .failure(let error):
@@ -275,7 +275,7 @@ final class PreferencesView: UIView{
                                 completionHandler: { result in
                                 switch(result) {
                                     case .success(let imageResult):
-                                    let resized = resizeImage(image: imageResult.image, newWidth: 42)
+                                    let resized = resize(image: imageResult.image, newWidth: 42)
                                     self.profileImg.image = resized
                                     self.profileImg.isHidden = false
                                     case .failure(let error):

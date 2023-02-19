@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UITextViewDelegate, PushDelegate, TableViewReload, ReplyDelegate{
+final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UITextViewDelegate, PushDelegate, RemoveComment, ReplyDelegate{
     let fontManager = FontManager.shared
     
     weak var delegate: PushDelegate?
@@ -26,11 +26,16 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
         }
     }
     
-    func tableViewReload() {
-        self.commentTableView.reloadData()
-        
-        guard let feedInfo = feedInfo else { return }
-        setUpContent(feedInfo)
+    func removeComment(feedCommentSeq: Int) {
+        self.viewModel.commentRemove(feedCommentSeq)
+        self.viewModel.didFinishCommentRemoveFetch = {
+            toast("댓글 삭제완료")
+            
+            self.commentTableView.reloadData()
+            
+            guard let feedInfo = self.feedInfo else { return }
+            self.setUpContent(feedInfo)
+        }
     }
     
     func reply(parentCommentSeq: Int, userNickname: String, activated: Bool) {
@@ -791,7 +796,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
                         completionHandler: { result in
                         switch(result) {
                             case .success(let imageResult):
-                            let resized = resizeImage(image: imageResult.image, newWidth: self.imageViewWidth)
+                            let resized = resize(image: imageResult.image, newWidth: self.imageViewWidth)
                             imageView.image = resized
                             imageView.isHidden = false
                             case .failure(let error):
@@ -952,7 +957,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
                     completionHandler: { result in
                     switch(result) {
                         case .success(let imageResult):
-                        let resized = resizeImage(image: imageResult.image, newWidth: 40)
+                        let resized = resize(image: imageResult.image, newWidth: 40)
                         imageView.image = resized
                         imageView.isHidden = false
                         case .failure(let error):

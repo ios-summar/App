@@ -340,7 +340,7 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
                   completionHandler: { result in
                   switch(result) {
                       case .success(let imageResult):
-                      let resized = resizeImage(image: imageResult.image, newWidth: 40)
+                      let resized = resize(image: imageResult.image, newWidth: 40)
                       imageView.image = resized
                       imageView.isHidden = false
                       case .failure(let error):
@@ -492,7 +492,7 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
                             completionHandler: { result in
                             switch(result) {
                                 case .success(let imageResult):
-                                let resized = resizeImage(image: imageResult.image, newWidth: self.imageViewWidth)
+                                let resized = resize(image: imageResult.image, newWidth: self.imageViewWidth)
                                 imageView.image = resized
                                 imageView.isHidden = false
                                 case .failure(let error):

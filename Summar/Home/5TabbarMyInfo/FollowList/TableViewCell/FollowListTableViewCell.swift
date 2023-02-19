@@ -140,7 +140,7 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
                     completionHandler: { result in
                     switch(result) {
                         case .success(let imageResult):
-                        let resized = resizeImage(image: imageResult.image, newWidth: 48)
+                        let resized = resize(image: imageResult.image, newWidth: 48)
                         imageView.image = resized
                         imageView.isHidden = false
                         case .failure(let error):

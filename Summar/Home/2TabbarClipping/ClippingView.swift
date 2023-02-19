@@ -11,6 +11,7 @@ import UIKit
 final class ClippingView: UIView, ViewAttributes, HomeViewDelegate {
     weak var delegate: HomeViewDelegate?
     let fontManager = FontManager.shared
+    let viewModel = ClippingViewModel()
     
     func pushScreen(_ VC: UIViewController, _ any: Any) {
         if VC.isKind(of: FeedDetailViewController.self) {
@@ -23,7 +24,7 @@ final class ClippingView: UIView, ViewAttributes, HomeViewDelegate {
     }
     
     var displayCount : Int = 0
-    var pageIndex : Int = 1
+    var sizeIndex : Int = 1
     
     let viewWidth : CGFloat = {
         
@@ -130,10 +131,9 @@ final class ClippingView: UIView, ViewAttributes, HomeViewDelegate {
     }
     
     @objc func selectFeed() {
-        let viewModel = ClippingViewModel(0, (pageIndex * 30))
-        viewModel.scrapFeed()
+        viewModel.scrapFeed(pageIndex: 0, size: sizeIndex * 30)
         viewModel.didFinishFetch = {
-            self.model = viewModel.feedSelectResponse
+            self.model = self.viewModel.feedSelectResponse
             self.tableView.refreshControl?.endRefreshing()
         }
     }
@@ -155,10 +155,10 @@ extension ClippingView: UITableViewDelegate, UITableViewDataSource{
                 return totalRecordCount
             }else { // 30개 이상일때
                 if currentPageNo != totalPageCount { // 총건수를 30으로 나눴을때 현재페이지 != 마지막페이지
-                    displayCount = 30 * pageIndex
+                    displayCount = 30 * sizeIndex
                     return displayCount// 30개씩 * 현재페이지 ex) 120건 노출시 30.. 60.. 90.. 120...
                 }else { // 총건수를 30으로 나눴을때 현재페이지 == 마지막페이지
-                    displayCount = (30 * (pageIndex - 1)) + (totalRecordCount % 30)
+                    displayCount = (30 * (sizeIndex - 1)) + (totalRecordCount % 30)
                     return displayCount// (30개씩 * 현재페이지) + 나머지(총 건수 % 30건)
                 }
             }
@@ -183,13 +183,12 @@ extension ClippingView: UITableViewDelegate, UITableViewDataSource{
 //        print("")
         
         if let totalRecordCount = model?.totalRecordCount, let recordsPerPage = model?.recordsPerPage, let currentPageNo = model?.currentPageNo, let totalPageCount = model?.totalPageCount {
-            if pageIndex * 30 == indexPath.row {
-                self.pageIndex += 1
-                let viewModel = ClippingViewModel(0, (pageIndex * 30))
-                viewModel.scrapFeed()
-
+            if sizeIndex * 30 == indexPath.row {
+                self.sizeIndex += 1
+                
+                viewModel.scrapFeed(pageIndex: 0, size: sizeIndex * 30)
                 viewModel.didFinishFetch = {
-                    self.model = viewModel.feedSelectResponse
+                    self.model = self.viewModel.feedSelectResponse
                     self.tableView.reloadData()
                 }
                 

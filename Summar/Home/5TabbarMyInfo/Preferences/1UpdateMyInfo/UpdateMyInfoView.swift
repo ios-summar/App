@@ -82,7 +82,7 @@ final class UpdateMyInfoView: UIView, UITextViewDelegate, UITextFieldDelegate {
                             completionHandler: { result in
                             switch(result) {
                                 case .success(let imageResult):
-                                let resized = resizeImage(image: imageResult.image, newWidth: 80)
+                                let resized = resize(image: imageResult.image, newWidth: 80)
                                 self.profileImageView.image = resized
                                 self.profileImageView.isHidden = false
                                 case .failure(let error):

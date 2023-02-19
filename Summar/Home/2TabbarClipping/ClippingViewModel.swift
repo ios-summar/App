@@ -17,23 +17,12 @@ final class ClippingViewModel {
         }
     }
     
-    var pageIndex: Int? = nil
-    var size: Int? = nil
-    
-    init(_ pageIndex: Int?, _ size: Int?){
-        self.pageIndex = pageIndex
-        self.size = size
-        
-        print("pageIndex : \(pageIndex), size : \(size) ")
-    }
-    
     // MARK: - Closures for callback, since we are not using the ViewModel to the View.
     var showAlertClosure: (() -> ())?
     var updateLoadingStatus: (() -> ())?
     var didFinishFetch: (() -> ())?
     
-    func scrapFeed(){
-        guard let pageIndex = pageIndex, let size = size else {return}
+    func scrapFeed(pageIndex: Int, size: Int){
         self.request.scrapFeed("/feed/scrap?page=\(pageIndex)&size=\(size)", completion: { (feedSelectResponse, error, status) in
             //error만 있을경우 서버오류
             //error,status != nil 경우 토큰 재발급
@@ -41,7 +30,7 @@ final class ClippingViewModel {
                 if status == 401 {
                     print("토큰 재발급")
                     self.request.reloadToken(status)
-                    self.scrapFeed()
+                    self.scrapFeed(pageIndex: pageIndex, size: size)
                 }
             }else if let error = error {
                 print(error)

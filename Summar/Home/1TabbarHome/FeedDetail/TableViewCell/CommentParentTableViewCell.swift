@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 
-protocol TableViewReload: AnyObject {
-    func tableViewReload()
+protocol RemoveComment: AnyObject {
+    func removeComment(feedCommentSeq: Int)
 }
 
 protocol ReplyDelegate: AnyObject {
@@ -18,11 +18,10 @@ protocol ReplyDelegate: AnyObject {
 
 final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
     weak var delegate: PushDelegate?
-    weak var reloadDelegate: TableViewReload?
+    weak var reloadDelegate: RemoveComment?
     weak var replyDelegate: ReplyDelegate?
     let helper = Helper.shared
     let fontManager = FontManager.shared
-    let viewModel = FeedDetailViewModel()
     var comment: Comment?
     
     lazy var profileImg : UIImageView = {
@@ -147,7 +146,7 @@ final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
                     completionHandler: { result in
                     switch(result) {
                         case .success(let imageResult):
-                        let resized = resizeImage(image: imageResult.image, newWidth: 32)
+                        let resized = resize(image: imageResult.image, newWidth: 32)
                         imageView.image = resized
                         imageView.isHidden = false
                         case .failure(let error):
@@ -247,12 +246,7 @@ final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
                         
                         switch handler {
                         case "삭제하기":
-                            self.viewModel.commentRemove(feedCommentSeq)
-                            self.viewModel.didFinishCommentRemoveFetch = {
-                                toast("댓글 삭제완료")
-                                
-                                self.reloadDelegate?.tableViewReload()
-                            }
+                            self.reloadDelegate?.removeComment(feedCommentSeq: feedCommentSeq)
                             break
                         case "신고하기":
                             let param: Dictionary<String, Any> = [

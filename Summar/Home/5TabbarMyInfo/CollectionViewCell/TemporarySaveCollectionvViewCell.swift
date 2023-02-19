@@ -79,7 +79,7 @@ final class TemporarySaveCollectionvViewCell: UICollectionViewCell, ViewAttribut
                     completionHandler: { result in
                     switch(result) {
                         case .success(let imageResult):
-                        let resized = resizeImage(image: imageResult.image, newWidth: 200) //TEST
+                        let resized = resize(image: imageResult.image, newWidth: 200) //TEST
                         imageView.image = resized
                         imageView.isHidden = false
                         case .failure(let error):

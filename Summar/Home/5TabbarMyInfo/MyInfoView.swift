@@ -748,7 +748,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
                     completionHandler: { result in
                     switch(result) {
                         case .success(let imageResult):
-                        let resized = resizeImage(image: imageResult.image, newWidth: 40)
+                        let resized = resize(image: imageResult.image, newWidth: 40)
                         imageView.image = resized
                         imageView.isHidden = false
                         case .failure(let error):
