@@ -18,10 +18,11 @@ import KakaoSDKUser
 import KakaoSDKCommon
 import Firebase // Push https://developer-fury.tistory.com/53
 import AlamofireNetworkActivityIndicator // https://swiftpackageindex.com/Alamofire/AlamofireNetworkActivityIndicator
+import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    let userNotificationCenter = UNUserNotificationCenter.current()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         application.registerForRemoteNotifications()
@@ -120,8 +121,27 @@ extension AppDelegate: MessagingDelegate, UNUserNotificationCenterDelegate {
       completionHandler([.alert, .badge, .sound])
     }
     
+    // https://ios-development.tistory.com/1138
+    // https://fomaios.tistory.com/entry/iOS-푸쉬-알림-탭했을-때-특정-페이지로-이동하기
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
       completionHandler()
+        
+        let application = UIApplication.shared
+                
+        //앱이 켜져있는 상태에서 푸쉬 알림을 눌렀을 때
+        if application.applicationState == .active {
+            let userInfo = response.notification.request.content.userInfo
+            let body = response.notification.request.content.body
+            print("푸쉬알림 탭(앱 켜져있음)")
+            
+            smLog(body)
+            smLog("\(userInfo)")
+        }
+        
+        //앱이 꺼져있는 상태에서 푸쉬 알림을 눌렀을 때
+        if application.applicationState == .inactive {
+          print("푸쉬알림 탭(앱 꺼져있음)")
+        }
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {

@@ -108,6 +108,10 @@
 		A2941D842998F95300D0DCF7 /* ToastHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2941D832998F95300D0DCF7 /* ToastHelper.swift */; };
 		A2ADEBA728D081050018A358 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ADEBA628D081050018A358 /* Helper.swift */; };
 		A2BD01FB299F11A700462C8A /* DownSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BD01FA299F11A700462C8A /* DownSample.swift */; };
+		A2BD01FE29A25D1A00462C8A /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BD01FD29A25D1A00462C8A /* NotificationViewController.swift */; };
+		A2BD020029A25D7600462C8A /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BD01FF29A25D7600462C8A /* NotificationView.swift */; };
+		A2BD020229A2626C00462C8A /* NotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BD020129A2626C00462C8A /* NotificationViewModel.swift */; };
+		A2BD020429A2650B00462C8A /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BD020329A2650B00462C8A /* NotificationModel.swift */; };
 		A2CAEDE129050A630053D6C9 /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2CAEDE029050A630053D6C9 /* SignUpController.swift */; };
 		A2CAEDE329050A6C0053D6C9 /* SignUp1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2CAEDE229050A6C0053D6C9 /* SignUp1View.swift */; };
 		A2D27B722971C963002CF652 /* PushSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D27B712971C963002CF652 /* PushSettingViewController.swift */; };
@@ -262,6 +266,10 @@
 		A2941D832998F95300D0DCF7 /* ToastHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastHelper.swift; sourceTree = "<group>"; };
 		A2ADEBA628D081050018A358 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		A2BD01FA299F11A700462C8A /* DownSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownSample.swift; sourceTree = "<group>"; };
+		A2BD01FD29A25D1A00462C8A /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		A2BD01FF29A25D7600462C8A /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		A2BD020129A2626C00462C8A /* NotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewModel.swift; sourceTree = "<group>"; };
+		A2BD020329A2650B00462C8A /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
 		A2CAEDE029050A630053D6C9 /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		A2CAEDE229050A6C0053D6C9 /* SignUp1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp1View.swift; sourceTree = "<group>"; };
 		A2D27B712971C963002CF652 /* PushSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushSettingViewController.swift; sourceTree = "<group>"; };
@@ -662,6 +670,17 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
+		A2BD01FC29A25D0E00462C8A /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				A2BD01FD29A25D1A00462C8A /* NotificationViewController.swift */,
+				A2BD01FF29A25D7600462C8A /* NotificationView.swift */,
+				A2BD020129A2626C00462C8A /* NotificationViewModel.swift */,
+				A2BD020329A2650B00462C8A /* NotificationModel.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
 		A2CAEDDD29050A1C0053D6C9 /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
@@ -728,6 +747,7 @@
 		A2ECB35E29448C2E0005D88C /* 1TabbarHome */ = {
 			isa = PBXGroup;
 			children = (
+				A2BD01FC29A25D0E00462C8A /* Notification */,
 				04D4B0ED295D804A00AD5043 /* CollectionViewCell */,
 				04D4B0EC295D803D00AD5043 /* TableViewCell */,
 				A2527D4D297D12440031350B /* FeedDetail */,
@@ -989,6 +1009,7 @@
 				5ECCBBDD2990892700470516 /* FollowerListView.swift in Sources */,
 				5EB809FA2994AF54003FA74C /* ReportView2.swift in Sources */,
 				5ECCBBDB299081AF00470516 /* FollowerListViewController.swift in Sources */,
+				A2BD020029A25D7600462C8A /* NotificationView.swift in Sources */,
 				A2933E72294F808500B84C5B /* UserInfo.swift in Sources */,
 				041EEE9C2954101B006263C7 /* BannerTableViewCell.swift in Sources */,
 				A2ADEBA728D081050018A358 /* Helper.swift in Sources */,
@@ -1009,6 +1030,7 @@
 				048EAA872965570E004E4A08 /* PreferencesTableViewCell.swift in Sources */,
 				04CCEAFD2910A61D009DBE05 /* ServerRequest.swift in Sources */,
 				04668D83295C13BF00165E88 /* FeedCollectionViewCell.swift in Sources */,
+				A2BD01FE29A25D1A00462C8A /* NotificationViewController.swift in Sources */,
 				04D4B0EF295D82C700AD5043 /* SearchViewModel.swift in Sources */,
 				04D4B0EB295D7E7900AD5043 /* SearchTableViewCell.swift in Sources */,
 				A2D27B7429727962002CF652 /* PushSettingView.swift in Sources */,
@@ -1026,6 +1048,7 @@
 				5EC01194298B9D17004FFA29 /* CommentParentTableViewCell.swift in Sources */,
 				04904BDC290A5D96004ED5ED /* SignUp3View.swift in Sources */,
 				048EAA822965490C004E4A08 /* PreferencesController.swift in Sources */,
+				A2BD020229A2626C00462C8A /* NotificationViewModel.swift in Sources */,
 				5E4491B4296FF33D0048042D /* UpdateMyInfoViewModel.swift in Sources */,
 				04967FA6294C3BF300CAF5CF /* MyInfoView.swift in Sources */,
 				A2D27B7D29729B30002CF652 /* ServerResult.swift in Sources */,
@@ -1059,6 +1082,7 @@
 				041EEE9A2952F1C2006263C7 /* HomeTableViewCell.swift in Sources */,
 				A2E960E129743C17007E3B3B /* FAQViewModel.swift in Sources */,
 				A2ECB36D29448EC10005D88C /* MyInfoViewController.swift in Sources */,
+				A2BD020429A2650B00462C8A /* NotificationModel.swift in Sources */,
 				04239D6E29553A12002ED10E /* AccessToken.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

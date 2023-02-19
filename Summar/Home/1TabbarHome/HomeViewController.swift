@@ -138,7 +138,8 @@ final class HomeViewController : UIViewController, HomeViewDelegate {
     }
     
     @objc func topBtnAction(_ sender: Any){
-        smLog("")
+        let VC = NotificationViewController()
+        self.navigationController?.pushViewController(VC, animated: true)
     }
 }
 
