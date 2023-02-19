@@ -141,11 +141,19 @@ final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
             DispatchQueue.main.async {
                 imageView.kf.indicatorType = .activity
                 imageView.kf.setImage(
-                  with: url,
-                  placeholder: nil,
-                  options: [.transition(.fade(1.2))],
-                  completionHandler: nil
-                )
+                    with: url,
+                    placeholder: nil,
+                    options: [.transition(.fade(1.2))],
+                    completionHandler: { result in
+                    switch(result) {
+                        case .success(let imageResult):
+                        let resized = resizeImage(image: imageResult.image, newWidth: 32)
+                        imageView.image = resized
+                        imageView.isHidden = false
+                        case .failure(let error):
+                            imageView.isHidden = true
+                        }
+                    })
             }
         }
     }

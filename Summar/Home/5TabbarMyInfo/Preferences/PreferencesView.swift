@@ -35,11 +35,19 @@ final class PreferencesView: UIView{
     //                    cell.imageView.image = UIImage(data: data!)
                         self.profileImg.kf.indicatorType = .activity
                         self.profileImg.kf.setImage(
-                          with: url,
-                          placeholder: nil,
-                          options: [.transition(.fade(1.2))],
-                          completionHandler: nil
-                        )
+                            with: url,
+                            placeholder: nil,
+                            options: [.transition(.fade(1.2))],
+                            completionHandler: { result in
+                            switch(result) {
+                                case .success(let imageResult):
+                                let resized = resizeImage(image: imageResult.image, newWidth: 42)
+                                self.profileImg.image = resized
+                                self.profileImg.isHidden = false
+                                case .failure(let error):
+                                self.profileImg.isHidden = true
+                                }
+                            })
                     }
                 }
             }else {
@@ -261,11 +269,19 @@ final class PreferencesView: UIView{
         //                    cell.imageView.image = UIImage(data: data!)
                             self.profileImg.kf.indicatorType = .activity
                             self.profileImg.kf.setImage(
-                              with: url,
-                              placeholder: nil,
-                              options: [.transition(.fade(1.2))],
-                              completionHandler: nil
-                            )
+                                with: url,
+                                placeholder: nil,
+                                options: [.transition(.fade(1.2))],
+                                completionHandler: { result in
+                                switch(result) {
+                                    case .success(let imageResult):
+                                    let resized = resizeImage(image: imageResult.image, newWidth: 42)
+                                    self.profileImg.image = resized
+                                    self.profileImg.isHidden = false
+                                    case .failure(let error):
+                                    self.profileImg.isHidden = true
+                                    }
+                                })
                         }
                     }
                 }else {

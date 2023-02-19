@@ -79,8 +79,16 @@ final class UpdateMyInfoView: UIView, UITextViewDelegate, UITextFieldDelegate {
                             with: url,
                             placeholder: nil,
                             options: [.transition(.fade(1.2))],
-                            completionHandler: nil
-                        )
+                            completionHandler: { result in
+                            switch(result) {
+                                case .success(let imageResult):
+                                let resized = resizeImage(image: imageResult.image, newWidth: 80)
+                                self.profileImageView.image = resized
+                                self.profileImageView.isHidden = false
+                                case .failure(let error):
+                                self.profileImageView.isHidden = true
+                                }
+                            })
                     }
                 }
             }else {

@@ -107,6 +107,7 @@
 		A2941D822998DE8000D0DCF7 /* ReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2941D812998DE8000D0DCF7 /* ReportViewModel.swift */; };
 		A2941D842998F95300D0DCF7 /* ToastHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2941D832998F95300D0DCF7 /* ToastHelper.swift */; };
 		A2ADEBA728D081050018A358 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ADEBA628D081050018A358 /* Helper.swift */; };
+		A2BD01FB299F11A700462C8A /* DownSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BD01FA299F11A700462C8A /* DownSample.swift */; };
 		A2CAEDE129050A630053D6C9 /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2CAEDE029050A630053D6C9 /* SignUpController.swift */; };
 		A2CAEDE329050A6C0053D6C9 /* SignUp1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2CAEDE229050A6C0053D6C9 /* SignUp1View.swift */; };
 		A2D27B722971C963002CF652 /* PushSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D27B712971C963002CF652 /* PushSettingViewController.swift */; };
@@ -260,6 +261,7 @@
 		A2941D812998DE8000D0DCF7 /* ReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewModel.swift; sourceTree = "<group>"; };
 		A2941D832998F95300D0DCF7 /* ToastHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastHelper.swift; sourceTree = "<group>"; };
 		A2ADEBA628D081050018A358 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		A2BD01FA299F11A700462C8A /* DownSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownSample.swift; sourceTree = "<group>"; };
 		A2CAEDE029050A630053D6C9 /* SignUpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		A2CAEDE229050A6C0053D6C9 /* SignUp1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp1View.swift; sourceTree = "<group>"; };
 		A2D27B712971C963002CF652 /* PushSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushSettingViewController.swift; sourceTree = "<group>"; };
@@ -652,6 +654,7 @@
 				5EB4F5F2296EAFFF0061D64D /* LogHelper.swift */,
 				5EC01180298B81B5004FFA29 /* DateHelper.swift */,
 				A257176C2992803A009163D5 /* UserDefaultHelper.swift */,
+				A2BD01FA299F11A700462C8A /* DownSample.swift */,
 				5E816E19297A4C19002BB4D3 /* Record.swift */,
 				04CCEAFE2910A6EC009DBE05 /* Network.plist */,
 				A2941D832998F95300D0DCF7 /* ToastHelper.swift */,
@@ -1044,6 +1047,7 @@
 				04804544296D2FB900D02A30 /* UpdateMyInfoView.swift in Sources */,
 				A2527D4A297BDD770031350B /* ProfileViewController.swift in Sources */,
 				5EB4F5F1296E94FF0061D64D /* PaddingLabel.swift in Sources */,
+				A2BD01FB299F11A700462C8A /* DownSample.swift in Sources */,
 				048EAA842965493D004E4A08 /* PreferencesView.swift in Sources */,
 				5EB809EC29937382003FA74C /* ClippingViewModel.swift in Sources */,
 				04D4B0E1295D24F800AD5043 /* EmptyCollectionViewCell.swift in Sources */,

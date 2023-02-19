@@ -15,6 +15,7 @@ final class TemporarySaveCollectionvViewCell: UICollectionViewCell, ViewAttribut
     let feedImageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
+        view.layer.cornerRadius = 10
         view.clipsToBounds = true
         return view
     }()
@@ -72,11 +73,19 @@ final class TemporarySaveCollectionvViewCell: UICollectionViewCell, ViewAttribut
                 imageView.kf.indicatorType = .activity
                 imageView.contentMode = .scaleAspectFill
                 imageView.kf.setImage(
-                  with: url,
-                  placeholder: nil,
-                  options: [.transition(.fade(1.2))],
-                  completionHandler: nil
-                )
+                    with: url,
+                    placeholder: nil,
+                    options: [.transition(.fade(1.2))],
+                    completionHandler: { result in
+                    switch(result) {
+                        case .success(let imageResult):
+                        let resized = resizeImage(image: imageResult.image, newWidth: 200) //TEST
+                        imageView.image = resized
+                        imageView.isHidden = false
+                        case .failure(let error):
+                            imageView.isHidden = true
+                        }
+                    })
             }
         }
     }

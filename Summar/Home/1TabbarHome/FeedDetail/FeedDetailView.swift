@@ -781,25 +781,33 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
             //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
             DispatchQueue.global().async {
                 DispatchQueue.main.async {
-                    let imageview = UIImageView()
+                    let imageView = UIImageView()
                     
-                    imageview.kf.indicatorType = .activity
-                    imageview.kf.setImage(
+                    imageView.kf.indicatorType = .activity
+                    imageView.kf.setImage(
                         with: url,
                         placeholder: nil,
                         options: [.transition(.fade(1.2))],
-                        completionHandler: nil
-                    )
+                        completionHandler: { result in
+                        switch(result) {
+                            case .success(let imageResult):
+                            let resized = resizeImage(image: imageResult.image, newWidth: self.imageViewWidth)
+                            imageView.image = resized
+                            imageView.isHidden = false
+                            case .failure(let error):
+                                imageView.isHidden = true
+                            }
+                        })
                     
-                    imageview.contentMode = .scaleAspectFill
-                    imageview.clipsToBounds = true
-                    imageview.backgroundColor = .white
+                    imageView.contentMode = .scaleAspectFill
+                    imageView.clipsToBounds = true
+                    imageView.backgroundColor = .white
                     let xPosition = self.imageViewWidth * CGFloat(i)
                     
-                    imageview.frame = CGRect(x: xPosition, y: 0, width: self.imageViewWidth, height: self.imageViewWidth)
+                    imageView.frame = CGRect(x: xPosition, y: 0, width: self.imageViewWidth, height: self.imageViewWidth)
                     self.scrollViewHorizontal.contentSize.width = self.imageViewWidth * CGFloat(1+i)
                     
-                    self.scrollViewHorizontal.addSubview(imageview)
+                    self.scrollViewHorizontal.addSubview(imageView)
                 }
             }
         }
@@ -941,8 +949,16 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
                     with: url,
                     placeholder: nil,
                     options: [.transition(.fade(1.2))],
-                    completionHandler: nil
-                )
+                    completionHandler: { result in
+                    switch(result) {
+                        case .success(let imageResult):
+                        let resized = resizeImage(image: imageResult.image, newWidth: 40)
+                        imageView.image = resized
+                        imageView.isHidden = false
+                        case .failure(let error):
+                            imageView.isHidden = true
+                        }
+                    })
             }
         }
     }

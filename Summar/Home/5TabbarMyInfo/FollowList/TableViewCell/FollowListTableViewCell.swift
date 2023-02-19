@@ -99,14 +99,16 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
             
             switch followStatus {
             case "나자신":
-                btn.removeFromSuperview()
+                self.btn.alpha = 0.0
                 
             case "한쪽팔로우", "맞팔":
+                self.btn.alpha = 1.0
                 self.btn.setTitle("팔로우 취소", for: .normal)
                 self.btn.backgroundColor = UIColor.Gray02
                 self.btn.setTitleColor(UIColor.init(r: 70, g: 76, b: 83), for: .normal)
                 
             case "암것도아님":
+                self.btn.alpha = 1.0
                 self.btn.setTitle("팔로우", for: .normal)
                 self.btn.backgroundColor = UIColor.magnifyingGlassColor
                 self.btn.setTitleColor(UIColor.white, for: .normal)
@@ -132,11 +134,19 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
             DispatchQueue.main.async {
                 imageView.kf.indicatorType = .activity
                 imageView.kf.setImage(
-                  with: url,
-                  placeholder: nil,
-                  options: [.transition(.fade(1.2))],
-                  completionHandler: nil
-                )
+                    with: url,
+                    placeholder: nil,
+                    options: [.transition(.fade(1.2))],
+                    completionHandler: { result in
+                    switch(result) {
+                        case .success(let imageResult):
+                        let resized = resizeImage(image: imageResult.image, newWidth: 48)
+                        imageView.image = resized
+                        imageView.isHidden = false
+                        case .failure(let error):
+                            imageView.isHidden = true
+                        }
+                    })
             }
         }
     }
