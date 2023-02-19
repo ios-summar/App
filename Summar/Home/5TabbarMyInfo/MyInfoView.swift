@@ -498,11 +498,9 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
             if !followResult { // 팔로우 안한 상태
                 self.followBtn.setTitle("팔로우", for: .normal)
                 self.followBtn.backgroundColor = UIColor.magnifyingGlassColor
-                toast("팔로우")
             }else { // 팔로우 한 상태
                 self.followBtn.setTitle("팔로우 취소", for: .normal)
                 self.followBtn.backgroundColor = UIColor.init(r: 70, g: 76, b: 83)
-                toast("팔로우 취소")
             }
         }
         
@@ -747,8 +745,16 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
                     with: url,
                     placeholder: nil,
                     options: [.transition(.fade(1.2))],
-                    completionHandler: nil
-                )
+                    completionHandler: { result in
+                    switch(result) {
+                        case .success(let imageResult):
+                        let resized = resizeImage(image: imageResult.image, newWidth: 40)
+                        imageView.image = resized
+                        imageView.isHidden = false
+                        case .failure(let error):
+                            imageView.isHidden = true
+                        }
+                    })
             }
         }
     }
