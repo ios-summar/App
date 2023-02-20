@@ -46,6 +46,8 @@ final class ReportViewModel{
                     print("토큰 재발급")
                     self.request.reloadToken(status)
                     self.report(param)
+                }else if status == 500 {
+                    toast("서버 오류, 잠시후 다시 시도해주세요.")
                 }
             }else if let error = error {
                 print(error)

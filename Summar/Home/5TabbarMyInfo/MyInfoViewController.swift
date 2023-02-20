@@ -11,7 +11,7 @@ import SnapKit
 import Kingfisher
 import JJFloatingActionButton
 
-final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate, PopDelegate{
+final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDelegate, PopDelegate, ViewAttributes{
     let helper = Helper.shared
     let fontManager = FontManager.shared
     let myInfoView = MyInfoView()
@@ -53,6 +53,8 @@ final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDel
                 case "수정하기":
                     let VC = WriteFeedController()
                     VC.feedInfo = feedInfo
+                    
+                    LoadingIndicator.showLoading()
                     
                     let wrController = UINavigationController(rootViewController: VC)
                     wrController.navigationBar.isTranslucent = false
@@ -102,19 +104,49 @@ final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDel
         return title
     }()
     
+    override func viewWillAppear(_ animated: Bool) {
+        guard let value = UserDefaults.standard.dictionary(forKey: "UserInfo") else {return}
+        let userSeq: Int = value["userSeq"] as! Int
+        myInfoView.requestMyInfo(userSeq)
+        myInfoView.getPortfolio()
+        
+        // 수정화면에서 넘어올때 hide
+        LoadingIndicator.hideLoading()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        myInfoView.touchLeft()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(myInfoView)
+        
+        setUI()
+        setAttributes()
+        setDelegate()
+        floatingBtn()
+    }
+    
+    func setDelegate() {
+        
         myInfoView.delegate = self
         myInfoView.pushDelegate = self
         VC.delegate = self
+    }
+    
+    func setUI() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showPage(_:)), name: NSNotification.Name("showPage"), object: nil)
         
         // MARK: - 마이 써머리 상단 타이틀, 버튼
         self.navigationItem.titleView = lbNavTitle
         self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(pushViewScreen(_:)), uiImage: UIImage(systemName: "gearshape")!, tintColor: .black)
-        
         self.navigationItem.rightBarButtonItem?.tintColor = .black
+        
+        // MARK: - addSubView
+        self.view.addSubview(myInfoView)
+    }
+    
+    func setAttributes() {
         
         myInfoView.snp.makeConstraints{(make) in
 
@@ -122,8 +154,6 @@ final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDel
             make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
             make.left.right.equalToSuperview()
         }
-        
-        floatingBtn()
     }
     
     func floatingBtn(){
@@ -157,22 +187,35 @@ final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDel
 
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        guard let value = UserDefaults.standard.dictionary(forKey: "UserInfo") else {return}
-        let userSeq: Int = value["userSeq"] as! Int
-        myInfoView.requestMyInfo(userSeq)
-        myInfoView.getPortfolio()
-        
-        // 수정화면에서 넘어올때 hide
-        LoadingIndicator.hideLoading()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        myInfoView.touchLeft()
-    }
-    
     @objc func pushViewScreen(_ sender: Any) {
         self.navigationController?.pushViewController(VC, animated: true)
+    }
+    
+    @objc func showPage(_ notification:Notification) {
+        if let userInfo = notification.userInfo {
+            guard let pushType = userInfo["pushType"] as? String else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+            
+            switch pushType {
+            case "댓글", "대댓글":
+                guard let feedSeq = userInfo["feedSeq"] as? Int, let feedCommentSeq = userInfo["feedCommentSeq"] as? Int else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+                
+                let VC = FeedDetailViewController()
+                
+                self.navigationController?.pushViewController(VC, animated: true)
+                
+            case "좋아요", "팔로우":
+                guard let userSeq = userInfo["userSeq"] as? Int else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+                
+                
+                let VC = ProfileViewController()
+                VC.userSeq = userSeq
+                
+                self.navigationController?.pushViewController(VC, animated: true)
+                
+            default:
+                break
+            }
+        }
     }
 }
 

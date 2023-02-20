@@ -24,7 +24,7 @@ final class ProfileViewController : UIViewController, PushDelegate, ViewAttribut
             
             self.navigationController?.pushViewController(VC, animated: true)
         }else if VC.isKind(of: WriteFeedController.self){
-            guard let feedInfo = any as? FeedInfo, let feedSeq = feedInfo.feedSeq else {return}
+            guard let feedInfo = any as? FeedInfo, let feedSeq = feedInfo.feedSeq, let userSeq = feedInfo.user?.userSeq else {return}
             
             helper.showAlertAction(vc: self, message: "신고하기") { handler in
                 switch handler {
@@ -32,8 +32,14 @@ final class ProfileViewController : UIViewController, PushDelegate, ViewAttribut
                     print("신고하기1")
                     let VC = ReportViewController()
                     
-                    VC.opponsentUserSeq = self.userSeq
-                    VC.feedSeq = feedSeq
+                    let param: Dictionary<String, Any> = [
+                        "mySeq": getMyUserSeq(),
+                        "userSeq": userSeq,
+                        "feedSeq": feedSeq,
+                        "feedCommentSeq": 0
+                    ]
+                    
+                    VC.param = param
                     self.navigationController?.pushViewController(VC, animated: true)
                 default:
                     break

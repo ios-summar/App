@@ -41,12 +41,17 @@ final class ClippingViewController : UIViewController, ViewAttributes, HomeViewD
         super.viewDidLoad()
         clippingView.delegate = self
         
+        setDelegate()
         setUI()
         setAttributes()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         clippingView.selectFeed()
+    }
+    
+    func setDelegate() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showPage(_:)), name: NSNotification.Name("showPage"), object: nil)
     }
     
     func setUI(){
@@ -58,6 +63,33 @@ final class ClippingViewController : UIViewController, ViewAttributes, HomeViewD
     func setAttributes() {
         clippingView.snp.makeConstraints {
             $0.edges.equalTo(self.view.safeAreaLayoutGuide)
+        }
+    }
+    
+    @objc func showPage(_ notification:Notification) {
+        if let userInfo = notification.userInfo {
+            guard let pushType = userInfo["pushType"] as? String else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+            
+            switch pushType {
+            case "댓글", "대댓글":
+                guard let feedSeq = userInfo["feedSeq"] as? Int, let feedCommentSeq = userInfo["feedCommentSeq"] as? Int else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+                
+                let VC = FeedDetailViewController()
+                
+                self.navigationController?.pushViewController(VC, animated: true)
+                
+            case "좋아요", "팔로우":
+                guard let userSeq = userInfo["userSeq"] as? Int else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+                
+                
+                let VC = ProfileViewController()
+                VC.userSeq = userSeq
+                
+                self.navigationController?.pushViewController(VC, animated: true)
+                
+            default:
+                break
+            }
         }
     }
 }

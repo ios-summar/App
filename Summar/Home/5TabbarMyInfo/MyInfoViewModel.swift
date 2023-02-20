@@ -88,6 +88,8 @@ final class MyInfoViewModel{
                     print("토큰 재발급")
                     self.request.reloadToken(status)
                     self.getUserInfo(userSeq)
+                }else if status == 500 {
+                    toast("서버 오류, 잠시후 다시 시도해주세요.")
                 }
             }else if let error = error {
                 print(error)
@@ -112,6 +114,8 @@ final class MyInfoViewModel{
                     print("토큰 재발급")
                     self.request.reloadToken(status)
                     self.followCheck(followedUserSeq, followingUserSeq)
+                }else if status == 500 {
+                    toast("서버 오류, 잠시후 다시 시도해주세요.")
                 }
             }else if let error = error {
                 print(error)
@@ -135,6 +139,8 @@ final class MyInfoViewModel{
                     print("토큰 재발급")
                     self.request.reloadToken(status)
                     self.followAction(param, httpMethod)
+                }else if status == 500 {
+                    toast("서버 오류, 잠시후 다시 시도해주세요.")
                 }
             }else if let error = error {
                 print(error)
@@ -160,6 +166,8 @@ final class MyInfoViewModel{
                     print("토큰 재발급")
                     self.request.reloadToken(status)
                     self.getUserInfo(userSeq)
+                }else if status == 500 {
+                    toast("서버 오류, 잠시후 다시 시도해주세요.")
                 }
             }else if let error = error {
                 print(error)
@@ -187,6 +195,8 @@ final class MyInfoViewModel{
                     print("토큰 재발급")
                     self.request.reloadToken(status)
                     self.getTemporarySave()
+                }else if status == 500 {
+                    toast("서버 오류, 잠시후 다시 시도해주세요.")
                 }
             }else if let error = error {
                 print(error)

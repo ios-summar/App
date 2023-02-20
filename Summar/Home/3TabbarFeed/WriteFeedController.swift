@@ -11,7 +11,7 @@ import BSImagePicker
 import Photos
 import YPImagePicker
 
-final class WriteFeedController : UIViewController, ImagePickerDelegate, PopDelegate{
+final class WriteFeedController : UIViewController, ImagePickerDelegate, PopDelegate, ViewAttributes{
     func popScreen() {
         closeAction()
     }
@@ -39,17 +39,27 @@ final class WriteFeedController : UIViewController, ImagePickerDelegate, PopDele
     }()
     
     override func viewDidLoad() {
-        configureDelegate()
-        configureUI()
+        super.viewDidLoad()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            
+            LoadingIndicator.hideLoading()
+        }
+        
+        setDelegate()
+        setUI()
+        setAttributes()
     }
     
-    func configureDelegate() {
+    func setDelegate() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(showPage(_:)), name: NSNotification.Name("showPage"), object: nil)
         wfView.delegate = self
         wfView.popDelegate = self
     }
     
-    /// UI 초기설정
-    func configureUI() {
+    func setUI(){
+        
         // MARK: - SafeArea or View BackGroundColor Set
         fillSafeArea(position: .top, color: .white)
         fillSafeArea(position: .left, color: .white)
@@ -59,9 +69,13 @@ final class WriteFeedController : UIViewController, ImagePickerDelegate, PopDele
         // MARK: - NavigationBar
         self.navigationItem.titleView = titleLabel
         self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(closeAction), uiImage: UIImage(systemName: "xmark")!, tintColor: .black)
-        // MARK: - addView
-        // MARK: - Feed Body
+        
+        // MARK: - addSubView
         self.view.addSubview(wfView)
+    }
+    
+    func setAttributes() {
+        
         wfView.snp.makeConstraints{(make) in
             make.top.equalTo(0)
             make.left.equalToSuperview()
@@ -190,6 +204,33 @@ final class WriteFeedController : UIViewController, ImagePickerDelegate, PopDele
             })
             
             
+        }
+    }
+    
+    @objc func showPage(_ notification:Notification) {
+        if let userInfo = notification.userInfo {
+            guard let pushType = userInfo["pushType"] as? String else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+            
+            switch pushType {
+            case "댓글", "대댓글":
+                guard let feedSeq = userInfo["feedSeq"] as? Int, let feedCommentSeq = userInfo["feedCommentSeq"] as? Int else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+                
+                let VC = FeedDetailViewController()
+                
+                self.navigationController?.pushViewController(VC, animated: true)
+                
+            case "좋아요", "팔로우":
+                guard let userSeq = userInfo["userSeq"] as? Int else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+                
+                
+                let VC = ProfileViewController()
+                VC.userSeq = userSeq
+                
+                self.navigationController?.pushViewController(VC, animated: true)
+                
+            default:
+                break
+            }
         }
     }
 }

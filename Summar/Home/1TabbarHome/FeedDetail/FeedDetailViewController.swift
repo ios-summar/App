@@ -99,6 +99,8 @@ final class FeedDetailViewController: UIViewController, PushDelegate {
                         let VC = WriteFeedController()
                         VC.feedInfo = self.feedInfo
                         
+                        LoadingIndicator.showLoading()
+                        
                         let wrController = UINavigationController(rootViewController: VC)
                         wrController.navigationBar.isTranslucent = false
                         wrController.navigationBar.backgroundColor = .white

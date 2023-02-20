@@ -60,6 +60,8 @@ final class FeedDetailViewModel {
                     print("토큰 재발급")
                     self.request.reloadToken(status)
                     self.getFeedInfo(feedSeq)
+                }else if status == 500 {
+                    toast("서버 오류, 잠시후 다시 시도해주세요.")
                 }
             }else if let error = error {
                 print(error)
@@ -82,6 +84,8 @@ final class FeedDetailViewModel {
                     print("토큰 재발급")
                     self.request.reloadToken(status)
                     self.deleteFeed(feedSeq)
+                }else if status == 500 {
+                    toast("서버 오류, 잠시후 다시 시도해주세요.")
                 }
             }else if let error = error {
                 print(error)
@@ -104,6 +108,8 @@ final class FeedDetailViewModel {
                     print("토큰 재발급")
                     self.request.reloadToken(status)
                     self.getFeedComment(feedSeq, size)
+                }else if status == 500 {
+                    toast("서버 오류, 잠시후 다시 시도해주세요.")
                 }
             }else if let error = error {
                 print(error)
@@ -127,6 +133,8 @@ final class FeedDetailViewModel {
                     print("토큰 재발급")
                     self.request.reloadToken(status)
                     self.commentRegister(param)
+                }else if status == 500 {
+                    toast("서버 오류, 잠시후 다시 시도해주세요.")
                 }
             }else if let error = error {
                 print(error)
@@ -153,6 +161,8 @@ final class FeedDetailViewModel {
                     print("토큰 재발급")
                     self.request.reloadToken(status)
                     self.commentRemove(feedCommentSeq)
+                }else if status == 500 {
+                    toast("서버 오류, 잠시후 다시 시도해주세요.")
                 }
             }else if let error = error {
                 print(error)

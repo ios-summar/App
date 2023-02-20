@@ -118,29 +118,94 @@ extension AppDelegate: MessagingDelegate, UNUserNotificationCenterDelegate {
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-      completionHandler([.alert, .badge, .sound])
+        let userInfo = notification.request.content.userInfo
+        
+        Messaging.messaging().appDidReceiveMessage(userInfo)
+        completionHandler([.alert, .badge, .sound])
     }
     
     // https://ios-development.tistory.com/1138
     // https://fomaios.tistory.com/entry/iOS-푸쉬-알림-탭했을-때-특정-페이지로-이동하기
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
       completionHandler()
-        
         let application = UIApplication.shared
+        
+        let content = response.notification.request.content
+        let userInfo = response.notification.request.content.userInfo
+        let body = response.notification.request.content.body
                 
         //앱이 켜져있는 상태에서 푸쉬 알림을 눌렀을 때
         if application.applicationState == .active {
-            let userInfo = response.notification.request.content.userInfo
-            let body = response.notification.request.content.body
             print("푸쉬알림 탭(앱 켜져있음)")
             
             smLog(body)
+            smLog("\(content)")
             smLog("\(userInfo)")
+            
+            let dicData = userInfo as! [String: Any]
+            
+//            let pushType = dicData["pushType"] as? [String: Any]
+            let pushType = String(describing: dicData["pushType"] ?? "")
+            smLog("\(dicData)")
+            smLog("\(pushType)")
+            
+            switch pushType {
+            case "댓글", "대댓글" :
+                smLog("\(Int(String(describing: dicData["feedSeq"] ?? "0")))")
+                smLog("\(Int(String(describing: dicData["feedCommentSeq"] ?? "0")))")
+                
+                NotificationCenter.default.post(name: Notification.Name("showPage"), object: nil, userInfo: [
+                    "pushType" : pushType,
+                    "feedSeq" : Int(String(describing: dicData["feedSeq"] ?? "0")),
+                    "feedCommentSeq" : Int(String(describing: dicData["feedCommentSeq"] ?? "0"))
+                ])
+            case "좋아요", "팔로우" :
+                smLog("\(Int(String(describing: dicData["userSeq"] ?? "0")))")
+                
+                NotificationCenter.default.post(name: Notification.Name("showPage"), object: nil, userInfo: [
+                    "pushType" : pushType,
+                    "userSeq" : Int(String(describing: dicData["userSeq"] ?? "0"))
+                ])
+            default:
+                break
+            }
         }
         
         //앱이 꺼져있는 상태에서 푸쉬 알림을 눌렀을 때
         if application.applicationState == .inactive {
-          print("푸쉬알림 탭(앱 꺼져있음)")
+            print("푸쉬알림 탭(앱 꺼져있음)")
+            
+            smLog(body)
+            smLog("\(content)")
+            smLog("\(userInfo)")
+            
+            let dicData = userInfo as! [String: Any]
+            
+//            let pushType = dicData["pushType"] as? [String: Any]
+            let pushType = String(describing: dicData["pushType"] ?? "")
+            smLog("\(dicData)")
+            smLog("\(pushType)")
+            
+            switch pushType {
+            case "댓글", "대댓글" :
+                smLog("\(Int(String(describing: dicData["feedSeq"] ?? "0")))")
+                smLog("\(Int(String(describing: dicData["feedCommentSeq"] ?? "0")))")
+                
+                NotificationCenter.default.post(name: Notification.Name("showPage"), object: nil, userInfo: [
+                    "pushType" : pushType,
+                    "feedSeq" : Int(String(describing: dicData["feedSeq"] ?? "0")),
+                    "feedCommentSeq" : Int(String(describing: dicData["feedCommentSeq"] ?? "0"))
+                ])
+            case "좋아요", "팔로우" :
+                smLog("\(Int(String(describing: dicData["userSeq"] ?? "0")))")
+                
+                NotificationCenter.default.post(name: Notification.Name("showPage"), object: nil, userInfo: [
+                    "pushType" : pushType,
+                    "userSeq" : Int(String(describing: dicData["userSeq"] ?? "0"))
+                ])
+            default:
+                break
+            }
         }
     }
     

@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import JJFloatingActionButton
 
-final class HomeViewController : UIViewController, HomeViewDelegate {
+final class HomeViewController : UIViewController, HomeViewDelegate, ViewAttributes {
 //    func scrollBarInterAction(_ handler: Bool) {
 //        DispatchQueue.main.async {
 //            UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
@@ -60,26 +60,34 @@ final class HomeViewController : UIViewController, HomeViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureDelegate()
-        configureUI()
+        
+        setDelegate()
+        setUI()
+        setAttributes()
+        floatingBtn()
     }
     
-    func configureDelegate() {
+    func setDelegate() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showPage(_:)), name: NSNotification.Name("showPage"), object: nil)
         homeView.homeViewDelegate = self
 //        homeView.delegate = self
     }
     
-    /// UI 초기설정
-    func configureUI() {
-        // MARK: - SafeArea or View BackGroundColor Set
+    func setUI() {
         
         // MARK: - NavigationBar
         let lbNavTitle = UIView (frame: CGRect(x: 0, y: 0, width: viewWidth, height: 40))
         lbNavTitle.layer.borderWidth = 1
+        lbNavTitle.addSubview(titleImageView)
         
-        _ = [titleImageView].map {
-            lbNavTitle.addSubview($0)
-        }
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: lbNavTitle)
+        self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(topBtnAction(_:)), uiImage: UIImage(systemName: "bell.fill")!, tintColor: .black)
+        // MARK: - addView
+        
+        self.view.addSubview(homeView)
+    }
+    
+    func setAttributes() {
         
         titleImageView.snp.makeConstraints{(make) in
             make.centerY.equalToSuperview()
@@ -88,18 +96,10 @@ final class HomeViewController : UIViewController, HomeViewDelegate {
             make.height.equalTo(18)
         }
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: lbNavTitle)
-        self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(topBtnAction(_:)), uiImage: UIImage(systemName: "bell.fill")!, tintColor: .black)
-        // MARK: - addView
-        self.view.addSubview(homeView)
-        
-        
         homeView.snp.makeConstraints{(make) in
             make.left.right.bottom.equalToSuperview()
             make.top.equalTo(0)
         }
-        
-        floatingBtn()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -140,6 +140,33 @@ final class HomeViewController : UIViewController, HomeViewDelegate {
     @objc func topBtnAction(_ sender: Any){
         let VC = NotificationViewController()
         self.navigationController?.pushViewController(VC, animated: true)
+    }
+    
+    @objc func showPage(_ notification:Notification) {
+        if let userInfo = notification.userInfo {
+            guard let pushType = userInfo["pushType"] as? String else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+            
+            switch pushType {
+            case "댓글", "대댓글":
+                guard let feedSeq = userInfo["feedSeq"] as? Int, let feedCommentSeq = userInfo["feedCommentSeq"] as? Int else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+                
+                let VC = FeedDetailViewController()
+                
+                self.navigationController?.pushViewController(VC, animated: true)
+                
+            case "좋아요", "팔로우":
+                guard let userSeq = userInfo["userSeq"] as? Int else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+                
+                
+                let VC = ProfileViewController()
+                VC.userSeq = userSeq
+                
+                self.navigationController?.pushViewController(VC, animated: true)
+                
+            default:
+                break
+            }
+        }
     }
 }
 

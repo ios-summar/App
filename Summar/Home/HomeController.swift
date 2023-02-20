@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class HomeController : UITabBarController {
+final class HomeController : UITabBarController, ViewAttributes {
     var layerHeight = CGFloat()
     public lazy var middleButton: UIButton! = {
         let middleButton = UIButton()
@@ -25,31 +25,6 @@ final class HomeController : UITabBarController {
         return middleButton
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.view.backgroundColor = UIColor.BackgroundColor
-        fillSafeArea(position: .top, color: .white)
-        fillSafeArea(position: .left, color: .white)
-        fillSafeArea(position: .right, color: .white)
-        fillSafeArea(position: .bottom, color: .white)
-        
-        UITabBar.appearance().barTintColor = UIColor.summarColor1
-//        UITabBar.appearance().backgroundColor = UIColor.white
-        
-        let appearanceTabbar = UITabBarAppearance()
-        appearanceTabbar.configureWithOpaqueBackground()
-        appearanceTabbar.backgroundColor = UIColor.white
-        tabBar.standardAppearance = appearanceTabbar
-        
-        // tabBar Custom
-//        tabBar.layer.cornerRadius = tabBar.frame.height * 0.41
-//        tabBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        tabBar.tintColor = .black
-        
-        setupVCs()
-//        addMiddleButton()
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -60,14 +35,46 @@ final class HomeController : UITabBarController {
         }
     }
     
-    // MARK: - UIBar Create NavigtaionController
-    func setupVCs() {
-          viewControllers = [
-            createNavController(for: HomeViewController(), title: NSLocalizedString("홈", comment: ""), image: UIImage(named: "home")!, selectedImage: UIImage(named: "sHome")!),
-            createNavController(for: ClippingViewController(), title: NSLocalizedString("스크랩", comment: ""), image: UIImage(named: "scrap")!, selectedImage: UIImage(named: "sScrap")!),
-            createNavController(for: SearchViewController(), title: NSLocalizedString("검색", comment: ""), image: UIImage(named: "search")!, selectedImage: UIImage(named: "sSearch")!),
-            createNavController(for: MyInfoViewController(), title: NSLocalizedString("마이 써머리", comment: ""), image: UIImage(named: "myInfo")!, selectedImage: UIImage(named: "sMyInfo")!)
-          ]
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setDelegate()
+        setUI()
+        setAttributes()
+        
+    }
+    
+    func setDelegate() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(showPage(_:)), name: NSNotification.Name("showPage"), object: nil)
+    }
+    
+    func setUI() {
+        
+        // MARK: - UIBar Create NavigtaionController
+        viewControllers = [
+          createNavController(for: HomeViewController(), title: NSLocalizedString("홈", comment: ""), image: UIImage(named: "home")!, selectedImage: UIImage(named: "sHome")!),
+          createNavController(for: ClippingViewController(), title: NSLocalizedString("스크랩", comment: ""), image: UIImage(named: "scrap")!, selectedImage: UIImage(named: "sScrap")!),
+          createNavController(for: SearchViewController(), title: NSLocalizedString("검색", comment: ""), image: UIImage(named: "search")!, selectedImage: UIImage(named: "sSearch")!),
+          createNavController(for: MyInfoViewController(), title: NSLocalizedString("마이 써머리", comment: ""), image: UIImage(named: "myInfo")!, selectedImage: UIImage(named: "sMyInfo")!)
+        ]
+  }
+    
+    func setAttributes() {
+        
+        self.view.backgroundColor = UIColor.BackgroundColor
+        fillSafeArea(position: .top, color: .white)
+        fillSafeArea(position: .left, color: .white)
+        fillSafeArea(position: .right, color: .white)
+        fillSafeArea(position: .bottom, color: .white)
+        
+        UITabBar.appearance().barTintColor = UIColor.summarColor1
+        
+        let appearanceTabbar = UITabBarAppearance()
+        appearanceTabbar.configureWithOpaqueBackground()
+        appearanceTabbar.backgroundColor = UIColor.white
+        tabBar.standardAppearance = appearanceTabbar
+        tabBar.tintColor = .black
     }
     
     fileprivate func createNavController(for rootViewController: UIViewController, title: String?, image: UIImage, selectedImage: UIImage) -> UIViewController {
@@ -81,41 +88,32 @@ final class HomeController : UITabBarController {
         return navController
     }
     
-//    func addMiddleButton() {
-//        // DISABLE TABBAR ITEM - behind the "+" custom button:
-//        DispatchQueue.main.async {
-//            if let items = self.tabBar.items {
-//                 items[2].isEnabled = false
-//            }
-//        }
-//
-//        // shape, position and size
-//        tabBar.addSubview(middleButton)
-//        let size = CGFloat(50)
-//
-//        middleButton.snp.makeConstraints{(make) in
-//            make.centerX.equalTo(tabBar.snp.centerX)
-//            make.top.equalTo(tabBar.snp.top).offset(-20)
-//            make.width.height.equalTo(size)
-//        }
-//
-//        middleButton.layer.cornerRadius = 15
-//
-//        // other
-//        middleButton.layer.masksToBounds = false
-//        middleButton.translatesAutoresizingMaskIntoConstraints = false
-//
-//        // action
-//        middleButton.addTarget(self, action: #selector(buttonHandler), for: .touchUpInside)
-//
-//    }
-    
-//    @objc func buttonHandler(){
-//        let wrController = UINavigationController(rootViewController:  WriteFeedController.shared)
-//        wrController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
-//        self.present(wrController, animated: true, completion: nil)
-//    }
-    
+    @objc func showPage(_ notification:Notification) {
+        if let userInfo = notification.userInfo {
+            guard let pushType = userInfo["pushType"] as? String else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+            
+            switch pushType {
+            case "댓글", "대댓글":
+                guard let feedSeq = userInfo["feedSeq"] as? Int, let feedCommentSeq = userInfo["feedCommentSeq"] as? Int else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+                
+                let VC = FeedDetailViewController()
+                
+                self.navigationController?.pushViewController(VC, animated: true)
+                
+            case "좋아요", "팔로우":
+                guard let userSeq = userInfo["userSeq"] as? Int else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+                
+                
+                let VC = ProfileViewController()
+                VC.userSeq = userSeq
+                
+                self.navigationController?.pushViewController(VC, animated: true)
+                
+            default:
+                break
+            }
+        }
+    }
 }
 
 

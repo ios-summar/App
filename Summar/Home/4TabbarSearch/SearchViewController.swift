@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-final class SearchViewController : UIViewController, PushDelegateWithSearchUserInfo{
+final class SearchViewController : UIViewController, PushDelegateWithSearchUserInfo, ViewAttributes{
     func pushDeleagteWithParam(_ VC: UIViewController, _ searchUserInfo: SearchUserInfo) {
         if VC.isKind(of: ProfileViewController.self) {
             let VC = ProfileViewController()
@@ -64,9 +64,26 @@ final class SearchViewController : UIViewController, PushDelegateWithSearchUserI
         return magnifyingGlass
     }()
     
+    override func viewWillAppear(_ animated: Bool) {
+        search()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureDelegate()
+        
+        setDelegate()
+        setUI()
+        setAttributes()
+    }
+    
+    func setDelegate() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showPage(_:)), name: NSNotification.Name("showPage"), object: nil)
+        
+        searchView.pushDelegateWithSearchUserInfo = self
+    }
+    
+    func setUI() {
+        view1.addSubview(magnifyingGlassBtn)
         self.view.addSubview(searchView)
         self.view.backgroundColor = UIColor.searchGray
         
@@ -83,14 +100,9 @@ final class SearchViewController : UIViewController, PushDelegateWithSearchUserI
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        
-        if #available(iOS 16.0, *) {
-//            self.navigationItem.rightBarButtonItem?.isHidden = true
-        } else {
-            // Fallback on earlier versions
-        }
-        
-        view1.addSubview(magnifyingGlassBtn)
+    }
+    
+    func setAttributes() {
         
         magnifyingGlassBtn.snp.makeConstraints{(make) in
             make.centerY.equalToSuperview()
@@ -105,22 +117,43 @@ final class SearchViewController : UIViewController, PushDelegateWithSearchUserI
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        search()
-    }
-    
-    func configureDelegate() {
-        searchView.pushDelegateWithSearchUserInfo = self
-    }
-    
     @objc func search() {
         guard let text = textField.text else { return }
+        
         searchView.search(text)
     }
     
     @objc func deleteAction(){
+        
         textField.text = ""
         searchView.search("")
+    }
+    
+    @objc func showPage(_ notification:Notification) {
+        if let userInfo = notification.userInfo {
+            guard let pushType = userInfo["pushType"] as? String else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+            
+            switch pushType {
+            case "댓글", "대댓글":
+                guard let feedSeq = userInfo["feedSeq"] as? Int, let feedCommentSeq = userInfo["feedCommentSeq"] as? Int else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+                
+                let VC = FeedDetailViewController()
+                
+                self.navigationController?.pushViewController(VC, animated: true)
+                
+            case "좋아요", "팔로우":
+                guard let userSeq = userInfo["userSeq"] as? Int else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+                
+                
+                let VC = ProfileViewController()
+                VC.userSeq = userSeq
+                
+                self.navigationController?.pushViewController(VC, animated: true)
+                
+            default:
+                break
+            }
+        }
     }
 }
 
