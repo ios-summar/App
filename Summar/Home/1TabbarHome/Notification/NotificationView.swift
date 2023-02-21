@@ -19,7 +19,7 @@ final class NotificationView: UIView, ViewAttributes {
     }
     lazy var tableView : UITableView = {
         let view = UITableView()
-        view.register(PreferencesTableViewCell.self, forCellReuseIdentifier: "PreferencesTableViewCell")
+        view.register(NotificationTableViewCell.self, forCellReuseIdentifier: "NotificationTableViewCell")
         view.separatorStyle = .singleLine
         view.cellLayoutMarginsFollowReadableWidth = false
         view.separatorInset.left = 0
@@ -73,12 +73,21 @@ final class NotificationView: UIView, ViewAttributes {
 }
 
 extension NotificationView: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 99
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let model = model?.result else {return 0}
         return model.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        guard let model = model?.result[indexPath.row] else {return UITableViewCell()}
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NotificationTableViewCell", for: indexPath) as! NotificationTableViewCell
+        cell.setUpCell(model)
+        
+        return cell
     }
 }

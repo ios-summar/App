@@ -47,6 +47,7 @@
 		5E1133BB298CE53F00465C0C /* ContentSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1133BA298CE53F00465C0C /* ContentSizedTableView.swift */; };
 		5E1133BD298CEA5F00465C0C /* FeedComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1133BC298CEA5F00465C0C /* FeedComment.swift */; };
 		5E4491B4296FF33D0048042D /* UpdateMyInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4491B3296FF33D0048042D /* UpdateMyInfoViewModel.swift */; };
+		5E58346629A44D8600FF65C0 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E58346529A44D8600FF65C0 /* NotificationTableViewCell.swift */; };
 		5E5A05CE297685F900195962 /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5A05CD297685F900195962 /* LoadingIndicator.swift */; };
 		5E816E05297A4526002BB4D3 /* FontManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E816E04297A4526002BB4D3 /* FontManager.swift */; };
 		5E816E10297A4673002BB4D3 /* Pretendard-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5E816E07297A4670002BB4D3 /* Pretendard-ExtraLight.otf */; };
@@ -201,6 +202,7 @@
 		5E1133BA298CE53F00465C0C /* ContentSizedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizedTableView.swift; sourceTree = "<group>"; };
 		5E1133BC298CEA5F00465C0C /* FeedComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedComment.swift; sourceTree = "<group>"; };
 		5E4491B3296FF33D0048042D /* UpdateMyInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateMyInfoViewModel.swift; sourceTree = "<group>"; };
+		5E58346529A44D8600FF65C0 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		5E5A05CD297685F900195962 /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		5E816E04297A4526002BB4D3 /* FontManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontManager.swift; sourceTree = "<group>"; };
 		5E816E07297A4670002BB4D3 /* Pretendard-ExtraLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraLight.otf"; sourceTree = "<group>"; };
@@ -445,6 +447,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		5E58346429A44C4C00FF65C0 /* TableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				5E58346529A44D8600FF65C0 /* NotificationTableViewCell.swift */,
+			);
+			path = TableViewCell;
+			sourceTree = "<group>";
+		};
 		5E816E06297A45D7002BB4D3 /* Font */ = {
 			isa = PBXGroup;
 			children = (
@@ -673,6 +683,7 @@
 		A2BD01FC29A25D0E00462C8A /* Notification */ = {
 			isa = PBXGroup;
 			children = (
+				5E58346429A44C4C00FF65C0 /* TableViewCell */,
 				A2BD01FD29A25D1A00462C8A /* NotificationViewController.swift */,
 				A2BD01FF29A25D7600462C8A /* NotificationView.swift */,
 				A2BD020129A2626C00462C8A /* NotificationViewModel.swift */,
@@ -747,10 +758,10 @@
 		A2ECB35E29448C2E0005D88C /* 1TabbarHome */ = {
 			isa = PBXGroup;
 			children = (
-				A2BD01FC29A25D0E00462C8A /* Notification */,
 				04D4B0ED295D804A00AD5043 /* CollectionViewCell */,
 				04D4B0EC295D803D00AD5043 /* TableViewCell */,
 				A2527D4D297D12440031350B /* FeedDetail */,
+				A2BD01FC29A25D0E00462C8A /* Notification */,
 				A2ECB36429448CD10005D88C /* HomeViewController.swift */,
 				04B864E429494D0600D814D9 /* HomeView.swift */,
 				A2527D4429782C750031350B /* HomeViewModel.swift */,
@@ -1037,6 +1048,7 @@
 				04239D7029553A74002ED10E /* Token.swift in Sources */,
 				A2CAEDE329050A6C0053D6C9 /* SignUp1View.swift in Sources */,
 				5ECCBBEB2991E3D100470516 /* PortFolioTableViewCell.swift in Sources */,
+				5E58346629A44D8600FF65C0 /* NotificationTableViewCell.swift in Sources */,
 				5E816E05297A4526002BB4D3 /* FontManager.swift in Sources */,
 				04040E972962734C00D3333C /* LaunchScreenController.swift in Sources */,
 				A2ECB36B29448EAF0005D88C /* SearchViewController.swift in Sources */,
