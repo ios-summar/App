@@ -26,7 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let feedViewModel = FeedDetailViewModel()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        application.registerForRemoteNotifications()
         IQKeyboardManagerInit()
         KakaoLoginInit()
         NaverLoginInit()
@@ -73,20 +72,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func PushNotificationReceive(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+    private func PushNotificationReceive(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
         
-        let userInfo = (launchOptions?[.remoteNotification] as? [String: Any])
-        
+        if let userInfo = (launchOptions?[.remoteNotification] as? [String: Any]) {
+            processPushNotification(userInfo)
+        }
     }
     
     func PushInit() {
         FirebaseApp.configure()
         
         Messaging.messaging().delegate = self
-        UNUserNotificationCenter.current().delegate = self
+        userNotificationCenter.delegate = self
         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
         
-        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { _, _ in }
+        userNotificationCenter.requestAuthorization(options: authOptions) { (granted, error) in
+            DispatchQueue.main.async {
+                if granted {
+                    UIApplication.shared.registerForRemoteNotifications()
+                } else {
+                    // Fail case. 수락을 안하는 케이스
+                }
+            }
+        }
     }
     
     func IQKeyboardManagerInit() {
@@ -130,96 +138,54 @@ extension AppDelegate: MessagingDelegate, UNUserNotificationCenterDelegate {
     // https://fomaios.tistory.com/entry/iOS-푸쉬-알림-탭했을-때-특정-페이지로-이동하기
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
       completionHandler()
-        let application = UIApplication.shared
+//        let content = response.notification.request.content
+//        let body = response.notification.request.content.body
         
-        let content = response.notification.request.content
-        let userInfo = response.notification.request.content.userInfo
-        let body = response.notification.request.content.body
+        let userInfo = response.notification.request.content.userInfo as! [String: Any]
+        processPushNotification(userInfo)
                 
-        //앱이 켜져있는 상태에서 푸쉬 알림을 눌렀을 때
-        if application.applicationState == .active {
-            print("푸쉬알림 탭(앱 켜져있음)")
+    }
+    
+    private func processPushNotification(_ userInfo: Dictionary<String, Any>){
+        let pushType = String(describing: userInfo["pushType"] ?? "")
+        smLog("\(userInfo)")
+        smLog("\(pushType)")
+        
+        switch pushType {
+        case "댓글", "대댓글" :
+            smLog("\(Int(String(describing: userInfo["feedSeq"] ?? "0")))")
+            smLog("\(Int(String(describing: userInfo["feedCommentSeq"] ?? "0")))")
             
-            smLog(body)
-            smLog("\(content)")
-            smLog("\(userInfo)")
-            
-            let dicData = userInfo as! [String: Any]
-            
-//            let pushType = dicData["pushType"] as? [String: Any]
-            let pushType = String(describing: dicData["pushType"] ?? "")
-            smLog("\(dicData)")
-            smLog("\(pushType)")
-            
-            switch pushType {
-            case "댓글", "대댓글" :
-                smLog("\(Int(String(describing: dicData["feedSeq"] ?? "0")))")
-                smLog("\(Int(String(describing: dicData["feedCommentSeq"] ?? "0")))")
-                
-                guard let feedSeq = Int(String(describing: dicData["feedSeq"] ?? "0")) else {return}
-                feedViewModel.getFeedInfo(feedSeq)
-                feedViewModel.didFinishFetch = {
-                    
-                    NotificationCenter.default.post(name: Notification.Name("showPage"), object: nil, userInfo: [
-                        "pushType" : pushType,
-                        "feedInfo" : self.feedViewModel.feedInfo,
-                        "feedCommentSeq" : Int(String(describing: dicData["feedCommentSeq"] ?? "0"))
-                    ])
-                }
-                
-            case "좋아요", "팔로우" :
-                smLog("\(Int(String(describing: dicData["userSeq"] ?? "0")))")
+            guard let feedSeq = Int(String(describing: userInfo["feedSeq"] ?? "0")) else {return}
+            feedViewModel.getFeedInfo(feedSeq)
+            feedViewModel.didFinishFetch = {
                 
                 NotificationCenter.default.post(name: Notification.Name("showPage"), object: nil, userInfo: [
                     "pushType" : pushType,
-                    "userSeq" : Int(String(describing: dicData["userSeq"] ?? "0"))
+                    "feedInfo" : self.feedViewModel.feedInfo,
+                    "feedCommentSeq" : Int(String(describing: userInfo["feedCommentSeq"] ?? "0"))
                 ])
-            default:
-                break
             }
+            
+        case "좋아요", "팔로우" :
+            smLog("\(Int(String(describing: userInfo["userSeq"] ?? "0")))")
+            
+            NotificationCenter.default.post(name: Notification.Name("showPage"), object: nil, userInfo: [
+                "pushType" : pushType,
+                "userSeq" : Int(String(describing: userInfo["userSeq"] ?? "0"))
+            ])
+        default:
+            break
         }
-        
-        //앱이 꺼져있는 상태에서 푸쉬 알림을 눌렀을 때
-        if application.applicationState == .inactive {
-            print("푸쉬알림 탭(앱 꺼져있음)")
-            
-            smLog(body)
-            smLog("\(content)")
-            smLog("\(userInfo)")
-            
-            let dicData = userInfo as! [String: Any]
-            
-            let pushType = String(describing: dicData["pushType"] ?? "")
-            smLog("\(dicData)")
-            smLog("\(pushType)")
-            
-            switch pushType {
-            case "댓글", "대댓글" :
-                smLog("\(Int(String(describing: dicData["feedSeq"] ?? "0")))")
-                smLog("\(Int(String(describing: dicData["feedCommentSeq"] ?? "0")))")
-                
-                guard let feedSeq = Int(String(describing: dicData["feedSeq"] ?? "0")) else {return}
-                feedViewModel.getFeedInfo(feedSeq)
-                feedViewModel.didFinishFetch = {
-                    
-                    NotificationCenter.default.post(name: Notification.Name("showPage"), object: nil, userInfo: [
-                        "pushType" : pushType,
-                        "feedInfo" : self.feedViewModel.feedInfo,
-                        "feedCommentSeq" : Int(String(describing: dicData["feedCommentSeq"] ?? "0"))
-                    ])
-                }
-                
-            case "좋아요", "팔로우" :
-                smLog("\(Int(String(describing: dicData["userSeq"] ?? "0")))")
-                
-                NotificationCenter.default.post(name: Notification.Name("showPage"), object: nil, userInfo: [
-                    "pushType" : pushType,
-                    "userSeq" : Int(String(describing: dicData["userSeq"] ?? "0"))
-                ])
-            default:
-                break
-            }
-        }
+    }
+    
+    func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+    ) {
+        self.processPushNotification(userInfo as! [String: Any])
+        completionHandler(.newData)
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
