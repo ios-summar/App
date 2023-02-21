@@ -135,10 +135,11 @@ final class SearchViewController : UIViewController, PushDelegateWithSearchUserI
             
             switch pushType {
             case "댓글", "대댓글":
-                guard let feedSeq = userInfo["feedSeq"] as? Int, let feedCommentSeq = userInfo["feedCommentSeq"] as? Int else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+                guard let feedInfo = userInfo["feedInfo"] as? FeedInfo else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
                 
                 let VC = FeedDetailViewController()
                 
+                VC.feedInfo = feedInfo
                 self.navigationController?.pushViewController(VC, animated: true)
                 
             case "좋아요", "팔로우":

@@ -23,6 +23,7 @@ import UserNotifications
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     let userNotificationCenter = UNUserNotificationCenter.current()
+    let feedViewModel = FeedDetailViewModel()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         application.registerForRemoteNotifications()
@@ -30,8 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         KakaoLoginInit()
         NaverLoginInit()
         PushInit()
-        AlamofireIndicator()
-        
+        PushNotificationReceive(launchOptions)
 //        UITabBar.appearance().barTintColor = UIColor.summarColor1
         UITabBar.appearance().backgroundColor = UIColor.white
         
@@ -73,8 +73,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func AlamofireIndicator() {
-        NetworkActivityIndicatorManager.shared.isEnabled = true
+    func PushNotificationReceive(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
+        
+        let userInfo = (launchOptions?[.remoteNotification] as? [String: Any])
+        
     }
     
     func PushInit() {
@@ -154,11 +156,17 @@ extension AppDelegate: MessagingDelegate, UNUserNotificationCenterDelegate {
                 smLog("\(Int(String(describing: dicData["feedSeq"] ?? "0")))")
                 smLog("\(Int(String(describing: dicData["feedCommentSeq"] ?? "0")))")
                 
-                NotificationCenter.default.post(name: Notification.Name("showPage"), object: nil, userInfo: [
-                    "pushType" : pushType,
-                    "feedSeq" : Int(String(describing: dicData["feedSeq"] ?? "0")),
-                    "feedCommentSeq" : Int(String(describing: dicData["feedCommentSeq"] ?? "0"))
-                ])
+                guard let feedSeq = Int(String(describing: dicData["feedSeq"] ?? "0")) else {return}
+                feedViewModel.getFeedInfo(feedSeq)
+                feedViewModel.didFinishFetch = {
+                    
+                    NotificationCenter.default.post(name: Notification.Name("showPage"), object: nil, userInfo: [
+                        "pushType" : pushType,
+                        "feedInfo" : self.feedViewModel.feedInfo,
+                        "feedCommentSeq" : Int(String(describing: dicData["feedCommentSeq"] ?? "0"))
+                    ])
+                }
+                
             case "좋아요", "팔로우" :
                 smLog("\(Int(String(describing: dicData["userSeq"] ?? "0")))")
                 
@@ -181,7 +189,6 @@ extension AppDelegate: MessagingDelegate, UNUserNotificationCenterDelegate {
             
             let dicData = userInfo as! [String: Any]
             
-//            let pushType = dicData["pushType"] as? [String: Any]
             let pushType = String(describing: dicData["pushType"] ?? "")
             smLog("\(dicData)")
             smLog("\(pushType)")
@@ -191,11 +198,17 @@ extension AppDelegate: MessagingDelegate, UNUserNotificationCenterDelegate {
                 smLog("\(Int(String(describing: dicData["feedSeq"] ?? "0")))")
                 smLog("\(Int(String(describing: dicData["feedCommentSeq"] ?? "0")))")
                 
-                NotificationCenter.default.post(name: Notification.Name("showPage"), object: nil, userInfo: [
-                    "pushType" : pushType,
-                    "feedSeq" : Int(String(describing: dicData["feedSeq"] ?? "0")),
-                    "feedCommentSeq" : Int(String(describing: dicData["feedCommentSeq"] ?? "0"))
-                ])
+                guard let feedSeq = Int(String(describing: dicData["feedSeq"] ?? "0")) else {return}
+                feedViewModel.getFeedInfo(feedSeq)
+                feedViewModel.didFinishFetch = {
+                    
+                    NotificationCenter.default.post(name: Notification.Name("showPage"), object: nil, userInfo: [
+                        "pushType" : pushType,
+                        "feedInfo" : self.feedViewModel.feedInfo,
+                        "feedCommentSeq" : Int(String(describing: dicData["feedCommentSeq"] ?? "0"))
+                    ])
+                }
+                
             case "좋아요", "팔로우" :
                 smLog("\(Int(String(describing: dicData["userSeq"] ?? "0")))")
                 
