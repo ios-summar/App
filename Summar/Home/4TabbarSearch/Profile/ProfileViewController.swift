@@ -26,23 +26,56 @@ final class ProfileViewController : UIViewController, PushDelegate, ViewAttribut
         }else if VC.isKind(of: WriteFeedController.self){
             guard let feedInfo = any as? FeedInfo, let feedSeq = feedInfo.feedSeq, let userSeq = feedInfo.user?.userSeq else {return}
             
-            helper.showAlertAction(vc: self, message: "신고하기") { handler in
-                switch handler {
-                case "신고하기":
-                    print("신고하기1")
-                    let VC = ReportViewController()
-                    
-                    let param: Dictionary<String, Any> = [
-                        "mySeq": getMyUserSeq(),
-                        "userSeq": userSeq,
-                        "feedSeq": feedSeq,
-                        "feedCommentSeq": 0
-                    ]
-                    
-                    VC.param = param
-                    self.navigationController?.pushViewController(VC, animated: true)
-                default:
-                    break
+            if getMyUserSeq() == userSeq { // 자신 피드
+                smLog("자기 피드")
+                helper.showAlertAction(vc: self, message1: "수정하기", message2: "삭제하기") { handler in
+                    switch handler {
+                    case "수정하기":
+                        print("게시글 수정 로직")
+                        let VC = WriteFeedController()
+                        VC.feedInfo = feedInfo
+                        
+                        LoadingIndicator.showLoading()
+                        
+                        let wrController = UINavigationController(rootViewController: VC)
+                        wrController.navigationBar.isTranslucent = false
+                        wrController.navigationBar.backgroundColor = .white
+                        wrController.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+                        self.present(wrController, animated: true, completion: nil)
+                    case "삭제하기":
+                        self.helper.showAlertActionYN(vc: self, title: "알림", message: "정말로 해당 게시글을 삭제하시겠습니까?") { handler in
+                            guard let handler = handler else {
+                                return
+                            }
+                            // 게시글 삭제 로직
+                            print("게시글 삭제 로직 feedSeq => \(feedSeq)")
+                            self.viewModel.deleteFeed(feedSeq)
+                            self.viewModel.didFinishDelteFetch = {
+                                self.navigationController?.popViewController(animated: true)
+                            }
+                        }
+                    default:
+                        break
+                    }
+                }
+            }else {
+                smLog("자기 피드아님")
+                helper.showAlertAction(vc: self, message: "신고하기") { handler in
+                    switch handler {
+                    case "신고하기":
+                        let VC = ReportViewController()
+                        let param: Dictionary<String, Any> = [
+                            "mySeq": getMyUserSeq(),
+                            "userSeq": userSeq,
+                            "feedSeq": feedSeq,
+                            "feedCommentSeq": 0
+                        ]
+                        
+                        VC.param = param
+                        self.navigationController?.pushViewController(VC, animated: true)
+                    default:
+                        break
+                    }
                 }
             }
         }
@@ -50,6 +83,7 @@ final class ProfileViewController : UIViewController, PushDelegate, ViewAttribut
     
     let infoView = MyInfoView()
     let helper = Helper.shared
+    let viewModel = FeedDetailViewModel()
     
     var userSeq : Int?
     

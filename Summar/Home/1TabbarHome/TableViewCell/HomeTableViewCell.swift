@@ -45,7 +45,6 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.followShadowColor.cgColor
         view.layer.cornerRadius = 20
-        view.image = UIImage(named: "NonProfile")
         view.tintColor = UIColor.grayColor205
         view.contentMode = .scaleAspectFit
         view.clipsToBounds = true
