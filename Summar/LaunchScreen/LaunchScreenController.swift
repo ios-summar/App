@@ -52,7 +52,7 @@ final class LaunchScreenController: UIViewController, ViewAttributes {
         })
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){ //TEST
-            guard let value = UserDefaults.standard.dictionary(forKey: "UserInfo") else{
+            guard let _ = UserDefaults.standard.dictionary(forKey: "UserInfo") else{
                 self.navigationController?.pushViewController(SocialLoginController(), animated: true)
                 return
             }
