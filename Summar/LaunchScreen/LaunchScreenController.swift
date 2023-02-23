@@ -50,11 +50,12 @@ final class LaunchScreenController: UIViewController, ViewAttributes {
     
     func setAttributes() {
         
-        imageView.snp.makeConstraints{(make) in
+        imageView.snp.makeConstraints {
             
-            make.centerX.centerY.equalToSuperview()
-            make.height.equalTo(40)
-            make.width.equalTo(200)
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalTo(self.view.snp.centerY).offset(-20)
+            $0.height.equalTo(40)
+            $0.width.equalTo(200)
         }
         splashLabel.snp.makeConstraints {
             

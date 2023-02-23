@@ -55,7 +55,6 @@ final class HomeViewModel {
     
     func feedLikeScarp(_ handler: String, _ feedSeq: Int, _ param: Dictionary<String, Int>){
         self.request.feedLikeScarp("/feed/\(handler)/\(feedSeq)", param, completion: { (result, error, status) in
-            guard let result = result?.result?.result else {return}
             //error만 있을경우 서버오류
             //error,status != nil 경우 토큰 재발급
             if let error = error, let status = status {
@@ -74,7 +73,7 @@ final class HomeViewModel {
             }
 //            self.error = nil
 //            self.isLoading = falses
-            if result {
+            if result != nil {
                 self.didFinishLikeScrapFetch?()
             }
         })
