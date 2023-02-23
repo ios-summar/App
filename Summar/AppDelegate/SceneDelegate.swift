@@ -19,14 +19,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var mainVC : UIViewController?
     
-    //    let imageView : UIImageView = {
-    //        let view = UIImageView()
-    //        view.image = UIImage(systemName: "SplashImage")
-    //        view.layer.borderWidth = 1
-    //        view.backgroundColor = .systemPurple
-    //        return view
-    //    }()
-    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.

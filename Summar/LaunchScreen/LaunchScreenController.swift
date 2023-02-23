@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 
 final class LaunchScreenController: UIViewController, ViewAttributes {
+    let fontManager = FontManager()
     let feedViewModel = FeedDetailViewModel()
     
     var param: [String: Any]?
@@ -17,8 +18,19 @@ final class LaunchScreenController: UIViewController, ViewAttributes {
     let imageView : UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "SplashImage")
+        view.clipsToBounds = true
+        view.contentMode = .scaleAspectFit
         view.alpha = 0.0
         return view
+    }()
+    lazy var splashLabel: UILabel = {
+        let label = UILabel()
+        label.text = "나만의 커리어를 위한 포트폴리오 제작 플랫폼"
+        label.textColor = .white
+        label.font = self.fontManager.getFont(Font.Regular.rawValue).mediumFont
+        label.sizeToFit()
+        label.alpha = 0.0
+        return label
     }()
     
     override func viewDidLoad() {
@@ -33,6 +45,7 @@ final class LaunchScreenController: UIViewController, ViewAttributes {
         
         self.view.backgroundColor = UIColor.launchScreenBackGroundColor
         self.view.addSubview(imageView)
+        self.view.addSubview(splashLabel)
     }
     
     func setAttributes() {
@@ -40,8 +53,13 @@ final class LaunchScreenController: UIViewController, ViewAttributes {
         imageView.snp.makeConstraints{(make) in
             
             make.centerX.centerY.equalToSuperview()
-            make.height.equalTo(75)
-            make.width.equalTo(240)
+            make.height.equalTo(40)
+            make.width.equalTo(200)
+        }
+        splashLabel.snp.makeConstraints {
+            
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(imageView.snp.bottom).offset(10)
         }
     }
     
@@ -49,6 +67,7 @@ final class LaunchScreenController: UIViewController, ViewAttributes {
         
         UIView.animate(withDuration: 1.5, animations: {
             self.imageView.alpha = 1.0
+            self.splashLabel.alpha = 1.0
         })
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){ //TEST
