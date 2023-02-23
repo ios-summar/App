@@ -56,10 +56,10 @@ final class LaunchScreenController: UIViewController, ViewAttributes {
                 self.navigationController?.pushViewController(SocialLoginController(), animated: true)
                 return
             }
-                let VC = HomeController()
+            let VC = HomeController()
                 
-                VC.param = self.param
-                self.navigationController?.pushViewController(VC, animated: true)
+            VC.param = self.param
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(VC, animated: true)
         }
     }
 }
