@@ -18,5 +18,6 @@ struct NotificationList: Codable {
     let imageUrl: String?
     let feedImageUrl: String?
     let notificationType: String?
+    let followCheck: Bool?
     let createdDate: String?
 }

@@ -146,7 +146,7 @@ extension AppDelegate: MessagingDelegate, UNUserNotificationCenterDelegate {
                 
     }
     
-    private func processPushNotification(_ userInfo: Dictionary<String, Any>){
+    private func processPushNotification(_ userInfo: [String: Any]){
         let pushType = String(describing: userInfo["pushType"] ?? "")
         smLog("\(userInfo)")
         smLog("\(pushType)")

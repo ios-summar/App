@@ -35,24 +35,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.windowScene = windowScene
         
-        //        imageView.frame = UIScreen.main.bounds
-        //
-        //        window?.rootViewController?.view.addSubview(imageView)
-        //        window?.rootViewController?.view.bringSubviewToFront(imageView)
-        
-        
-        
         // safeArea BackgroundColor가 Black이 되는것을 방지
         window?.safeAreaLayoutGuide.owningView?.backgroundColor = .white
         
-        //        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
-        //            mainVC = HomeController()
-        //        }else {
+        let VC = LaunchScreenController()
         
-        //            mainVC = SocialLoginController()
-        //        }
+        if let remoteNotification = connectionOptions.notificationResponse?.notification.request.content.userInfo {
+            let userInfo = remoteNotification as! [String: Any]
+            
+//            userInfo[""]
+            VC.param = userInfo
+        }
         
-        let navigationController = UINavigationController(rootViewController: LaunchScreenController())
+        let navigationController = UINavigationController(rootViewController: VC)
         navigationController.isNavigationBarHidden = true
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()

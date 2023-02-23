@@ -7,10 +7,12 @@
 
 import Foundation
 import UIKit
+import SnapKit
 
-final class LaunchScreenController: UIViewController {
+final class LaunchScreenController: UIViewController, ViewAttributes {
+    let feedViewModel = FeedDetailViewModel()
     
-    var mainVC : UIViewController!
+    var param: [String: Any]?
     
     let imageView : UIImageView = {
         let view = UIImageView()
@@ -22,29 +24,42 @@ final class LaunchScreenController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setUI()
+        setAttributes()
+        setAnimate()
+    }
+    
+    func setUI() {
+        
         self.view.backgroundColor = UIColor.launchScreenBackGroundColor
         self.view.addSubview(imageView)
-        
-        _ = [imageView].map {
-            self.view.addSubview($0)
-        }
+    }
+    
+    func setAttributes() {
         
         imageView.snp.makeConstraints{(make) in
+            
             make.centerX.centerY.equalToSuperview()
             make.height.equalTo(75)
             make.width.equalTo(240)
         }
+    }
+    
+    private func setAnimate() {
         
         UIView.animate(withDuration: 1.5, animations: {
             self.imageView.alpha = 1.0
         })
         
-        DispatchQueue.main.asyncAfter(deadline: .now()){ //+ 2.0){ //TEST
-            if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
-                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootVC(HomeController(), animated: true)
-            }else {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){ //TEST
+            guard let value = UserDefaults.standard.dictionary(forKey: "UserInfo") else{
                 self.navigationController?.pushViewController(SocialLoginController(), animated: true)
+                return
             }
+                let VC = HomeController()
+                
+                VC.param = self.param
+                self.navigationController?.pushViewController(VC, animated: true)
         }
     }
 }

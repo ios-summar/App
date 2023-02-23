@@ -44,31 +44,29 @@ final class PushSettingViewModel {
     
     // MARK: - Network call
     func getPushYN() {
-        if let userInfo = UserDefaults.standard.dictionary(forKey: "UserInfo") {
-            guard let userNickname = userInfo["userNickname"] else {return}
-            self.request.getPushYN("/user/push-notification-info?userNickname=\(userNickname)", completion: { (result, error, status) in
-                //error만 있을경우 서버오류
-                //error,status != nil 경우 토큰 재발급
-                if let error = error, let status = status {
-                    if status == 401 {
-                        print("토큰 재발급")
-                        self.request.reloadToken(status)
-                        self.getPushYN()
-                    }else if status == 500 {
-                        toast("서버 오류, 잠시후 다시 시도해주세요.")
-                    }
-                }else if let error = error {
-                    print(error)
-                    self.error = error
-                    self.isLoading = false
-                    return
+        let userSeq = getMyUserSeq()
+        self.request.getPushYN("/user/push-notification-info?userSeq=\(userSeq)", completion: { (result, error, status) in
+            //error만 있을경우 서버오류
+            //error,status != nil 경우 토큰 재발급
+            if let error = error, let status = status {
+                if status == 401 {
+                    print("토큰 재발급")
+                    self.request.reloadToken(status)
+                    self.getPushYN()
+                }else if status == 500 {
+                    toast("서버 오류, 잠시후 다시 시도해주세요.")
                 }
-                self.error = nil
+            }else if let error = error {
+                print(error)
+                self.error = error
                 self.isLoading = false
-                self.result = result
-                
-            })
-        }
+                return
+            }
+            self.error = nil
+            self.isLoading = false
+            self.result = result
+            
+        })
     }
     
     // MARK: - Network call

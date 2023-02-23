@@ -10,7 +10,13 @@ import UIKit
 
 final class NotificationViewController: UIViewController, ViewAttributes, PushDelegate {
     func pushScreen(_ VC: UIViewController, _ any: Any?) {
-        // 구현해야함
+        if VC.isKind(of: ProfileViewController.self){
+            guard let userSeq = any as? Int else{toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+            let VC = ProfileViewController()
+            
+            VC.userSeq = userSeq
+            self.navigationController?.pushViewController(VC, animated: true)
+        }
     }
     
     let notificationView = NotificationView()
@@ -41,10 +47,12 @@ final class NotificationViewController: UIViewController, ViewAttributes, PushDe
     }
     
     func setDelegate() {
+        
         notificationView.delegate = self
     }
     
     func setUI() {
+        
         self.navigationItem.titleView = lbNavTitle
         self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(popView), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
         
@@ -52,12 +60,14 @@ final class NotificationViewController: UIViewController, ViewAttributes, PushDe
     }
     
     func setAttributes() {
+        
         notificationView.snp.makeConstraints {
             $0.edges.equalTo(self.view.safeAreaLayoutGuide)
         }
     }
     
     @objc func popView() {
+        
         self.navigationController?.popViewController(animated: true)
     }
 }

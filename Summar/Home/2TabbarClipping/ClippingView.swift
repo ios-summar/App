@@ -113,7 +113,7 @@ final class ClippingView: UIView, ViewAttributes, HomeViewDelegate {
         view.snp.makeConstraints {
             
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(80)
-            $0.width.equalTo(215)
+            $0.width.equalTo(200)
             $0.height.equalTo(250)
             $0.centerX.equalToSuperview()
         }

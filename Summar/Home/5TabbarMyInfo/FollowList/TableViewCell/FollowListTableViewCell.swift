@@ -35,6 +35,7 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
     }()
     lazy var followBtn: UIButton = {
         let button = UIButton()
+        button.alpha = 0.0
         button.addTarget(self, action: #selector(followBtnAction(_:)), for: .touchUpInside)
         button.titleLabel?.font = self.fontManager.getFont(Font.Bold.rawValue).smallFont
         button.setTitleColor(UIColor.magnifyingGlassColor, for: .normal)
@@ -75,18 +76,15 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
         case ("follower", true): // 팔로워, 내 팔로우 리스트
             guard let followUp = follow.followUp else {return}
             
+            // follow == true -> 팔로우 버튼 미노출
+            // follow == false -> 팔로우 버튼 노출
+            followBtn.alpha = !followUp ? 1.0 : 0.0
+            
             print("#팔로워, 내피드 (follower, true)")
             btn.setTitle("삭제", for: .normal)
             
-            if !followUp {
-                contentView.addSubview(followBtn)
-                followBtn.snp.makeConstraints {
-                    $0.centerY.equalTo(nickName.snp.centerY)
-                    $0.left.equalTo(nickName.snp.right).offset(6)
-                    $0.height.equalTo(31)
-                    $0.width.equalTo(40)
-                }
-            }
+            
+            
         case ("following", true): // 팔로잉, 내 팔로우 리스트
             print("#팔로잉, 내피드 (following, true)")
             btn.setTitle("팔로우 취소", for: .normal)
@@ -150,6 +148,14 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
             }
         }
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        profileImg.image = nil
+        nickName.text = ""
+        major.text = ""
+    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -166,6 +172,7 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
         contentView.addSubview(nickName)
         contentView.addSubview(major)
         contentView.addSubview(btn)
+        contentView.addSubview(followBtn)
     }
     
     func setAttributes() {
@@ -178,6 +185,13 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
         nickName.snp.makeConstraints { (make) in
             make.left.equalTo(profileImg.snp.right).offset(12)
             make.bottom.equalTo(profileImg.snp.centerY).offset(-5)
+        }
+        
+        followBtn.snp.makeConstraints {
+            $0.centerY.equalTo(nickName.snp.centerY)
+            $0.left.equalTo(nickName.snp.right).offset(6)
+            $0.height.equalTo(31)
+            $0.width.equalTo(40)
         }
         
         major.snp.makeConstraints { (make) in

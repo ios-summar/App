@@ -9,8 +9,11 @@ import Foundation
 import UIKit
 
 final class HomeController : UITabBarController, ViewAttributes {
-    var layerHeight = CGFloat()
-    public lazy var middleButton: UIButton! = {
+    let feedDetailViewModel = FeedDetailViewModel()
+    let helper = Helper()
+    var param: [String: Any]?
+    
+    lazy var middleButton: UIButton! = {
         let middleButton = UIButton()
         
         middleButton.frame.size = CGSize(width: 48, height: 48)
@@ -25,28 +28,20 @@ final class HomeController : UITabBarController, ViewAttributes {
         return middleButton
     }()
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
-            print("UserInfo => ", value)
-        }else {
-            print("userInfo nil")
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setDelegate()
+        setNotificationCenter()
         setUI()
         setAttributes()
-        
     }
     
-    func setDelegate() {
+    func setNotificationCenter() {
         
-        NotificationCenter.default.addObserver(self, selector: #selector(showPage(_:)), name: NSNotification.Name("showPage"), object: nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
+            guard let param = self.param else {return}
+            self.showPageProceessPushNotRunning(param)
+        }
     }
     
     func setUI() {
@@ -88,31 +83,30 @@ final class HomeController : UITabBarController, ViewAttributes {
         return navController
     }
     
-    @objc func showPage(_ notification:Notification) {
-        if let userInfo = notification.userInfo {
-            guard let pushType = userInfo["pushType"] as? String else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
-            
-            switch pushType {
-            case "댓글", "대댓글":
-                guard let feedInfo = userInfo["feedInfo"] as? FeedInfo else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+    func showPageProceessPushNotRunning(_ userInfo: [String: Any]) {
+        let pushType = userInfo["pushType"] as? String
+        
+        switch pushType {
+        case "댓글", "대댓글" :
+            guard let feedSeq = Int(String(describing: userInfo["feedSeq"] ?? "0")) else {return}
+            feedDetailViewModel.getFeedInfo(feedSeq)
+            feedDetailViewModel.didFinishFetch = {
                 
-                let VC = FeedDetailViewController()
-                
-                VC.feedInfo = feedInfo
-                self.navigationController?.pushViewController(VC, animated: true)
-                
-            case "좋아요", "팔로우":
-                guard let userSeq = userInfo["userSeq"] as? Int else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
-                
-                
-                let VC = ProfileViewController()
-                VC.userSeq = userSeq
-                
-                self.navigationController?.pushViewController(VC, animated: true)
-                
-            default:
-                break
+                NotificationCenter.default.post(name: Notification.Name("showPage"), object: nil, userInfo: [
+                    "pushType" : pushType,
+                    "feedInfo" : self.feedDetailViewModel.feedInfo,
+                    "feedCommentSeq" : Int(String(describing: userInfo["feedCommentSeq"] ?? "0"))
+                ])
             }
+            
+        case "좋아요", "팔로우" :
+            NotificationCenter.default.post(name: Notification.Name("showPage"), object: nil, userInfo: [
+                "pushType" : pushType,
+                "userSeq" : Int(String(describing: userInfo["userSeq"] ?? "0"))
+            ])
+            
+        default:
+            break
         }
     }
 }

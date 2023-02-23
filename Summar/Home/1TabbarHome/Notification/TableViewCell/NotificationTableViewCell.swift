@@ -9,8 +9,15 @@ import Foundation
 import UIKit
 import SnapKit
 
+protocol NotificationButtonDelegate: AnyObject {
+    func btnAction(_ param: Dictionary<String, Int>, _ handler: String, completion: @escaping ()->())
+}
+
 final class NotificationTableViewCell: UITableViewCell, ViewAttributes {
+    weak var delegate: NotificationButtonDelegate?
     let fontManager = FontManager.shared
+    
+    var model: NotificationList?
     
     lazy var profileImg : UIImageView = {
         let view = UIImageView()
@@ -20,15 +27,7 @@ final class NotificationTableViewCell: UITableViewCell, ViewAttributes {
         view.tintColor = UIColor.grayColor205
         view.contentMode = .scaleAspectFit
         view.clipsToBounds = true
-        view.isUserInteractionEnabled = true
         view.tag = 1
-
-        let recognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(didSelect(_:))
-        )
-        view.addGestureRecognizer(recognizer)
-        
         return view
     }()
     
@@ -48,14 +47,7 @@ final class NotificationTableViewCell: UITableViewCell, ViewAttributes {
         label.font = self.fontManager.getFont(Font.Regular.rawValue).smallFont
         label.textColor = UIColor.init(r: 115, g: 120, b: 127)
         label.sizeToFit()
-        label.isUserInteractionEnabled = true
         label.tag = 1
-        
-        let recognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(didSelect(_:))
-        )
-        label.addGestureRecognizer(recognizer)
         return label
     }()
     lazy var btn : UIButton = {
@@ -81,6 +73,14 @@ final class NotificationTableViewCell: UITableViewCell, ViewAttributes {
         return view
     }()
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        profileImg.image = nil
+        contentsLabel.text = ""
+        dateLabel.text = ""
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -93,15 +93,11 @@ final class NotificationTableViewCell: UITableViewCell, ViewAttributes {
     }
     
     func setUpCell(_ model: NotificationList) {
+        self.model = model
         guard let content = model.content, let createdDate = model.createdDate, let notificationType = model.notificationType else {return}
         
-        if let imageUrl = model.imageUrl {
-            setProfileImage(profileImg, imageUrl)
-        }
-        
-        if let feedImageUrl = model.feedImageUrl {
-            setFeedImage(feedImg, feedImageUrl)
-        }
+        setProfileImage(profileImg, model.imageUrl)
+        setFeedImage(feedImg, model.feedImageUrl)
         
         contentsLabel.text = content
         dateLabel.text = compareDate(createdDate)
@@ -109,10 +105,28 @@ final class NotificationTableViewCell: UITableViewCell, ViewAttributes {
         
         switch notificationType {
         case "좋아요", "댓글":
+            btn.alpha = 0.0
             feedImg.alpha = 1.0
+            
             break
         case "팔로우":
+            guard let followCheck = model.followCheck else {return}
+            
             btn.alpha = 1.0
+            feedImg.alpha = 0.0
+            
+            if followCheck {
+                
+                btn.setTitle("팔로우 취소", for: .normal)
+                btn.backgroundColor = UIColor.Gray02
+                btn.setTitleColor(UIColor.init(r: 70, g: 76, b: 83), for: .normal)
+            }else {
+                
+                btn.setTitle("팔로우", for: .normal)
+                btn.backgroundColor = UIColor.magnifyingGlassColor
+                btn.setTitleColor(UIColor.white, for: .normal)
+            }
+            
             break
         default:
             break
@@ -196,7 +210,7 @@ final class NotificationTableViewCell: UITableViewCell, ViewAttributes {
         }
         btn.snp.makeConstraints {
             
-            $0.width.equalTo(60)
+            $0.width.equalTo(70)
             $0.height.equalTo(31)
             $0.right.equalTo(-20)
             $0.centerY.equalToSuperview()
@@ -220,86 +234,46 @@ final class NotificationTableViewCell: UITableViewCell, ViewAttributes {
         }
     }
     
-    @objc func didSelect(_ sender: UITapGestureRecognizer) {
-        
-    }
-    
     @objc func followBtnAction(_ sender: Any) {
-//        guard let tag = (sender as AnyObject).tag as? Int else {return}
-//        guard let opponentUserSeq = self.userSeq else {return}
-//        UIDevice.vibrate()
-//
-//        switch tag {
-//        case 1:
-//            smLog("팔로우, 추가(내 userSeq\(getMyUserSeq()) -> 상대 userSeq\(opponentUserSeq)")
-//
-//            let param : Dictionary<String, Int> = ["followedUserSeq": opponentUserSeq, "followingUserSeq": getMyUserSeq()]
-//            viewModel.followAction(param, "POST")
-//            viewModel.didFinishFollowFetch = {
-//                self.followBtn.removeFromSuperview()
-//
-//                toast("팔로우")
-//            }
-//        case 2:
-//            print("삭제, 팔로우 취소, 팔로우")
-//            let text = btn.titleLabel?.text
-//
-//            switch setUpTuple {
-//            case ("follower", true): // 팔로워, 내피드
-//                smLog("팔로워, 내피드")
-//                if text == "삭제" {
-//                    smLog("삭제(상대 userSeq -> 내 userSeq)")
-//
-//                    let param : Dictionary<String, Int> = [
-//                        "followedUserSeq": getMyUserSeq(),
-//                        "followingUserSeq": opponentUserSeq
-//                    ]
-//
-//                    viewModel.followAction(param, "DELETE")
-//                    viewModel.didFinishFollowFetch = {
-//                        self.refreshDelegate?.refreshTabManTitle()
-//                        toast("삭제됨")
-//                    }
-//                }
-//            case ("following", true),("follower", false), ("following", false): // (팔로잉, 내피드), (팔로워, 내피드 아님), (팔로잉, 내피드 아님)
-//                if text == "팔로우 취소" {
-//                    smLog("언팔, 삭제(내 userSeq \(getMyUserSeq()) -> 상대 userSeq\(opponentUserSeq)")
-//
-//                    let param : Dictionary<String, Int> = [
-//                        "followedUserSeq": opponentUserSeq,
-//                        "followingUserSeq": getMyUserSeq()
-//                    ]
-//
-//                    viewModel.followAction(param, "DELETE")
-//                    viewModel.didFinishFollowFetch = {
-//                        self.btn.setTitle("팔로우", for: .normal)
-//                        self.btn.backgroundColor = UIColor.magnifyingGlassColor
-//                        self.btn.setTitleColor(UIColor.white, for: .normal)
-//
-//                        toast("팔로우 취소")
-//                    }
-//                }else if text == "팔로우" {
-//                    smLog("다시 팔로우, 추가(내 userSeq\(getMyUserSeq()) -> 상대 userSeq\(opponentUserSeq)")
-//
-//                    let param : Dictionary<String, Int> = [
-//                        "followedUserSeq": opponentUserSeq,
-//                        "followingUserSeq": getMyUserSeq()
-//                    ]
-//
-//                    viewModel.followAction(param, "POST")
-//                    viewModel.didFinishFollowFetch = {
-//                        self.btn.setTitle("팔로우 취소", for: .normal)
-//                        self.btn.backgroundColor = UIColor.Gray02
-//                        self.btn.setTitleColor(UIColor.init(r: 70, g: 76, b: 83), for: .normal)
-//
-//                        toast("팔로우")
-//                    }
-//                }
-//            default:
-//                print("default1")
-//            }
-//        default:
-//            print("default2")
-//        }
+        guard let opponentUserSeq = self.model?.otherUserSeq else {return}
+        
+        let text = btn.titleLabel?.text
+        
+        if text == "팔로우 취소" {
+            
+            smLog("언팔, 삭제(내 userSeq \(getMyUserSeq()) -> 상대 userSeq\(opponentUserSeq)")
+
+            let param : Dictionary<String, Int> = [
+                "followedUserSeq": opponentUserSeq,
+                "followingUserSeq": getMyUserSeq()
+            ]
+            self.delegate?.btnAction(param, "DELETE", completion: {
+                UIDevice.vibrate()
+                
+                self.btn.setTitle("팔로우", for: .normal)
+                self.btn.backgroundColor = UIColor.magnifyingGlassColor
+                self.btn.setTitleColor(UIColor.white, for: .normal)
+
+                toast("팔로우 취소")
+            })
+            
+        }else if text == "팔로우" {
+            
+            smLog("팔로우, 추가(내 userSeq\(getMyUserSeq()) -> 상대 userSeq\(opponentUserSeq)")
+
+            let param : Dictionary<String, Int> = [
+                "followedUserSeq": opponentUserSeq,
+                "followingUserSeq": getMyUserSeq()
+            ]
+            self.delegate?.btnAction(param, "POST", completion: {
+                UIDevice.vibrate()
+                
+                self.btn.setTitle("팔로우 취소", for: .normal)
+                self.btn.backgroundColor = UIColor.Gray02
+                self.btn.setTitleColor(UIColor.init(r: 70, g: 76, b: 83), for: .normal)
+
+                toast("팔로우")
+            })
+        }
     }
 }
