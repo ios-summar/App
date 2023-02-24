@@ -516,6 +516,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         setUI()
         setAttributes()
     }

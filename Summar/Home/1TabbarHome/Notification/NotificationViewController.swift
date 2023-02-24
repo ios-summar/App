@@ -16,6 +16,12 @@ final class NotificationViewController: UIViewController, ViewAttributes, PushDe
             
             VC.userSeq = userSeq
             self.navigationController?.pushViewController(VC, animated: true)
+        }else if VC.isKind(of: FeedDetailViewController.self){
+            guard let feedInfo = any as? FeedInfo else{toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+            let VC = FeedDetailViewController()
+            
+            VC.feedInfo = feedInfo
+            self.navigationController?.pushViewController(VC, animated: true)
         }
     }
     

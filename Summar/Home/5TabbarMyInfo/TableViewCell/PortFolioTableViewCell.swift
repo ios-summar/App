@@ -54,7 +54,7 @@ final class PortFolioTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewA
     }()
     lazy var meetballMenu: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "meetballMenu")
+        view.image = UIImage(named: "meetballMenuFeed")
         view.tintColor = .black
         view.contentMode = .scaleAspectFit
         view.isUserInteractionEnabled = true

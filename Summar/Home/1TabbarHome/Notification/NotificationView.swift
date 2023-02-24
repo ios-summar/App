@@ -12,6 +12,7 @@ final class NotificationView: UIView, ViewAttributes, NotificationButtonDelegate
     weak var delegate: PushDelegate?
     let myInfoViewModel = MyInfoViewModel(nil, nil)
     let notiViewModel = NotificationViewModel()
+    let feedViewModel = FeedDetailViewModel()
     let fontManager = FontManager.shared
     
     var model: NotificationModel? {
@@ -150,8 +151,13 @@ extension NotificationView: UITableViewDelegate, UITableViewDataSource {
         
         switch notiType {
         case "댓글":
+            guard let feedSeq = model.feedSeq else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
             
-//            self.delegate?.pushScreen(ProfileViewController(), otherUserSeq)
+            feedViewModel.getFeedInfo(feedSeq)
+            feedViewModel.didFinishFetch = {
+                
+                self.delegate?.pushScreen(FeedDetailViewController(), self.feedViewModel.feedInfo)
+            }
             break
         case "좋아요", "팔로우":
             

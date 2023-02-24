@@ -72,6 +72,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
                     $0.left.right.equalTo(self.safeAreaLayoutGuide)
                 }
             }else {
+                smLog("")
                 portfolioTableView.alpha = 0.0
                 temporarySaveCollectionView.alpha = 0.0
                 notExist.alpha = 1.0
