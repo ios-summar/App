@@ -79,6 +79,7 @@ final class NotificationTableViewCell: UITableViewCell, ViewAttributes {
         profileImg.image = nil
         contentsLabel.text = ""
         dateLabel.text = ""
+        feedImg.image = nil
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -219,11 +220,11 @@ final class NotificationTableViewCell: UITableViewCell, ViewAttributes {
             
             $0.top.equalTo(profileImg.snp.top)
             $0.left.equalTo(profileImg.snp.right).offset(12)
-            $0.right.equalTo(feedImg.snp.left).offset(-12)
+            $0.right.equalTo(feedImg.snp.left).offset(-20)
         }
         dateLabel.snp.makeConstraints {
 
-            $0.bottom.equalTo(-16)
+            $0.bottom.equalTo(-10)
             $0.left.equalTo(contentsLabel.snp.left)
         }
         profileImg.snp.makeConstraints {

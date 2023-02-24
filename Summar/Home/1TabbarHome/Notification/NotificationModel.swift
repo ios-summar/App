@@ -15,6 +15,8 @@ struct NotificationList: Codable {
     let content: String?
     let userSeq: Int?
     let otherUserSeq: Int?
+    let feedSeq: Int?
+    let feedCommentSeq: Int?
     let imageUrl: String?
     let feedImageUrl: String?
     let notificationType: String?

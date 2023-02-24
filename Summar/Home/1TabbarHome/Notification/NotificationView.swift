@@ -66,10 +66,11 @@ final class NotificationView: UIView, ViewAttributes, NotificationButtonDelegate
     }
     
     func setUI() {
+        backgroundColor = .white
         
         addSubview(tableView)
-        
         addSubview(view)
+        
         view.addSubview(noImage)
         view.addSubview(noLabel)
     }
