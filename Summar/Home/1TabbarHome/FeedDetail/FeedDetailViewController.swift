@@ -39,6 +39,11 @@ final class FeedDetailViewController: UIViewController, PushDelegate {
 //            feedView.feedInfo = feedInfo
         }
     }
+    var feedCommentSeq: Int? {
+        didSet {
+            feedView.feedCommentSeq = self.feedCommentSeq
+        }
+    }
     
     override func viewDidLoad() {
         feedView.delegate = self

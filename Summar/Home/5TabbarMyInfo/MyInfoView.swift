@@ -828,7 +828,9 @@ extension MyInfoView: UICollectionViewDelegate, UICollectionViewDataSource, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        smLog("\(indexPath.row)")
+        guard let content = temporaryResponse?.content?[indexPath.row] else {return}
+//        smLog("\(content)")
+        self.pushDelegate?.pushScreen(UIViewController(), content)
     }
     
 }

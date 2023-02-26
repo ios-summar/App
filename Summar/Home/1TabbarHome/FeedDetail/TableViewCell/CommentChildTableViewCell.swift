@@ -234,8 +234,6 @@ final class CommentChildTableViewCell: UITableViewCell, ViewAttributes{
                     break
                 }
             }
-        case 2:
-            smLog("2")
         default:
             break
         }

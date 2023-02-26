@@ -12,7 +12,7 @@ protocol HomeViewDelegate : AnyObject {
     func pushScreen(_ VC: UIViewController,_ any: Any)
 }
 
-final class HomeView: UIView, HomeViewDelegate{
+final class HomeView: UIView, HomeViewDelegate, ViewAttributes{
     weak var delegate: ScrollBarHidden?
     weak var homeViewDelegate : HomeViewDelegate?
     func pushScreen(_ VC: UIViewController, _ any: Any) {
@@ -78,7 +78,24 @@ final class HomeView: UIView, HomeViewDelegate{
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        setDelegate()
+        setUI()
+        setAttributes()
+    }
+    
+    func setDelegate() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: NSNotification.Name("scroll"), object: nil)
+    }
+    
+    func setUI() {
+        
         addSubview(tableView)
+    }
+    
+    func setAttributes() {
+        
         tableView.snp.makeConstraints { (make) in
             make.left.bottom.right.equalToSuperview()
             make.top.equalTo(self.safeAreaLayoutGuide.snp.top)
@@ -91,6 +108,12 @@ final class HomeView: UIView, HomeViewDelegate{
             self.model = self.viewModel.feedSelectResponse
             self.tableView.refreshControl?.endRefreshing()
         }
+    }
+    
+    @objc func scrollToTop() {
+        
+        smLog("")
+        tableView.scrollsToTop = true
     }
 
     

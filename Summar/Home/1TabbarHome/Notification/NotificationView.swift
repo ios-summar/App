@@ -151,12 +151,17 @@ extension NotificationView: UITableViewDelegate, UITableViewDataSource {
         
         switch notiType {
         case "댓글":
-            guard let feedSeq = model.feedSeq else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
+            guard let feedSeq = model.feedSeq, let feedCommentSeq = model.feedCommentSeq else {toast("화면이동 오류, 잠시후 다시 시도해주세요."); return}
             
             feedViewModel.getFeedInfo(feedSeq)
             feedViewModel.didFinishFetch = {
                 
-                self.delegate?.pushScreen(FeedDetailViewController(), self.feedViewModel.feedInfo)
+                let param = [
+                    "feedInfo" : self.feedViewModel.feedInfo,
+                    "feedCommentSeq" : feedCommentSeq
+                ]
+                
+                self.delegate?.pushScreen(FeedDetailViewController(), param)
             }
             break
         case "좋아요", "팔로우":

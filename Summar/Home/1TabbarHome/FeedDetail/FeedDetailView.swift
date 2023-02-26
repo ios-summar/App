@@ -87,6 +87,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
     var likeCountInt: Int = 0
     var commentCountInt: Int = 0
     var parentCommentSeq: Int = 0
+    var feedCommentSeq: Int?
     let imageViewWidth : CGFloat = {
         let width = UIScreen.main.bounds.width
         return width - 40
@@ -124,6 +125,19 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
             
             self.commentTableView.estimatedRowHeight = UITableView.automaticDimension
             self.commentTableView.rowHeight = UITableView.automaticDimension
+            
+            if let feedCommentSeq = feedCommentSeq {
+                
+                for i in 0..<resultFeedComment.count {
+                    guard let resultFeedCommentSeq = resultFeedComment[i].feedCommentSeq else {return}
+                    
+                    if feedCommentSeq == resultFeedCommentSeq {
+                        smLog("\(i)")
+                        let indexPath = IndexPath(row: i, section: 0)
+                        self.scrollToCell(at: indexPath)
+                    }
+                }
+            }
         }
     }
     
@@ -517,8 +531,33 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+//        setNotificationCenter()
         setUI()
         setAttributes()
+    }
+    
+    func setNotificationCenter() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            if let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+                let keyboardFrame = keyboardSize.cgRectValue
+                let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardFrame.size.height, right: 0)
+                commentTextView.contentInset = contentInsets
+                commentTextView.scrollIndicatorInsets = contentInsets
+            }
+        }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        smLog("")
+        let contentInsets = UIEdgeInsets.zero
+        commentTextView.contentInset = contentInsets
+        commentTextView.scrollIndicatorInsets = contentInsets
     }
     
     func setUI() {
@@ -922,6 +961,8 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
                     $0.top.left.right.equalToSuperview()
                     $0.bottom.equalTo(self.commentView.snp.top)
                 }
+                
+                self.parentCommentSeq = 0
             }
             
             UIView.animate(withDuration: 1.0, animations: {
@@ -971,6 +1012,31 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
 }
 
 extension FeedDetailView : UITableViewDelegate, UITableViewDataSource {
+    func scrollToCell(at indexPath: IndexPath) {
+        if let cellRect = self.commentTableView.rectForRow(at: indexPath) as CGRect? {
+            let offset = CGPoint(x: 0, y: cellRect.origin.y - self.scrollView.contentInset.top + 280)
+            smLog("\(cellRect.origin.y)")
+            smLog("\(self.scrollView.contentInset.top)")
+            
+            self.scrollView.setContentOffset(offset, animated: true)
+            
+            DispatchQueue.main.async {
+                if let cell = self.commentTableView.cellForRow(at: indexPath) {
+                    UIView.animate(withDuration: 1.5, animations: {
+                        //                    cell.contentView.alpha = 0.5 // 투명도를 줄여 깜빡거리는 효과
+                        cell.contentView.backgroundColor = .Gray02
+                    }, completion: { finished in
+                        UIView.animate(withDuration: 1.5, animations: {
+                            //                        cell.contentView.alpha = 1 // 투명도를 원래대로 되돌림
+                            cell.contentView.backgroundColor = .white
+                        })
+                    })
+                }
+            }
+            
+        }
+    }
+    
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         self.setNeedsDisplay()
     }

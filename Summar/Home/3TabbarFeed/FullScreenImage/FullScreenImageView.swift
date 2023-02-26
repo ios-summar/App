@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class FullScreenImageView : UIView, UIScrollViewDelegate{
+final class FullScreenImageView : UIView, UIScrollViewDelegate, ViewAttributes{
     let fontManager = FontManager.shared
     var imageArr = [UIImage]()
     
@@ -103,45 +103,52 @@ final class FullScreenImageView : UIView, UIScrollViewDelegate{
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        setUI()
+        setAttributes()
+    }
+    
+    func setUI() {
+        
         addSubview(view1)
-        view1.layer.borderWidth = 1
-//        view1.layer.borderColor = UIColor.red.cgColor
         
-        _ = [label1, scrollView, pageControl, label2].map {
-            view1.addSubview($0)
-//            $0.layer.borderWidth = 1
-        }
-        
+        view1.addSubview(label1)
+        view1.addSubview(scrollView)
+        view1.addSubview(pageControl)
+        view1.addSubview(label2)
+    }
+    
+    func setAttributes() {
         
         view1.snp.makeConstraints{(make) in
+            
             make.left.right.equalToSuperview()
             make.top.equalTo(0)
             make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
         }
-        
         label2.snp.makeConstraints{(make) in
+            
             make.centerX.equalToSuperview()
             make.top.equalTo(10)
         }
-        
         label1.snp.makeConstraints{(make) in
+            
             make.centerX.equalToSuperview()
             make.top.equalTo(label2.snp.bottom)
         }
-        
         scrollView.snp.makeConstraints{(make) in
+            
             make.left.equalToSuperview()
             make.width.equalTo(viewWidth)
             make.top.equalTo(label1.snp.bottom).offset(20)
             make.height.equalTo(600)
         }
-
         pageControl.snp.makeConstraints{(make) in
+            
             make.left.right.equalToSuperview()
             make.top.equalTo(scrollView.snp.bottom)
             make.height.equalTo(30)
         }
-        
     }
     
     func initImageArr(imageArr : [UIImage]){

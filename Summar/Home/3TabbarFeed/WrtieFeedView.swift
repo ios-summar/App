@@ -27,31 +27,26 @@ final class WriteFeedView : UIView, UITextViewDelegate {
     // 피드 수정 Case
     var feedInfo: FeedInfo? {
         didSet {
-            guard let contents = feedInfo?.contents, let feedImages = feedInfo?.feedImages else {return}
             smLog("\(feedInfo)")
 
-            DispatchQueue.global().sync {
-                for x in 0 ..< feedImages.count {
-                    guard let imageURL = feedImages[x].imageUrl, let img = self.urltoImage(imageURL) else {return}
-                    
-                    self.resultArr.append(img)
+            if let feedImages = feedInfo?.feedImages {
+                DispatchQueue.global().sync {
+                    for x in 0 ..< feedImages.count {
+                        guard let imageURL = feedImages[x].imageUrl, let img = self.urltoImage(imageURL) else {return}
+                        
+                        self.resultArr.append(img)
+                    }
                 }
             }
+            
             collectionViewScroll.reloadData()
             
-            view2TextView.text = contents
-            view2TextView.textColor = .black
-            
-            temporarySaveBtn.removeFromSuperview()
-            registerBtn.setTitle("수정", for: .normal)
-            registerBtn.snp.remakeConstraints {
-                $0.left.equalTo(20)
-                $0.right.equalTo(-20)
-                $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-20)
-                $0.height.equalTo(60)
+            if let contents = feedInfo?.contents {
+                view2TextView.text = contents
+                view2TextView.textColor = .black
             }
             
-            
+            registerBtn.setTitle("수정", for: .normal)
         }
     }
     
@@ -151,23 +146,23 @@ final class WriteFeedView : UIView, UITextViewDelegate {
         return label
     }()
     
-    let registerBtn : UIButton = {
+    lazy var registerBtn : UIButton = {
         let button = UIButton()
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 10
         button.backgroundColor = .summarColor2
         button.setTitle("등록", for: .normal)
-        button.addTarget(self, action: #selector(insertFeed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(insertFeed(_:)), for: .touchUpInside)
         return button
     }()
     
-    let temporarySaveBtn : UIButton = {
+    lazy var temporarySaveBtn : UIButton = {
         let button = UIButton()
         button.setTitleColor(UIColor.fontColor, for: .normal)
         button.layer.cornerRadius = 10
         button.backgroundColor = UIColor.init(red: 243/255, green: 243/255, blue: 243/255, alpha: 1)
         button.setTitle("임시저장", for: .normal)
-        button.addTarget(self, action: #selector(tempSave), for: .touchUpInside)
+        button.addTarget(self, action: #selector(tempSave(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -288,60 +283,65 @@ final class WriteFeedView : UIView, UITextViewDelegate {
         }
     }
     
-    @objc func insertFeed() {
+    @objc func insertFeed(_ sender: Any) {
         if resultArr.count == 0 || (view2TextView.text == "피드 내용은 2,000자 이내로 입력 가능합니다." || view2TextView.text == "") {
 //            helper.showAlert(vc: self, message: "이미지 추가 혹은 피드내용을 채우고 피드 등록이 가능합니다")
             self.delegate?.showAlert("이미지 추가 혹은 피드 내용을 채우고 피드 등록이 가능합니다.")
         }else {
-            registerFeed("insertFeed")
+            registerFeed("insertFeed", sender)
         }
         
     }
     
-    @objc func tempSave() {
+    @objc func tempSave(_ sender: Any) {
         if resultArr.count == 0 && (view2TextView.text == "피드 내용은 2,000자 이내로 입력 가능합니다." || view2TextView.text == "") {
 //            helper.showAlert(vc: self, message: "이미지 추가 혹은 피드내용을 채우고 임시저장이 가능합니다.")
             self.delegate?.showAlert("이미지 추가 혹은 피드 내용을 채우고 임시저장이 가능합니다.")
         }else {
-            registerFeed("tempSave")
+            registerFeed("tempSave", sender)
         }
     }
     
-    func registerFeed(_ index: String) {
+    func registerFeed(_ index: String, _ sender: Any) {
+        let btn = sender as? UIButton
         var requestBody = Dictionary<String, Any>()
-        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
-            guard let userSeq = value["userSeq"] else {return}
-            requestBody["userSeq"] = userSeq
-            requestBody["commentYn"] = switch1.isOn
-            requestBody["secretYn"] = switch2.isOn
-        }
+        
+        requestBody["userSeq"] = getMyUserSeq()
+        requestBody["commentYn"] = switch1.isOn
+        requestBody["secretYn"] = switch2.isOn
         
         if index == "insertFeed" {
             requestBody["tempSaveYn"] = false
-            requestBody["contents"] = view2TextView.text
         }else {
             requestBody["tempSaveYn"] = true
+        }
+        
+        if view2TextView.text != "피드 내용은 2,000자 이내로 입력 가능합니다." || view2TextView.text != "" {
+            requestBody["contents"] = view2TextView.text
+        }else {
             requestBody["contents"] = nil
         }
         
         LoadingIndicator.showLoading()
         
-        guard let text = registerBtn.titleLabel?.text else {return}
+        guard let text = btn?.titleLabel?.text else {return}
         switch text {
         case "등록", "임시저장":
-            viewModel.insertFeed(requestBody, resultArr)
-            viewModel.didFinishFetch = {
-                
-                if text == "임시저장" {
-                    smLog("")
-                    toast("임시 저장한 포트폴리오는 마이 써머리 탭에서 확인 가능합니다.")
+            if let feedInfo = feedInfo {
+                smLog("임시 저장의 임시 저장")
+            }else {
+                viewModel.insertFeed(requestBody, resultArr)
+                viewModel.didFinishFetch = {
+                    self.popDelegate?.popScreen()
+                    LoadingIndicator.hideLoading()
                 }
-                
-                self.popDelegate?.popScreen()
-                LoadingIndicator.hideLoading()
+            }
+            
+            if text == "임시저장" {
+                toast("임시 저장한 포트폴리오는 마이 써머리 탭에서 확인 가능합니다.")
             }
         case "수정":
-            print("수정")
+            smLog("수정")
             LoadingIndicator.hideLoading()
         default:
             LoadingIndicator.hideLoading()
