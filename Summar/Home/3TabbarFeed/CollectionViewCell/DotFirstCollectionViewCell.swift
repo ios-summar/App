@@ -40,7 +40,7 @@ final class DotFirstCollectionViewCell: UICollectionViewCell, ViewAttributes {
         btn.setImage(UIImage(named: "FeedWrite"), for: .normal)
         btn.backgroundColor = .clear
         btn.isUserInteractionEnabled = true
-        btn.addTarget(self, action: #selector(touchXmark), for: .touchUpInside)
+//        btn.addTarget(self, action: #selector(touchXmark), for: .touchUpInside)
         btn.layer.cornerRadius = 12
         
         return btn

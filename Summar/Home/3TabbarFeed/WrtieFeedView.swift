@@ -392,6 +392,14 @@ extension WriteFeedView: UICollectionViewDelegate, UICollectionViewDataSource, U
                     if resultArr.count >= 1 {
                         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotFirstCellReuseIdentifier, for: indexPath) as! DotFirstCollectionViewCell
                         cell.addImg(resultArr[0])
+                        
+                        cell.btn.tag = 0
+                        let recognizer = UITapGestureRecognizer(
+                            target: self,
+                            action: #selector(didSelect(_:))
+                        )
+                        cell.btn.addGestureRecognizer(recognizer)
+                        
                         return cell
                     }else {
                         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotFirstCellReuseIdentifier, for: indexPath) as! DotFirstCollectionViewCell
@@ -404,6 +412,14 @@ extension WriteFeedView: UICollectionViewDelegate, UICollectionViewDataSource, U
                     if resultArr.count > indexPath.row - 1 {
                         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotCellReuseIdentifier, for: indexPath) as! DotCollectionViewCell
                         cell.addImg(resultArr[indexPath.row - 1])
+                        
+                        cell.btn.tag = indexPath.row - 1
+                        let recognizer = UITapGestureRecognizer(
+                            target: self,
+                            action: #selector(didSelect(_:))
+                        )
+                        cell.btn.addGestureRecognizer(recognizer)
+                        
                         return cell
                     }else {
                         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotCellReuseIdentifier, for: indexPath) as! DotCollectionViewCell
@@ -442,6 +458,10 @@ extension WriteFeedView: UICollectionViewDelegate, UICollectionViewDataSource, U
 //                self.delegate?.showImageFullScreen(self.resultArr)
             }
         }
+    }
+    
+    @objc func didSelect(_ sender: Any) {
+        smLog("")
     }
     
 }
