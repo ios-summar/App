@@ -933,6 +933,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
         
         case 4: // 댓글 작성 버튼
             guard let comment = commentTextView.text else {helper.showAlert(vc: self, message: "댓글을 작성해주세요."); return }
+            LoadingIndicator.showLoading()
             
             let param : Dictionary<String, Any> = [
                 "feedSeq": feedSeq,
@@ -942,10 +943,11 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
             ]
             
             smLog("\(param)")
-            LoadingIndicator.showLoading()
             
             viewModel.commentRegister(param)
             viewModel.didFinishCommentRegisterFetch = {
+                LoadingIndicator.showLoading()
+                
                 self.uploadImg.alpha = 0.0
                 
                 self.commentTextView.text = self.textViewPlaceHolder
@@ -964,11 +966,13 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
                 }
                 
                 self.parentCommentSeq = 0
+                
+                UIView.animate(withDuration: 2.0, animations: {
+                    LoadingIndicator.hideLoading()
+                })
             }
             
-            UIView.animate(withDuration: 1.0, animations: {
-                LoadingIndicator.hideLoading()
-            })
+
         case 5: // 대댓글 RemoveView
             self.parentCommentSeq = 0
             
