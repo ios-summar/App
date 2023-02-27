@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class DotCollectionViewCell: UICollectionViewCell {
+final class DotCollectionViewCell: UICollectionViewCell, ViewAttributes {
     
     lazy var shapeLayer : CAShapeLayer = {
         let shapeLayer:CAShapeLayer = CAShapeLayer()
@@ -28,9 +28,20 @@ final class DotCollectionViewCell: UICollectionViewCell {
         view.layer.masksToBounds = false
         view.layer.addSublayer(self.shapeLayer)
         view.clipsToBounds = true
-        view.layer.zPosition = 999
         view.layer.cornerRadius = 10
+        view.contentMode = .scaleAspectFill
+        view.isUserInteractionEnabled = false
         return view
+    }()
+    
+    lazy var btn : UIButton = {
+        let btn = UIButton()
+        btn.setImage(UIImage(named: "FeedWrite"), for: .normal)
+        btn.backgroundColor = .clear
+        btn.isUserInteractionEnabled = true
+        btn.addTarget(self, action: #selector(touchXmark), for: .touchUpInside)
+        btn.layer.cornerRadius = 12
+        return btn
     }()
     
     let imageView : UIImageView = {
@@ -42,19 +53,20 @@ final class DotCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
+
+        setUI()
+        setAttributes()
+    }
+    
+    func setUI() {
         
-        _ = [view].map {
-            addSubview($0)
-        }
-        
-        _ = [imageView].map {
-            view.addSubview($0)
-//            view.sendSubviewToBack($0)
-        }
-        
+        contentView.addSubview(view)
+        view.addSubview(imageView)
+    }
+    
+    func setAttributes() {
         view.snp.makeConstraints{(make) in
-            make.centerY.equalToSuperview()
-            make.left.equalTo(25)
+            make.centerX.centerY.equalToSuperview()
             make.width.height.equalTo(100)
         }
         
@@ -62,22 +74,30 @@ final class DotCollectionViewCell: UICollectionViewCell {
             make.top.equalTo(38)
             make.centerX.equalToSuperview()
         }
-        
     }
     
     func addImg(_ img: UIImage){
         view.image = img
-        
         shapeLayer.removeFromSuperlayer()
-        _ = [imageView].map {
-            $0.alpha = 0.0
+        
+        contentView.addSubview(btn)
+        btn.snp.makeConstraints {
+            $0.width.height.equalTo(25)
+            $0.top.equalToSuperview()
+            $0.right.equalToSuperview()
         }
+        imageView.alpha = 0.0
     }
     
     func removeImg() {
         view.image = nil
+        view.layer.addSublayer(self.shapeLayer)
+        imageView.alpha = 1.0
     }
     
+    @objc func touchXmark() {
+        smLog("")
+    }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)

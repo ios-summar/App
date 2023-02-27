@@ -24,15 +24,14 @@ final class DotFirstCollectionViewCell: UICollectionViewCell, ViewAttributes {
         return shapeLayer
     }()
     
-    let view = UIView()
-    
-    lazy var imageView : UIImageView = {
+    lazy var view : UIImageView = {
         let view = UIImageView()
         view.layer.masksToBounds = false
         view.layer.addSublayer(self.shapeLayer)
         view.clipsToBounds = true
         view.layer.cornerRadius = 10
         view.isUserInteractionEnabled = false
+        view.contentMode = .scaleAspectFill
         return view
     }()
     
@@ -43,7 +42,6 @@ final class DotFirstCollectionViewCell: UICollectionViewCell, ViewAttributes {
         btn.isUserInteractionEnabled = true
         btn.addTarget(self, action: #selector(touchXmark), for: .touchUpInside)
         btn.layer.cornerRadius = 12
-        btn.layer.borderWidth = 1
         
         return btn
     }()
@@ -76,24 +74,17 @@ final class DotFirstCollectionViewCell: UICollectionViewCell, ViewAttributes {
     
     func setUI() {
         
-        addSubview(view)
-        
-        view.addSubview(imageView)
-        view.addSubview(label1)
-        view.addSubview(ExampleImage)
+        contentView.addSubview(view)
+        contentView.addSubview(label1)
+        contentView.addSubview(ExampleImage)
     }
     
     func setAttributes() {
         
-        view.snp.makeConstraints {
+        view.snp.makeConstraints{
             
-            $0.centerY.equalToSuperview()
-            $0.left.equalTo(25)
+            $0.centerY.centerX.equalToSuperview()
             $0.width.height.equalTo(100)
-        }
-        imageView.snp.makeConstraints{
-            
-            $0.edges.equalTo(view)
         }
         ExampleImage.snp.makeConstraints{
             
@@ -108,15 +99,14 @@ final class DotFirstCollectionViewCell: UICollectionViewCell, ViewAttributes {
     }
     
     func addImg(_ img: UIImage){
-        imageView.image = img
+        view.image = img
         shapeLayer.removeFromSuperlayer()
         
-        view.addSubview(btn)
-        view.bringSubviewToFront(btn)
+        contentView.addSubview(btn)
         btn.snp.makeConstraints {
-            $0.width.height.equalTo(40)
-            $0.top.equalTo(view.snp.top)
-            $0.right.equalTo(view.snp.right)
+            $0.width.height.equalTo(25)
+            $0.top.equalToSuperview()
+            $0.right.equalToSuperview()
         }
         
         _ = [label1, ExampleImage].map {
@@ -125,8 +115,8 @@ final class DotFirstCollectionViewCell: UICollectionViewCell, ViewAttributes {
     }
     
     func removeImg() {
-        imageView.image = nil
-        imageView.layer.addSublayer(self.shapeLayer)
+        view.image = nil
+        view.layer.addSublayer(self.shapeLayer)
         _ = [label1, ExampleImage].map {
             $0.alpha = 1.0
         }

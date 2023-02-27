@@ -86,7 +86,7 @@ final class WriteFeedView : UIView, UITextViewDelegate {
     lazy var collectionViewScroll : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.isScrollEnabled = true

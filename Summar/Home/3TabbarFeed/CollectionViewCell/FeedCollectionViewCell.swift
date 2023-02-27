@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import QuartzCore
 
-final class FeedCollectionViewCell: UICollectionViewCell {
+final class FeedCollectionViewCell: UICollectionViewCell, ViewAttributes {
     let fontManager = FontManager.shared
     
     lazy var view : UIImageView = {
@@ -49,18 +49,22 @@ final class FeedCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: .zero)
         
-        _ = [view].map {
-            addSubview($0)
-        }
+        setUI()
+        setAttributes()
+    }
+    
+    func setUI() {
         
-        _ = [btn, label1, label2].map {
-            view.addSubview($0)
-        }
+        contentView.addSubview(view)
+        view.addSubview(btn)
+        view.addSubview(label1)
+        view.addSubview(label2)
+    }
+    
+    func setAttributes() {
         
         view.snp.makeConstraints{(make) in
-            make.centerY.equalToSuperview()
-            make.left.equalTo(25)
-//            make.right.equalTo(-25)
+            make.centerY.centerX.equalToSuperview()
             make.width.height.equalTo(100)
         }
         
@@ -77,7 +81,6 @@ final class FeedCollectionViewCell: UICollectionViewCell {
             make.top.equalTo(label1.snp.bottom).offset(10)
             make.centerX.equalToSuperview()
         }
-        
     }
     
     required init?(coder: NSCoder) {
