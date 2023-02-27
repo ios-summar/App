@@ -325,10 +325,11 @@ final class WriteFeedView : UIView, UITextViewDelegate {
         LoadingIndicator.showLoading()
         
         guard let text = btn?.titleLabel?.text else {return}
-        switch text {
-        case "등록", "임시저장":
+        switch text { // 등록, 임시저장, 수정 case로 나뉨
+        case "등록", "임시저장", "수정":
             if let feedInfo = feedInfo {
-                smLog("임시 저장의 임시 저장")
+                smLog("등록, 등록, 수정")
+                LoadingIndicator.hideLoading()
             }else {
                 viewModel.insertFeed(requestBody, resultArr)
                 viewModel.didFinishFetch = {
@@ -340,9 +341,6 @@ final class WriteFeedView : UIView, UITextViewDelegate {
             if text == "임시저장" {
                 toast("임시 저장한 포트폴리오는 마이 써머리 탭에서 확인 가능합니다.")
             }
-        case "수정":
-            smLog("수정")
-            LoadingIndicator.hideLoading()
         default:
             LoadingIndicator.hideLoading()
         }
@@ -441,7 +439,7 @@ extension WriteFeedView: UICollectionViewDelegate, UICollectionViewDataSource, U
             })
         }else {
             if resultArr.count != 0 {
-                self.delegate?.showImageFullScreen(self.resultArr)
+//                self.delegate?.showImageFullScreen(self.resultArr)
             }
         }
     }

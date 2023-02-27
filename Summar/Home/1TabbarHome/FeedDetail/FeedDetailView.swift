@@ -600,6 +600,7 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
     }
     
     func setAttributes() {
+        
         line.snp.makeConstraints {
             
             $0.left.right.top.equalToSuperview()
