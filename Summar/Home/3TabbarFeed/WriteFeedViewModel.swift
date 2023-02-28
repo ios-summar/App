@@ -15,6 +15,7 @@ final class WriteFeedViewModel {
     var showAlertClosure: (() -> ())?
     var updateLoadingStatus: (() -> ())?
     var didFinishFetch: (() -> ())?
+    var didFinishUpdateFetch: (() -> ())?
     
     
     func insertFeed(_ param: Dictionary<String, Any>, _ imageArr: [UIImage]){
@@ -32,38 +33,31 @@ final class WriteFeedViewModel {
                 }
             }else if let error = error {
                 print(error)
-//                self.error = error
-//                self.isLoading = false
                 return
             }
-//            self.error = nil
-//            self.isLoading = false
             self.didFinishFetch?()
         })
     }
     
     func updateFeed(_ param: Dictionary<String, Any>, _ imageArr: [UIImage]){
         smLog("\n \(param)")
-        self.request.updateFeed("/feed", param, imageArr, completion: { (feedInsertResponse, error, status) in
+        guard let feedSeq = param["feedSeq"] as? Int else {toast("서버 오류, 잠시후 다시 시도해주세요."); return}
+        self.request.updateFeed("/feed/\(feedSeq)", param, imageArr, completion: { (feedInsertResponse, error, status) in
             //error만 있을경우 서버오류
             //error,status != nil 경우 토큰 재발급
             if let error = error, let status = status {
                 if status == 401 {
                     print("토큰 재발급")
                     self.request.reloadToken(status)
-                    self.insertFeed(param, imageArr)
+                    self.updateFeed(param, imageArr)
                 }else if status == 500 {
                     toast("서버 오류, 잠시후 다시 시도해주세요.")
                 }
             }else if let error = error {
                 print(error)
-//                self.error = error
-//                self.isLoading = false
                 return
             }
-//            self.error = nil
-//            self.isLoading = false
-            self.didFinishFetch?()
+            self.didFinishUpdateFetch?()
         })
     }
 }

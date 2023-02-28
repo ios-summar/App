@@ -8,6 +8,7 @@
 import UIKit
 
 final class DotFirstCollectionViewCell: UICollectionViewCell, ViewAttributes {
+    weak var delegate: RemoveAction?
     let fontManager = FontManager.shared
     
     lazy var shapeLayer : CAShapeLayer = {
@@ -40,7 +41,7 @@ final class DotFirstCollectionViewCell: UICollectionViewCell, ViewAttributes {
         btn.setImage(UIImage(named: "FeedWrite"), for: .normal)
         btn.backgroundColor = .clear
         btn.isUserInteractionEnabled = true
-//        btn.addTarget(self, action: #selector(touchXmark), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         btn.layer.cornerRadius = 12
         
         return btn
@@ -63,7 +64,10 @@ final class DotFirstCollectionViewCell: UICollectionViewCell, ViewAttributes {
         return UILabel
     }()
     
-    
+    override func prepareForReuse() {
+        
+        btn.removeFromSuperview()
+    }
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -122,8 +126,8 @@ final class DotFirstCollectionViewCell: UICollectionViewCell, ViewAttributes {
         }
     }
     
-    @objc func touchXmark() {
-        smLog("")
+    @objc func buttonTapped(_ sender: UIButton) {
+        self.delegate?.buttonTapped(sender)
     }
     
     required init?(coder: NSCoder) {

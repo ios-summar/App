@@ -644,7 +644,8 @@ final class ServerRequest: NSObject {
               }
             }, to: url,
            method: .post,
-           headers: ["Content-Type":"multipart/form-data", "Accept":"application/json",
+           headers: ["Content-Type":"multipart/form-data",
+                     "Accept":"application/json",
                      "Authorization":"Bearer \(token)"])
             .validate(statusCode: 200..<300)
             .responseJSON { response in
@@ -674,16 +675,17 @@ final class ServerRequest: NSObject {
     
     // MARK: - 피드수정
     func updateFeed(_ url: String, _ param : Dictionary<String, Any>, _ imageArr: [UIImage], completion: @escaping (FeedInsertResponse?, Error?, Int?) -> ()) {
-                
         let url = Server.url + url
         if let token = UserDefaults.standard.string(forKey: "accessToken") {
-            print("url => \(url)")
+            smLog("url => \(url)")
             print(token)
             AF.upload(multipartFormData: { (multipart) in
-                for x in 0 ..< imageArr.count {
-                    if let imageData = imageArr[x].jpegData(compressionQuality: 1) {
-                        multipart.append(imageData, withName: "images", fileName: "\(param["profileImageUrl"]).jpg", mimeType: "image/jpeg")
-                        //이미지 데이터를 put할 데이터에 덧붙임
+                if param["insertImages"] != nil {
+                    for x in 0 ..< imageArr.count {
+                        if let imageData = imageArr[x].jpegData(compressionQuality: 1) {
+                            multipart.append(imageData, withName: "insertImages", fileName: "\(param["insertImages"]).jpg", mimeType: "image/jpeg")
+                            //이미지 데이터를 put할 데이터에 덧붙임
+                        }
                     }
                 }
                 
@@ -693,7 +695,8 @@ final class ServerRequest: NSObject {
               }
             }, to: url,
            method: .put,
-           headers: ["Content-Type":"multipart/form-data", "Accept":"application/json",
+           headers: ["Content-Type":"multipart/form-data",
+                     "Accept":"application/json",
                      "Authorization":"Bearer \(token)"])
             .validate(statusCode: 200..<300)
             .responseJSON { response in

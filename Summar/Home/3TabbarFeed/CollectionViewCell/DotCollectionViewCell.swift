@@ -8,6 +8,7 @@
 import UIKit
 
 final class DotCollectionViewCell: UICollectionViewCell, ViewAttributes {
+    weak var delegate: RemoveAction?
     
     lazy var shapeLayer : CAShapeLayer = {
         let shapeLayer:CAShapeLayer = CAShapeLayer()
@@ -39,7 +40,7 @@ final class DotCollectionViewCell: UICollectionViewCell, ViewAttributes {
         btn.setImage(UIImage(named: "FeedWrite"), for: .normal)
         btn.backgroundColor = .clear
         btn.isUserInteractionEnabled = true
-//        btn.addTarget(self, action: #selector(touchXmark), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         btn.layer.cornerRadius = 12
         return btn
     }()
@@ -49,6 +50,11 @@ final class DotCollectionViewCell: UICollectionViewCell, ViewAttributes {
         imageView.image = UIImage(named: "ExampleImage")
         return imageView
     }()
+    
+    override func prepareForReuse() {
+        
+        btn.removeFromSuperview()
+    }
     
     
     override init(frame: CGRect) {
@@ -81,11 +87,14 @@ final class DotCollectionViewCell: UICollectionViewCell, ViewAttributes {
         shapeLayer.removeFromSuperlayer()
         
         contentView.addSubview(btn)
+        
+        btn.alpha = 1.0
         btn.snp.makeConstraints {
             $0.width.height.equalTo(25)
             $0.top.equalToSuperview()
             $0.right.equalToSuperview()
         }
+        
         imageView.alpha = 0.0
     }
     
@@ -95,8 +104,8 @@ final class DotCollectionViewCell: UICollectionViewCell, ViewAttributes {
         imageView.alpha = 1.0
     }
     
-    @objc func touchXmark() {
-        smLog("")
+    @objc func buttonTapped(_ sender: UIButton) {
+        self.delegate?.buttonTapped(sender)
     }
     
     required init?(coder: NSCoder) {

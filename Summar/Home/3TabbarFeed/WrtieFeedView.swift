@@ -16,58 +16,28 @@ protocol ImagePickerDelegate : AnyObject {
     func showAlert(_ message: String)
 }
 
-final class WriteFeedView : UIView, UITextViewDelegate {
+protocol RemoveAction: AnyObject {
+    func buttonTapped(_ sender: UIButton)
+}
+
+final class WriteFeedView : UIView, UITextViewDelegate, RemoveAction{
     let helper = Helper.shared
     let fontManager = FontManager.shared
     let viewModel = WriteFeedViewModel()
     
     weak var delegate : ImagePickerDelegate?
     weak var popDelegate : PopDelegate?
+    var allChangeImg: Bool = false
     
+    var resultArr = [UIImage]()
+    var feedImageSeqArr = [Int]()
+    var tempFeedImageSeqArr = [Int]()
     // 피드 수정 Case
     var feedInfo: FeedInfo? {
         didSet {
-            smLog("\(feedInfo)")
-
-            if let feedImages = feedInfo?.feedImages {
-                DispatchQueue.global().sync {
-                    for x in 0 ..< feedImages.count {
-                        guard let imageURL = feedImages[x].imageUrl, let img = self.urltoImage(imageURL) else {return}
-                        
-                        self.resultArr.append(img)
-                    }
-                }
-            }
-            
-            collectionViewScroll.reloadData()
-            
-            if let contents = feedInfo?.contents {
-                view2TextView.text = contents
-                view2TextView.textColor = .black
-            }
-            
-            registerBtn.setTitle("수정", for: .normal)
+            setUpWriteFeedView(feedInfo)
         }
     }
-    
-    func urltoImage(_ str: String) -> UIImage? {
-        if str.isEmpty || str.count == 0 {
-            return nil
-        }
-        
-        do {
-            let url = URL(string: str)
-            if url != nil {
-                let data = try Data(contentsOf: url!)
-                return UIImage(data: data)
-            }
-        }catch (let error){
-            print("\(error)")
-        }
-        return nil
-    }
-    
-    var resultArr = [UIImage]()
     
     private let cellReuseIdentifier = "FeedCollectionCell"
     private let EmptyCellReuseIdentifier = "EmptyCollectionCell"
@@ -166,21 +136,62 @@ final class WriteFeedView : UIView, UITextViewDelegate {
         return button
     }()
     
+    func setUpWriteFeedView(_ feedInfo: FeedInfo?) {
+        
+        registerBtn.setTitle("수정", for: .normal)
+        smLog("\(feedInfo)")
+
+        if let feedImages = feedInfo?.feedImages {
+            for x in 0 ..< feedImages.count {
+                guard let imageURL = feedImages[x].imageUrl, let feedImgSeq = feedImages[x].feedImageSeq else {return}
+                
+                setImage(imageURL)
+                self.feedImageSeqArr.append(feedImgSeq)
+            }
+            
+            tempFeedImageSeqArr = feedImageSeqArr
+        }
+        
+        if let contents = feedInfo?.contents {
+            view2TextView.text = contents
+            view2TextView.textColor = .black
+        }
+        
+        if let commentYn = feedInfo?.commentYn, let secretYn = feedInfo?.secretYn {
+            switch1.isOn = commentYn
+            switch2.isOn = secretYn
+        }
+    }
     
-    var arrProductPhotos = [
-        UIImage(systemName: "doc"),
-        UIImage(systemName: "doc.fill"),
-        UIImage(systemName: "doc.circle"),
-        UIImage(systemName: "square.and.arrow.up"),
-        UIImage(systemName: "square.and.arrow.up.circle"),
-        UIImage(systemName: "square.and.arrow.up.circle.fill"),
-        UIImage(systemName: "square.and.arrow.up.trianglebadge.exclamationmark"),
-        UIImage(systemName: "square.and.arrow.down")
-    ]
+    func setImage(_ urlString: String) {
+        let url = URL(string: urlString)
+        //DispatchQueue를 쓰는 이유 -> 이미지가 클 경우 이미지를 다운로드 받기 까지 잠깐의 멈춤이 생길수 있다. (이유 : 싱글 쓰레드로 작동되기때문에)
+        //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
+        DispatchQueue.global().async {
+            DispatchQueue.main.async {
+                UIImageView().kf.indicatorType = .activity
+                UIImageView().kf.setImage(
+                  with: url,
+                  placeholder: nil,
+                  options: [.transition(.fade(1.2))],
+                  completionHandler: { result in
+                  switch(result) {
+                      case .success(let imageResult):
+                            let resized = resize(image: imageResult.image, newWidth: 100)
+                            self.resultArr.append(resized)
+                            self.collectionViewScroll.reloadData()
+                      case .failure(let error):
+                            print(error)
+                      }
+                  })
+            }
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
+        
         configureUI()
         configureDelegate()
     }
@@ -306,10 +317,8 @@ final class WriteFeedView : UIView, UITextViewDelegate {
         let btn = sender as? UIButton
         var requestBody = Dictionary<String, Any>()
         
-        requestBody["userSeq"] = getMyUserSeq()
         requestBody["commentYn"] = switch1.isOn
         requestBody["secretYn"] = switch2.isOn
-        
         if index == "insertFeed" {
             requestBody["tempSaveYn"] = false
         }else {
@@ -326,21 +335,58 @@ final class WriteFeedView : UIView, UITextViewDelegate {
         
         guard let text = btn?.titleLabel?.text else {return}
         switch text { // 등록, 임시저장, 수정 case로 나뉨
-        case "등록", "임시저장", "수정":
-            if let feedInfo = feedInfo {
-                smLog("등록, 등록, 수정")
+        case "등록" :
+            smLog("")
+            requestBody["userSeq"] = getMyUserSeq()
+            
+            viewModel.insertFeed(requestBody, resultArr)
+            viewModel.didFinishFetch = {
+                self.popDelegate?.popScreen()
                 LoadingIndicator.hideLoading()
+            }
+            
+        case "임시저장", "수정":
+            if let feedInfo = feedInfo {
+                smLog("임시저장, 수정")
+                guard let feedSeq = feedInfo.feedSeq else {return}
+                requestBody["feedSeq"] = feedSeq
+                
+                let deleteImageSeqs = feedImageSeqArr.filter { !tempFeedImageSeqArr.contains($0) }
+                
+                if allChangeImg { // 이미지 추가하기로 덮어쓴 상황
+                    
+                    requestBody["deleteImageSeqs"] = feedImageSeqArr
+                }else { // 이미지를 추가 안하고 이미지만 삭제
+                    if deleteImageSeqs.count != 0 { // 한개라도 삭제
+                        requestBody["deleteImageSeqs"] = deleteImageSeqs
+                    }else { // 하나도 삭제 안함
+                        requestBody["deleteImageSeqs"] = nil
+                    }
+                    requestBody["insertImages"] = nil
+                }
+                
+                
+                viewModel.updateFeed(requestBody, resultArr)
+                viewModel.didFinishUpdateFetch = {
+                    smLog("")
+                    self.popDelegate?.popScreen()
+                    LoadingIndicator.hideLoading()
+                }
+                
             }else {
+                requestBody["userSeq"] = getMyUserSeq()
+                
                 viewModel.insertFeed(requestBody, resultArr)
-                viewModel.didFinishFetch = {
+                viewModel.didFinishUpdateFetch = {
+                    if text == "임시저장" {
+                        toast("임시 저장한 포트폴리오는 마이 써머리 탭에서 확인 가능합니다.")
+                    }
+                    
                     self.popDelegate?.popScreen()
                     LoadingIndicator.hideLoading()
                 }
             }
-            
-            if text == "임시저장" {
-                toast("임시 저장한 포트폴리오는 마이 써머리 탭에서 확인 가능합니다.")
-            }
+
         default:
             LoadingIndicator.hideLoading()
         }
@@ -375,10 +421,14 @@ extension WriteFeedView: UICollectionViewDelegate, UICollectionViewDataSource, U
                 if indexPath.row == 1 { // 두번째 cell
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotFirstCellReuseIdentifier, for: indexPath) as! DotFirstCollectionViewCell
                     cell.removeImg()
+                    cell.delegate = self
+                    
                     return cell
                 }else { // 1, 2번째 cell 제외한 나머지 cell
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotCellReuseIdentifier, for: indexPath) as! DotCollectionViewCell
                     cell.removeImg()
+                    cell.delegate = self
+                    
                     return cell
                 }
             }else { // empty cell로 padding
@@ -392,17 +442,13 @@ extension WriteFeedView: UICollectionViewDelegate, UICollectionViewDataSource, U
                     if resultArr.count >= 1 {
                         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotFirstCellReuseIdentifier, for: indexPath) as! DotFirstCollectionViewCell
                         cell.addImg(resultArr[0])
-                        
-                        cell.btn.tag = 0
-                        let recognizer = UITapGestureRecognizer(
-                            target: self,
-                            action: #selector(didSelect(_:))
-                        )
-                        cell.btn.addGestureRecognizer(recognizer)
+                        cell.delegate = self
                         
                         return cell
                     }else {
                         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotFirstCellReuseIdentifier, for: indexPath) as! DotFirstCollectionViewCell
+                        cell.delegate = self
+                        
                         return cell
                     }
                 }else { // 1,2번째 cell 제외한 나머지 cell 2..3..4..5..6..
@@ -412,17 +458,13 @@ extension WriteFeedView: UICollectionViewDelegate, UICollectionViewDataSource, U
                     if resultArr.count > indexPath.row - 1 {
                         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotCellReuseIdentifier, for: indexPath) as! DotCollectionViewCell
                         cell.addImg(resultArr[indexPath.row - 1])
-                        
-                        cell.btn.tag = indexPath.row - 1
-                        let recognizer = UITapGestureRecognizer(
-                            target: self,
-                            action: #selector(didSelect(_:))
-                        )
-                        cell.btn.addGestureRecognizer(recognizer)
+                        cell.delegate = self
                         
                         return cell
                     }else {
                         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DotCellReuseIdentifier, for: indexPath) as! DotCollectionViewCell
+                        cell.delegate = self
+                        
                         return cell
                     }
                 }
@@ -450,18 +492,35 @@ extension WriteFeedView: UICollectionViewDelegate, UICollectionViewDataSource, U
             self.delegate?.openPhoto(completion: {(imageArr) in
                 guard let resultArr = imageArr else{ return }
                 self.resultArr = resultArr
+                self.allChangeImg = true
                 
                 self.collectionViewScroll.reloadData()
             })
         }else {
             if resultArr.count != 0 {
-//                self.delegate?.showImageFullScreen(self.resultArr)
+                self.delegate?.showImageFullScreen(self.resultArr)
             }
         }
     }
     
-    @objc func didSelect(_ sender: Any) {
-        smLog("")
+    @objc func buttonTapped(_ sender: UIButton) {
+        if let cell = sender.superview?.superview as? DotFirstCollectionViewCell {
+            guard let indexPath = collectionViewScroll.indexPath(for: cell) else {return}
+            
+            resultArr.remove(at: indexPath.row - 1)
+            tempFeedImageSeqArr.remove(at: indexPath.row - 1)
+            
+            self.collectionViewScroll.reloadData()
+        }else if let cell = sender.superview?.superview as? DotCollectionViewCell {
+            guard let indexPath = collectionViewScroll.indexPath(for: cell) else {return}
+            
+            resultArr.remove(at: indexPath.row - 1)
+            tempFeedImageSeqArr.remove(at: indexPath.row - 1)
+            
+            self.collectionViewScroll.reloadData()
+        }else {
+            smLog("nil")
+        }
     }
     
 }

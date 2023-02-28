@@ -54,8 +54,6 @@ final class FullScreenImageViewController: UIViewController, ViewAttributes {
         
         self.navigationItem.titleView = titleLabel
         self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(leftBtnAction(_:)), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
-        self.navigationItem.rightBarButtonItem = makeSFSymbolButtonLabel(self, action: #selector(rightBtnAction(_:)), title: "변경 후 저장", tintColor: UIColor.magnifyingGlassColor)
-        self.navigationItem.rightBarButtonItem?.isEnabled = false
     }
     
     func setAttributes() {
