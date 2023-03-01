@@ -265,10 +265,11 @@ final class SignUp2View : UIView{
     }
     
     @objc func nextAction(){
-        self.delegate?.majorInput(major1: editMajor.text!, major2: majorTextField.text!)
-        
-        editMajor.text = ""
-        majorTextField.text = ""
+        let VC = ModalViewController()
+        VC.delegate = self
+        VC.modalPresentationStyle = .custom
+        VC.transitioningDelegate = self
+        UIApplication.shared.keyWindow?.rootViewController?.present(VC, animated: true, completion: nil)
     }
     
     
@@ -379,4 +380,20 @@ extension SignUp2View : UIPickerViewDelegate, UIPickerViewDataSource {
                 print("default")
         }
     }
+}
+
+extension SignUp2View: UIViewControllerTransitioningDelegate, ModalDeleagte {
+    func modalDelegate() {
+        self.delegate?.majorInput(major1: editMajor.text!, major2: majorTextField.text!)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            
+            self.editMajor.text = ""
+            self.majorTextField.text = ""
+        }
+    }
+    
+  func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+    return HalfModalPresentationController(presentedViewController: presented, presenting: presenting)
+  }
 }
