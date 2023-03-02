@@ -17,6 +17,7 @@ final class NoticeContentTableViewCell: UITableViewCell {
         label.textColor = UIColor.textColor115
         label.font = self.fontManager.getFont(Font.Regular.rawValue).medium15Font
         label.numberOfLines = 0
+        label.lineBreakMode = .byCharWrapping
         return label
     }()
     

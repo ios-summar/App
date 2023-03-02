@@ -19,7 +19,7 @@ final class NoticeTitleTableViewCell: UITableViewCell {
         label.textColor = .black
         label.font = self.fontManager.getFont(Font.SemiBold.rawValue).medium15Font
         label.numberOfLines = 0
-        label.lineBreakMode = .byClipping
+        label.lineBreakMode = .byCharWrapping
         label.sizeToFit()
         return label
     }()
