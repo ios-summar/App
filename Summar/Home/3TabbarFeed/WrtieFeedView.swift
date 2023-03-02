@@ -138,7 +138,16 @@ final class WriteFeedView : UIView, UITextViewDelegate, RemoveAction{
     
     func setUpWriteFeedView(_ feedInfo: FeedInfo?) {
         
+        temporarySaveBtn.removeFromSuperview()
         registerBtn.setTitle("수정", for: .normal)
+        registerBtn.snp.makeConstraints {
+            
+            $0.left.equalTo(self.safeAreaLayoutGuide).offset(20)
+            $0.bottom.equalTo(self.safeAreaLayoutGuide).offset(-20)
+            $0.right.equalTo(self.safeAreaLayoutGuide).offset(-20)
+            $0.height.equalTo(60)
+        }
+        
         smLog("\(feedInfo)")
 
         if let feedImages = feedInfo?.feedImages {
@@ -335,7 +344,7 @@ final class WriteFeedView : UIView, UITextViewDelegate, RemoveAction{
         
         guard let text = btn?.titleLabel?.text else {return}
         switch text { // 등록, 임시저장, 수정 case로 나뉨
-        case "등록" :
+        case "등록", "임시저장" :
             smLog("")
             requestBody["userSeq"] = getMyUserSeq()
             
@@ -345,7 +354,7 @@ final class WriteFeedView : UIView, UITextViewDelegate, RemoveAction{
                 LoadingIndicator.hideLoading()
             }
             
-        case "임시저장", "수정":
+        case "수정":
             if let feedInfo = feedInfo {
                 smLog("임시저장, 수정")
                 guard let feedSeq = feedInfo.feedSeq else {return}
