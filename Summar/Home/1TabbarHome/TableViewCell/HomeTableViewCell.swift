@@ -269,7 +269,7 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
     }
     
     func setUpCell(_ feedInfo: FeedInfo){
-        print("setUpCell \(feedInfo)")
+//        print("setUpCell \(feedInfo)")
         guard let user = feedInfo.user, let major2 = user.major2, let likeYn = feedInfo.likeYn, let commentYn = feedInfo.commentYn, let totalLikeCount = feedInfo.totalLikeCount, let totalCommentCount = feedInfo.totalCommentCount, let scrapYn = feedInfo.scrapYn else { return }
         self.feedInfo = feedInfo
         userSeq = user.userSeq

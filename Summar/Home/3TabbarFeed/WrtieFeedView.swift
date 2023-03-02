@@ -30,8 +30,8 @@ final class WriteFeedView : UIView, UITextViewDelegate, RemoveAction{
     var allChangeImg: Bool = false
     
     var resultArr = [UIImage]()
-    var feedImageSeqArr = [Int]()
-    var tempFeedImageSeqArr = [Int]()
+    var feedImageSeqArr = [Int64]()
+    var tempFeedImageSeqArr = [Int64]()
     // 피드 수정 Case
     var feedInfo: FeedInfo? {
         didSet {
@@ -155,7 +155,7 @@ final class WriteFeedView : UIView, UITextViewDelegate, RemoveAction{
                 guard let imageURL = feedImages[x].imageUrl, let feedImgSeq = feedImages[x].feedImageSeq else {return}
                 
                 setImage(imageURL)
-                self.feedImageSeqArr.append(feedImgSeq)
+                self.feedImageSeqArr.append(Int64(feedImgSeq))
             }
             
             tempFeedImageSeqArr = feedImageSeqArr
@@ -350,6 +350,10 @@ final class WriteFeedView : UIView, UITextViewDelegate, RemoveAction{
             
             viewModel.insertFeed(requestBody, resultArr)
             viewModel.didFinishFetch = {
+                if text == "임시저장" {
+                    toast("임시 저장한 포트폴리오는 마이 써머리 탭에서 확인 가능합니다.")
+                }
+                
                 self.popDelegate?.popScreen()
                 LoadingIndicator.hideLoading()
             }
@@ -361,41 +365,32 @@ final class WriteFeedView : UIView, UITextViewDelegate, RemoveAction{
                 requestBody["feedSeq"] = feedSeq
                 
                 let deleteImageSeqs = feedImageSeqArr.filter { !tempFeedImageSeqArr.contains($0) }
+                smLog("\(type(of: deleteImageSeqs))")
                 
+                var insertImage = false
                 if allChangeImg { // 이미지 추가하기로 덮어쓴 상황
                     
                     requestBody["deleteImageSeqs"] = feedImageSeqArr
+                    insertImage = true
                 }else { // 이미지를 추가 안하고 이미지만 삭제
                     if deleteImageSeqs.count != 0 { // 한개라도 삭제
                         requestBody["deleteImageSeqs"] = deleteImageSeqs
+                        smLog("")
                     }else { // 하나도 삭제 안함
                         requestBody["deleteImageSeqs"] = nil
                     }
-                    requestBody["insertImages"] = nil
+                    insertImage = false
                 }
                 
                 
-                viewModel.updateFeed(requestBody, resultArr)
+                viewModel.updateFeed(requestBody, resultArr, insertImage)
                 viewModel.didFinishUpdateFetch = {
                     smLog("")
                     self.popDelegate?.popScreen()
                     LoadingIndicator.hideLoading()
                 }
-                
-            }else {
-                requestBody["userSeq"] = getMyUserSeq()
-                
-                viewModel.insertFeed(requestBody, resultArr)
-                viewModel.didFinishUpdateFetch = {
-                    if text == "임시저장" {
-                        toast("임시 저장한 포트폴리오는 마이 써머리 탭에서 확인 가능합니다.")
-                    }
-                    
-                    self.popDelegate?.popScreen()
-                    LoadingIndicator.hideLoading()
-                }
             }
-
+            
         default:
             LoadingIndicator.hideLoading()
         }

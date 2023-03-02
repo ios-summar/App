@@ -674,16 +674,16 @@ final class ServerRequest: NSObject {
     }
     
     // MARK: - 피드수정
-    func updateFeed(_ url: String, _ param : Dictionary<String, Any>, _ imageArr: [UIImage], completion: @escaping (FeedInsertResponse?, Error?, Int?) -> ()) {
+    func updateFeed(_ url: String, _ param : Dictionary<String, Any>, _ insertImage: Bool , _ imageArr: [UIImage], completion: @escaping (FeedInsertResponse?, Error?, Int?) -> ()) {
         let url = Server.url + url
         if let token = UserDefaults.standard.string(forKey: "accessToken") {
             smLog("url => \(url)")
             print(token)
             AF.upload(multipartFormData: { (multipart) in
-                if param["insertImages"] != nil {
+                if insertImage {
                     for x in 0 ..< imageArr.count {
                         if let imageData = imageArr[x].jpegData(compressionQuality: 1) {
-                            multipart.append(imageData, withName: "insertImages", fileName: "\(param["insertImages"]).jpg", mimeType: "image/jpeg")
+                            multipart.append(imageData, withName: "insertImages", fileName: "\(param["feedSeq"])\(x).jpg", mimeType: "image/jpeg")
                             //이미지 데이터를 put할 데이터에 덧붙임
                         }
                     }
