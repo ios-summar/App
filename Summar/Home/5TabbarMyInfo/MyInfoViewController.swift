@@ -73,6 +73,7 @@ final class MyInfoViewController : UIViewController, MyInfoViewDelegate, PushDel
                             
                             self.myInfoView.requestMyInfo(getMyUserSeq())
                             self.myInfoView.getPortfolio()
+                            toast("삭제됨")
                         }
                     }
                 default:

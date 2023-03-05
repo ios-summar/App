@@ -247,6 +247,7 @@ final class CommentParentTableViewCell: UITableViewCell, ViewAttributes{
                         switch handler {
                         case "삭제하기":
                             self.reloadDelegate?.removeComment(feedCommentSeq: feedCommentSeq)
+                            toast("삭제됨")
                             break
                         case "신고하기":
                             let param: Dictionary<String, Any> = [

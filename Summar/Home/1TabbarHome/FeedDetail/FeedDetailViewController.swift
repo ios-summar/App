@@ -122,6 +122,7 @@ final class FeedDetailViewController: UIViewController, PushDelegate {
                             self.viewModel.deleteFeed(feedSeq)
                             self.viewModel.didFinishDelteFetch = {
                                 self.navigationController?.popViewController(animated: true)
+                                toast("삭제됨")
                             }
                         }
                     default:

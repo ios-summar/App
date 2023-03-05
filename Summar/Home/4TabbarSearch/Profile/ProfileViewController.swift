@@ -52,6 +52,7 @@ final class ProfileViewController : UIViewController, PushDelegate, ViewAttribut
                             self.viewModel.deleteFeed(feedSeq)
                             self.viewModel.didFinishDelteFetch = {
                                 self.navigationController?.popViewController(animated: true)
+                                toast("삭제됨")
                             }
                         }
                     default:
