@@ -453,22 +453,6 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
         }
     }
     
-    func heightForView(text:String, font:UIFont, width:CGFloat) -> CGFloat{
-        let label:UILabel = UILabel(frame: CGRectMake(0, 0, width, CGFloat.greatestFiniteMagnitude))
-        label.numberOfLines = 4
-        label.lineBreakMode = .byCharWrapping
-        label.font = font
-        label.text = text
-        
-        label.sizeToFit()
-        print(label.frame.height)
-        contentsLabel.snp.updateConstraints {
-            $0.height.equalTo(label.frame.height)
-        }
-        return label.frame.height
-    }
-
-    
     func initImageArr(_ imageArr : [String], completion : @escaping(Bool) -> ()){
             pageControl.numberOfPages = imageArr.count
             
