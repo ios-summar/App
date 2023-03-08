@@ -16,7 +16,7 @@ final class WriteFeedViewModel {
     var updateLoadingStatus: (() -> ())?
     var didFinishFetch: (() -> ())?
     var didFinishUpdateFetch: (() -> ())?
-    
+    var didFinishDeleteFetch: (() -> ())?
     
     func insertFeed(_ param: Dictionary<String, Any>, _ imageArr: [UIImage]){
         smLog("\n \(param)")
@@ -64,7 +64,7 @@ final class WriteFeedViewModel {
     
     func deleteImage(_ param: Dictionary<String, Any>){
         guard let feedSeq = param["feedSeq"] as? Int else {toast("서버 오류, 잠시후 다시 시도해주세요."); return}
-        self.request.deleteImage("/feed/\(feedSeq)", param, completion: { (feedInsertResponse, error, status) in
+        self.request.deleteImage("/feed/\(feedSeq)/images", param, completion: { (feedInsertResponse, error, status) in
             //error만 있을경우 서버오류
             //error,status != nil 경우 토큰 재발급
             if let error = error, let status = status {
@@ -79,7 +79,7 @@ final class WriteFeedViewModel {
                 print(error)
                 return
             }
-            self.didFinishUpdateFetch?()
+            self.didFinishDeleteFetch?()
         })
     }
 }

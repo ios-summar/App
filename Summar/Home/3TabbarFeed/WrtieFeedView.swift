@@ -324,20 +324,21 @@ final class WriteFeedView : UIView, UITextViewDelegate, RemoveAction{
     
     func registerFeed(_ index: String, _ sender: Any) {
         let btn = sender as? UIButton
-        var requestBody = Dictionary<String, Any>()
+        var updateRequestBody = Dictionary<String, Any>()
+        var deleteImgRequestBody = Dictionary<String, Any>()
         
-        requestBody["commentYn"] = switch1.isOn
-        requestBody["secretYn"] = switch2.isOn
+        updateRequestBody["commentYn"] = switch1.isOn
+        updateRequestBody["secretYn"] = switch2.isOn
         if index == "insertFeed" {
-            requestBody["tempSaveYn"] = false
+            updateRequestBody["tempSaveYn"] = false
         }else {
-            requestBody["tempSaveYn"] = true
+            updateRequestBody["tempSaveYn"] = true
         }
         
         if view2TextView.text != "피드 내용은 2,000자 이내로 입력 가능합니다." || view2TextView.text != "" {
-            requestBody["contents"] = view2TextView.text
+            updateRequestBody["contents"] = view2TextView.text
         }else {
-            requestBody["contents"] = nil
+            updateRequestBody["contents"] = nil
         }
         
         LoadingIndicator.showLoading()
@@ -346,9 +347,9 @@ final class WriteFeedView : UIView, UITextViewDelegate, RemoveAction{
         switch text { // 등록, 임시저장, 수정 case로 나뉨
         case "등록", "임시저장" :
             smLog("")
-            requestBody["userSeq"] = getMyUserSeq()
+            updateRequestBody["userSeq"] = getMyUserSeq()
             
-            viewModel.insertFeed(requestBody, resultArr)
+            viewModel.insertFeed(updateRequestBody, resultArr)
             viewModel.didFinishFetch = {
                 if text == "임시저장" {
                     toast("임시 저장한 포트폴리오는 마이 써머리 탭에서 확인 가능합니다.")
@@ -362,7 +363,8 @@ final class WriteFeedView : UIView, UITextViewDelegate, RemoveAction{
             if let feedInfo = feedInfo {
                 smLog("임시저장, 수정")
                 guard let feedSeq = feedInfo.feedSeq else {return}
-                requestBody["feedSeq"] = feedSeq
+                updateRequestBody["feedSeq"] = feedSeq
+                deleteImgRequestBody["feedSeq"] = feedSeq
                 
                 let deleteImageSeqs = feedImageSeqArr.filter { !tempFeedImageSeqArr.contains($0) }
                 smLog("\(type(of: deleteImageSeqs))")
@@ -370,24 +372,33 @@ final class WriteFeedView : UIView, UITextViewDelegate, RemoveAction{
                 var insertImage = false
                 if allChangeImg { // 이미지 추가하기로 덮어쓴 상황
                     
-                    requestBody["deleteImageSeqs"] = feedImageSeqArr
-                    insertImage = true
+                        deleteImgRequestBody["imageSeqs"] = feedImageSeqArr
+                        insertImage = true
                 }else { // 이미지를 추가 안하고 이미지만 삭제
+                    
                     if deleteImageSeqs.count != 0 { // 한개라도 삭제
-                        requestBody["deleteImageSeqs"] = deleteImageSeqs
+                        deleteImgRequestBody["imageSeqs"] = deleteImageSeqs
                         smLog("")
                     }else { // 하나도 삭제 안함
-                        requestBody["deleteImageSeqs"] = nil
+                        deleteImgRequestBody["imageSeqs"] = nil
                     }
                     insertImage = false
                 }
                 
-                
-                viewModel.updateFeed(requestBody, resultArr, insertImage)
+                viewModel.updateFeed(updateRequestBody, resultArr, insertImage)
                 viewModel.didFinishUpdateFetch = {
                     smLog("")
-                    self.popDelegate?.popScreen()
-                    LoadingIndicator.hideLoading()
+                    
+                    if deleteImgRequestBody["imageSeqs"] != nil {
+                        self.viewModel.deleteImage(deleteImgRequestBody)
+                        self.viewModel.didFinishDeleteFetch = {
+                            smLog("")
+                            LoadingIndicator.hideLoading()
+                        }
+                    }else {
+                        self.popDelegate?.popScreen()
+                        LoadingIndicator.hideLoading()
+                    }
                 }
             }
             

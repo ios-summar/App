@@ -706,7 +706,7 @@ final class ServerRequest: NSObject {
                     guard let result = response.data else {return}
                     do {
                         let decoder = JSONDecoder()
-                        let json = try decoder.decode(FeedInsertResponse.self, from: response.data!)
+                        let json = try decoder.decode(FeedInsertResponse.self, from: result)
 
                         completion(json, nil, nil)
 
@@ -717,7 +717,7 @@ final class ServerRequest: NSObject {
                 case .failure(let error):
                     print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
                     
-                    var statusCode = response.response?.statusCode
+                    let statusCode = response.response?.statusCode
                     completion(nil, error, statusCode)
                 }
             }
@@ -731,26 +731,25 @@ final class ServerRequest: NSObject {
         if let token = UserDefaults.standard.string(forKey: "accessToken") {
             smLog("url => \(url)")
             print(token)
-            AF.upload(multipartFormData: { (multipart) in
-                
-                for (key, value) in param {
-                  multipart.append("\(value)".data(using: .utf8, allowLossyConversion: false)!, withName: "\(key)")
-                  //이미지 데이터 외에 같이 전달할 데이터
-              }
-            }, to: url,
-           method: .put,
-           headers: ["Content-Type":"multipart/form-data",
-                     "Accept":"application/json",
-                     "Authorization":"Bearer \(token)"])
+            AF.request(url,
+                       method: .put,
+                       parameters: param,
+                       encoding: JSONEncoding.default,
+                       headers: [
+                        "Content-Type":"application/json",
+                                 "Accept":"*/*",
+                                 "Authorization":"Bearer \(token)"
+                                ]
+            )
             .validate(statusCode: 200..<300)
             .responseJSON { response in
                 switch response.result {
                 case .success(let value):
-                    print(value)
+                    smLog("\(value)")
                     guard let result = response.data else {return}
                     do {
                         let decoder = JSONDecoder()
-                        let json = try decoder.decode(FeedInsertResponse.self, from: response.data!)
+                        let json = try decoder.decode(FeedInsertResponse.self, from: result)
 
                         completion(json, nil, nil)
 
@@ -761,7 +760,7 @@ final class ServerRequest: NSObject {
                 case .failure(let error):
                     print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
                     
-                    var statusCode = response.response?.statusCode
+                    let statusCode = response.response?.statusCode
                     completion(nil, error, statusCode)
                 }
             }
