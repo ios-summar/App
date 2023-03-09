@@ -7,6 +7,7 @@
 
 import Foundation
 import SnapKit
+import Kingfisher
 
 final class TemporarySaveCollectionvViewCell: UICollectionViewCell, ViewAttributes {
     let helper = Helper.shared
@@ -74,18 +75,15 @@ final class TemporarySaveCollectionvViewCell: UICollectionViewCell, ViewAttribut
                 imageView.contentMode = .scaleAspectFill
                 imageView.kf.setImage(
                     with: url,
-                    placeholder: nil,
-                    options: [.transition(.fade(1.2))],
-                    completionHandler: { result in
-                    switch(result) {
-                        case .success(let imageResult):
-                        let resized = resize(image: imageResult.image, newWidth: 200) //TEST
-                        imageView.image = resized
-                        imageView.isHidden = false
-                        case .failure(let error):
-                            imageView.isHidden = true
-                        }
-                    })
+                    options: [
+                        .transition(.fade(0.2)),
+                        .forceTransition,
+                        .keepCurrentImageWhileLoading,
+                        .processor(DownsamplingImageProcessor(size: CGSize(width: 200, height: 200))),
+                        .scaleFactor(UIScreen.main.scale),
+                        .cacheOriginalImage
+                    ]
+                )
             }
         }
     }

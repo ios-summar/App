@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 protocol ImageUpdatePickerDelegate : AnyObject {
     func openPhoto(completion: @escaping(UIImage?) -> ())
@@ -77,18 +78,15 @@ final class UpdateMyInfoView: UIView, UITextViewDelegate, UITextFieldDelegate {
                         self.profileImageView.kf.indicatorType = .activity
                         self.profileImageView.kf.setImage(
                             with: url,
-                            placeholder: nil,
-                            options: [.transition(.fade(1.2))],
-                            completionHandler: { result in
-                            switch(result) {
-                                case .success(let imageResult):
-                                let resized = resize(image: imageResult.image, newWidth: 80)
-                                self.profileImageView.image = resized
-                                self.profileImageView.isHidden = false
-                                case .failure(let error):
-                                self.profileImageView.isHidden = true
-                                }
-                            })
+                            options: [
+                                .transition(.fade(0.2)),
+                                .forceTransition,
+                                .keepCurrentImageWhileLoading,
+                                .processor(DownsamplingImageProcessor(size: CGSize(width: 80, height: 80))),
+                                .scaleFactor(UIScreen.main.scale),
+                                .cacheOriginalImage
+                            ]
+                        )
                     }
                 }
             }else {

@@ -57,6 +57,7 @@ final class HomeView: UIView, HomeViewDelegate, ViewAttributes{
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
         view.showsVerticalScrollIndicator = false
+        view.backgroundColor = .Gray01
         
         // 테이블뷰 왼쪽 마진 없애기
         view.separatorStyle = .none

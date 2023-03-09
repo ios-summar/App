@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
     weak var delegate: PushDelegate?
@@ -133,18 +134,15 @@ final class FollowListTableViewCell: UITableViewCell, ViewAttributes {
                 imageView.kf.indicatorType = .activity
                 imageView.kf.setImage(
                     with: url,
-                    placeholder: nil,
-                    options: [.transition(.fade(1.2))],
-                    completionHandler: { result in
-                    switch(result) {
-                        case .success(let imageResult):
-                        let resized = resize(image: imageResult.image, newWidth: 48)
-                        imageView.image = resized
-                        imageView.isHidden = false
-                        case .failure(let error):
-                            imageView.isHidden = true
-                        }
-                    })
+                    options: [
+                        .transition(.fade(0.2)),
+                        .forceTransition,
+                        .keepCurrentImageWhileLoading,
+                        .processor(DownsamplingImageProcessor(size: CGSize(width: 48, height: 48))),
+                        .scaleFactor(UIScreen.main.scale),
+                        .cacheOriginalImage
+                    ]
+                )
             }
         }
     }

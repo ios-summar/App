@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 //import Toast_Swift makeToast("asd", duration: 2.0, position: .center)
 
 final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttributes {
@@ -269,7 +270,7 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
     }
     
     func setUpCell(_ feedInfo: FeedInfo){
-//        print("setUpCell \(feedInfo)")
+        smLog("\n\(feedInfo)\n")
         guard let user = feedInfo.user, let major2 = user.major2, let likeYn = feedInfo.likeYn, let commentYn = feedInfo.commentYn, let totalLikeCount = feedInfo.totalLikeCount, let totalCommentCount = feedInfo.totalCommentCount, let scrapYn = feedInfo.scrapYn else { return }
         self.feedInfo = feedInfo
         userSeq = user.userSeq
@@ -333,21 +334,22 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
             DispatchQueue.main.async {
                 imageView.kf.indicatorType = .activity
                 imageView.kf.setImage(
-                  with: url,
-                  placeholder: nil,
-                  options: [.transition(.fade(1.2))],
-                  completionHandler: { result in
-                  switch(result) {
-                      case .success(let imageResult):
-                      let resized = resize(image: imageResult.image, newWidth: 40)
-                      imageView.image = resized
-                      imageView.isHidden = false
-                      case .failure(let error):
-                          imageView.isHidden = true
-                      }
-                  })
+                    with: url,
+                    options: [
+                        .transition(.fade(0.2)),
+                        .forceTransition,
+                        .keepCurrentImageWhileLoading,
+                        .processor(DownsamplingImageProcessor(size: CGSize(width: 40, height: 40))),
+                        .scaleFactor(UIScreen.main.scale),
+                        .cacheOriginalImage
+                    ]
+                )
             }
         }
+    }
+    
+    override func prepareForReuse() {
+        profileImg.image = nil
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -470,18 +472,15 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
                         imageView.kf.indicatorType = .activity
                         imageView.kf.setImage(
                             with: url,
-                            placeholder: nil,
-                            options: [.transition(.fade(1.2))],
-                            completionHandler: { result in
-                            switch(result) {
-                                case .success(let imageResult):
-                                let resized = resize(image: imageResult.image, newWidth: self.imageViewWidth)
-                                imageView.image = resized
-                                imageView.isHidden = false
-                                case .failure(let error):
-                                    imageView.isHidden = true
-                                }
-                            })
+                            options: [
+                                .transition(.fade(1.0)),
+                                .forceTransition,
+                                .keepCurrentImageWhileLoading,
+                                .processor(DownsamplingImageProcessor(size: CGSize(width: self.imageViewWidth, height: self.imageViewWidth))),
+                                .scaleFactor(UIScreen.main.scale),
+                                .cacheOriginalImage
+                            ]
+                        )
                         
                         let xPosition = self.imageViewWidth * CGFloat(i)
                         

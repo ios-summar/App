@@ -10,7 +10,7 @@ import UIKit
 
 final class HomeController : UITabBarController, ViewAttributes {
     let feedDetailViewModel = FeedDetailViewModel()
-    let helper = Helper()
+    let helper = Helper.shared
     var param: [String: Any]?
     
     lazy var middleButton: UIButton! = {

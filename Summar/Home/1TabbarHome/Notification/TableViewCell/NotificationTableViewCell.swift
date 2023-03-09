@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SnapKit
+import Kingfisher
 
 protocol NotificationButtonDelegate: AnyObject {
     func btnAction(_ param: Dictionary<String, Int>, _ handler: String, completion: @escaping ()->())
@@ -146,19 +147,16 @@ final class NotificationTableViewCell: UITableViewCell, ViewAttributes {
             DispatchQueue.main.async {
                 imageView.kf.indicatorType = .activity
                 imageView.kf.setImage(
-                  with: url,
-                  placeholder: nil,
-                  options: [.transition(.fade(1.2))],
-                  completionHandler: { result in
-                  switch(result) {
-                      case .success(let imageResult):
-                      let resized = resize(image: imageResult.image, newWidth: 40)
-                      imageView.image = resized
-                      imageView.isHidden = false
-                      case .failure(let error):
-                          imageView.isHidden = true
-                      }
-                  })
+                    with: url,
+                    options: [
+                        .transition(.fade(0.2)),
+                        .forceTransition,
+                        .keepCurrentImageWhileLoading,
+                        .processor(DownsamplingImageProcessor(size: CGSize(width: 40, height: 40))),
+                        .scaleFactor(UIScreen.main.scale),
+                        .cacheOriginalImage
+                    ]
+                )
             }
         }
     }
@@ -175,19 +173,16 @@ final class NotificationTableViewCell: UITableViewCell, ViewAttributes {
             DispatchQueue.main.async {
                 imageView.kf.indicatorType = .activity
                 imageView.kf.setImage(
-                  with: url,
-                  placeholder: nil,
-                  options: [.transition(.fade(1.2))],
-                  completionHandler: { result in
-                  switch(result) {
-                      case .success(let imageResult):
-                      let resized = resize(image: imageResult.image, newWidth: 60)
-                      imageView.image = resized
-                      imageView.isHidden = false
-                      case .failure(let error):
-                          imageView.isHidden = true
-                      }
-                  })
+                    with: url,
+                    options: [
+                        .transition(.fade(0.2)),
+                        .forceTransition,
+                        .keepCurrentImageWhileLoading,
+                        .processor(DownsamplingImageProcessor(size: CGSize(width: 60, height: 60))),
+                        .scaleFactor(UIScreen.main.scale),
+                        .cacheOriginalImage
+                    ]
+                )
             }
         }
     }

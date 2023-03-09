@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import BSImagePicker
 import Photos
+import Kingfisher
 
 protocol ImagePickerDelegate : AnyObject {
     func openPhoto(completion: @escaping([UIImage]?) -> ())
@@ -180,19 +181,16 @@ final class WriteFeedView : UIView, UITextViewDelegate, RemoveAction{
             DispatchQueue.main.async {
                 UIImageView().kf.indicatorType = .activity
                 UIImageView().kf.setImage(
-                  with: url,
-                  placeholder: nil,
-                  options: [.transition(.fade(1.2))],
-                  completionHandler: { result in
-                  switch(result) {
-                      case .success(let imageResult):
-                            let resized = resize(image: imageResult.image, newWidth: 100)
-                            self.resultArr.append(resized)
-                            self.collectionViewScroll.reloadData()
-                      case .failure(let error):
-                            print(error)
-                      }
-                  })
+                    with: url,
+                    options: [
+                        .transition(.fade(0.2)),
+                        .forceTransition,
+                        .keepCurrentImageWhileLoading,
+                        .processor(DownsamplingImageProcessor(size: CGSize(width: 100, height: 100))),
+                        .scaleFactor(UIScreen.main.scale),
+                        .cacheOriginalImage
+                    ]
+                )
             }
         }
     }
@@ -393,6 +391,7 @@ final class WriteFeedView : UIView, UITextViewDelegate, RemoveAction{
                         self.viewModel.deleteImage(deleteImgRequestBody)
                         self.viewModel.didFinishDeleteFetch = {
                             smLog("")
+                            self.popDelegate?.popScreen()
                             LoadingIndicator.hideLoading()
                         }
                     }else {

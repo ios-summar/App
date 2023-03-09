@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UITextViewDelegate, PushDelegate, RemoveComment, ReplyDelegate{
     let fontManager = FontManager.shared
@@ -832,18 +833,15 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
                     imageView.kf.indicatorType = .activity
                     imageView.kf.setImage(
                         with: url,
-                        placeholder: nil,
-                        options: [.transition(.fade(1.2))],
-                        completionHandler: { result in
-                        switch(result) {
-                            case .success(let imageResult):
-                            let resized = resize(image: imageResult.image, newWidth: self.imageViewWidth)
-                            imageView.image = resized
-                            imageView.isHidden = false
-                            case .failure(let error):
-                                imageView.isHidden = true
-                            }
-                        })
+                        options: [
+                            .transition(.fade(0.2)),
+                            .forceTransition,
+                            .keepCurrentImageWhileLoading,
+                            .processor(DownsamplingImageProcessor(size: CGSize(width: self.imageViewWidth, height: self.imageViewWidth))),
+                            .scaleFactor(UIScreen.main.scale),
+                            .cacheOriginalImage
+                        ]
+                    )
                     
                     imageView.contentMode = .scaleAspectFill
                     imageView.clipsToBounds = true
@@ -999,18 +997,15 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
                 imageView.kf.indicatorType = .activity
                 imageView.kf.setImage(
                     with: url,
-                    placeholder: nil,
-                    options: [.transition(.fade(1.2))],
-                    completionHandler: { result in
-                    switch(result) {
-                        case .success(let imageResult):
-                        let resized = resize(image: imageResult.image, newWidth: 40)
-                        imageView.image = resized
-                        imageView.isHidden = false
-                        case .failure(let error):
-                            imageView.isHidden = true
-                        }
-                    })
+                    options: [
+                        .transition(.fade(0.2)),
+                        .forceTransition,
+                        .keepCurrentImageWhileLoading,
+                        .processor(DownsamplingImageProcessor(size: CGSize(width: 40, height: 40))),
+                        .scaleFactor(UIScreen.main.scale),
+                        .cacheOriginalImage
+                    ]
+                )
             }
         }
     }

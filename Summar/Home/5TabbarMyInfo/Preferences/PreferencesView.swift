@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 protocol PopDelegate : AnyObject {
     func popScreen()
@@ -36,18 +37,15 @@ final class PreferencesView: UIView{
                         self.profileImg.kf.indicatorType = .activity
                         self.profileImg.kf.setImage(
                             with: url,
-                            placeholder: nil,
-                            options: [.transition(.fade(1.2))],
-                            completionHandler: { result in
-                            switch(result) {
-                                case .success(let imageResult):
-                                let resized = resize(image: imageResult.image, newWidth: 42)
-                                self.profileImg.image = resized
-                                self.profileImg.isHidden = false
-                                case .failure(let error):
-                                self.profileImg.isHidden = true
-                                }
-                            })
+                            options: [
+                                .transition(.fade(0.2)),
+                                .forceTransition,
+                                .keepCurrentImageWhileLoading,
+                                .processor(DownsamplingImageProcessor(size: CGSize(width: 42, height: 42))),
+                                .scaleFactor(UIScreen.main.scale),
+                                .cacheOriginalImage
+                            ]
+                        )
                     }
                 }
             }else {
@@ -270,18 +268,15 @@ final class PreferencesView: UIView{
                             self.profileImg.kf.indicatorType = .activity
                             self.profileImg.kf.setImage(
                                 with: url,
-                                placeholder: nil,
-                                options: [.transition(.fade(1.2))],
-                                completionHandler: { result in
-                                switch(result) {
-                                    case .success(let imageResult):
-                                    let resized = resize(image: imageResult.image, newWidth: 42)
-                                    self.profileImg.image = resized
-                                    self.profileImg.isHidden = false
-                                    case .failure(let error):
-                                    self.profileImg.isHidden = true
-                                    }
-                                })
+                                options: [
+                                    .transition(.fade(0.2)),
+                                    .forceTransition,
+                                    .keepCurrentImageWhileLoading,
+                                    .processor(DownsamplingImageProcessor(size: CGSize(width: 42, height: 42))),
+                                    .scaleFactor(UIScreen.main.scale),
+                                    .cacheOriginalImage
+                                ]
+                            )
                         }
                     }
                 }else {
