@@ -40,7 +40,7 @@ final class MyInfoViewModel{
     }
     var feedSelectResponse: FeedSelectResponse? {
         didSet {
-            print("MyInfoViewModel feedSelectResponse =>\n \(feedSelectResponse)")
+//            print("MyInfoViewModel feedSelectResponse =>\n \(feedSelectResponse)")
             self.didFinishPortfolioFetch?()
         }
     }

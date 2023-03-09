@@ -553,7 +553,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     }
     
     func touchLeft(){
-        getPortfolio()
+//        getPortfolio()
         
         leftBtn.titleLabel?.font = self.fontManager.getFont(Font.Bold.rawValue).mediumFont
         rightBtn.titleLabel?.font = self.fontManager.getFont(Font.Regular.rawValue).mediumFont
@@ -672,8 +672,8 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     
     func getPortfolio(){
         guard let userSeq = userInfo?.result.userSeq else {return}
-        viewModel.getPortfolio(userSeq)
         
+        viewModel.getPortfolio(userSeq)
         viewModel.didFinishPortfolioFetch = {
             self.portfolioResponse = self.viewModel.feedSelectResponse
             self.setPortfolio(self.portfolioResponse)
@@ -690,7 +690,6 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     }
     
     func setPortfolio(_ feed: FeedSelectResponse?) {
-        smLog("")
         guard let feed = feed else {return}
         if feed.totalRecordCount != 0 {
             smLog("")

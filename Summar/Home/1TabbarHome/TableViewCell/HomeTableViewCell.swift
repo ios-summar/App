@@ -139,6 +139,13 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
         
         return scrollView
     }()
+    lazy var thumbnailImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = .white
+        imageView.clipsToBounds = true
+        return imageView
+    }()
     lazy var heartImage : UIImageView = {
         let view = UIImageView()
         view.image = UIImage(systemName: "heart") // 꽉찬 하트 heart.fill
@@ -349,7 +356,9 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
     }
     
     override func prepareForReuse() {
+
         profileImg.image = nil
+        thumbnailImageView.image = nil
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -464,30 +473,52 @@ final class HomeTableViewCell: UITableViewCell, UIScrollViewDelegate, ViewAttrib
                 //DispatchQueue를 쓰면 멀티 쓰레드로 이미지가 클경우에도 멈춤이 생기지 않는다.
                 DispatchQueue.global().async {
                     DispatchQueue.main.async {
-                        let imageView = UIImageView()
-                        imageView.contentMode = .scaleAspectFill
-                        imageView.backgroundColor = .white
-                        imageView.clipsToBounds = true
-                        
-                        imageView.kf.indicatorType = .activity
-                        imageView.kf.setImage(
-                            with: url,
-                            options: [
-                                .transition(.fade(1.0)),
-                                .forceTransition,
-                                .keepCurrentImageWhileLoading,
-                                .processor(DownsamplingImageProcessor(size: CGSize(width: self.imageViewWidth, height: self.imageViewWidth))),
-                                .scaleFactor(UIScreen.main.scale),
-                                .cacheOriginalImage
-                            ]
-                        )
-                        
-                        let xPosition = self.imageViewWidth * CGFloat(i)
-                        
-                        imageView.frame = CGRect(x: xPosition, y: 0, width: self.imageViewWidth, height: self.imageViewWidth)
-                        self.scrollView.contentSize.width = self.imageViewWidth * CGFloat(1+i)
-                        
-                        self.scrollView.addSubview(imageView)
+                        if i == 0 {
+                            self.thumbnailImageView.kf.indicatorType = .activity
+                            self.thumbnailImageView.kf.setImage(
+                                with: url,
+                                options: [
+                                    .transition(.fade(0.2)),
+                                    .forceTransition,
+                                    .keepCurrentImageWhileLoading,
+                                    .processor(DownsamplingImageProcessor(size: CGSize(width: self.imageViewWidth, height: self.imageViewWidth))),
+                                    .scaleFactor(UIScreen.main.scale),
+                                    .cacheOriginalImage
+                                ]
+                            )
+                            
+                            let xPosition = self.imageViewWidth * CGFloat(i)
+                            
+                            self.thumbnailImageView.frame = CGRect(x: xPosition, y: 0, width: self.imageViewWidth, height: self.imageViewWidth)
+                            self.scrollView.contentSize.width = self.imageViewWidth * CGFloat(1+i)
+                            
+                            self.scrollView.addSubview(self.thumbnailImageView)
+                        }else {
+                            let imageView = UIImageView()
+                            imageView.contentMode = .scaleAspectFill
+                            imageView.backgroundColor = .white
+                            imageView.clipsToBounds = true
+                            
+                            imageView.kf.indicatorType = .activity
+                            imageView.kf.setImage(
+                                with: url,
+                                options: [
+                                    .transition(.fade(0.2)),
+                                    .forceTransition,
+                                    .keepCurrentImageWhileLoading,
+                                    .processor(DownsamplingImageProcessor(size: CGSize(width: self.imageViewWidth, height: self.imageViewWidth))),
+                                    .scaleFactor(UIScreen.main.scale),
+                                    .cacheOriginalImage
+                                ]
+                            )
+                            
+                            let xPosition = self.imageViewWidth * CGFloat(i)
+                            
+                            imageView.frame = CGRect(x: xPosition, y: 0, width: self.imageViewWidth, height: self.imageViewWidth)
+                            self.scrollView.contentSize.width = self.imageViewWidth * CGFloat(1+i)
+                            
+                            self.scrollView.addSubview(imageView)
+                        }
                     }
                 }
             }
