@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import Toast_Swift
 
 final class ReportView2Controller: UIViewController, ViewAttributes, UpdateNavigationBar{
     let helper = Helper.shared
