@@ -553,7 +553,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
     }
     
     func touchLeft(){
-//        getPortfolio()
+        getPortfolio()
         
         leftBtn.titleLabel?.font = self.fontManager.getFont(Font.Bold.rawValue).mediumFont
         rightBtn.titleLabel?.font = self.fontManager.getFont(Font.Regular.rawValue).mediumFont

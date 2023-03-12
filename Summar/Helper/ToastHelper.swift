@@ -7,7 +7,13 @@
 
 import Foundation
 import UIKit
+import Toast_Swift
 
 internal func toast(_ message: String) {
-    UIApplication.shared.keyWindow?.rootViewController?.view.makeToast(message, duration: 1.5, position: .center)
+    
+    if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+        let keyWindow = scene.windows.first(where: { $0.isKeyWindow })
+        
+        keyWindow?.rootViewController?.view.makeToast(message, duration: 1.5, position: .center)
+    }
 }
