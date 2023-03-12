@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import Kingfisher
+import IQKeyboardManagerSwift
 
 final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UITextViewDelegate, PushDelegate, RemoveComment, ReplyDelegate{
     let fontManager = FontManager.shared
@@ -407,6 +408,8 @@ final class FeedDetailView: UIView, ViewAttributes, UIScrollViewDelegate, UIText
         textView.delegate = self
 //        textView.sizeToFit()
         textView.textContainerInset = UIEdgeInsets(top: 8, left: 15, bottom: 5, right: 30)
+        
+        IQKeyboardManager.shared.enableAutoToolbar = false
         return textView
     }()
     lazy var uploadImg: UIImageView = {

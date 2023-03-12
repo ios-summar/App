@@ -10,6 +10,7 @@ import UIKit
 import BSImagePicker
 import Photos
 import Kingfisher
+import IQKeyboardManagerSwift
 
 protocol ImagePickerDelegate : AnyObject {
     func openPhoto(completion: @escaping([UIImage]?) -> ())
@@ -83,6 +84,10 @@ final class WriteFeedView : UIView, UITextViewDelegate, RemoveAction{
         textView.text = textViewPlaceHolder
         textView.textColor = .lightGray
         textView.delegate = self
+        
+        // Add previous/next buttons to the keyboard accessory view
+        IQKeyboardManager.shared.enableAutoToolbar = true
+        IQKeyboardManager.shared.toolbarDoneBarButtonItemText = "완료"
         return textView
     }()
     

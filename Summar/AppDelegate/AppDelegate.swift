@@ -99,7 +99,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func IQKeyboardManagerInit() {
         IQKeyboardManager.shared.enable = true
-        IQKeyboardManager.shared.enableAutoToolbar = false
+        IQKeyboardManager.shared.enableAutoToolbar = true
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
     }
     
