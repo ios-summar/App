@@ -110,10 +110,15 @@ final class WriteFeedController : UIViewController, ImagePickerDelegate, PopDele
         config.library.maxNumberOfItems = 10 // 최대 선택 가능한 사진 개수 제한
         config.library.minNumberOfItems = 1
         config.library.mediaType = .photo // 미디어타입(사진, 사진/동영상, 동영상)
+        config.library.onlySquare = true
+        config.library.isSquareByDefault = true
+        
         config.usesFrontCamera = false
         config.showsPhotoFilters = false
         config.showsVideoTrimmer = false
         config.screens = [.library]
+        config.onlySquareImagesFromCamera = true
+        
         
         let picker = YPImagePicker(configuration: config)
         

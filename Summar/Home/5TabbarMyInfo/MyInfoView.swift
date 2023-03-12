@@ -65,6 +65,9 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
             temporarySaveCollectionView.reloadData()
             
             if temporaryResponse?.content?.count != 0 {
+                portfolioTableView.alpha = 0.0
+                notExist.alpha = 0.0
+                notExistLabel.alpha = 0.0
                 temporarySaveCollectionView.alpha = 1.0
                 
                 scrollView.addSubview(temporarySaveCollectionView)
@@ -271,6 +274,7 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         let label = UILabel()
         label.textColor = .black
         label.font = self.fontManager.getFont(Font.SemiBold.rawValue).mediumFont
+        label.text = "작성한 포트폴리오가 없습니다."
         label.sizeToFit()
         return label
     }()
@@ -334,6 +338,8 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
         profileSuperview.addSubview(introduceLabel)
         scrollView.addSubview(line2)
         
+        scrollView.addSubview(notExist)
+        scrollView.addSubview(notExistLabel)
     }
     
     func setAttributes() {
@@ -437,7 +443,18 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
             make.height.equalTo(2)
             make.top.equalTo(profileSuperview.snp.bottom)
         }
-        
+        notExist.snp.makeConstraints {
+            
+            $0.top.equalTo(line2.snp.bottom).offset(80)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(162)
+            $0.height.equalTo(194)
+        }
+        notExistLabel.snp.makeConstraints {
+            
+            $0.top.equalTo(notExist.snp.bottom).offset(2)
+            $0.centerX.equalToSuperview()
+        }
     }
     
     // MARK: - 내 피드인지, 다른 사용자의 피드인지 확인
@@ -709,24 +726,6 @@ final class MyInfoView: UIView, ViewAttributes, PushDelegate{
             temporarySaveCollectionView.alpha = 0.0
             notExist.alpha = 1.0
             notExistLabel.alpha = 1.0
-            
-            scrollView.addSubview(notExist)
-            scrollView.addSubview(notExistLabel)
-            
-            notExistLabel.text = "작성한 포트폴리오가 없습니다."
-            
-            notExist.snp.makeConstraints {
-                
-                $0.top.equalTo(line2.snp.bottom).offset(80)
-                $0.centerX.equalToSuperview()
-                $0.width.equalTo(162)
-                $0.height.equalTo(194)
-            }
-            notExistLabel.snp.makeConstraints {
-                
-                $0.top.equalTo(notExist.snp.bottom).offset(2)
-                $0.centerX.equalToSuperview()
-            }
             self.setNeedsDisplay()
         }
     }
