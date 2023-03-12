@@ -18,6 +18,8 @@ struct cellData {
 
 final class NoticeView: UIView {
     let viewModel = NoticeViewModel()
+    let helper = Helper.shared
+    
     var notice : Notice? {
         didSet {
             guard let results = notice?.result?.results else { return }
@@ -111,6 +113,8 @@ extension NoticeView: UITableViewDelegate, UITableViewDataSource {
             cell.dateLabel.text = tableViewData[indexPath.section].date
             cell.upDownImageView.image = UIImage(named: "Down")
             cell.view.backgroundColor = .white
+            
+            helper.lineSpacing(cell.tableLabel, 10)
             return cell
             
         // sectionData 부분 코드
@@ -119,6 +123,8 @@ extension NoticeView: UITableViewDelegate, UITableViewDataSource {
                     as? NoticeContentTableViewCell else { return UITableViewCell() }
             cell.tableLabel.text = tableViewData[indexPath.section].sectionData
             cell.view.backgroundColor = UIColor.Gray01
+            
+            helper.lineSpacing(cell.tableLabel, 5)
             return cell
         }
     }
@@ -148,7 +154,7 @@ extension NoticeView: UITableViewDelegate, UITableViewDataSource {
             }
             // sectionData 부분을 선택하면 아무 작동하지 않게 설정
         } else {
-            print("이건 sectionData 선택한 거야")
+//            print("이건 sectionDatax 선택한 거야")
         }
         
     }
