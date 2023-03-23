@@ -215,7 +215,7 @@ final class PreferencesView: UIView{
         tableView.snp.makeConstraints{(make) in
             make.left.right.equalToSuperview()
             make.top.equalTo(view.snp.bottom).offset(16)
-            make.height.equalTo(220)
+            make.height.equalTo(264)
         }
         
         addSubview(withDrawLabel)
@@ -293,12 +293,17 @@ final class PreferencesView: UIView{
     }
     
     func arrayInit(){
-        _ = ["프로필 편집", "알림설정", "공지사항", "자주 묻는 질문", "버전 정보"].map {
+        _ = ["프로필 편집", "알림설정", "공지사항", "자주 묻는 질문", "차단 목록", "버전 정보"].map {
             preferencesArray.append($0)
         }
         
-        _ = ["solid", "alarm", "notice", "FAQ", "info"].map {
-            preferencesImgArray.append(UIImage(named: $0)!)
+        _ = ["solid", "alarm", "notice", "FAQ", "person.2.slash.fill", "info"].map {
+            
+            if $0 != "person.2.slash.fill" {
+                preferencesImgArray.append(UIImage(named: $0)!)
+            }else {
+                preferencesImgArray.append(UIImage(systemName: $0)!)
+            }
         }
     }
     
@@ -369,7 +374,7 @@ extension PreferencesView: UITableViewDelegate, UITableViewDataSource {
         cell.label.text = preferencesArray[indexPath.row]
         
         // 버전정보
-        if indexPath.row == 4 {
+        if indexPath.row == 5 {
             cell.versionLabel.text = version
 //            cell.rectangleStroke.alpha = 0.0
             //버전 체크후
@@ -399,8 +404,13 @@ extension PreferencesView: UITableViewDelegate, UITableViewDataSource {
             print("3")
             self.pushDelegate?.pushScreen(FAQController(), nil)
             break
-        case 4: // 버전 정보
+        case 4: // 차단 목록
             print("4")
+//            helper.showAlert(vc: self, message: "준비중")
+            self.pushDelegate?.pushScreen(BlockViewCotnroller(), nil)
+            break
+        case 5: // 버전 정보
+            print("5")
 //            helper.showAlert(vc: self, message: "준비중")
             break
         default:

@@ -122,6 +122,8 @@ final class ProfileViewController : UIViewController, PushDelegate, ViewAttribut
     
     func setUI() {
         self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(popView), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
+        self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButtonWidth30(self, action: #selector(kebabMenu), uiImage: UIImage(named: "kebabMenu")!, tintColor: .black)
+        
         self.view.addSubview(infoView)
     }
     
@@ -136,5 +138,38 @@ final class ProfileViewController : UIViewController, PushDelegate, ViewAttribut
     
     @objc func popView() {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func kebabMenu() {
+        helper.showAlertActionDestructive(vc: self, message1: "신고하기", message2: "차단하기") { handler in
+            switch handler {
+            case "신고하기":
+                guard let userSeq = self.userSeq else {return}
+                
+                let VC = ReportViewController()
+                let param: Dictionary<String, Any> = [
+                    "mySeq": getMyUserSeq(),
+                    "userSeq": userSeq,
+                    "feedSeq": 0,
+                    "feedCommentSeq": 0
+                ]
+                
+                VC.param = param
+                self.navigationController?.pushViewController(VC, animated: true)
+            case "차단하기":
+                print("차단하기")
+                self.helper.showAlertActionYN(vc: self, title: "알림", message: "정말로 이 사용자를 차단 하시겠습니까?") { handler in
+                    guard let handler = handler else {
+                        return
+                    }
+                    
+                    if handler {
+                        toast("차단됨, 차단 목록은 마이 써머리에서 확인 가능합니다.")
+                    }
+                }
+            default :
+                break
+            }
+        }
     }
 }

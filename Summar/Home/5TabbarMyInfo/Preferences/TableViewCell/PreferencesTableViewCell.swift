@@ -12,9 +12,9 @@ final class PreferencesTableViewCell: UITableViewCell {
     
     let preferencesImg : UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "person.fill")
         view.contentMode = .scaleAspectFit
         view.clipsToBounds = true
+        view.tintColor = .black
         return view
     }()
     

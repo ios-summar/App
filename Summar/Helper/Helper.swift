@@ -95,6 +95,37 @@ final class Helper : UIView{
                 }
     }
     
+    /// 액션시트 2,1 Destructive
+    func showAlertActionDestructive(vc: UIViewController?, preferredStyle: UIAlertController.Style = .actionSheet, message1: String = "", message2: String = "", cancel: String = "닫기", completeHandler:((String) -> Void)? = nil){
+                
+                guard let currentVc = vc else {
+                    completeHandler?("")
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: nil, message: nil, preferredStyle: preferredStyle)
+                    
+                    let action1 = UIAlertAction(title: message1, style: .destructive) { action in
+                        completeHandler?(message1)
+                    }
+                    
+                    let action2 = UIAlertAction(title: message2, style: .destructive) { action in
+                        completeHandler?(message2)
+                    }
+                    
+                    let cancelAction = UIAlertAction(title: cancel, style: .cancel) { action in
+                        completeHandler?(cancel)
+                    }
+                    
+                    alert.addAction(action1)
+                    alert.addAction(action2)
+                    alert.addAction(cancelAction)
+                    
+                    currentVc.present(alert, animated: true, completion: nil)
+                }
+    }
+    
     /// 액션시트 2,1
     func showAlertAction(vc: UIViewController?, preferredStyle: UIAlertController.Style = .actionSheet, message1: String = "", message2: String = "", cancel: String = "닫기", completeHandler:((String) -> Void)? = nil){
                 

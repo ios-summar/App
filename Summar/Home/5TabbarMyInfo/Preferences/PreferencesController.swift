@@ -39,6 +39,10 @@ final class PreferencesController: UIViewController, PushDelegate, PopDelegate, 
             let VC = FAQController()
             
             self.navigationController?.pushViewController(VC, animated: true)
+        }else if VC.isKind(of: BlockViewCotnroller.self) {
+            let VC = BlockViewCotnroller()
+            
+            self.navigationController?.pushViewController(VC, animated: true)
         }
     }
     

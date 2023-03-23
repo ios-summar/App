@@ -63,6 +63,7 @@
 		5EB4F5F1296E94FF0061D64D /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB4F5F0296E94FF0061D64D /* PaddingLabel.swift */; };
 		5EB4F5F3296EAFFF0061D64D /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB4F5F2296EAFFF0061D64D /* LogHelper.swift */; };
 		5EB4F5F7296F898F0061D64D /* PreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB4F5F6296F898F0061D64D /* PreferencesViewModel.swift */; };
+		5EB55FE229CC2F6800D7583E /* BlockViewCotnroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB55FE129CC2F6800D7583E /* BlockViewCotnroller.swift */; };
 		5EB809EA299371A3003FA74C /* ClippingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB809E9299371A3003FA74C /* ClippingView.swift */; };
 		5EB809EC29937382003FA74C /* ClippingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB809EB29937382003FA74C /* ClippingViewModel.swift */; };
 		5EB809EF29949CF3003FA74C /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB809EE29949CF3003FA74C /* ReportViewController.swift */; };
@@ -222,6 +223,7 @@
 		5EB4F5F0296E94FF0061D64D /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		5EB4F5F2296EAFFF0061D64D /* LogHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogHelper.swift; sourceTree = "<group>"; };
 		5EB4F5F6296F898F0061D64D /* PreferencesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
+		5EB55FE129CC2F6800D7583E /* BlockViewCotnroller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockViewCotnroller.swift; sourceTree = "<group>"; };
 		5EB809E9299371A3003FA74C /* ClippingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClippingView.swift; sourceTree = "<group>"; };
 		5EB809EB29937382003FA74C /* ClippingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClippingViewModel.swift; sourceTree = "<group>"; };
 		5EB809EE29949CF3003FA74C /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 				A2D27B702971C934002CF652 /* 2PushSetting */,
 				A2D27B7E2972F7D9002CF652 /* 3Notice */,
 				A2D27B8C29743A78002CF652 /* 4FAQ */,
+				5EB55FE029CC2F5000D7583E /* 5Block */,
 				048EAA85296556EC004E4A08 /* TableViewCell */,
 				048EAA812965490C004E4A08 /* PreferencesController.swift */,
 				5EB4F5F6296F898F0061D64D /* PreferencesViewModel.swift */,
@@ -477,6 +480,14 @@
 				5E816E0A297A4671002BB4D3 /* Pretendard-Thin.otf */,
 			);
 			path = Font;
+			sourceTree = "<group>";
+		};
+		5EB55FE029CC2F5000D7583E /* 5Block */ = {
+			isa = PBXGroup;
+			children = (
+				5EB55FE129CC2F6800D7583E /* BlockViewCotnroller.swift */,
+			);
+			path = 5Block;
 			sourceTree = "<group>";
 		};
 		5EB809ED29949CC4003FA74C /* Report */ = {
@@ -1015,6 +1026,7 @@
 				A2D27B862974144D002CF652 /* Notice.swift in Sources */,
 				5E1133BD298CEA5F00465C0C /* FeedComment.swift in Sources */,
 				5EB4F5F3296EAFFF0061D64D /* LogHelper.swift in Sources */,
+				5EB55FE229CC2F6800D7583E /* BlockViewCotnroller.swift in Sources */,
 				A257176F29965CF7009163D5 /* CommentChildTableViewCell.swift in Sources */,
 				5EB809F82994AF32003FA74C /* ReportView2Controller.swift in Sources */,
 				A2527D4529782C750031350B /* HomeViewModel.swift in Sources */,
@@ -1327,8 +1339,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Summar/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Summar;
-				INFOPLIST_KEY_NSCameraUsageDescription = "사진 첨부를 위한 카메라 사용 권한을 허용 하시겠습니까?";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "사진 첨부를 위한 앨범 사용 권한을 허용 하시겠습니까?";
+				INFOPLIST_KEY_NSCameraUsageDescription = "피드 작성(사진 첨부)을 위한 카메라 사용 권한을 허용 하시겠습니까?";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "피드 작성(사진 첨부)을 위한 앨범 사용 권한을 허용 하시겠습니까?";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = none;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -1366,8 +1378,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Summar/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Summar;
-				INFOPLIST_KEY_NSCameraUsageDescription = "사진 첨부를 위한 카메라 사용 권한을 허용 하시겠습니까?";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "사진 첨부를 위한 앨범 사용 권한을 허용 하시겠습니까?";
+				INFOPLIST_KEY_NSCameraUsageDescription = "피드 작성(사진 첨부)을 위한 카메라 사용 권한을 허용 하시겠습니까?";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "피드 작성(사진 첨부)을 위한 앨범 사용 권한을 허용 하시겠습니까?";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = none;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
