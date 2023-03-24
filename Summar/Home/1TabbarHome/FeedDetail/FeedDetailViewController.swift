@@ -131,7 +131,7 @@ final class FeedDetailViewController: UIViewController, PushDelegate {
                 }
             }else {
                 smLog("자기 피드아님")
-                helper.showAlertAction(vc: self, message: "신고하기") { handler in
+                helper.showAlertActionDestructive(vc: self, message1: "신고하기", message2: "차단하기") { handler in
                     switch handler {
                     case "신고하기":
                         guard let userSeq = self.feedInfo?.user?.userSeq, let feedSeq = self.feedInfo?.feedSeq else {return}
@@ -146,6 +146,17 @@ final class FeedDetailViewController: UIViewController, PushDelegate {
                         
                         VC.param = param
                         self.navigationController?.pushViewController(VC, animated: true)
+                    case "차단하기":
+                        print("차단하기")
+                        self.helper.showAlertActionYN(vc: self, title: "알림", message: "정말로 이 사용자를 차단 하시겠습니까?") { handler in
+                            guard let handler = handler else {
+                                return
+                            }
+                            
+                            if handler {
+                                toast("차단됨, 차단 목록은 마이 써머리에서 확인 가능합니다.")
+                            }
+                        }
                     default:
                         break
                     }
