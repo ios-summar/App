@@ -5,7 +5,7 @@
 //  Created by ukBook on 2022/09/08.
 //
 
-// 구글 클라이언트 ID
+// 구글 클라이언트 ID!
 // 127377779027-m9qhbusr0f0goqbqlfrh6a0boifnsb9k.apps.googleusercontent.com
 
 import UIKit
