@@ -176,6 +176,32 @@ final class FeedDetailViewModel {
         })
     }
     
+    ///  사용자 차단 및 사용자 차단해제
+    func blockUser(_ blockedUserSeq: Int, completionHandler: @escaping (Bool)->()){
+        self.request.blockUser("/user/block/\(blockedUserSeq)", completion: { (result, error, status) in
+            if let error = error, let status = status {
+                if status == 401 {
+                    print("토큰 재발급")
+                    self.request.reloadToken(status)
+                    self.blockUser(blockedUserSeq) { handler in
+                        print("토큰 재발급 후 재요청")
+                    }
+                }else if status == 500 {
+                    toast("서버 오류, 잠시후 다시 시도해주세요.")
+                }
+            }else if let error = error {
+                print(error)
+                self.error = error
+                self.isLoading = false
+                return
+            }
+            self.error = nil
+            self.isLoading = false
+            
+            completionHandler(true)
+        })
+    }
+    
     
     // MARK: - UI Logic
     private func setupText(with feedInfo: FeedInfo) {

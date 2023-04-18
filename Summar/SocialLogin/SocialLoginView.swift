@@ -167,9 +167,9 @@ final class SocialLoginView : UIView, SocialSuccessDelegate{
         naverFrame.addSubview(naverImageView)
         
         // 구글 로그인
-        addSubview(googleFrame)
-        googleFrame.addSubview(googleLabel)
-        googleFrame.addSubview(googleImageView)
+//        addSubview(googleFrame)
+//        googleFrame.addSubview(googleLabel)
+//        googleFrame.addSubview(googleImageView)
         
         addSubview(socialImageView)
         
@@ -225,7 +225,7 @@ final class SocialLoginView : UIView, SocialSuccessDelegate{
         }
         
         naverFrame.snp.makeConstraints{(make) in
-            make.bottomMargin.equalTo(googleFrame.snp.top).offset(-20)
+            make.bottomMargin.equalTo(-70)
             make.leftMargin.equalTo(25)
             make.rightMargin.equalTo(-25)
             make.height.equalTo(52)
@@ -243,24 +243,24 @@ final class SocialLoginView : UIView, SocialSuccessDelegate{
             make.width.equalTo(30)
         }
         
-        googleFrame.snp.makeConstraints{(make) in
-            make.bottomMargin.equalTo(-70)
-            make.leftMargin.equalTo(25)
-            make.rightMargin.equalTo(-25)
-            make.height.equalTo(52)
-        }
-        
-        googleLabel.snp.makeConstraints{(make) in
-            make.centerX.equalTo(googleFrame)
-            make.centerY.equalTo(googleFrame)
-        }
-        
-        googleImageView.snp.makeConstraints{(make) in
-            make.centerY.equalTo(googleFrame)
-            make.leftMargin.equalTo(googleFrame.snp.left).offset(26)
-            make.height.equalTo(30)
-            make.width.equalTo(30)
-        }
+//        googleFrame.snp.makeConstraints{(make) in
+//            make.bottomMargin.equalTo(-70)
+//            make.leftMargin.equalTo(25)
+//            make.rightMargin.equalTo(-25)
+//            make.height.equalTo(52)
+//        }
+//
+//        googleLabel.snp.makeConstraints{(make) in
+//            make.centerX.equalTo(googleFrame)
+//            make.centerY.equalTo(googleFrame)
+//        }
+//
+//        googleImageView.snp.makeConstraints{(make) in
+//            make.centerY.equalTo(googleFrame)
+//            make.leftMargin.equalTo(googleFrame.snp.left).offset(26)
+//            make.height.equalTo(30)
+//            make.width.equalTo(30)
+//        }
     }
     
     func addUITapGestureRecognizer(){
@@ -294,7 +294,7 @@ final class SocialLoginView : UIView, SocialSuccessDelegate{
                 
             case 3: // 구글로 시작하기
                 print(googleLabel.text!)
-                googleLoginManager.googleLogin()
+//                googleLoginManager.googleLogin()
                 
             default:
                 print("default")

@@ -784,6 +784,7 @@ final class ServerRequest: NSObject {
                 switch response.result {
                 case .success(let value):
                     guard let result = response.data else {return}
+                    smLog("\(value)")
                                     
                     do {
                         let decoder = JSONDecoder()
@@ -1092,6 +1093,82 @@ final class ServerRequest: NSObject {
                     do {
                         let decoder = JSONDecoder()
                         let json = try decoder.decode(ServerResult.self, from: result)
+                        
+                        completion(json, nil, nil)
+                    } catch {
+                        print("error! \(error)")
+                        completion(nil, error, nil)
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    completion(nil, error, statusCode)
+                }
+            }
+        }
+    }
+    
+    // MARK: - 사용자 차단
+    /// 사용자 차단
+    func blockUser(_ url: String, completion: @escaping (NicknameCheck?, Error?, Int?) -> ()) {
+        let url = Server.url + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.request(url,
+                       method: .patch,
+                       parameters: nil,
+                       encoding: URLEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json",
+                                 "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    guard let result = response.data else {return}
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode(NicknameCheck.self, from: result)
+                        
+                        completion(json, nil, nil)
+                    } catch {
+                        print("error! \(error)")
+                        completion(nil, error, nil)
+                    }
+                case .failure(let error):
+                    print("🚫 @@Alamofire Request Error\nCode:\(error._code), Message: \(error.errorDescription!)")
+                    
+                    var statusCode = response.response?.statusCode
+                    completion(nil, error, statusCode)
+                }
+            }
+        }
+    }
+    
+    // MARK: - 차단한 회원 목록 조회
+    /// 차단한 회원 목록 조회
+    func getBlockedUsers(_ url: String, completion: @escaping ([Info]?, Error?, Int?) -> ()) {
+        let url = Server.url + url
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            print("url => \(url)")
+            print(token)
+            AF.request(url,
+                       method: .patch,
+                       parameters: nil,
+                       encoding: URLEncoding.default,
+                       headers: ["Content-Type":"application/json", "Accept":"application/json",
+                                 "Authorization":"Bearer \(token)"])
+            .validate(statusCode: 200..<300)
+            .responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    print("\(value)")
+                    guard let result = response.data else {return}
+                                    
+                    do {
+                        let decoder = JSONDecoder()
+                        let json = try decoder.decode([Info].self, from: result)
                         
                         completion(json, nil, nil)
                     } catch {

@@ -9,8 +9,15 @@ import Foundation
 import UIKit
 import Kingfisher
 
-final class BlockViewCotnroller: UIViewController, ViewAttributes {
+protocol ReloadTableView : AnyObject {
+    func getBlockUsers()
+}
+
+final class BlockViewCotnroller: UIViewController, ViewAttributes{
     let fontManager = FontManager.shared
+    let viewModel = BlockViewModel()
+    
+    var blockList: [Info]?
     
     // MARK: - NavigationBar Title
     lazy var titleLabel : UILabel = {
@@ -24,10 +31,9 @@ final class BlockViewCotnroller: UIViewController, ViewAttributes {
     
     // MARK: - TableView
     lazy var blockTableView: UITableView = {
+        
         let view = UITableView()
-        view.alpha = 1.0
-        view.delegate = self
-        view.dataSource = self
+        view.alpha = 0.0
         view.register(BlockTableViewCell.self, forCellReuseIdentifier: "BlockTableViewCell")
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
@@ -40,6 +46,32 @@ final class BlockViewCotnroller: UIViewController, ViewAttributes {
         view.tag = 1
         return view
     }()
+    lazy var notExist : UIImageView = {
+        
+        let imageView = UIImageView()
+        imageView.alpha = 0.0
+        imageView.image = UIImage(systemName: "person.2.slash.fill")
+        imageView.tintColor = UIColor.imageViewColor
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    lazy var notExistLabel: UILabel = {
+        
+        let label = UILabel()
+        label.alpha = 0.0
+        label.textColor = .black
+        label.font = self.fontManager.getFont(Font.SemiBold.rawValue).mediumFont
+        label.text = "차단한 사용자가 없습니다."
+        label.sizeToFit()
+        return label
+    }()
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        getBlockUsers()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,12 +92,48 @@ final class BlockViewCotnroller: UIViewController, ViewAttributes {
         
         self.view.backgroundColor = .white
         self.view.addSubview(blockTableView)
+        self.view.addSubview(notExist)
+        self.view.addSubview(notExistLabel)
     }
     
     func setAttributes() {
         
         blockTableView.snp.makeConstraints {
+            
             $0.edges.equalTo(self.view.safeAreaLayoutGuide)
+        }
+        notExist.snp.makeConstraints {
+            
+            $0.top.equalTo(20)
+            $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(150)
+        }
+        notExistLabel.snp.makeConstraints {
+            
+            $0.top.equalTo(notExist.snp.bottom).offset(20)
+            $0.centerX.equalToSuperview()
+        }
+    }
+    
+    func getBlockUsers() {
+        viewModel.getBlockedUsers { value in
+            if value?.count != 0 { // 차단된 사용자가 있음
+                
+                self.blockList = value
+                self.blockTableView.alpha = 1.0
+                self.notExist.alpha = 0.0
+                self.notExistLabel.alpha = 0.0
+            }else { // 차단된 사용자가 없음
+                smLog("차단된 사용자가 없음")
+                
+                self.blockTableView.alpha = 0.0
+                self.notExist.alpha = 1.0
+                self.notExistLabel.alpha = 1.0
+            }
+            
+            self.blockTableView.delegate = self
+            self.blockTableView.dataSource = self
+            self.blockTableView.reloadData()
         }
     }
     
@@ -75,10 +143,38 @@ final class BlockViewCotnroller: UIViewController, ViewAttributes {
     }
 }
 
+// MARK: - BlockViewCotnroller
+extension BlockViewCotnroller: UITableViewDelegate, UITableViewDataSource, ReloadTableView {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 68
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let blockList = blockList else {return 0}
+        
+        return blockList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BlockTableViewCell", for: indexPath) as! BlockTableViewCell
+        guard let blockList = blockList else {return UITableViewCell()}
+
+        cell.delegate = self
+        cell.setUpCell(blockList[indexPath.row])
+        return cell
+    }
+    
+    func reloadTableView() {
+        
+        
+    }
+}
+
+// MARK: - BlockTableViewCell
 final class BlockTableViewCell: UITableViewCell, ViewAttributes {
-    weak var delegate: PushDelegate?
-    weak var refreshDelegate: RefreshFollowList?
+    weak var delegate: ReloadTableView?
     let viewModel = MyInfoViewModel(nil, nil)
+    let blockViewModel = BlockViewModel()
     let fontManager = FontManager.shared
     
     var userSeq: Int?
@@ -130,8 +226,16 @@ final class BlockTableViewCell: UITableViewCell, ViewAttributes {
         return button
     }()
     
-    func setUpCell(_ follow: SearchUserInfo, _ handler: String, _ myFollowList: Bool){
+    func setUpCell(_ info: Info){
         
+        userSeq = info.userSeq
+        
+        //프로필 이미지
+        setProfileImage(profileImg, info.profileImageUrl)
+        
+        nickName.text = info.userNickname
+        major.text = info.major2
+        btn.setTitle("차단 해제", for: .normal)
     }
     
     func setProfileImage(_ imageView: UIImageView,_ urlString: String?) {
@@ -160,12 +264,14 @@ final class BlockTableViewCell: UITableViewCell, ViewAttributes {
         }
     }
     
+    ///재사용 셀 대응
     override func prepareForReuse() {
         super.prepareForReuse()
 
         profileImg.image = nil
         nickName.text = ""
         major.text = ""
+        btn.setTitle("", for: .normal)
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -223,24 +329,17 @@ final class BlockTableViewCell: UITableViewCell, ViewAttributes {
     }
     
     @objc func followBtnAction(_ sender: Any) {
-        smLog("")
-    }
-}
-
-extension BlockViewCotnroller: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 68
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "BlockTableViewCell", for: indexPath) as! BlockTableViewCell
-        cell.major.text = "1"
-        cell.followBtn.setTitle("2", for: .normal)
-        cell.nickName.text = "3"
-        return cell
+        guard let userSeq = userSeq else {return}
+        
+        smLog("차단 해제")
+        smLog("\(userSeq)")
+        
+        blockViewModel.blockUser(userSeq) { handler in
+            handler ? toast("차단 해제") : toast("서버 오류, 잠시후 다시 시도해주세요.")
+            
+            if handler {
+                self.delegate?.getBlockUsers()
+            }
+        }
     }
 }

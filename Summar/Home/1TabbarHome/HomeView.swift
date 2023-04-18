@@ -43,6 +43,10 @@ final class HomeView: UIView, HomeViewDelegate, ViewAttributes{
         didSet {
             smLog("\n \(self.model?.content?.count) \n")
             
+//            for in 0..<model?.content?.count {
+//                
+//            }
+            
             tableView.delegate = self
             tableView.dataSource = self
             tableView.reloadData()

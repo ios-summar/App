@@ -18,6 +18,7 @@ struct Info: Codable {
     let following: Int?
     let introduce: String?
     let profileImageUrl: String?
+    let blocked: Bool?
     
     enum CodingKeys: String, CodingKey {
         case userSeq = "userSeq"
@@ -31,6 +32,7 @@ struct Info: Codable {
         case following = "following"
         case introduce = "introduce"
         case profileImageUrl = "profileImageUrl"
+        case blocked = "blocked"
     }
 }
 

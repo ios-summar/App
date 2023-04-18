@@ -154,13 +154,22 @@ final class FeedDetailViewController: UIViewController, PushDelegate {
                             }
                             
                             if handler {
-                                toast("차단됨, 차단 목록은 마이 써머리에서 확인 가능합니다.")
+                                self.viewModel.blockUser(userSeq as! Int) { handler in
+                                    
+                                    if handler {
+                                        toast("차단됨, 차단 목록은 마이 써머리에서 확인 가능합니다.")
+                                        self.navigationController?.popViewController(animated: true)
+                                    }else {
+                                        toast("서버 오류, 잠시후 다시 시도해주세요.")
+                                    }
+                                }
                             }
                         }
                     default:
                         break
                     }
                 }
+                
             }
         }
     }

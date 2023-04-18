@@ -81,8 +81,14 @@ final class ProfileViewController : UIViewController, PushDelegate, ViewAttribut
                                 return
                             }
                             
-                            if handler {
-                                toast("차단됨, 차단 목록은 마이 써머리에서 확인 가능합니다.")
+                            self.viewModel.blockUser(userSeq) { handler in
+                                
+                                if handler {
+                                    toast("차단됨, 차단 목록은 마이 써머리에서 확인 가능합니다.")
+                                    self.navigationController?.popViewController(animated: true)
+                                }else {
+                                    toast("서버 오류, 잠시후 다시 시도해주세요.")
+                                }
                             }
                         }
                     default:
@@ -132,8 +138,21 @@ final class ProfileViewController : UIViewController, PushDelegate, ViewAttribut
     }
     
     func setUI() {
-        self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(popView), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
-        self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButtonWidth30(self, action: #selector(kebabMenu), uiImage: UIImage(named: "kebabMenu")!, tintColor: .black)
+        if let value = UserDefaults.standard.dictionary(forKey: "UserInfo"){
+            guard let userSeq = value["userSeq"], let opponentUserSeq = self.userSeq else {return}
+            let myUserSeq: Int = userSeq as! Int
+            
+            // 내 피드일 때
+            if myUserSeq == opponentUserSeq {
+                
+                self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(popView), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
+                self.navigationItem.rightBarButtonItem = nil
+            }else {
+                
+                self.navigationItem.leftBarButtonItem = self.navigationItem.makeSFSymbolButton(self, action: #selector(popView), uiImage: UIImage(systemName: "arrow.backward")!, tintColor: .black)
+                self.navigationItem.rightBarButtonItem = self.navigationItem.makeSFSymbolButtonWidth30(self, action: #selector(kebabMenu), uiImage: UIImage(named: "kebabMenu")!, tintColor: .black)
+            }
+        }
         
         self.view.addSubview(infoView)
     }
@@ -170,12 +189,19 @@ final class ProfileViewController : UIViewController, PushDelegate, ViewAttribut
             case "차단하기":
                 print("차단하기")
                 self.helper.showAlertActionYN(vc: self, title: "알림", message: "정말로 이 사용자를 차단 하시겠습니까?") { handler in
+                    guard let userSeq = self.userSeq else {return}
                     guard let handler = handler else {
                         return
                     }
                     
-                    if handler {
-                        toast("차단됨, 차단 목록은 마이 써머리에서 확인 가능합니다.")
+                    self.viewModel.blockUser(userSeq) { handler in
+                        
+                        if handler {
+                            toast("차단됨, 차단 목록은 마이 써머리에서 확인 가능합니다.")
+                            self.navigationController?.popViewController(animated: true)
+                        }else {
+                            toast("서버 오류, 잠시후 다시 시도해주세요.")
+                        }
                     }
                 }
             default :
